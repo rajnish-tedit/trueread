@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#1F3A5F"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="The Hub"/>
+<title>The Hub — Roofing Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+// ── HELP WIDGET ────────────────────────────────────<style>
+/* ── RESET & BASE ──────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --horizon:#1F3A5F;
+  --cyan:#0F5866;
+  --ink:#0E1B24;
+  --paper:#F4F1EC;
+  --slate:#2A3B47;
+  --panel:#EDE8DE;
+  --rule:#C8C2B6;
+  --muted:#6B7680;
+  --pos:#3F6E4A;
+  --caut:#B57B1F;
+  --crit:#9B3A2A;
+  --pos-bg:rgba(63,110,74,.1);
+  --caut-bg:rgba(181,123,31,.1);
+  --crit-bg:rgba(155,58,42,.1);
+  --white:#FFFFFF;
+  --surface:rgba(255,255,255,.96);
+  --line:rgba(30,50,70,.08);
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden;}
+
+/* ── ANIMATIONS ───────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(15,88,102,.3)}50%{box-shadow:0 0 0 8px rgba(15,88,102,.0)}}
+@keyframes barGrow{from{width:0}to{width:var(--w)}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dotPulse{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+@keyframes syncSpin{to{transform:rotate(360deg)}}
+
+.fu{animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both;}
+.fu1{animation:fadeUp .45s .08s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.fu2{animation:fadeUp .45s .16s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.fu3{animation:fadeUp .45s .24s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.fu4{animation:fadeUp .45s .32s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.fu5{animation:fadeUp .45s .40s cubic-bezier(.22,1,.36,1) both;opacity:0}
+.fi{animation:fadeIn .3s ease both;}
+
+/* ── APP SHELL ─────────────────────────────────────── */
+#shell{display:flex;flex-direction:column;height:100vh;}
+#topbar{height:58px;background:var(--horizon);display:none;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.08);}
+#body-wrap{display:flex;flex:1;overflow:hidden;}
+#sidebar{width:232px;background:var(--ink);display:none;flex-direction:column;overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06);}
+#main{flex:1;overflow-y:auto;background:var(--paper);}
+
+/* ── AUTH ──────────────────────────────────────────── */
+#auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative;background:var(--horizon);overflow:hidden;}
+.auth-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 80%, rgba(15,88,102,.4) 0%, transparent 50%),radial-gradient(circle at 80% 20%, rgba(31,58,95,.8) 0%, transparent 50%),repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px);}
+.auth-card{background:var(--paper);border-radius:20px;padding:40px;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 32px 80px rgba(0,0,0,.4);}
+.auth-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
+.auth-logo-mark{width:36px;height:36px;background:var(--horizon);border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.auth-logo-mark::after{content:'';position:absolute;bottom:6px;right:6px;width:8px;height:8px;background:var(--cyan);border-radius:50%;}
+.auth-logo-mark svg{color:white;}
+.auth-logo-text{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.auth-logo-sub{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;font-style:italic;display:block;margin-top:-2px;}
+.auth-h1{font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-bottom:6px;}
+.auth-sub{font-size:14px;color:var(--muted);margin-bottom:28px;font-family:'Inter',sans-serif;}
+.scr{display:none;}.scr.on{display:block;animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both;}
+
+/* ── INPUTS ──────────────────────────────────────── */
+.lbl{display:block;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;}
+.inp{width:100%;padding:12px 15px;background:rgba(255,255,255,.7);border:1.5px solid var(--rule);border-radius:10px;font-size:14.5px;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:all .2s;}
+.inp::placeholder{color:var(--muted);}
+.inp:focus{border-color:var(--cyan);background:white;box-shadow:0 0 0 3px rgba(15,88,102,.12);}
+select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7680'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.inp-row{margin-bottom:18px;}
+.inp-hint{font-size:11.5px;color:var(--muted);margin-top:5px;font-family:'Inter',sans-serif;}
+.check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;cursor:pointer;}
+.check-box{width:17px;height:17px;border:1.5px solid var(--rule);border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.2s;background:white;cursor:pointer;}
+.check-box.on{background:var(--horizon);border-color:var(--horizon);}
+.check-text{font-size:12.5px;color:var(--slate);line-height:1.5;}
+
+/* ── BUTTONS ─────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;border:none;white-space:nowrap;letter-spacing:-.01em;}
+.btn-primary{background:var(--horizon);color:white;box-shadow:0 4px 16px rgba(31,58,95,.3);}
+.btn-primary:hover{background:var(--ink);transform:translateY(-1px);box-shadow:0 6px 24px rgba(31,58,95,.4);}
+.btn-cyan{background:var(--cyan);color:white;box-shadow:0 4px 16px rgba(15,88,102,.25);}
+.btn-cyan:hover{opacity:.9;transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--slate);border:1.5px solid var(--rule);}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);}
+.btn-ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);}
+.btn-ghost:hover{background:rgba(255,255,255,.15);color:white;}
+.btn-danger{background:var(--crit-bg);color:var(--crit);border:1px solid rgba(155,58,42,.2);}
+.btn-danger:hover{background:rgba(155,58,42,.15);}
+.btn-warn-soft{background:var(--caut-bg);color:var(--caut);border:1px solid rgba(181,123,31,.2);}
+.btn-ok{background:var(--pos-bg);color:var(--pos);border:1px solid rgba(63,110,74,.2);}
+.btn-lg{padding:14px 30px;font-size:14px;border-radius:12px;}
+.btn-sm{padding:6px 13px;font-size:12px;border-radius:8px;}
+.btn-xs{padding:4px 10px;font-size:11px;border-radius:6px;}
+.btn-google{background:white;color:var(--ink);border:1.5px solid var(--rule);width:100%;padding:12px;font-size:13.5px;gap:10px;}
+.btn-google:hover{border-color:var(--cyan);box-shadow:0 4px 12px rgba(0,0,0,.08);}
+.btn-full{width:100%;}
+.btn-block{display:flex;width:100%;}
+
+/* ── DIVIDER ─────────────────────────────────────── */
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--rule);}
+.divider span{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── TOPBAR ───────────────────────────────────────── */
+.tb-brand{font-size:16px;font-weight:800;color:white;letter-spacing:-.03em;display:flex;align-items:center;gap:10px;margin-right:8px;flex-shrink:0;}
+.tb-mark{width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;}
+.tb-sep{width:1px;height:24px;background:rgba(255,255,255,.1);flex-shrink:0;}
+.tb-branch{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:rgba(255,255,255,.08);border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,.08);transition:.2s;}
+.tb-branch:hover{background:rgba(255,255,255,.14);}
+.tb-branch-dot{width:8px;height:8px;border-radius:50%;background:#6EE7B7;flex-shrink:0;}
+.tb-branch-name{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85);}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.tb-date{font-size:11.5px;color:rgba(255,255,255,.4);font-family:'Inter',sans-serif;font-style:italic;}
+.tb-bell{position:relative;cursor:pointer;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.08);transition:.2s;}
+.tb-bell:hover{background:rgba(255,255,255,.14);}
+.tb-badge{position:absolute;top:4px;right:4px;width:8px;height:8px;background:#FF6B6B;border-radius:50%;border:1.5px solid var(--horizon);}
+.tb-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),var(--horizon));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;cursor:pointer;flex-shrink:0;}
+.tb-co-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ── SIDEBAR ──────────────────────────────────────── */
+.sb-logo{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.06);}
+.sb-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.sb-mark{width:30px;height:30px;background:rgba(255,255,255,.1);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:white;}
+.sb-title{font-size:15px;font-weight:800;color:white;letter-spacing:-.02em;}
+.sb-co{font-size:13px;color:rgba(255,255,255,.35);font-family:'Inter',sans-serif;font-style:italic;margin-top:2px;}
+.sb-sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:20px 18px 6px;}
+.sbi{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;color:rgba(255,255,255,.5);font-size:14px;font-weight:600;transition:.15s;border-radius:0;position:relative;}
+.sbi:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.05);}
+.sbi.on{color:white;background:rgba(255,255,255,.08);}
+.sbi.on::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan);}
+.sbi-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.7;}
+.sbi.on .sbi-icon{opacity:1;}
+.sb-bottom{margin-top:auto;padding:16px 18px;border-top:1px solid rgba(255,255,255,.06);}
+.sb-user{display:flex;align-items:center;gap:10px;}
+.sb-av{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),var(--horizon));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;}
+.sb-uname{font-size:14px;font-weight:600;color:rgba(255,255,255,.75);}
+.sb-urole{font-size:11px;color:rgba(255,255,255,.3);}
+
+/* ── APP SCREENS ──────────────────────────────────── */
+.app-scr{display:none;padding:28px 28px 40px;min-height:100%;}
+.app-scr.on{display:block;animation:fadeIn .3s ease both;}
+.pg-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap;}
+.pg-title{font-size:22px;font-weight:800;letter-spacing:-.03em;color:var(--ink);}
+.pg-sub{font-size:12.5px;color:var(--muted);font-family:'Inter',sans-serif;margin-top:3px;}
+.pg-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+
+/* ── CARDS ────────────────────────────────────────── */
+.card{background:white;border:1px solid var(--rule);border-radius:14px;box-shadow:0 1px 0 rgba(200,194,182,.5) inset,0 4px 20px rgba(30,50,70,.04);}
+.card-p{padding:22px;}
+.card-sm{background:white;border:1px solid var(--rule);border-radius:12px;box-shadow:0 2px 8px rgba(30,50,70,.04);}
+.card-horizon{background:var(--horizon);border-radius:14px;box-shadow:0 8px 32px rgba(31,58,95,.25);}
+.card-ink{background:var(--ink);border-radius:14px;}
+
+/* ── KPI TILES ────────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi{background:white;border:1px solid var(--rule);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(30,50,70,.04);}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--rule);}
+.kpi.pos::before{background:var(--pos);}
+.kpi.caut::before{background:var(--caut);}
+.kpi.crit::before{background:var(--crit);}
+.kpi-label{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.kpi-value{font-size:28px;font-weight:800;letter-spacing:-.04em;color:var(--ink);line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums;}
+.kpi-delta{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:5px;}
+.kpi-delta.up{background:var(--pos-bg);color:var(--pos);}
+.kpi-delta.down{background:var(--crit-bg);color:var(--crit);}
+.kpi-delta.flat{background:var(--caut-bg);color:var(--caut);}
+.kpi-context{font-size:11.5px;color:var(--muted);margin-top:6px;font-family:'Inter',sans-serif;}
+
+/* ── SECTION HEADS ────────────────────────────────── */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sec-title{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);}
+.sec-action{font-size:12px;font-weight:600;color:var(--cyan);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:4px;}
+.sec-action:hover{opacity:.75;}
+
+/* ── TABLES ───────────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:9px 14px;text-align:left;border-bottom:1px solid var(--rule);}
+.tbl td{padding:12px 15px;font-size:14px;border-bottom:1px solid rgba(200,194,182,.35);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(237,232,222,.4);}
+.tbl-num{font-variant-numeric:tabular-nums;font-weight:600;}
+
+/* ── PILLS ────────────────────────────────────────── */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:12px;font-weight:700;letter-spacing:.01em;}
+.pill-pos{background:var(--pos-bg);color:var(--pos);}
+.pill-caut{background:var(--caut-bg);color:var(--caut);}
+.pill-crit{background:var(--crit-bg);color:var(--crit);}
+.pill-neutral{background:rgba(42,59,71,.08);color:var(--slate);}
+.pill-blue{background:rgba(31,58,95,.1);color:var(--horizon);}
+.pill-cyan{background:rgba(15,88,102,.1);color:var(--cyan);}
+
+/* ── PROGRESS BARS ───────────────────────────────── */
+.prog-track{height:6px;background:var(--panel);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;background:var(--horizon);animation:barGrow .8s cubic-bezier(.22,1,.36,1) both;}
+.prog-fill.pos{background:var(--pos);}
+.prog-fill.caut{background:var(--caut);}
+.prog-fill.crit{background:var(--crit);}
+
+/* ── FUNNEL ───────────────────────────────────────── */
+.funnel-item{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.funnel-bar-wrap{flex:1;}
+.funnel-label{font-size:12px;font-weight:600;color:var(--slate);width:130px;flex-shrink:0;}
+.funnel-bar{height:28px;border-radius:5px;background:var(--horizon);position:relative;min-width:4px;transition:width .8s cubic-bezier(.22,1,.36,1);}
+.funnel-bar::after{content:attr(data-val);position:absolute;right:-46px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--slate);white-space:nowrap;}
+.funnel-pct{font-size:11px;color:var(--muted);width:38px;text-align:right;flex-shrink:0;}
+
+/* ── ALERT BANNER ────────────────────────────────── */
+.alert-banner{border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;border:1px solid;}
+.alert-banner.crit{background:rgba(155,58,42,.06);border-color:rgba(155,58,42,.2);}
+.alert-banner.caut{background:rgba(181,123,31,.06);border-color:rgba(181,123,31,.2);}
+.alert-banner.pos{background:rgba(63,110,74,.06);border-color:rgba(63,110,74,.2);}
+.alert-banner.info{background:rgba(31,58,95,.06);border-color:rgba(31,58,95,.2);}
+.alert-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.alert-text-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+.alert-text-body{font-size:13px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.5;}
+
+/* ── BRANCH STRIP ────────────────────────────────── */
+.branch-strip{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+.branch-chip{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;background:white;border:1.5px solid var(--rule);cursor:pointer;transition:.2s;font-size:13.5px;font-weight:600;color:var(--slate);}
+.branch-chip:hover{border-color:var(--cyan);color:var(--cyan);}
+.branch-chip.on{border-color:var(--horizon);background:var(--horizon);color:white;}
+.branch-dot{width:8px;height:8px;border-radius:50%;}
+
+/* ── DATE FILTER ─────────────────────────────────── */
+.date-filter{display:flex;gap:4px;background:white;border:1px solid var(--rule);border-radius:9px;padding:4px;}
+.df-opt{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:.15s;}
+.df-opt.on{background:var(--horizon);color:white;}
+.df-opt:hover:not(.on){background:var(--panel);}
+
+/* ── MODAL ───────────────────────────────────────── */
+.modal-back{position:fixed;inset:0;background:rgba(14,27,36,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;}
+.modal-back.on{display:flex;animation:fadeIn .2s ease both;}
+.modal{background:var(--paper);border-radius:18px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.3);}
+.modal-head{padding:24px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.modal-title{font-size:18px;font-weight:800;letter-spacing:-.02em;}
+.modal-sub{font-size:12.5px;color:var(--muted);font-family:'Inter',sans-serif;margin-top:3px;}
+.modal-body{padding:20px 28px;}
+.modal-close{width:28px;height:28px;border-radius:7px;background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:16px;color:var(--muted);flex-shrink:0;margin-top:4px;}
+.modal-close:hover{background:var(--rule);}
+.modal-foot{padding:0 28px 24px;display:flex;gap:8px;justify-content:flex-end;}
+
+/* ── TOAST ───────────────────────────────────────── */
+#toast-wrap{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{background:var(--ink);color:white;padding:14px 20px;border-radius:10px;font-size:14.5px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:toastIn .3s cubic-bezier(.22,1,.36,1) both;display:flex;align-items:center;gap:10px;max-width:320px;pointer-events:auto;}
+.toast-icon{font-size:16px;flex-shrink:0;}
+
+/* ── OTP ─────────────────────────────────────────── */
+.otp-row{display:flex;gap:8px;justify-content:center;margin:16px 0;}
+.otp-inp{width:52px;height:58px;text-align:center;font-size:22px;font-weight:800;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;background:white;border:1.5px solid var(--rule);border-radius:10px;outline:none;color:var(--ink);transition:.2s;}
+.otp-inp:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(15,88,102,.12);}
+.otp-inp.filled{border-color:var(--horizon);background:rgba(31,58,95,.04);}
+
+/* ── PLAN CARDS ──────────────────────────────────── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.plan-card{border-radius:14px;padding:22px;cursor:pointer;border:2px solid var(--rule);background:white;transition:.2s;position:relative;}
+.plan-card:hover{border-color:var(--slate);}
+.plan-card.on{border-color:var(--horizon);background:rgba(31,58,95,.03);}
+.plan-card.featured{border-color:var(--horizon);background:var(--horizon);}
+.plan-name{font-size:14px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px;}
+.plan-price{font-size:28px;font-weight:800;letter-spacing:-.04em;margin-bottom:4px;font-variant-numeric:tabular-nums;}
+.plan-period{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.plan-features{list-style:none;}
+.plan-features li{font-size:12.5px;color:var(--slate);padding:4px 0;display:flex;align-items:center;gap:7px;}
+.plan-check{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.plan-featured .plan-name,.plan-featured .plan-price{color:white;}
+.plan-featured .plan-period,.plan-featured .plan-features li{color:rgba(255,255,255,.6);}
+.plan-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--cyan);color:white;font-size:10px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase;}
+
+/* ── CRM CONNECTOR ───────────────────────────────── */
+.crm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.crm-card{border:1.5px solid var(--rule);border-radius:12px;padding:18px;cursor:pointer;background:white;transition:.2s;display:flex;align-items:center;gap:14px;}
+.crm-card:hover{border-color:var(--slate);}
+.crm-card.on{border-color:var(--horizon);background:rgba(31,58,95,.03);}
+.crm-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.crm-name{font-size:13.5px;font-weight:700;}
+.crm-desc{font-size:11.5px;color:var(--muted);font-family:'Inter',sans-serif;}
+
+/* ── SYNC ANIMATION ──────────────────────────────── */
+.sync-step{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;margin-bottom:8px;transition:.3s;}
+.sync-step.pending{background:var(--panel);}
+.sync-step.active{background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.15);}
+.sync-step.done{background:rgba(63,110,74,.06);border:1px solid rgba(63,110,74,.15);}
+.sync-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.sync-dot.pending{background:var(--rule);color:var(--muted);}
+.sync-dot.active{background:var(--cyan);color:white;animation:spin 1s linear infinite;}
+.sync-dot.done{background:var(--pos);color:white;}
+.sync-label{font-size:13px;font-weight:600;}
+.sync-sub{font-size:11.5px;color:var(--muted);font-family:'Inter',sans-serif;}
+.spinner{animation:syncSpin 1s linear infinite;}
+
+/* ── REPORT CARDS ────────────────────────────────── */
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+.rep-card{background:white;border:1px solid var(--rule);border-radius:14px;padding:20px;cursor:pointer;transition:.2s;position:relative;overflow:hidden;}
+.rep-card:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:0 8px 24px rgba(30,50,70,.08);}
+.rep-card-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px;}
+.rep-card-title{font-size:15px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em;}
+.rep-card-desc{font-size:13px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.4;}
+
+/* ── COMMS HUB ───────────────────────────────────── */
+.alert-item{border:1px solid var(--rule);border-radius:12px;padding:18px;margin-bottom:12px;background:white;display:flex;gap:14px;align-items:flex-start;}
+.alert-item.draft{border-color:rgba(15,88,102,.25);background:rgba(15,88,102,.03);}
+.ai-chip{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.alert-item-title{font-size:15px;font-weight:700;margin-bottom:4px;}
+.alert-item-body{font-size:13.5px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.5;margin-bottom:10px;}
+.alert-item-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── WEEKLY AUDIT ────────────────────────────────── */
+.audit-rep{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(200,194,182,.35);}
+.audit-rep:last-child{border-bottom:none;}
+.rep-av{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;}
+.rep-name{font-size:13px;font-weight:700;}
+.rep-branch{font-size:11px;color:var(--muted);}
+
+/* ── NOTIF TRAY ──────────────────────────────────── */
+#notif-tray{position:absolute;top:54px;right:70px;width:340px;background:white;border:1px solid var(--rule);border-radius:14px;box-shadow:0 16px 48px rgba(30,50,70,.16);display:none;z-index:200;overflow:hidden;}
+#notif-tray.on{display:block;animation:fadeUp .25s cubic-bezier(.22,1,.36,1) both;}
+.ni-head{padding:14px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;}
+.ni-head-title{font-size:13px;font-weight:800;}
+.ni-mark{font-size:11.5px;color:var(--cyan);cursor:pointer;font-weight:600;}
+.ni{display:flex;gap:12px;padding:13px 18px;cursor:pointer;transition:.15s;border-bottom:1px solid rgba(200,194,182,.3);}
+.ni:hover{background:var(--panel);}
+.ni:last-child{border-bottom:none;}
+.ni-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ni-title{font-size:13.5px;font-weight:700;margin-bottom:2px;}
+.ni-text{font-size:12.5px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.4;}
+.ni-time{font-size:10.5px;color:var(--muted);margin-top:3px;}
+.ni-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:5px;}
+
+/* ── DATA PIPELINE ───────────────────────────────── */
+.connector-item{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(200,194,182,.35);}
+.connector-item:last-child{border-bottom:none;}
+.conn-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.conn-name{font-size:15px;font-weight:700;}
+.conn-detail{font-size:13px;color:var(--muted);font-family:'Inter',sans-serif;}
+.conn-status{margin-left:auto;display:flex;align-items:center;gap:8px;}
+
+/* ── TABS ────────────────────────────────────────── */
+.tabs{display:flex;gap:2px;background:var(--panel);border-radius:10px;padding:4px;margin-bottom:20px;width:fit-content;}
+.tab{padding:8px 20px;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;color:var(--muted);}
+.tab.on{background:white;color:var(--ink);box-shadow:0 1px 4px rgba(30,50,70,.08);}
+.tab:hover:not(.on){color:var(--slate);}
+.tab-panel{display:none;}
+.tab-panel.on{display:block;animation:fadeIn .2s ease both;}
+
+/* ── BILLING PLAN ────────────────────────────────── */
+.billing-banner{background:var(--horizon);border-radius:14px;padding:24px;color:white;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:20px;}
+.billing-plan{font-size:20px;font-weight:800;letter-spacing:-.02em;}
+.billing-meta{font-size:12.5px;color:rgba(255,255,255,.5);margin-top:4px;font-family:'Inter',sans-serif;}
+.billing-price{font-size:32px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.04em;}
+.billing-period{font-size:13px;color:rgba(255,255,255,.4);}
+.seat-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(200,194,182,.35);}
+.seat-row:last-child{border-bottom:none;}
+
+/* ── UPLOAD ZONE ─────────────────────────────────── */
+.upload-zone{border:2px dashed var(--rule);border-radius:12px;padding:40px;text-align:center;cursor:pointer;transition:.2s;background:white;}
+.upload-zone:hover{border-color:var(--cyan);background:rgba(15,88,102,.03);}
+.upload-icon{font-size:32px;margin-bottom:12px;}
+.upload-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.upload-sub{font-size:12.5px;color:var(--muted);font-family:'Inter',sans-serif;}
+
+/* ── RESPONSIVE GRIDS ────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.plan-grid{grid-template-columns:1fr}.report-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}}
+
+/* MOBILE / PWA */
+@media(max-width:768px){
+  #topbar{padding:0 14px;gap:8px;height:54px;}
+  .tb-co-name,.tb-date,.tb-sep,.date-filter{display:none!important;}
+  #sidebar{display:none!important;}
+  #main{padding-bottom:72px;}
+  .app-scr{padding:16px 14px 28px;}
+  .kpi-grid{grid-template-columns:1fr 1fr!important;gap:10px;}
+  .kpi-value{font-size:22px!important;}
+  .report-grid{grid-template-columns:1fr 1fr!important;}
+  .plan-grid{grid-template-columns:1fr!important;}
+  .branch-strip{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;}
+  .branch-chip{white-space:nowrap;flex-shrink:0;}
+  .modal{border-radius:18px 18px 0 0;max-height:92vh;position:fixed;bottom:0;left:0;right:0;max-width:100%!important;}
+  .modal-back{align-items:flex-end;padding:0;}
+  #notif-tray{right:8px;width:calc(100vw - 16px);}
+  #toast-wrap{bottom:82px;right:12px;left:12px;}
+  .toast{max-width:100%;}
+}
+@media(max-width:400px){.kpi-grid{grid-template-columns:1fr!important;}}
+/* MOBILE BOTTOM NAV */
+#mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:#0E1B24;border-top:1px solid rgba(255,255,255,.08);z-index:200;}
+@media(max-width:768px){#mob-nav{display:flex;}}
+.mn-row{display:flex;width:100%;height:64px;}
+.mn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:rgba(255,255,255,.4);}
+.mn-item.on{color:white;}
+.mn-item:active{background:rgba(255,255,255,.06);}
+.mn-icon{font-size:20px;line-height:1;}
+.mn-lbl{font-size:10px;font-weight:700;}
+.mn-dot{position:absolute;top:8px;right:calc(50% - 14px);width:7px;height:7px;background:#FF6B6B;border-radius:50%;border:1.5px solid #0E1B24;}
+/* PWA BANNER */
+#pwa-banner{display:none;position:fixed;bottom:76px;left:12px;right:12px;background:#1F3A5F;border-radius:14px;padding:14px 16px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.35);align-items:center;gap:12px;}
+#pwa-banner.on{display:flex!important;}
+/* FREE TRIAL BAR */
+#trial-bar{background:rgba(181,123,31,.1);border-bottom:1px solid rgba(181,123,31,.25);padding:9px 24px;display:none;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#B57B1F;flex-shrink:0;}
+.free-pill{background:rgba(181,123,31,.2);color:#B57B1F;font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;}
+/* SIDEBAR NUDGE */
+#sb-nudge{display:none;margin:8px 12px 0;background:linear-gradient(135deg,#162B44,#0F5866);border-radius:10px;padding:14px;cursor:pointer;}
+.sbn-title{font-size:13px;font-weight:700;color:white;margin-bottom:4px;}
+.sbn-sub{font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.4;}
+.sbn-btn{margin-top:10px;background:white;color:#1F3A5F;font-size:12px;font-weight:800;padding:7px 14px;border-radius:7px;display:inline-block;}
+/* DEMO TOGGLE */
+
+/* ── HELP WIDGET BUTTON ──────────────────────────── */
+#help-btn{position:fixed;bottom:88px;right:20px;width:52px;height:52px;background:#1F3A5F;border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(31,58,95,.45);z-index:250;border:3px solid white;transition:.2s;}
+#help-btn:hover{background:#0F5866;transform:scale(1.08);}
+#help-btn svg{width:22px;height:22px;color:white;}
+#help-btn .help-badge{position:absolute;top:-4px;right:-4px;background:#FF6B6B;color:white;font-size:10px;font-weight:800;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;}
+
+/* ── HELP CHAT WIDGET ────────────────────────────── */
+#help-widget{position:fixed;bottom:152px;right:20px;width:380px;max-height:600px;background:white;border-radius:18px;box-shadow:0 16px 60px rgba(14,27,36,.22);display:none;flex-direction:column;z-index:251;overflow:hidden;border:1px solid rgba(200,194,182,.5);}
+#help-widget.on{display:flex;animation:fadeUp .3s cubic-bezier(.22,1,.36,1) both;}
+@media(max-width:768px){#help-widget{bottom:80px;right:8px;left:8px;width:auto;max-height:70vh;}#help-btn{bottom:74px;right:12px;}}
+.hw-head{background:#1F3A5F;padding:16px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.hw-av{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.hw-title{font-size:14px;font-weight:700;color:white;}
+.hw-sub{font-size:11.5px;color:rgba(255,255,255,.6);}
+.hw-close{margin-left:auto;width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:white;border:none;flex-shrink:0;}
+.hw-close:hover{background:rgba(255,255,255,.25);}
+.hw-tabs{display:flex;background:#F4F1EC;border-bottom:1px solid #EDE8DE;flex-shrink:0;}
+.hw-tab{flex:1;padding:10px 6px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#6B7680;border-bottom:2px solid transparent;transition:.15s;}
+.hw-tab.on{color:#1F3A5F;border-bottom-color:#1F3A5F;background:white;}
+.hw-panel{display:none;flex:1;overflow-y:auto;flex-direction:column;}
+.hw-panel.on{display:flex;}
+
+/* chat messages */
+.hw-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:180px;max-height:300px;}
+.msg{max-width:85%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5;}
+.msg-bot{background:#F4F1EC;color:#0E1B24;border-radius:12px 12px 12px 2px;align-self:flex-start;}
+.msg-user{background:#1F3A5F;color:white;border-radius:12px 12px 2px 12px;align-self:flex-end;}
+.msg-time{font-size:10px;color:#6B7680;margin-top:3px;}
+.msg-source{font-size:11.5px;color:#0F5866;font-weight:600;margin-top:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
+.msg-source:hover{text-decoration:underline;}
+.msg-rating{display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(200,194,182,.4);}
+.msg-rating-lbl{font-size:11px;color:#6B7680;}
+.rating-btn{padding:3px 10px;border-radius:5px;font-size:11.5px;font-weight:700;cursor:pointer;border:1.5px solid;transition:.15s;}
+.rating-yes{border-color:#3F6E4A;color:#3F6E4A;background:transparent;}
+.rating-yes:hover{background:#EBF5EC;}
+.rating-no{border-color:#9B3A2A;color:#9B3A2A;background:transparent;}
+.rating-no:hover{background:#FDECEA;}
+.typing-dots{display:flex;gap:4px;padding:10px 13px;background:#F4F1EC;border-radius:12px;align-self:flex-start;width:52px;}
+.typing-dot{width:7px;height:7px;background:#C8C2B6;border-radius:50%;animation:dotPulse 1.4s ease-in-out infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes dotPulse{0%,80%,100%{opacity:.3;transform:scale(.8);}40%{opacity:1;transform:scale(1);}}
+.hw-input-row{display:flex;gap:8px;padding:12px 14px;border-top:1px solid #EDE8DE;background:white;flex-shrink:0;}
+.hw-input{flex:1;padding:9px 13px;background:#F4F1EC;border:1.5px solid transparent;border-radius:10px;font-size:13px;font-family:Inter,sans-serif;outline:none;color:#0E1B24;transition:.2s;}
+.hw-input:focus{border-color:#1F3A5F;background:white;}
+.hw-send{width:36px;height:36px;background:#1F3A5F;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;transition:.2s;}
+.hw-send:hover{background:#0F5866;}
+.hw-send svg{width:16px;height:16px;color:white;}
+
+/* suggested questions */
+.hw-suggestions{padding:10px 14px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.hw-sugg-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6B7680;margin-bottom:2px;}
+.hw-sugg{padding:8px 12px;background:#F4F1EC;border-radius:8px;font-size:12.5px;font-weight:600;color:#2A3B47;cursor:pointer;border:1.5px solid transparent;transition:.15s;}
+.hw-sugg:hover{border-color:#1F3A5F;background:white;color:#1F3A5F;}
+
+/* ticket form */
+.hw-ticket-form{padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;}
+.hw-field lbl{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2A3B47;margin-bottom:5px;}
+.hw-field-lbl{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2A3B47;margin-bottom:5px;}
+.hw-inp{width:100%;padding:9px 12px;background:#F4F1EC;border:1.5px solid transparent;border-radius:8px;font-size:13px;font-family:Inter,sans-serif;color:#0E1B24;outline:none;transition:.2s;}
+.hw-inp:focus{border-color:#1F3A5F;background:white;}
+textarea.hw-inp{resize:vertical;min-height:70px;}
+.priority-row{display:flex;gap:6px;}
+.prio-btn{flex:1;padding:7px 4px;border-radius:7px;font-size:12px;font-weight:700;border:1.5px solid #EDE8DE;background:white;cursor:pointer;text-align:center;transition:.15s;color:#6B7680;}
+.prio-btn.on.low{border-color:#3F6E4A;background:#EBF5EC;color:#3F6E4A;}
+.prio-btn.on.medium{border-color:#B57B1F;background:#FFF9E6;color:#B57B1F;}
+.prio-btn.on.urgent{border-color:#9B3A2A;background:#FDECEA;color:#9B3A2A;}
+.prio-btn:hover{border-color:#C8C2B6;}
+
+/* my tickets list */
+.hw-ticket-list{padding:12px 14px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
+.hw-tkt{background:#F8F6F2;border-radius:10px;padding:12px 14px;border:1.5px solid #EDE8DE;cursor:pointer;transition:.15s;}
+.hw-tkt:hover{border-color:#1F3A5F;background:white;}
+.hw-tkt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.hw-tkt-ref{font-size:11px;font-weight:700;color:#0F5866;}
+.hw-tkt-status{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.st-open{background:#FDECEA;color:#9B3A2A;}
+.st-progress{background:#D6E4F0;color:#1A4A6B;}
+.st-resolved{background:#D1ECE3;color:#1A5C3A;}
+.hw-tkt-subj{font-size:13px;font-weight:700;color:#0E1B24;margin-bottom:3px;}
+.hw-tkt-meta{font-size:11px;color:#6B7680;}
+.hw-empty{text-align:center;padding:28px 16px;color:#6B7680;font-size:13px;}
+.hw-empty-icon{font-size:32px;margin-bottom:8px;}
+
+/* contextual suggestions bar */
+.ctx-help-bar{background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.15);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.ctx-help-bar:hover{background:rgba(15,88,102,.1);}
+.ctx-help-text{font-size:12.5px;font-weight:600;color:#0F5866;}
+.ctx-help-sub{font-size:11.5px;color:#6B7680;}
+
+/* ── HELP SCREEN ─────────────────────────────────── */
+.help-cat-card{display:flex;align-items:center;gap:14px;padding:14px 16px;background:white;border:1.5px solid #EDE8DE;border-radius:12px;cursor:pointer;transition:.2s;}
+.help-cat-card:hover{border-color:#1F3A5F;transform:translateY(-1px);box-shadow:0 4px 14px rgba(30,50,70,.08);}
+.hcc-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.hcc-title{font-size:13.5px;font-weight:700;color:#0E1B24;margin-bottom:2px;}
+.hcc-sub{font-size:12px;color:#6B7680;}
+.hcc-count{margin-left:auto;font-size:12px;font-weight:700;color:#6B7680;white-space:nowrap;}
+.hcc-body{flex:1;}
+.help-article-row{padding:9px 4px;font-size:13px;font-weight:600;color:#0E1B24;cursor:pointer;border-bottom:1px solid rgba(200,194,182,.3);display:flex;align-items:center;gap:8px;transition:.15s;}
+.help-article-row:last-child{border-bottom:none;}
+.help-article-row:hover{color:#1F3A5F;padding-left:6px;}
+/* article modal */
+.article-modal-back{position:fixed;inset:0;background:rgba(14,27,36,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:260;padding:20px;}
+.article-modal-back.on{display:flex;animation:fadeIn .2s ease both;}
+.article-modal{background:white;border-radius:16px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.25);}
+.art-head{padding:22px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.art-cat-pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:5px;background:#D6E4F0;color:#1A4A6B;margin-bottom:8px;display:inline-block;}
+.art-title{font-size:19px;font-weight:800;letter-spacing:-.02em;color:#0E1B24;margin-bottom:6px;}
+.art-meta{font-size:12px;color:#6B7680;}
+.art-body{padding:16px 24px 24px;font-size:13.5px;line-height:1.7;color:#2A3B47;}
+.art-body h4{font-size:14px;font-weight:800;color:#0E1B24;margin:16px 0 6px;}
+.art-body p{margin-bottom:10px;}
+.art-body code{background:#F4F1EC;border-radius:5px;padding:2px 7px;font-size:12.5px;font-family:monospace;color:#0F5866;}
+.art-body ol,.art-body ul{padding-left:18px;margin-bottom:10px;}
+.art-body li{margin-bottom:5px;}
+.art-footer{padding:0 24px 20px;border-top:1px solid #EDE8DE;margin-top:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:14px;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════ AUTH ═══ -->
+<div id="auth-wrap">
+  <div class="auth-pattern"></div>
+
+  <!-- SIGN IN -->
+  <div class="auth-card" id="scr-signin" style="display:block;">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div>
+        <div class="auth-logo-text">The Hub</div>
+        <span class="auth-logo-sub">by TrueRead</span>
+      </div>
+    </div>
+    <div class="auth-h1">Welcome back</div>
+    <div class="auth-sub" style="margin-bottom:20px;">Roofing intelligence, all in one place.</div>
+    <button class="btn btn-google" onclick="authGo('dashboard-entry')">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="divider"><span>or sign in with email</span></div>
+    <div class="inp-row">
+      <label class="lbl">Email address</label>
+      <input class="inp" type="email" placeholder="john@smithroofing.com"/>
+    </div>
+    <div class="inp-row">
+      <label class="lbl">Password</label>
+      <input class="inp" type="password" placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" style="margin-bottom:14px" onclick="authGo('dashboard-entry')">Sign in →</button>
+    <div style="text-align:center;font-size:12.5px;color:var(--muted)">No account? <a onclick="authGo('signup')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Create one free</a></div>
+  </div>
+
+  <!-- SIGN UP -->
+  <div class="auth-card scr" id="scr-signup">
+    <div class="auth-logo">
+      <div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div>
+    </div>
+    <div class="auth-h1">Create your account</div>
+    <div class="auth-sub">20-day free trial. No card required.</div>
+    <button class="btn btn-google" onclick="authGo('crm-pick')">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="divider"><span>or use email</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="inp-row"><label class="lbl">First name</label><input class="inp" placeholder="John"/></div>
+      <div class="inp-row"><label class="lbl">Last name</label><input class="inp" placeholder="Smith"/></div>
+    </div>
+    <div class="inp-row"><label class="lbl">Work email</label><input class="inp" type="email" placeholder="john@smithroofing.com"/></div>
+    <div class="inp-row"><label class="lbl">Mobile phone</label><input class="inp" type="tel" placeholder="+1 (555) 000-0000"/></div>
+    <label class="check-row" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">I agree to the <a href="#" style="color:var(--cyan)">Terms of Service</a> and <a href="#" style="color:var(--cyan)">Privacy Policy</a></div>
+    </label>
+    <button class="btn btn-primary btn-full btn-lg" style="margin-bottom:14px" onclick="authGo('otp')">Send verification code →</button>
+    <div style="text-align:center;font-size:12.5px;color:var(--muted)">Already have an account? <a onclick="authGo('signin')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Sign in</a></div>
+  </div>
+
+  <!-- OTP -->
+  <div class="auth-card scr" id="scr-otp">
+    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
+    <div class="auth-h1">Check your phone</div>
+    <div class="auth-sub" style="margin-bottom:8px">We sent a 4-digit code to +1 (555) 012-3456</div>
+    <div class="otp-row">
+      <input class="otp-inp" maxlength="1" oninput="otpNext(this,0)" id="otp0"/>
+      <input class="otp-inp" maxlength="1" oninput="otpNext(this,1)" id="otp1"/>
+      <input class="otp-inp" maxlength="1" oninput="otpNext(this,2)" id="otp2"/>
+      <input class="otp-inp" maxlength="1" oninput="otpNext(this,3)" id="otp3"/>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" style="margin-bottom:14px;margin-top:8px" onclick="authGo('crm-pick')">Verify code →</button>
+    <div style="text-align:center;font-size:12.5px;color:var(--muted)">Didn't get it? <a href="#" style="color:var(--cyan);font-weight:700;">Resend</a> · <a onclick="authGo('signup')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Back</a></div>
+  </div>
+
+  <!-- CRM PICKER -->
+  <div class="auth-card scr" id="scr-crm-pick" style="max-width:480px;">
+    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
+    <div class="auth-h1">Connect your CRM</div>
+    <div class="auth-sub">The Hub reads your pipeline data to compute metrics. Select your CRM to begin.</div>
+    <div class="crm-grid" id="crm-grid">
+      <div class="crm-card" onclick="pickCRM(this,'GHL')"><div class="crm-icon" style="background:#E8F5FF">🔷</div><div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div></div></div>
+      <div class="crm-card" onclick="pickCRM(this,'Leap')"><div class="crm-icon" style="background:#FFF3E8">🟠</div><div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div></div></div>
+      <div class="crm-card" onclick="pickCRM(this,'AccuLynx')"><div class="crm-icon" style="background:#F0FFF4">🟢</div><div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div></div></div>
+      <div class="crm-card" onclick="pickCRM(this,'JobNimbus')"><div class="crm-icon" style="background:#FFF0F0">🔴</div><div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div></div></div>
+    </div>
+    <div id="crm-creds" style="display:none">
+      <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email" placeholder="your@email.com"/></div>
+      <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="display:none" onclick="authGo('syncing')">Connect & sync →</button>
+    <div style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted)">Connect more sources after setup — CallRail, WhatConverts, and more.</div>
+  </div>
+
+  <!-- SYNCING -->
+  <div class="auth-card scr" id="scr-syncing" style="max-width:440px;">
+    <div class="auth-h1" style="margin-bottom:6px">Syncing your account</div>
+    <div class="auth-sub" style="margin-bottom:22px">Reading your GHL data. This takes about 15 seconds.</div>
+    <div id="sync-steps">
+      <div class="sync-step pending" id="ss1"><div class="sync-dot pending" id="ss1-dot">1</div><div><div class="sync-label">Authenticating with GHL</div><div class="sync-sub">Checking credentials</div></div></div>
+      <div class="sync-step pending" id="ss2"><div class="sync-dot pending" id="ss2-dot">2</div><div><div class="sync-label">OAuth handshake & token</div><div class="sync-sub">Securing your connection</div></div></div>
+      <div class="sync-step pending" id="ss3"><div class="sync-dot pending" id="ss3-dot">3</div><div><div class="sync-label">Reading contacts, pipeline & reps</div><div class="sync-sub">Syncing your account data</div></div></div>
+      <div class="sync-step pending" id="ss4"><div class="sync-dot pending" id="ss4-dot">4</div><div><div class="sync-label">Computing your metrics</div><div class="sync-sub">Building reports from your data</div></div></div>
+    </div>
+    <div id="sync-done" style="display:none;margin-top:20px;">
+      <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">KPIs now computing</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+        <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">LEADS</span>Total, by source, speed-to-lead</div>
+        <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">PIPELINE</span>Funnel, win rate, stuck leads</div>
+        <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">REPS</span>Close rate, CRM compliance</div>
+        <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">REVENUE</span>Won revenue, pipeline value</div>
+      </div>
+      <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⚠ Connect <strong>WhatConverts</strong> & <strong>CallRail</strong> after setup to unlock attribution & speed-to-lead.</div>
+      <button class="btn btn-primary btn-full" onclick="authGo('company-setup')">Set up your company →</button>
+    </div>
+  </div>
+
+  <!-- COMPANY SETUP -->
+  <div class="auth-card scr" id="scr-company-setup" style="max-width:460px;">
+    <div class="auth-h1">Company setup</div>
+    <div class="auth-sub" style="margin-bottom:22px">Tell us about your business. This configures your dashboard and branch structure.</div>
+    <div class="inp-row"><label class="lbl">Company name</label><input class="inp" value="Smith Roofing LLC" id="inp-co"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="inp-row"><label class="lbl">State</label><select class="inp"><option>New Jersey</option><option>New York</option><option>Florida</option><option>Texas</option></select></div>
+      <div class="inp-row"><label class="lbl">City</label><input class="inp" value="Montclair"/></div>
+    </div>
+    <div class="inp-row"><label class="lbl">Business phone</label><input class="inp" value="+1 (973) 555-0100"/></div>
+    <div class="inp-row"><label class="lbl">Company type</label>
+      <select class="inp" id="ctype" onchange="checkMulti()">
+        <option>Independent — Single location</option>
+        <option selected>Multi-location — Same brand</option>
+        <option>Franchise — Multiple companies</option>
+      </select>
+    </div>
+    <div id="multi-note" style="background:rgba(31,58,95,.06);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--slate);margin-bottom:16px;border:1px solid rgba(31,58,95,.12)">
+      ℹ️ You'll add branches on the next step. Each branch gets its own filtered view.
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('branches')">Continue →</button>
+  </div>
+
+  <!-- BRANCH SETUP -->
+  <div class="auth-card scr" id="scr-branches" style="max-width:460px;">
+    <div class="auth-h1">Add your branches</div>
+    <div class="auth-sub" style="margin-bottom:20px">Add each location. You can always add more later.</div>
+    <div id="branch-list">
+      <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#1F3A5F"></div><div><div style="font-size:13px;font-weight:700">NJ — Montclair</div><div style="font-size:11.5px;color:var(--muted)">8 reps</div></div></div>
+        <span class="pill pill-pos" style="font-size:11px">Primary</span>
+      </div>
+      <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#0F5866"></div><div><div style="font-size:13px;font-weight:700">NY — Queens</div><div style="font-size:11.5px;color:var(--muted)">6 reps</div></div></div>
+        <button class="btn btn-outline btn-xs">Edit</button>
+      </div>
+      <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#B57B1F"></div><div><div style="font-size:13px;font-weight:700">FL — Tampa</div><div style="font-size:11.5px;color:var(--muted)">5 reps</div></div></div>
+        <button class="btn btn-outline btn-xs">Edit</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;margin-bottom:20px">
+      <input class="inp" id="nb-name" placeholder="Branch name (e.g. Miami — Coral Gables)" style="flex:1"/>
+      <button class="btn btn-outline" onclick="addBranch()">+ Add</button>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('plan')">Continue to plan →</button>
+  </div>
+
+  <!-- PLAN SELECTION -->
+  <div class="auth-card scr" id="scr-plan" style="max-width:600px;width:100%">
+    <div class="auth-h1">Choose a plan</div>
+    <div class="auth-sub" style="margin-bottom:20px">Start free — no card required. Upgrade anytime as you grow.</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <div class="date-filter">
+        <div class="df-opt on" onclick="setBilling(this,'monthly')">Monthly</div>
+        <div class="df-opt" onclick="setBilling(this,'annual')">Annual <span style="color:var(--pos);font-size:11px;font-weight:700"> 2 months free</span></div>
+      </div>
+    </div>
+    <div class="plan-grid">
+      <div class="plan-card" onclick="pickPlan(this)" style="padding-top:28px">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-period">20-day trial</div>
+        <ul class="plan-features">
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Dashboard overview only</li>
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Up to 3 reps</li>
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>No card required</li>
+          <li><div class="plan-check" style="background:var(--rule);color:var(--muted)">–</div>Communication Hub</li>
+          <li><div class="plan-check" style="background:var(--rule);color:var(--muted)">–</div>Multi-branch</li>
+        </ul>
+      </div>
+      <div class="plan-card featured" style="background:var(--horizon);border-color:var(--horizon);padding-top:28px">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name" style="color:white">Basic</div>
+        <div class="plan-price" style="color:white">$99</div>
+        <div class="plan-period" style="color:rgba(255,255,255,.5)">/month</div>
+        <ul class="plan-features">
+          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>1 branch, all 5 reports</li>
+          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>Unlimited reps</li>
+          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>Communication Hub</li>
+          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>Weekly audit tool</li>
+          <li style="color:rgba(255,255,255,.4)"><div class="plan-check" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.4)">–</div>Multi-branch</li>
+        </ul>
+      </div>
+      <div class="plan-card" onclick="pickPlan(this)" style="padding-top:28px">
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$150</div>
+        <div class="plan-period">/month</div>
+        <ul class="plan-features">
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Multiple branches</li>
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Network dashboard</li>
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Branch comparison</li>
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Everything in Basic</li>
+          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Priority support</li>
+        </ul>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="enterApp()">Start free trial →</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);font-family:'Inter',sans-serif">20-day trial, then billing begins. Cancel anytime.</div>
+  </div>
+
+</div><!-- /auth-wrap -->
+
+<!-- HELP BUTTON -->
+<div id="help-btn" onclick="toggleHelp()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <div class="help-badge">3</div>
+</div>
+
+<!-- HELP WIDGET -->
+<div id="help-widget">
+  <!-- Header -->
+  <div class="hw-head">
+    <div class="hw-av">&#129302;</div>
+    <div>
+      <div class="hw-title">Hub Support</div>
+      <div class="hw-sub">Ask a question or raise a ticket</div>
+    </div>
+    <button class="hw-close" onclick="toggleHelp()">&#10005;</button>
+  </div>
+  <!-- Tabs -->
+  <div class="hw-tabs">
+    <div class="hw-tab on" id="hwt-chat" onclick="hwTab('chat')">&#128172; Chat</div>
+    <div class="hw-tab" id="hwt-ticket" onclick="hwTab('ticket')">&#128203; New Ticket</div>
+    <div class="hw-tab" id="hwt-mytickets" onclick="hwTab('mytickets')">&#128196; My Tickets</div>
+  </div>
+
+  <!-- CHAT PANEL -->
+  <div class="hw-panel on" id="hwp-chat">
+    <div class="hw-messages" id="hw-msg-list">
+      <!-- Greeting injected by JS -->
+    </div>
+    <div class="hw-suggestions" id="hw-suggestions">
+      <div class="hw-sugg-lbl">Suggested questions</div>
+      <div class="hw-sugg" onclick="hwAsk('How is speed to lead calculated?')">How is speed to lead calculated?</div>
+      <div class="hw-sugg" onclick="hwAsk('Why is my CRM compliance low?')">Why is my CRM compliance low?</div>
+      <div class="hw-sugg" onclick="hwAsk('How do I connect WhatConverts?')">How do I connect WhatConverts?</div>
+      <div class="hw-sugg" onclick="hwAsk('What does the pipeline funnel show?')">What does the pipeline funnel show?</div>
+    </div>
+    <div class="hw-input-row">
+      <input class="hw-input" id="hw-input" placeholder="Ask anything about The Hub..." onkeydown="hwKeydown(event)"/>
+      <button class="hw-send" onclick="hwSend()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- TICKET FORM PANEL -->
+  <div class="hw-panel" id="hwp-ticket">
+    <div class="hw-ticket-form">
+      <div style="font-size:13px;color:#6B7680;padding:2px 0 4px">Your account details are attached automatically.</div>
+      <div class="hw-field">
+        <div class="hw-field-lbl">Subject</div>
+        <input class="hw-inp" id="tkt-subject" placeholder="Brief description of your issue"/>
+      </div>
+      <div class="hw-field">
+        <div class="hw-field-lbl">Description</div>
+        <textarea class="hw-inp" id="tkt-desc" placeholder="Tell us what happened. The more detail, the faster we can help."></textarea>
+      </div>
+      <div class="hw-field">
+        <div class="hw-field-lbl">Priority</div>
+        <div class="priority-row">
+          <div class="prio-btn low" id="prio-low" onclick="setPrio('low')">Low</div>
+          <div class="prio-btn medium on" id="prio-medium" onclick="setPrio('medium')">Medium</div>
+          <div class="prio-btn urgent" id="prio-urgent" onclick="setPrio('urgent')">Urgent</div>
+        </div>
+      </div>
+      <div style="background:#F4F1EC;border-radius:8px;padding:10px 12px;font-size:12px;color:#2A3B47">
+        <strong>Auto-attached:</strong> Smith Roofing LLC &#183; Pro Plan &#183; GHL Connected &#183; Last login: Today
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:13px;font-size:14px" onclick="submitTicket()">Submit Ticket</button>
+    </div>
+  </div>
+
+  <!-- MY TICKETS PANEL -->
+  <div class="hw-panel" id="hwp-mytickets">
+    <div class="hw-ticket-list" id="hw-ticket-list">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</div>
+
+
+<!-- FREE TRIAL BAR -->
+<div id="trial-bar">
+  <span>Trial active</span>
+  <strong style="margin-left:4px">20 days remaining</strong>
+  <span style="margin-left:auto;display:flex;align-items:center;gap:8px">
+    <span class="free-pill">FREE PLAN</span>
+    <button class="btn btn-sm" onclick="openModal('upgrade-modal')" style="background:#B57B1F;color:white;border:none;padding:6px 12px">Upgrade Now</button>
+  </span>
+</div>
+<!-- MOBILE BOTTOM NAV -->
+<div id="mob-nav">
+  <div class="mn-row">
+    <div class="mn-item on" id="mn-dash" onclick="goApp('dashboard');mnActive('dash')"><div class="mn-icon">&#128202;</div><div class="mn-lbl">Overview</div></div>
+    <div class="mn-item" id="mn-r1" onclick="goApp('r1');mnActive('r1')"><div class="mn-icon">&#128200;</div><div class="mn-lbl">Reports</div></div>
+    <div class="mn-item" id="mn-comms" onclick="goApp('comms');mnActive('comms')" style="position:relative"><div class="mn-icon">&#128222;</div><div class="mn-lbl">Comms</div><div class="mn-dot"></div></div>
+    <div class="mn-item" id="mn-pipeline" onclick="goApp('pipeline');mnActive('pipeline')"><div class="mn-icon">&#128260;</div><div class="mn-lbl">Data</div></div>
+    <div class="mn-item" id="mn-more" onclick="openModal('mob-menu-modal')"><div class="mn-icon">&#9776;</div><div class="mn-lbl">More</div></div>
+  </div>
+</div>
+<!-- PWA INSTALL BANNER -->
+<div id="pwa-banner">
+  <div style="width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">H</div>
+  <div style="flex:1"><div style="font-size:14px;font-weight:700;color:white">Add to Home Screen</div><div style="font-size:12px;color:rgba(255,255,255,.6)">Works offline like a real app</div></div>
+  <div style="display:flex;gap:8px;flex-shrink:0">
+    <button class="btn btn-sm btn-primary" onclick="installPWA()">Install</button>
+    <button class="btn btn-sm" onclick="dismissPWA()" style="background:rgba(255,255,255,.15);color:white;border:none">Later</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════ APP SHELL ═══ -->
+<div id="topbar">
+  <div class="tb-brand"><div class="tb-mark">H</div>The Hub</div>
+  <div class="tb-sep"></div>
+  <div class="tb-branch" onclick="toggleBranchMenu()">
+    <div class="tb-branch-dot"></div>
+    <div class="tb-branch-name" id="tb-branch-name">All Branches</div>
+    <svg width="10" height="6" viewBox="0 0 10 6" fill="rgba(255,255,255,.5)"><path d="M0 0l5 6 5-6z"/></svg>
+  </div>
+  <div class="tb-co-name" id="tb-co">Smith Roofing LLC</div>
+  <div class="date-filter" style="margin-left:8px">
+    <div class="df-opt on" onclick="setDF(this)" style="color:rgba(255,255,255,.8);">30d</div>
+    <div class="df-opt" onclick="setDF(this)" style="color:rgba(255,255,255,.5);">7d</div>
+    <div class="df-opt" onclick="setDF(this)" style="color:rgba(255,255,255,.5);">MTD</div>
+    <div class="df-opt" onclick="setDF(this)" style="color:rgba(255,255,255,.5);">QTD</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-date" id="tb-date"></div>
+    <div class="tb-bell" onclick="toggleNotif()" id="tb-bell">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <div class="tb-badge"></div>
+    </div>
+    <div class="tb-avatar" id="tb-av" onclick="showToast('👤 Profile settings')">JS</div>
+    <!-- Notif tray -->
+    <div id="notif-tray">
+      <div class="ni-head"><div class="ni-head-title">Notifications</div><div class="ni-mark" onclick="showToast('✓ All marked read')">Mark all read</div></div>
+      <div class="ni" onclick="goApp('comms');toggleNotif()"><div class="ni-dot"></div><div class="ni-icon" style="background:var(--crit-bg)">⚠️</div><div class="ni-body"><div class="ni-title">Revenue gap: $34K behind target</div><div class="ni-text">Day 20 of June. Top 2 closers drafted a message for your review.</div><div class="ni-time">2 min ago</div></div></div>
+      <div class="ni" onclick="goApp('r3');toggleNotif()"><div class="ni-dot"></div><div class="ni-icon" style="background:var(--caut-bg)">📊</div><div class="ni-body"><div class="ni-title">27 leads stuck >7 days</div><div class="ni-text">NJ branch — 14 leads need follow-up. Notify reps?</div><div class="ni-time">1 hr ago</div></div></div>
+      <div class="ni" onclick="goApp('r1');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📉</div><div class="ni-body"><div class="ni-title">Angi ROI dropped to 1.4×</div><div class="ni-text">Week-over-week drop from 2.4×. Review or pause spend.</div><div class="ni-time">Yesterday</div></div></div>
+      <div class="ni" onclick="goApp('comms');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📋</div><div class="ni-body"><div class="ni-title">Weekly audit: 4 reps pending</div><div class="ni-text">Deadline Sunday midnight. Draft nudge messages?</div><div class="ni-time">Yesterday</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="body-wrap">
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-row"><div class="sb-mark">H</div><div class="sb-title">The Hub</div></div>
+    <div class="sb-co" id="sb-co">Smith Roofing LLC</div>
+  </div>
+  <div class="sb-sec">Reports</div>
+  <div class="sbi on" id="sbi-dashboard" onclick="goApp('dashboard')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>Overview</div>
+  <div class="sbi" id="sbi-r1" onclick="goApp('r1')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-4"/></svg></div>Marketing Attribution</div>
+  <div class="sbi" id="sbi-r2" onclick="goApp('r2')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>Rep Performance</div>
+  <div class="sbi" id="sbi-r3" onclick="goApp('r3')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></div>Pipeline & Funnel</div>
+  <div class="sbi" id="sbi-r4" onclick="goApp('r4')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>Revenue Intelligence</div>
+  <div class="sbi" id="sbi-r5" onclick="goApp('r5')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Data Quality</div>
+  <div class="sb-sec">Tools</div>
+  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Communication Hub <span class="pill pill-crit" style="margin-left:auto;font-size:10px;padding:2px 6px">3</span></div>
+  <div class="sbi" id="sbi-audit" onclick="goApp('audit')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Weekly Audit</div>
+  <div class="sbi" id="sbi-pipeline" onclick="goApp('pipeline')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>Data Pipeline</div>
+  <div class="sb-sec">Account</div>
+  <div class="sbi" id="sbi-help" onclick="goApp('help')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>Help &amp; Support</div>
+  <div class="sbi" id="sbi-users" onclick="goApp('users')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Users & Seats</div>
+  <div class="sbi" id="sbi-billing" onclick="goApp('billing')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>Subscription</div>
+  <div id="sb-nudge" onclick="openModal('upgrade-modal')">
+    <div class="sbn-title">Reports partially locked</div>
+    <div class="sbn-sub">Upgrade to unlock all 5 reports</div>
+    <div class="sbn-btn">Upgrade - $99/mo</div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-av">JS</div>
+      <div><div class="sb-uname">John Smith</div><div class="sb-urole">Owner</div></div>
+    </div>
+  </div>
+</aside>
+
+<div id="main">
+<!-- ═══════════════════════════ DASHBOARD ═══ -->
+<div class="app-scr on" id="app-dashboard">
+  <div class="alert-banner crit fu">
+    <div class="alert-icon" style="background:var(--crit-bg)">⚠️</div>
+    <div style="flex:1"><div class="alert-text-title" style="color:var(--crit)">Revenue gap: $34,200 behind June target on day 20</div><div class="alert-text-body">Top 2 closers (Marcus Webb, Lisa Chen) have been identified. Draft message ready — <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">review in Communication Hub →</a></div></div>
+    <button class="btn btn-danger btn-sm" onclick="this.parentElement.style.display='none'">Dismiss</button>
+  </div>
+  <div class="branch-strip fu1">
+    <div class="branch-chip on" onclick="filterBranch(this,'all')"><div class="branch-dot" style="background:#1F3A5F"></div>All Branches</div>
+    <div class="branch-chip" onclick="filterBranch(this,'nj')"><div class="branch-dot" style="background:#1F3A5F"></div>NJ — Montclair</div>
+    <div class="branch-chip" onclick="filterBranch(this,'ny')"><div class="branch-dot" style="background:#0F5866"></div>NY — Queens</div>
+    <div class="branch-chip" onclick="filterBranch(this,'fl')"><div class="branch-dot" style="background:#B57B1F"></div>FL — Tampa</div>
+    <div class="branch-chip" onclick="filterBranch(this,'mi')"><div class="branch-dot" style="background:#3F6E4A"></div>Miami</div>
+  </div>
+  <!-- KPI Row 1: Leads -->
+  <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">Leads</div><a class="sec-action" onclick="goApp('r1')">Attribution report →</a></div></div>
+  <div class="kpi-grid fu2">
+    <div class="kpi pos"><div class="kpi-label">Total Leads (30d)</div><div class="kpi-value">312</div><span class="kpi-delta up">↑ 18%</span><div class="kpi-context">vs prior 30 days</div></div>
+    <div class="kpi caut"><div class="kpi-label">Speed to Lead</div><div class="kpi-value">47<span style="font-size:14px;font-weight:600;color:var(--muted)"> min</span></div><span class="kpi-delta flat">↓ 12min</span><div class="kpi-context">SLA: &lt;60 min · 78% compliant</div></div>
+    <div class="kpi pos"><div class="kpi-label">Lead→CRM Rate</div><div class="kpi-value">84<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">264 of 312 in CRM</div></div>
+    <div class="kpi caut"><div class="kpi-label">After-Hours Leads</div><div class="kpi-value">23<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">72 leads 6pm–8am</div></div>
+  </div>
+  <!-- KPI Row 2: Revenue -->
+  <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">Revenue</div><a class="sec-action" onclick="goApp('r4')">Revenue report →</a></div></div>
+  <div class="kpi-grid fu3">
+    <div class="kpi pos"><div class="kpi-label">Won Revenue</div><div class="kpi-value">$286K</div><span class="kpi-delta up">↑ 9%</span><div class="kpi-context">Target: $320K this month</div></div>
+    <div class="kpi crit"><div class="kpi-label">Pipeline Value</div><div class="kpi-value">$1.2M</div><span class="kpi-delta down">↓ 4%</span><div class="kpi-context">Open opportunities</div></div>
+    <div class="kpi pos"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value">$14.2K</div><span class="kpi-delta up">↑ 7%</span><div class="kpi-context">Up from $13.3K</div></div>
+    <div class="kpi caut"><div class="kpi-label">Rev vs Target</div><div class="kpi-value">89<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">↓ $34K gap</span><div class="kpi-context">Day 20 of 30</div></div>
+  </div>
+  <!-- 2-col charts -->
+  <div class="grid-2 fu4" style="margin-bottom:20px">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Leads by Source</div></div>
+      <canvas id="chart-sources" height="180"></canvas>
+    </div>
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Pipeline Funnel</div></div>
+      <div id="funnel-wrap"></div>
+    </div>
+  </div>
+  <!-- Branch + Reps tables -->
+  <div class="grid-2 fu5" style="margin-bottom:20px">
+    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Branch Comparison</div></div></div>
+      <table class="tbl">
+        <thead><tr><th>Branch</th><th>Leads</th><th>Won Rev</th><th>Win %</th><th>Compliance</th></tr></thead>
+        <tbody>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#1F3A5F"></div>NJ</div></td><td class="tbl-num">98</td><td class="tbl-num">$94K</td><td><span class="pill pill-pos">31%</span></td><td><span class="pill pill-pos">87%</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#0F5866"></div>NY</div></td><td class="tbl-num">87</td><td class="tbl-num">$82K</td><td><span class="pill pill-pos">28%</span></td><td><span class="pill pill-caut">74%</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#B57B1F"></div>FL</div></td><td class="tbl-num">79</td><td class="tbl-num">$67K</td><td><span class="pill pill-caut">26%</span></td><td><span class="pill pill-caut">71%</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#3F6E4A"></div>Miami</div></td><td class="tbl-num">48</td><td class="tbl-num">$43K</td><td><span class="pill pill-pos">41%</span></td><td><span class="pill pill-crit">62%</span></td></tr>
+        </tbody>
+      </table></div>
+    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Top Reps</div><a class="sec-action" onclick="goApp('r2')">Full leaderboard →</a></div></div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Rep</th><th>Won Rev</th><th>Close %</th><th>CRM</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:800;color:var(--muted)">1</td><td><div style="font-weight:700">Marcus Webb</div><div style="font-size:11px;color:var(--muted)">NJ</div></td><td class="tbl-num">$48K</td><td><span class="pill pill-pos">38%</span></td><td><span class="pill pill-pos">94%</span></td></tr>
+          <tr><td style="font-weight:800;color:var(--muted)">2</td><td><div style="font-weight:700">Lisa Chen</div><div style="font-size:11px;color:var(--muted)">NY</div></td><td class="tbl-num">$41K</td><td><span class="pill pill-pos">34%</span></td><td><span class="pill pill-pos">88%</span></td></tr>
+          <tr><td style="font-weight:800;color:var(--muted)">3</td><td><div style="font-weight:700">Derek Osei</div><div style="font-size:11px;color:var(--muted)">FL</div></td><td class="tbl-num">$37K</td><td><span class="pill pill-caut">29%</span></td><td><span class="pill pill-caut">76%</span></td></tr>
+          <tr><td style="font-weight:800;color:var(--muted)">4</td><td><div style="font-weight:700">Nina Vega</div><div style="font-size:11px;color:var(--muted)">Miami</div></td><td class="tbl-num">$31K</td><td><span class="pill pill-pos">41%</span></td><td><span class="pill pill-crit">58%</span></td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <!-- Report cards -->
+  <div class="sec-title" style="margin-bottom:14px">Deep Reports</div>
+  <div class="report-grid fu">
+    <div class="rep-card" onclick="goApp('r1')"><div class="rep-card-icon" style="background:rgba(31,58,95,.08)">📊</div><div class="rep-card-title">Marketing Attribution</div><div class="rep-card-desc">CAC, ROI by channel, spend efficiency</div></div>
+    <div class="rep-card" onclick="goApp('r2')"><div class="rep-card-icon" style="background:rgba(15,88,102,.08)">🏆</div><div class="rep-card-title">Rep Performance</div><div class="rep-card-desc">Close rates, compliance, coaching signals</div></div>
+    <div class="rep-card" onclick="goApp('r3')"><div class="rep-card-icon" style="background:rgba(181,123,31,.08)">🔽</div><div class="rep-card-title">Pipeline & Funnel</div><div class="rep-card-desc">Stage drop-off, stuck leads, loss reasons</div></div>
+    <div class="rep-card" onclick="goApp('r4')"><div class="rep-card-icon" style="background:rgba(63,110,74,.08)">💰</div><div class="rep-card-title">Revenue Intelligence</div><div class="rep-card-desc">Target tracking, deal size, attribution</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ R1 — MARKETING ═══ -->
+<div class="app-scr" id="app-r1">
+  <div class="pg-header fu"><div><div class="pg-title">Marketing Attribution & ROI</div><div class="pg-sub">Which channels deliver the best leads at the lowest cost — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="kpi-grid fu1">
+    <div class="kpi pos"><div class="kpi-label">Total Ad Spend</div><div class="kpi-value">$18.4K</div><span class="kpi-delta flat">→ $18.1K prior</span></div>
+    <div class="kpi pos"><div class="kpi-label">Network CAC</div><div class="kpi-value">$247</div><span class="kpi-delta up">↓ $19 (better)</span></div>
+    <div class="kpi pos"><div class="kpi-label">Best ROI</div><div class="kpi-value">6.2×</div><span class="kpi-delta up">Door Knock</span></div>
+    <div class="kpi crit"><div class="kpi-label">Lowest ROI</div><div class="kpi-value">1.4×</div><span class="kpi-delta down">Angi ↓ 55% WoW</span></div>
+  </div>
+  <div class="grid-2 fu2" style="margin-bottom:20px">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">ROI by Channel</div></div>
+      <canvas id="chart-roi" height="200"></canvas>
+    </div>
+    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Channel Performance</div></div></div>
+      <table class="tbl">
+        <thead><tr><th>Source</th><th>Leads</th><th>Win %</th><th>CAC</th><th>ROI</th></tr></thead>
+        <tbody>
+          <tr><td class="tbl-num" style="font-weight:700">Door Knock</td><td class="tbl-num">89</td><td><span class="pill pill-pos">31%</span></td><td class="tbl-num">$180</td><td><span class="pill pill-pos">6.2×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Inbound Call</td><td class="tbl-num">64</td><td><span class="pill pill-pos">28%</span></td><td class="tbl-num">$240</td><td><span class="pill pill-pos">4.8×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Google Ads</td><td class="tbl-num">47</td><td><span class="pill pill-caut">22%</span></td><td class="tbl-num">$310</td><td><span class="pill pill-caut">3.1×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Social Media</td><td class="tbl-num">29</td><td><span class="pill pill-caut">18%</span></td><td class="tbl-num">$390</td><td><span class="pill pill-caut">2.4×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Angi</td><td class="tbl-num">18</td><td><span class="pill pill-crit">12%</span></td><td class="tbl-num">$540</td><td><span class="pill pill-crit">1.4×</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📉</div><div><div class="alert-text-title" style="color:var(--crit)">Angi ROI dropped 55% week-over-week — from 2.4× to 1.4×</div><div class="alert-text-body">Spend is $540/lead. Recommend pausing or reducing Angi budget until source is reviewed. <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft message to marketing →</a></div></div></div>
+</div>
+
+<!-- ═══════════════════════════ R2 — REPS ═══ -->
+<div class="app-scr" id="app-r2">
+  <div class="pg-header fu"><div><div class="pg-title">Rep Performance</div><div class="pg-sub">Who's performing, who needs coaching, and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="kpi-grid fu1">
+    <div class="kpi pos"><div class="kpi-label">Avg Close Rate</div><div class="kpi-value">28<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 3pts</span></div>
+    <div class="kpi crit"><div class="kpi-label">Reps Below 60% CRM</div><div class="kpi-value">7</div><span class="kpi-delta down">↑ 2 this week</span></div>
+    <div class="kpi pos"><div class="kpi-label">Avg Speed to Quote</div><div class="kpi-value">2.1<span style="font-size:14px"> days</span></div><span class="kpi-delta up">↓ 0.4d (better)</span></div>
+    <div class="kpi caut"><div class="kpi-label">Avg Follow-up Rate</div><div class="kpi-value">64<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+  </div>
+  <div class="card fu2" style="margin-bottom:20px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Leaderboard</div></div></div>
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Rep</th><th>Branch</th><th>Won Rev</th><th>Close%</th><th>Speed to Lead</th><th>Follow-up%</th><th>CRM Compliance</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:800">1</td><td style="font-weight:700">Marcus Webb</td><td>NJ</td><td class="tbl-num">$48K</td><td><span class="pill pill-pos">38%</span></td><td class="tbl-num">22 min</td><td class="tbl-num">82%</td><td><span class="pill pill-pos">94%</span></td></tr>
+        <tr><td style="font-weight:800">2</td><td style="font-weight:700">Lisa Chen</td><td>NY</td><td class="tbl-num">$41K</td><td><span class="pill pill-pos">34%</span></td><td class="tbl-num">31 min</td><td class="tbl-num">79%</td><td><span class="pill pill-pos">88%</span></td></tr>
+        <tr><td style="font-weight:800">3</td><td style="font-weight:700">Derek Osei</td><td>FL</td><td class="tbl-num">$37K</td><td><span class="pill pill-caut">29%</span></td><td class="tbl-num">54 min</td><td class="tbl-num">71%</td><td><span class="pill pill-caut">76%</span></td></tr>
+        <tr><td style="font-weight:800">4</td><td style="font-weight:700">Nina Vega</td><td>Miami</td><td class="tbl-num">$31K</td><td><span class="pill pill-pos">41%</span></td><td class="tbl-num">28 min</td><td class="tbl-num">68%</td><td><span class="pill pill-crit">58%</span></td></tr>
+        <tr><td style="font-weight:800">5</td><td style="font-weight:700">Tom Bradley</td><td>NJ</td><td class="tbl-num">$28K</td><td><span class="pill pill-caut">24%</span></td><td class="tbl-num">67 min</td><td class="tbl-num">61%</td><td><span class="pill pill-crit">52%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert-banner caut fu3"><div class="alert-icon" style="background:var(--caut-bg)">⏱</div><div><div class="alert-text-title" style="color:var(--caut)">Speed to lead insight: low close rate often means slow response, not poor sales</div><div class="alert-text-body">Tom Bradley averages 67 min speed-to-lead with 24% close rate. Marcus Webb averages 22 min with 38%. Same market, same scripts. Response time is the variable.</div></div></div>
+</div>
+
+<!-- ═══════════════════════════ R3 — PIPELINE ═══ -->
+<div class="app-scr" id="app-r3">
+  <div class="pg-header fu"><div><div class="pg-title">Pipeline & Funnel</div><div class="pg-sub">Where leads drop off and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="kpi-grid fu1">
+    <div class="kpi pos"><div class="kpi-label">Appointment Rate</div><div class="kpi-value">52<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts</span></div>
+    <div class="kpi pos"><div class="kpi-label">Estimate Delivery</div><div class="kpi-value">78<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 2pts</span></div>
+    <div class="kpi crit"><div class="kpi-label">Stuck Leads >7d</div><div class="kpi-value">27</div><span class="kpi-delta down">↑ 8 this week</span></div>
+    <div class="kpi caut"><div class="kpi-label">Overall Win Rate</div><div class="kpi-value">28<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+  </div>
+  <div class="grid-2 fu2" style="margin-bottom:20px;align-items:start;">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:20px"><div class="sec-title">Funnel Drop-Off</div></div>
+      <div id="funnel-r3"></div>
+    </div>
+    <div class="card card-p" style="display:flex;flex-direction:column;">
+      <div class="sec-head" style="margin-bottom:12px"><div class="sec-title">Loss Reason Breakdown</div></div>
+      <div style="position:relative;width:100%;flex:1;min-height:0;">
+        <canvas id="chart-loss" style="display:block;max-width:100%;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📌</div><div><div class="alert-text-title" style="color:var(--crit)">27 leads stuck >7 days — mostly NJ branch</div><div class="alert-text-body">14 leads in NJ haven't moved in 7+ days. Reps: Marcus (4), Tom (6), Raj (4). <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft nudge messages →</a></div></div></div>
+</div>
+
+<!-- ═══════════════════════════ R4 — REVENUE ═══ -->
+<div class="app-scr" id="app-r4">
+  <div class="pg-header fu"><div><div class="pg-title">Revenue Intelligence</div><div class="pg-sub">Revenue vs target, deal sizes, rep attribution — current month</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="kpi-grid fu1">
+    <div class="kpi pos"><div class="kpi-label">Won Revenue</div><div class="kpi-value">$286K</div><span class="kpi-delta up">↑ 9%</span></div>
+    <div class="kpi crit"><div class="kpi-label">Monthly Target</div><div class="kpi-value">$320K</div><span class="kpi-delta down">$34K gap</span></div>
+    <div class="kpi pos"><div class="kpi-label">Expected Rev</div><div class="kpi-value">$312K</div><span class="kpi-delta up">Pipeline × close%</span></div>
+    <div class="kpi pos"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value">$14.2K</div><span class="kpi-delta up">↑ 7%</span></div>
+  </div>
+  <div class="card fu2" style="margin-bottom:20px;padding:22px">
+    <div class="sec-head" style="margin-bottom:6px"><div class="sec-title">Revenue vs Target — June 2026</div></div>
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:600;color:var(--muted)">Won Revenue</span><span style="font-size:12px;font-weight:700">$286K of $320K</span></div>
+      <div class="prog-track" style="height:10px"><div class="prog-fill pos" style="--w:89%;width:89%"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;font-weight:600;color:var(--muted)">Expected Revenue (pipeline)</span><span style="font-size:12px;font-weight:700">$312K</span></div>
+      <div class="prog-track" style="height:10px"><div class="prog-fill" style="--w:97.5%;width:97.5%"></div></div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:var(--crit-bg);border-radius:8px;font-size:12.5px;color:var(--crit);border:1px solid rgba(155,58,42,.2)">⚠ $34K gap on day 20. At current pace, month ends at ~$304K. Top closers must accelerate 2 deals.</div>
+  </div>
+  <div class="card fu3"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Revenue Attribution</div></div></div>
+    <table class="tbl"><thead><tr><th>Rep</th><th>Won Revenue</th><th>Deal Count</th><th>Avg Deal</th><th>Share</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">Marcus Webb</td><td class="tbl-num">$48K</td><td class="tbl-num">4</td><td class="tbl-num">$12K</td><td><span class="pill pill-pos">16.8%</span></td></tr>
+      <tr><td style="font-weight:700">Lisa Chen</td><td class="tbl-num">$41K</td><td class="tbl-num">3</td><td class="tbl-num">$13.7K</td><td><span class="pill pill-pos">14.3%</span></td></tr>
+      <tr><td style="font-weight:700">Derek Osei</td><td class="tbl-num">$37K</td><td class="tbl-num">3</td><td class="tbl-num">$12.3K</td><td><span class="pill pill-caut">12.9%</span></td></tr>
+      <tr><td style="font-weight:700">Nina Vega</td><td class="tbl-num">$31K</td><td class="tbl-num">2</td><td class="tbl-num">$15.5K</td><td><span class="pill pill-caut">10.8%</span></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ R5 — DATA QUALITY ═══ -->
+<div class="app-scr" id="app-r5">
+  <div class="pg-header fu"><div><div class="pg-title">Data Quality</div><div class="pg-sub">Can you trust the other 4 reports? Composite score: 74 / 100</div></div></div>
+  <div class="kpi-grid fu1">
+    <div class="kpi pos"><div class="kpi-label">Field Coverage</div><div class="kpi-value">88<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts</span></div>
+    <div class="kpi caut"><div class="kpi-label">CRM Compliance</div><div class="kpi-value">74<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+    <div class="kpi pos"><div class="kpi-label">Duplicate Rate</div><div class="kpi-value">2.1<span style="font-size:14px">%</span></div><span class="kpi-delta up">↓ 0.8% (better)</span></div>
+    <div class="kpi caut"><div class="kpi-label">Source Hygiene</div><div class="kpi-value">82<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+  </div>
+  <div class="grid-2 fu2">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:20px"><div class="sec-title">Quality Metrics</div></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">CRM Entry Compliance</span><span style="font-size:12px;font-weight:700;color:var(--caut)">74%</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:74%;width:74%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Field Coverage</span><span style="font-size:12px;font-weight:700;color:var(--pos)">88%</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:88%;width:88%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Source Name Hygiene</span><span style="font-size:12px;font-weight:700;color:var(--pos)">82%</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:82%;width:82%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Upload Acceptance Rate</span><span style="font-size:12px;font-weight:700;color:var(--pos)">96%</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:96%;width:96%"></div></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule)">
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800">18</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Dupes removed</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800">27</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Stuck leads</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800">5</div><div style="font-size:11px;color:var(--muted);margin-top:2px">ID mismatches</div></div>
+      </div>
+    </div>
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:20px"><div class="sec-title">Connector Health</div></div>
+      <div class="connector-item" style="border:none;padding:10px 0"><div class="conn-icon" style="background:#E8F5FF">🔷</div><div><div class="conn-name">GoHighLevel</div><div class="conn-detail">312 contacts · Synced 4 min ago</div></div><div class="conn-status"><span class="pill pill-pos">Healthy</span></div></div>
+      <div class="connector-item" style="padding:10px 0"><div class="conn-icon" style="background:#FFF3E8">🟠</div><div><div class="conn-name">Leap CRM</div><div class="conn-detail">87 jobs · Synced 12 min ago</div></div><div class="conn-status"><span class="pill pill-pos">Healthy</span></div></div>
+      <div class="connector-item" style="padding:10px 0"><div class="conn-icon" style="background:#F0FFF4">📞</div><div><div class="conn-name">CallRail</div><div class="conn-detail">1,204 calls · Synced 8 min ago</div></div><div class="conn-status"><span class="pill pill-pos">Healthy</span></div></div>
+      <div class="connector-item" style="padding:10px 0;border-bottom:none"><div class="conn-icon" style="background:#FFF0F0">📊</div><div><div class="conn-name">WhatConverts</div><div class="conn-detail">Last sync failed · 3 hrs ago</div></div><div class="conn-status"><span class="pill pill-crit">Failed</span><button class="btn btn-outline btn-xs" onclick="showToast('🔄 Reconnecting WhatConverts...')">Reconnect</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ COMMS HUB ═══ -->
+<div class="app-scr" id="app-comms">
+  <div class="pg-header fu"><div><div class="pg-title">Communication Hub</div><div class="pg-sub">The Hub detects issues and drafts messages for your review and approval</div></div></div>
+  <div class="tabs fu1">
+    <div class="tab on" onclick="switchTab(this,'comms-alerts')">Live Alerts <span class="pill pill-crit" style="margin-left:6px;font-size:10px;padding:2px 6px">3</span></div>
+    <div class="tab" onclick="switchTab(this,'comms-pending')">Pending Approval <span class="pill pill-caut" style="margin-left:6px;font-size:10px;padding:2px 6px">2</span></div>
+    <div class="tab" onclick="switchTab(this,'comms-sent')">Sent Log</div>
+  </div>
+  <div class="tab-panel on" id="tab-comms-alerts">
+    <div class="alert-item">
+      <div class="ai-chip" style="background:var(--crit-bg)">💰</div>
+      <div style="flex:1">
+        <div class="alert-item-title">Revenue gap: $34K behind on day 20 of June</div>
+        <div class="alert-item-body">Expected pace: $320K. Actual: $286K. At current rate, month closes at ~$304K. Top 2 closers identified: Marcus Webb (NJ) and Lisa Chen (NY).</div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Review draft message</button><button class="btn btn-outline btn-sm" onclick="showToast('Alert snoozed 24hrs')">Snooze</button></div>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="ai-chip" style="background:var(--crit-bg)">📌</div>
+      <div style="flex:1">
+        <div class="alert-item-title">27 leads stuck >7 days — NJ branch</div>
+        <div class="alert-item-body">Reps: Tom Bradley (8 stuck), Raj Kumar (6 stuck), others (13). These leads have not had a stage change in 7+ days.</div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✓ Draft nudge messages ready')">Draft nudge messages</button><button class="btn btn-outline btn-sm">View leads</button></div>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="ai-chip" style="background:var(--caut-bg)">📋</div>
+      <div style="flex:1">
+        <div class="alert-item-title">Weekly audit: 4 reps haven't submitted — Sunday deadline</div>
+        <div class="alert-item-body">Pending: Tom Bradley, Raj Kumar, Sam Torres, Mike Ortiz. Deadline: Sunday 11:59 PM. 3 personalized reminder messages ready.</div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✓ 4 reminders queued for review')">Review reminders</button><button class="btn btn-ok btn-sm" onclick="showToast('✓ All 4 approved and sending')">Approve all</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-comms-pending">
+    <div class="alert-item draft fu">
+      <div class="ai-chip" style="background:rgba(15,88,102,.1)">✍️</div>
+      <div style="flex:1">
+        <div class="alert-item-title">Message to Marcus Webb — Revenue push</div>
+        <div style="background:white;border:1px solid var(--rule);border-radius:10px;padding:14px;font-size:13px;line-height:1.6;color:var(--slate);margin-bottom:12px;font-family:'Inter',sans-serif">
+          "Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you work the pipeline this week and push 1–2 deals over the line? Anything I can do to help — calls, materials, whatever — just say the word. — John"
+        </div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✅ Sent to Marcus Webb')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-comms-sent">
+    <div class="card fu"><table class="tbl"><thead><tr><th>Message</th><th>Recipient</th><th>Sent</th><th>Opened</th><th>Action taken</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:600">CRM compliance warning</td><td>Nina Vega</td><td>Jun 3, 9:41 AM</td><td><span class="pill pill-pos">Yes</span></td><td style="font-size:12px;color:var(--muted)">Submitted 6 missing entries</td></tr>
+      <tr><td style="font-weight:600">Stuck leads nudge</td><td>Tom Bradley</td><td>Jun 2, 2:14 PM</td><td><span class="pill pill-pos">Yes</span></td><td style="font-size:12px;color:var(--muted)">3 leads moved to next stage</td></tr>
+      <tr><td style="font-weight:600">Weekly audit reminder</td><td>Sam Torres</td><td>Jun 1, 4:00 PM</td><td><span class="pill pill-caut">No</span></td><td style="font-size:12px;color:var(--muted)">No action taken</td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ WEEKLY AUDIT ═══ -->
+<div class="app-scr" id="app-audit">
+  <div class="pg-header fu"><div><div class="pg-title">Weekly Audit</div><div class="pg-sub">Upload deadline: Sunday, June 8 at 11:59 PM — <strong style="color:var(--crit)">4 reps pending</strong></div></div><div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="showToast('📨 Bulk nudge sent to 4 pending reps')">Notify all pending</button></div></div>
+  <div class="kpi-grid fu1" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi pos"><div class="kpi-label">Submitted</div><div class="kpi-value">19</div><span class="kpi-delta up">of 23 reps</span></div>
+    <div class="kpi crit"><div class="kpi-label">Pending</div><div class="kpi-value">4</div><span class="kpi-delta down">deadline: Sunday</span></div>
+    <div class="kpi pos"><div class="kpi-label">Compliance Rate</div><div class="kpi-value">83<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts vs last wk</span></div>
+  </div>
+  <div class="card fu2"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Status — Week of June 2</div></div></div>
+    <div style="padding:0 20px 16px">
+      <div class="audit-rep"><div class="rep-av" style="background:#1F3A5F">MW</div><div style="flex:1"><div class="rep-name">Marcus Webb</div><div class="rep-branch">NJ — Montclair</div></div><span class="pill pill-pos">Submitted</span><span style="font-size:11.5px;color:var(--muted);margin-left:8px">Mon 8:42 AM</span></div>
+      <div class="audit-rep"><div class="rep-av" style="background:#0F5866">LC</div><div style="flex:1"><div class="rep-name">Lisa Chen</div><div class="rep-branch">NY — Queens</div></div><span class="pill pill-pos">Submitted</span><span style="font-size:11.5px;color:var(--muted);margin-left:8px">Mon 9:14 AM</span></div>
+      <div class="audit-rep"><div class="rep-av" style="background:#3F6E4A">DO</div><div style="flex:1"><div class="rep-name">Derek Osei</div><div class="rep-branch">FL — Tampa</div></div><span class="pill pill-pos">Submitted</span><span style="font-size:11.5px;color:var(--muted);margin-left:8px">Tue 11:30 AM</span></div>
+      <div class="audit-rep"><div class="rep-av" style="background:#B57B1F">TB</div><div style="flex:1"><div class="rep-name">Tom Bradley</div><div class="rep-branch">NJ — Montclair</div></div><span class="pill pill-crit">Pending</span><div style="margin-left:8px"><button class="btn btn-outline btn-xs" onclick="showToast('📨 Nudge sent to Tom Bradley')">Nudge</button></div></div>
+      <div class="audit-rep"><div class="rep-av" style="background:#9B3A2A">NV</div><div style="flex:1"><div class="rep-name">Nina Vega</div><div class="rep-branch">Miami</div></div><span class="pill pill-crit">Pending</span><div style="margin-left:8px"><button class="btn btn-outline btn-xs" onclick="showToast('📨 Nudge sent to Nina Vega')">Nudge</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ DATA PIPELINE ═══ -->
+<div class="app-scr" id="app-pipeline">
+  <div class="pg-header fu"><div><div class="pg-title">Data Pipeline</div><div class="pg-sub">Connector health, manual imports, deduplication, and sync history</div></div></div>
+  <div class="tabs fu1">
+    <div class="tab on" onclick="switchTab(this,'dp-connectors')">Connectors</div>
+    <div class="tab" onclick="switchTab(this,'dp-import')">Manual Import</div>
+    <div class="tab" onclick="switchTab(this,'dp-dedup')">Deduplication</div>
+    <div class="tab" onclick="switchTab(this,'dp-log')">Sync Log</div>
+  </div>
+  <div class="tab-panel on" id="tab-dp-connectors">
+    <div class="card fu"><div style="padding:2px 0">
+      <div class="connector-item"><div class="conn-icon" style="background:#E8F5FF;font-size:20px">🔷</div><div style="flex:1"><div class="conn-name">GoHighLevel</div><div class="conn-detail">312 contacts · 64 pipeline stages · Synced 4 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
+      <div class="connector-item"><div class="conn-icon" style="background:#FFF3E8;font-size:20px">🟠</div><div style="flex:1"><div class="conn-name">Leap CRM</div><div class="conn-detail">87 jobs · $1.2M pipeline · Synced 12 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
+      <div class="connector-item"><div class="conn-icon" style="background:#F5F0FF;font-size:20px">📞</div><div style="flex:1"><div class="conn-name">CallRail</div><div class="conn-detail">1,204 calls · Speed-to-lead = CallRail.first_call − GHL.created_at · Synced 8 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
+      <div class="connector-item" style="border-bottom:none"><div class="conn-icon" style="background:#FFF0F0;font-size:20px">📊</div><div style="flex:1"><div class="conn-name">WhatConverts</div><div class="conn-detail" style="color:var(--crit)">⚠ Last sync failed 3 hrs ago — 0 records synced</div></div><span class="pill pill-crit" style="margin-right:8px">Failed</span><button class="btn btn-primary btn-sm" onclick="showToast('🔄 Reconnecting WhatConverts...')">Reconnect</button></div>
+    </div></div>
+  </div>
+  <div class="tab-panel" id="tab-dp-import">
+    <div class="upload-zone fu" onclick="showToast('📂 File picker opened')">
+      <div class="upload-icon">📄</div>
+      <div class="upload-title">Drop a file here or click to browse</div>
+      <div class="upload-sub">Supports .xlsx, .csv, .pdf, .docx — AI parses and maps columns automatically</div>
+    </div>
+    <div class="card fu1" style="margin-top:16px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Import History</div></div></div>
+      <table class="tbl"><thead><tr><th>File</th><th>Date</th><th>Category</th><th>Rows</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">marketing_expense_may2026.xlsx</td><td>Today 9:41 AM</td><td><span class="pill pill-blue">Marketing</span></td><td>44</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('↩ Rolling back import...')">Rollback</button></td></tr>
+        <tr><td style="font-weight:600">smith_roofing_may.xlsx</td><td>Yesterday</td><td><span class="pill pill-cyan">Pipeline</span></td><td>142</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs">Rollback</button></td></tr>
+        <tr><td style="font-weight:600">rep_salaries_apr2026.csv</td><td>Apr 30</td><td><span class="pill pill-neutral">Rep comp</span></td><td>23</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs">Rollback</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-dp-dedup">
+    <div class="card fu"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Duplicate Groups — Requires Review</div><span class="pill pill-caut">3 groups</span></div></div>
+      <table class="tbl"><thead><tr><th>Lead Name</th><th>Match Type</th><th>Sources</th><th>Master Source</th><th></th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">Robert Hanson</td><td><span class="pill pill-caut">Phone match</span></td><td>GHL + WhatConverts</td><td><span class="pill pill-pos">GHL wins</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('✓ Merged: GHL record kept')">Merge</button></td></tr>
+        <tr><td style="font-weight:600">Amy Kowalski</td><td><span class="pill pill-caut">Email match</span></td><td>Leap + GHL</td><td><span class="pill pill-pos">GHL wins</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('✓ Merged: GHL record kept')">Merge</button></td></tr>
+        <tr><td style="font-weight:600">James T. Roark</td><td><span class="pill pill-crit">CRM ID conflict</span></td><td>Manual + GHL</td><td><span class="pill pill-crit">Review needed</span></td><td><button class="btn btn-danger btn-xs" onclick="openModal('dedup-modal')">Review</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-dp-log">
+    <div class="card fu"><table class="tbl"><thead><tr><th>Time</th><th>Connector</th><th>Event</th><th>Records</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--muted)">Today 2:34 PM</td><td>GoHighLevel</td><td>Scheduled sync</td><td>312</td><td><span class="pill pill-pos">✓ Complete</span></td><td></td></tr>
+      <tr><td style="color:var(--muted)">Today 2:34 PM</td><td>CallRail</td><td>Scheduled sync</td><td>1,204</td><td><span class="pill pill-pos">✓ Complete</span></td><td></td></tr>
+      <tr><td style="color:var(--muted)">Today 11:30 AM</td><td>WhatConverts</td><td>Scheduled sync</td><td>0</td><td><span class="pill pill-crit">✗ Failed</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('🔄 Retry queued')">Retry</button></td></tr>
+      <tr><td style="color:var(--muted)">Today 8:00 AM</td><td>GoHighLevel</td><td>Scheduled sync</td><td>298</td><td><span class="pill pill-pos">✓ Complete</span></td><td></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ USERS & SEATS ═══ -->
+<div class="app-scr" id="app-users">
+  <div class="pg-header fu"><div><div class="pg-title">Users & Seats</div><div class="pg-sub">Network-wide seat pool — one seat consumed per accepted invite</div></div><div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="openModal('invite-modal')">+ Invite user</button><button class="btn btn-outline btn-sm" onclick="showToast('Role preview: Branch Manager')">Preview as role</button></div></div>
+  <div class="grid-2 fu1" style="margin-bottom:20px">
+    <div class="kpi pos"><div class="kpi-label">Active Users</div><div class="kpi-value">23</div><span class="kpi-delta up">of 30 seats</span></div>
+    <div class="kpi caut"><div class="kpi-label">Pending Invites</div><div class="kpi-value">2</div><span class="kpi-delta flat">seat reserved</span></div>
+  </div>
+  <div class="card fu2"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Seat Usage by Branch</div></div></div>
+    <div style="padding:0 20px 18px;display:flex;flex-direction:column;gap:12px">
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">NJ — Montclair</span><span style="font-size:12px;color:var(--muted)">8 / 10 seats</span></div><div class="prog-track"><div class="prog-fill" style="--w:80%;width:80%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">NY — Queens</span><span style="font-size:12px;color:var(--muted)">6 / 8 seats</span></div><div class="prog-track"><div class="prog-fill" style="--w:75%;width:75%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">FL — Tampa</span><span style="font-size:12px;color:var(--muted)">5 / 7 seats</span></div><div class="prog-track"><div class="prog-fill" style="--w:71%;width:71%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">Miami</span><span style="font-size:12px;color:var(--muted);color:var(--caut)">5 / 5 seats</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:100%;width:100%"></div></div></div>
+    </div>
+  </div>
+  <div class="card fu3"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">All Users</div></div></div>
+    <table class="tbl"><thead><tr><th>Name</th><th>Role</th><th>Branch</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">John Smith</td><td><span class="pill pill-blue">Owner</span></td><td>All branches</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs">Edit</button></td></tr>
+      <tr><td style="font-weight:700">Marcus Webb</td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NJ</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs">Edit</button></td></tr>
+      <tr><td style="font-weight:700">Lisa Chen</td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NY</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs">Edit</button></td></tr>
+      <tr><td style="font-weight:700">Kim Nguyen <span style="font-size:11px;color:var(--muted)">(pending)</span></td><td><span class="pill pill-cyan">Branch Mgr</span></td><td>Miami</td><td><span class="pill pill-caut">Invited</span></td><td><button class="btn btn-danger btn-xs" onclick="showToast('✓ Invite revoked — seat freed')">Revoke</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ BILLING ═══ -->
+<div class="app-scr" id="app-billing">
+  <div class="pg-header fu">
+    <div><div class="pg-title">Subscription &amp; Billing</div><div class="pg-sub">Manage your plan, seats, and invoices</div></div>
+    <div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="openModal('add-seats-modal')">+ Add seats</button></div>
+  </div>
+
+  <!-- PROTOTYPE PLAN PREVIEW SWITCHER — lets you experience Free vs Paid in the app -->
+  <div style="background:linear-gradient(135deg,#0E1B24,#1F3A5F);border-radius:16px;padding:20px 24px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;" class="fu">
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:6px">Preview Mode — Try Both Plans</div>
+      <div style="font-size:16px;font-weight:700;color:white;margin-bottom:4px">See how the app looks for Free vs Paid users</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5)">Switch below to experience gated reports, trial bar, and upgrade prompts exactly as your users will see them.</div>
+    </div>
+    <div style="display:flex;gap:0;background:rgba(255,255,255,.1);border-radius:10px;padding:4px;flex-shrink:0">
+      <button id="preview-free-btn" onclick="previewPlan('free')" style="padding:10px 22px;border-radius:7px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:.2s;background:transparent;color:rgba(255,255,255,.5)">
+        &#128274; Free Plan
+      </button>
+      <button id="preview-paid-btn" onclick="previewPlan('paid')" style="padding:10px 22px;border-radius:7px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:.2s;background:white;color:#1F3A5F">
+        &#128275; Paid Plan
+      </button>
+    </div>
+  </div>
+
+  <!-- CURRENT PLAN STATUS — changes based on preview mode -->
+  <div id="billing-free-view" style="display:none">
+    <div style="background:rgba(181,123,31,.08);border:1.5px solid rgba(181,123,31,.25);border-radius:14px;padding:22px 24px;margin-bottom:20px;" class="fu1">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+        <div>
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#B57B1F;margin-bottom:6px">Current Plan</div>
+          <div style="font-size:22px;font-weight:800;color:#0E1B24;margin-bottom:4px">Free Trial</div>
+          <div style="font-size:13px;color:#6B7680">20 days remaining &nbsp;·&nbsp; 1 branch &nbsp;·&nbsp; Up to 3 reps</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:32px;font-weight:800;color:#0E1B24">$0<span style="font-size:14px;font-weight:400;color:#6B7680">/mo</span></div>
+          <span style="background:rgba(181,123,31,.15);color:#B57B1F;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px">Trial Active</span>
+        </div>
+      </div>
+      <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(181,123,31,.2)">
+        <div style="font-size:13px;font-weight:700;color:#0E1B24;margin-bottom:12px">What you are missing on Free:</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Full Marketing Attribution</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Rep Performance Leaderboard</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Pipeline &amp; Funnel details</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Revenue Intelligence tracking</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Communication Hub</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Weekly Audit tool</div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:16px;width:100%;font-size:15px;padding:14px" onclick="previewPlan('paid');openModal('upgrade-modal')">Upgrade to Basic — $99/mo &nbsp;→</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="billing-paid-view">
+    <div class="billing-banner fu1">
+      <div><div class="billing-plan">The Hub — Pro Multi-Branch Monthly</div><div class="billing-meta">4 branches &nbsp;·&nbsp; 30 seats &nbsp;·&nbsp; Renews June 21, 2026</div></div>
+      <div style="text-align:right"><div class="billing-price">$1,380<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/mo</span></div><span class="pill pill-pos">Active</span></div>
+    </div>
+    <div class="grid-2 fu2">
+      <div class="card card-p">
+        <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Invoice History</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">May 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,380</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">Apr 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,280</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">Mar 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,280</div></div>
+      </div>
+      <div class="card card-p">
+        <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Plan Details</div></div>
+        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Plan</span><span style="font-size:13px;font-weight:600">Pro Multi-Branch</span></div>
+        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Billing</span><span style="font-size:13px;font-weight:600">Monthly</span></div>
+        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Seats</span><span style="font-size:13px;font-weight:600">30 (23 used)</span></div>
+        <div class="seat-row" style="border-bottom:none"><span style="font-size:13px;color:var(--muted)">Next charge</span><span style="font-size:13px;font-weight:600">$1,380 on Jun 21</span></div>
+        <div style="margin-top:14px;display:flex;gap:8px"><button class="btn btn-outline btn-sm">Switch to annual (save $2,760)</button><button class="btn btn-danger btn-sm" onclick="showToast('Contact support to cancel')">Cancel plan</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ HELP & SUPPORT ═══ -->
+<div class="app-scr" id="app-help">
+  <div class="pg-header fu">
+    <div>
+      <div class="pg-title">Help &amp; Support</div>
+      <div class="pg-sub">Search answers, browse articles, or raise a support ticket</div>
+    </div>
+    <div class="pg-actions">
+      <button class="btn btn-primary btn-sm" onclick="hwTab('ticket');document.getElementById('help-widget').classList.add('on')">+ New Ticket</button>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="fu1" style="position:relative;margin-bottom:22px">
+    <input id="help-search" style="width:100%;padding:14px 18px 14px 46px;background:white;border:1.5px solid #EDE8DE;border-radius:12px;font-size:14px;font-family:Inter,sans-serif;color:#0E1B24;outline:none;box-shadow:0 2px 8px rgba(30,50,70,.06);" placeholder="Search help articles e.g. speed to lead, CRM compliance, pipeline..." oninput="helpSearch(this.value)" onfocus="this.style.borderColor='#1F3A5F'" onblur="this.style.borderColor='#EDE8DE'"/>
+    <svg style="position:absolute;left:15px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#6B7680" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
+
+  <!-- Search results (hidden by default) -->
+  <div id="help-search-results" style="display:none;margin-bottom:20px" class="card">
+    <div style="padding:14px 18px;border-bottom:1px solid #EDE8DE;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6B7680">Search Results</div>
+    <div id="help-search-list" style="padding:6px 0"></div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="grid-4 fu2" style="margin-bottom:22px">
+    <div class="card card-p" style="text-align:center">
+      <div style="font-size:28px;font-weight:800;color:#1F3A5F;margin-bottom:4px">47</div>
+      <div style="font-size:12px;font-weight:700;color:#6B7680;text-transform:uppercase;letter-spacing:.05em">Help Articles</div>
+    </div>
+    <div class="card card-p" style="text-align:center">
+      <div style="font-size:28px;font-weight:800;color:#3F6E4A;margin-bottom:4px">2</div>
+      <div style="font-size:12px;font-weight:700;color:#6B7680;text-transform:uppercase;letter-spacing:.05em">Open Tickets</div>
+    </div>
+    <div class="card card-p" style="text-align:center">
+      <div style="font-size:28px;font-weight:800;color:#0F5866;margin-bottom:4px">&lt;4h</div>
+      <div style="font-size:12px;font-weight:700;color:#6B7680;text-transform:uppercase;letter-spacing:.05em">Avg Response</div>
+    </div>
+    <div class="card card-p" style="text-align:center">
+      <div style="font-size:28px;font-weight:800;color:#B57B1F;margin-bottom:4px">98%</div>
+      <div style="font-size:12px;font-weight:700;color:#6B7680;text-transform:uppercase;letter-spacing:.05em">Satisfaction</div>
+    </div>
+  </div>
+
+  <div class="grid-2 fu3">
+    <!-- Knowledge Base -->
+    <div>
+      <div class="sec-head" style="margin-bottom:14px"><div class="sec-title">Browse by Category</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="help-cat-card" onclick="helpOpenCat('getting-started')">
+          <div class="hcc-icon" style="background:#D6E4F0">&#128640;</div>
+          <div class="hcc-body"><div class="hcc-title">Getting Started</div><div class="hcc-sub">Setup, CRM connection, first sync</div></div>
+          <div class="hcc-count">8 articles</div>
+        </div>
+        <div class="help-cat-card" onclick="helpOpenCat('reports')">
+          <div class="hcc-icon" style="background:#D4EDDA">&#128202;</div>
+          <div class="hcc-body"><div class="hcc-title">Reports &amp; Metrics</div><div class="hcc-sub">How KPIs are calculated, chart explanations</div></div>
+          <div class="hcc-count">14 articles</div>
+        </div>
+        <div class="help-cat-card" onclick="helpOpenCat('data')">
+          <div class="hcc-icon" style="background:#FFF3CD">&#128260;</div>
+          <div class="hcc-body"><div class="hcc-title">Data Pipeline</div><div class="hcc-sub">Connectors, manual imports, deduplication</div></div>
+          <div class="hcc-count">10 articles</div>
+        </div>
+        <div class="help-cat-card" onclick="helpOpenCat('comms')">
+          <div class="hcc-icon" style="background:#E8D5F5">&#128222;</div>
+          <div class="hcc-body"><div class="hcc-title">Communication Hub</div><div class="hcc-sub">Alerts, message approval, sent log</div></div>
+          <div class="hcc-count">7 articles</div>
+        </div>
+        <div class="help-cat-card" onclick="helpOpenCat('billing')">
+          <div class="hcc-icon" style="background:#FCE8D4">&#128179;</div>
+          <div class="hcc-body"><div class="hcc-title">Billing &amp; Plans</div><div class="hcc-sub">Upgrading, seats, invoices</div></div>
+          <div class="hcc-count">5 articles</div>
+        </div>
+        <div class="help-cat-card" onclick="helpOpenCat('mobile')">
+          <div class="hcc-icon" style="background:#D1ECE3">&#128241;</div>
+          <div class="hcc-body"><div class="hcc-title">Mobile &amp; PWA</div><div class="hcc-sub">Install, offline access, mobile nav</div></div>
+          <div class="hcc-count">3 articles</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: My Tickets + Popular -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <!-- My Tickets -->
+      <div class="card">
+        <div style="padding:16px 18px"><div class="sec-head"><div class="sec-title">My Tickets</div><a class="sec-action" onclick="hwTab('mytickets');toggleHelp()">View all &#8594;</a></div></div>
+        <div style="padding:0 0 8px">
+          <div class="hw-tkt" style="margin:0 14px 8px;border-radius:10px">
+            <div class="hw-tkt-head"><span class="hw-tkt-ref">HUB-2847</span><span class="hw-tkt-status st-progress">In Progress</span></div>
+            <div class="hw-tkt-subj">WhatConverts connector failing</div>
+            <div class="hw-tkt-meta">Opened 2 days ago &#183; Last reply: 4 hours ago</div>
+          </div>
+          <div class="hw-tkt" style="margin:0 14px 8px;border-radius:10px">
+            <div class="hw-tkt-head"><span class="hw-tkt-ref">HUB-2831</span><span class="hw-tkt-status st-open">Open</span></div>
+            <div class="hw-tkt-subj">Speed to lead showing wrong value</div>
+            <div class="hw-tkt-meta">Opened 5 days ago &#183; Awaiting reply</div>
+          </div>
+          <div class="hw-tkt" style="margin:0 14px;border-radius:10px">
+            <div class="hw-tkt-head"><span class="hw-tkt-ref">HUB-2810</span><span class="hw-tkt-status st-resolved">Resolved</span></div>
+            <div class="hw-tkt-subj">How to add a new branch</div>
+            <div class="hw-tkt-meta">Resolved 1 week ago &#183; &#11088; Rated helpful</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popular articles -->
+      <div class="card card-p">
+        <div class="sec-head" style="margin-bottom:12px"><div class="sec-title">Most Helpful Articles</div></div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div class="help-article-row" onclick="showArticle('speed-to-lead')">&#128196; How speed to lead is calculated</div>
+          <div class="help-article-row" onclick="showArticle('crm-compliance')">&#128196; Understanding CRM compliance %</div>
+          <div class="help-article-row" onclick="showArticle('connect-whatconverts')">&#128196; Connecting WhatConverts to The Hub</div>
+          <div class="help-article-row" onclick="showArticle('funnel-explained')">&#128196; What the pipeline funnel shows</div>
+          <div class="help-article-row" onclick="showArticle('roi-calc')">&#128196; How ROI and CAC are computed</div>
+          <div class="help-article-row" onclick="showArticle('free-vs-paid')">&#128196; Free plan vs paid plan — what changes</div>
+          <div class="help-article-row" onclick="showArticle('weekly-audit')">&#128196; How the weekly audit works</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /body-wrap -->
+
+<!-- ════════════════════════════════════════════════ MODALS ═══ -->
+<div class="modal-back" id="modal-draft-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Draft Message — Revenue Gap</div><div class="modal-sub">AI-drafted based on gap size, closer ranking, and past response patterns</div></div><button class="modal-close" onclick="closeModal('draft-modal')">×</button></div>
+    <div class="modal-body">
+      <div style="background:var(--panel);border-radius:10px;padding:16px;font-size:13.5px;line-height:1.7;font-family:'Inter',sans-serif;color:var(--slate);margin-bottom:16px">
+        "Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you push 1–2 deals this week to close the gap? Anything I can do to help — let me know. — John"
+      </div>
+      <div class="inp-row"><label class="lbl">Send via</label><select class="inp"><option>SMS</option><option>Email</option><option>In-app</option></select></div>
+      <div class="inp-row"><label class="lbl">Recipients</label><input class="inp" value="Marcus Webb, Lisa Chen"/></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('draft-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('draft-modal');showToast('✅ Messages sent to Marcus & Lisa')">Approve & send</button></div>
+  </div>
+</div>
+
+<div class="modal-back" id="modal-invite-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Invite a team member</div><div class="modal-sub">1 seat will be reserved on invite, consumed on acceptance</div></div><button class="modal-close" onclick="closeModal('invite-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="inp-row"><label class="lbl">Email address</label><input class="inp" placeholder="team@smithroofing.com"/></div>
+      <div class="inp-row"><label class="lbl">Role</label><select class="inp"><option>Sales Rep — sees own performance only</option><option>Branch Manager — sees one branch</option><option>Owner — full access</option></select></div>
+      <div class="inp-row"><label class="lbl">Branch</label><select class="inp"><option>NJ — Montclair</option><option>NY — Queens</option><option>FL — Tampa</option><option>Miami</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('invite-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('invite-modal');showToast('📧 Invite sent — 1 seat reserved')">Send invite</button></div>
+  </div>
+</div>
+
+<div class="modal-back" id="modal-add-seats-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Add seats</div><div class="modal-sub">Prorated billing — only pay for the days remaining this month</div></div><button class="modal-close" onclick="closeModal('add-seats-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="inp-row"><label class="lbl">Number of seats to add</label><input class="inp" type="number" value="5" min="1"/></div>
+      <div style="background:var(--panel);border-radius:10px;padding:14px;font-size:13px;color:var(--slate)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>5 seats × $46/seat/mo</span><span style="font-weight:700">$230/mo added</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Prorated (10 days remaining)</span><span style="font-weight:700;color:var(--pos)">$76.67 today</span></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('add-seats-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('add-seats-modal');showToast('✅ 5 seats added — $76.67 charged')">Confirm & add seats</button></div>
+  </div>
+</div>
+
+<div class="modal-back" id="modal-dedup-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Duplicate Review — James T. Roark</div><div class="modal-sub">CRM ID conflict between manual import and GHL</div></div><button class="modal-close" onclick="closeModal('dedup-modal')">×</button></div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="background:var(--panel);border-radius:10px;padding:14px;font-size:12.5px"><div style="font-weight:700;margin-bottom:8px;color:var(--cyan)">GHL Record</div><div>Phone: (973) 555-0142</div><div>Email: james@roark.com</div><div>Source: Door Knock</div><div style="margin-top:8px"><span class="pill pill-pos" style="font-size:11px">Master data rule</span></div></div>
+        <div style="background:var(--panel);border-radius:10px;padding:14px;font-size:12.5px"><div style="font-weight:700;margin-bottom:8px">Manual Import</div><div>Phone: (973) 555-0142</div><div>Email: j.roark@email.net</div><div>Source: Inbound Call</div><div style="margin-top:8px"><span class="pill pill-caut" style="font-size:11px">Secondary</span></div></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('dedup-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('dedup-modal');showToast('✓ GHL record kept as master')">Keep GHL record</button></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ TOAST ═══ -->
+<div id="toast-wrap"></div>
+
+<script>
+
+// DATE
+document.getElementById('tb-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+// AUTH
+function authGo(id){
+  if(id==='dashboard-entry'){enterApp();return;}
+  var all=document.querySelectorAll('#auth-wrap .scr, #auth-wrap [id^="scr-"]');
+  for(var i=0;i<all.length;i++){all[i].style.display='none';}
+  var el=document.getElementById('scr-'+id);
+  if(el){el.style.display='block';el.style.animation='fadeUp .4s cubic-bezier(.22,1,.36,1) both';}
+  if(id==='syncing')startSync();
+}
+function toggleCheck(row){
+  var cb=row.querySelector('.check-box');
+  cb.classList.toggle('on');
+  cb.textContent=cb.classList.contains('on')?'v':'';
+}
+
+// CRM
+function pickCRM(card,name){
+  var all=document.querySelectorAll('.crm-card');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  card.classList.add('on');
+  document.getElementById('crm-creds').style.display='block';
+  document.getElementById('crm-btn').style.display='flex';
+  document.getElementById('crm-email').placeholder=name+'@your-email.com';
+}
+function checkMulti(){
+  var v=document.getElementById('ctype').value;
+  document.getElementById('multi-note').style.display=(v.indexOf('Multi')>-1||v.indexOf('Franchise')>-1)?'block':'none';
+}
+
+// BRANCHES
+function addBranch(){
+  var n=document.getElementById('nb-name').value.trim();
+  if(!n)return;
+  var colors=['#1F3A5F','#0F5866','#B57B1F','#3F6E4A','#9B3A2A'];
+  var el=document.getElementById('branch-list');
+  var col=colors[el.querySelectorAll('div').length%colors.length];
+  var d=document.createElement('div');
+  d.className='card-sm';
+  d.style.cssText='padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between';
+  d.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:'+col+'"></div><div style="font-size:13px;font-weight:700">'+n+'</div></div><button class="btn btn-outline btn-xs">Edit</button>';
+  el.appendChild(d);
+  document.getElementById('nb-name').value='';
+}
+
+// PLAN
+function pickPlan(card){
+  var all=document.querySelectorAll('.plan-card');
+  for(var i=0;i<all.length;i++){if(!all[i].classList.contains('featured'))all[i].classList.remove('on');}
+  card.classList.add('on');
+}
+function setBilling(el,type){
+  var all=document.querySelectorAll('.df-opt');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  el.classList.add('on');
+}
+
+// SYNC ANIMATION
+function startSync(){
+  var delay=[400,1200,2400,3800];
+  for(var n=1;n<=4;n++){
+    (function(i){
+      setTimeout(function(){
+        var dot=document.getElementById('ss'+i+'-dot');
+        var step=document.getElementById('ss'+i);
+        if(!dot||!step)return;
+        dot.className='sync-dot active';
+        dot.innerHTML='...';
+        step.className='sync-step active';
+        setTimeout(function(){
+          dot.className='sync-dot done';
+          dot.innerHTML='OK';
+          step.className='sync-step done';
+          if(i===4){
+            setTimeout(function(){
+              var sd=document.getElementById('sync-done');
+              if(sd)sd.style.display='block';
+            },400);
+          }
+        },900);
+      },delay[i-1]);
+    })(n);
+  }
+}
+
+// PLAN STATE
+window._plan='paid';
+
+function applyPlan(){
+  var free=(window._plan==='free');
+  var tb=document.getElementById('trial-bar');
+  if(tb)tb.style.display=free?'flex':'none';
+  var sn=document.getElementById('sb-nudge');
+  if(sn)sn.style.display=free?'block':'none';
+  var gids=['r1','r2','r3','r4'];
+  for(var i=0;i<gids.length;i++){
+    var g=document.getElementById('gate-'+gids[i]);
+    if(g)g.style.display=free?'flex':'none';
+  }
+  var locked=['sbi-comms','sbi-audit'];
+  for(var i=0;i<locked.length;i++){
+    var el=document.getElementById(locked[i]);
+    if(!el)continue;
+    el.style.opacity=free?'0.4':'';
+    el.style.pointerEvents=free?'none':'';
+  }
+}
+
+
+function upgradePlan(){
+  previewPlan('paid');
+  closeModal('upgrade-modal');
+  showToast('Upgraded! All reports now unlocked.');
+}
+
+function previewPlan(plan){
+  window._plan=plan;
+  applyPlan();
+  // update the billing page switcher buttons
+  var fb=document.getElementById('preview-free-btn');
+  var pb=document.getElementById('preview-paid-btn');
+  var fv=document.getElementById('billing-free-view');
+  var pv=document.getElementById('billing-paid-view');
+  if(plan==='free'){
+    if(fb){fb.style.background='white';fb.style.color='#1F3A5F';}
+    if(pb){pb.style.background='transparent';pb.style.color='rgba(255,255,255,.5)';}
+    if(fv)fv.style.display='block';
+    if(pv)pv.style.display='none';
+    showToast('Now previewing: Free Plan — reports are gated');
+  } else {
+    if(fb){fb.style.background='transparent';fb.style.color='rgba(255,255,255,.5)';}
+    if(pb){pb.style.background='white';pb.style.color='#1F3A5F';}
+    if(fv)fv.style.display='none';
+    if(pv)pv.style.display='block';
+    showToast('Now previewing: Paid Plan — all reports unlocked');
+  }
+}
+
+// ENTER APP
+function enterApp(){
+  document.getElementById('auth-wrap').style.display='none';
+  document.getElementById('topbar').style.display='flex';
+  document.getElementById('sidebar').style.display='flex';
+  document.getElementById('body-wrap').style.flex='1';
+  var co=document.getElementById('inp-co');
+  document.getElementById('tb-co').textContent=co?co.value:'Smith Roofing LLC';
+  document.getElementById('sb-co').textContent=co?co.value:'Smith Roofing LLC';
+  var freeSel=document.querySelector('.plan-card.on .plan-name');
+  window._plan=(freeSel&&freeSel.textContent.trim().toLowerCase()==='free')?'free':'paid';
+  applyPlan();
+  buildGates();
+  document.getElementById('help-btn').style.display='flex';
+  goApp('dashboard');
+  setTimeout(initCharts,300);
+  setTimeout(checkPWABanner,5000);
+}
+
+// NAV
+function goApp(id){
+  if(window._plan==='free'&&(id==='comms'||id==='audit')){
+    openModal('upgrade-modal');
+    return;
+  }
+  var screens=document.querySelectorAll('.app-scr');
+  for(var i=0;i<screens.length;i++){screens[i].classList.remove('on');}
+  var el=document.getElementById('app-'+id);
+  if(el)el.classList.add('on');
+  var sbis=document.querySelectorAll('.sbi');
+  for(var i=0;i<sbis.length;i++){sbis[i].classList.remove('on');}
+  var sbi=document.getElementById('sbi-'+id);
+  if(sbi)sbi.classList.add('on');
+  document.getElementById('main').scrollTop=0;
+  if(id==='r1'&&!window._r1)setTimeout(initR1Charts,200);
+  if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
+}
+
+function mnActive(id){
+  var all=document.querySelectorAll('.mn-item');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  var el=document.getElementById('mn-'+id);
+  if(el)el.classList.add('on');
+}
+
+// GATE OVERLAYS
+function buildGates(){
+  var list=[
+    {key:'r1',title:'Full Marketing Attribution',feats:['CAC by channel (Door Knock, Google, Angi)','ROI multiplier per source','Week-over-week ROI alerts','Full spend vs return breakdown']},
+    {key:'r2',title:'Full Rep Performance Leaderboard',feats:['All reps ranked by close rate and revenue','Speed-to-lead per rep','CRM compliance with coaching flags','Follow-up rate tracking']},
+    {key:'r3',title:'Full Pipeline and Funnel Breakdown',feats:['Stage-by-stage drop-off counts','Stuck leads list with rep names','Loss reason chart','Avg days per stage']},
+    {key:'r4',title:'Full Revenue Intelligence',feats:['Revenue vs monthly target','Expected revenue from pipeline','Rep-level attribution','Gap alerts and closer targeting']}
+  ];
+  for(var li=0;li<list.length;li++){
+    (function(cfg){
+      var r=cfg.key;
+      if(document.getElementById('gate-'+r))return;
+      var screen=document.getElementById('app-'+r);
+      if(!screen)return;
+      var feats='';
+      for(var fi=0;fi<cfg.feats.length;fi++){
+        feats+='<div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#2A3B47;padding:4px 0"><div style="width:20px;height:20px;background:#EBF5EC;color:#3F6E4A;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">OK</div>'+cfg.feats[fi]+'</div>';
+      }
+      var div=document.createElement('div');
+      div.id='gate-'+r;
+      div.style.cssText='display:none;position:relative;border-radius:14px;overflow:hidden;min-height:260px;margin-top:20px';
+      var dummy='<div style="padding:20px;filter:blur(5px);opacity:0.4"><div style="height:50px;background:#C8C2B6;border-radius:8px;margin-bottom:10px"></div><div style="height:50px;background:#C8C2B6;border-radius:8px;margin-bottom:10px"></div><div style="height:100px;background:#C8C2B6;border-radius:8px"></div></div>';
+      var overlay='<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;background:linear-gradient(to bottom,rgba(244,241,236,0),rgba(244,241,236,0.95) 30%,rgba(244,241,236,1) 55%)"><div style="font-size:34px;margin-bottom:8px">&#128274;</div><div style="background:#1F3A5F;color:white;font-size:11px;font-weight:800;padding:5px 14px;border-radius:99px;margin-bottom:12px;letter-spacing:.04em;text-transform:uppercase">Paid Plan Required</div><div style="font-size:19px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em">'+cfg.title+'</div><div style="font-size:13.5px;color:#6B7680;line-height:1.5;margin-bottom:16px;max-width:300px">Available on the Basic plan ($99/mo) and above.</div><div style="display:flex;flex-direction:column;gap:4px;margin-bottom:20px;text-align:left;width:100%;max-width:280px">'+feats+'</div><button id="gbtn-'+r+'" class="btn btn-primary btn-lg" style="width:100%;max-width:280px;font-size:15px;padding:14px">Upgrade Now - Unlock All Reports</button><div style="margin-top:10px;font-size:12px;color:#6B7680">No contract. Cancel anytime.</div></div>';
+      div.innerHTML=dummy+overlay;
+      screen.appendChild(div);
+      var btn=document.getElementById('gbtn-'+r);
+      if(btn){
+        btn.onclick=function(){openModal('upgrade-modal');};
+      }
+    })(list[li]);
+  }
+}
+
+// BRANCH / DATE FILTER
+function filterBranch(chip,branch){
+  var all=document.querySelectorAll('.branch-chip');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  chip.classList.add('on');
+  document.getElementById('tb-branch-name').textContent=chip.textContent.trim();
+  showToast('Filtered to: '+chip.textContent.trim());
+}
+function setDF(el){
+  var all=document.querySelectorAll('#topbar .df-opt');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');all[i].style.color='rgba(255,255,255,.5)';}
+  el.classList.add('on');
+  el.style.color='rgba(255,255,255,.85)';
+}
+
+// TABS
+function switchTab(tab,panelId){
+  var parent=tab.closest('.tabs');
+  var tabs=parent.querySelectorAll('.tab');
+  for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('on');}
+  tab.classList.add('on');
+  var scr=parent.closest('.app-scr');
+  var panels=scr.querySelectorAll('.tab-panel');
+  for(var i=0;i<panels.length;i++){panels[i].classList.remove('on');}
+  var panel=document.getElementById('tab-'+panelId);
+  if(panel)panel.classList.add('on');
+}
+
+// MODALS
+function openModal(id){
+  var el=document.getElementById('modal-'+id);
+  if(el)el.classList.add('on');
+}
+function closeModal(id){
+  var el=document.getElementById('modal-'+id);
+  if(el)el.classList.remove('on');
+}
+function closeModalBack(e){
+  if(e.target===e.currentTarget)e.currentTarget.classList.remove('on');
+}
+
+// NOTIFICATIONS
+function toggleNotif(){
+  document.getElementById('notif-tray').classList.toggle('on');
+}
+document.addEventListener('click',function(e){
+  var t=document.getElementById('notif-tray');
+  var bell=document.getElementById('tb-bell');
+  if(t&&t.classList.contains('on')&&bell&&!bell.contains(e.target)&&!t.contains(e.target)){
+    t.classList.remove('on');
+  }
+});
+function toggleBranchMenu(){showToast('Branch selector - coming soon');}
+
+// TOAST
+function showToast(msg){
+  var w=document.getElementById('toast-wrap');
+  if(!w)return;
+  var t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  w.appendChild(t);
+  setTimeout(function(){
+    t.style.opacity='0';
+    setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);
+  },3000);
+}
+
+// OTP
+function otpNext(inp,i){
+  inp.classList.add('filled');
+  if(inp.value&&i<3){
+    var nx=document.getElementById('otp'+(i+1));
+    if(nx)nx.focus();
+  }
+}
+
+// PWA
+var _deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  _deferredPrompt=e;
+});
+function checkPWABanner(){
+  if(window.innerWidth>768)return;
+  if(window.matchMedia('(display-mode:standalone)').matches)return;
+  var off=false;
+  try{off=!!localStorage.getItem('pwa-off');}catch(ex){}
+  if(!off){
+    var b=document.getElementById('pwa-banner');
+    if(b){b.classList.add('on');setTimeout(function(){b.classList.remove('on');},10000);}
+  }
+}
+function installPWA(){
+  var b=document.getElementById('pwa-banner');
+  if(b)b.classList.remove('on');
+  if(_deferredPrompt){
+    _deferredPrompt.prompt();
+    _deferredPrompt.userChoice.then(function(){_deferredPrompt=null;});
+  } else {
+    showToast('Tap Share then Add to Home Screen');
+  }
+}
+function dismissPWA(){
+  var b=document.getElementById('pwa-banner');
+  if(b)b.classList.remove('on');
+  try{localStorage.setItem('pwa-off','1');}catch(ex){}
+}
+
+// CHARTS
+function initCharts(){
+  var c1=document.getElementById('chart-sources');
+  if(c1&&!c1._chart){
+    c1._chart=new Chart(c1,{type:'bar',data:{labels:['Door Knock','Inbound','Google','Social','Angi'],datasets:[{data:[89,64,47,29,18],backgroundColor:['#1F3A5F','#0F5866','#3F6E4A','#B57B1F','#9B3A2A'],borderRadius:6,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{family:'Inter',size:12}}},y:{grid:{color:'rgba(200,194,182,.4)'},ticks:{font:{family:'Inter',size:12}}}}}});
+  }
+  var fw=document.getElementById('funnel-wrap');
+  if(fw&&!fw._built){
+    fw._built=true;
+    var f=[{l:'Total Leads',v:312,p:'100%'},{l:'Entered CRM',v:264,p:'85%'},{l:'Appointment',v:162,p:'52%'},{l:'Estimate Sent',v:126,p:'40%'},{l:'Won',v:87,p:'28%'}];
+    for(var i=0;i<f.length;i++){
+      var w=Math.round((f[i].v/312)*280);
+      fw.innerHTML+=('<div class="funnel-item"><div class="funnel-label">'+f[i].l+'</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:'+w+'px" data-val="'+f[i].v+'"></div></div><div class="funnel-pct">'+f[i].p+'</div></div>');
+    }
+  }
+}
+
+function initR1Charts(){
+  window._r1=true;
+  var c=document.getElementById('chart-roi');
+  if(c&&!c._chart){
+    c._chart=new Chart(c,{type:'bar',data:{labels:['Door Knock','Inbound','Google Ads','Social','Angi'],datasets:[{data:[6.2,4.8,3.1,2.4,1.4],backgroundColor:function(ctx){var v=ctx.raw;return v>=4?'#3F6E4A':(v>=2.5?'#B57B1F':'#9B3A2A');},borderRadius:6,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{family:'Inter',size:12}}},y:{grid:{color:'rgba(200,194,182,.4)'},ticks:{font:{family:'Inter',size:12},callback:function(v){return v+'x';}}}}}});
+  }
+}
+
+function initR3Charts(){
+  window._r3=true;
+  var fw=document.getElementById('funnel-r3');
+  if(fw&&!fw._built){
+    fw._built=true;
+    var f=[{l:'Total Leads',v:312,p:'100%'},{l:'To CRM',v:264,p:'85%'},{l:'Appointment',v:162,p:'52%'},{l:'Estimate',v:126,p:'40%'},{l:'Won',v:87,p:'28%'}];
+    var colors=['#1F3A5F','#2A4E72','#3F6E4A','#B57B1F','#9B3A2A'];
+    for(var i=0;i<f.length;i++){
+      var w=Math.round((f[i].v/312)*220);
+      fw.innerHTML+=('<div class="funnel-item"><div class="funnel-label">'+f[i].l+'</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:'+w+'px;background:'+colors[i]+'" data-val="'+f[i].v+'"></div></div><div class="funnel-pct">'+f[i].p+'</div></div>');
+    }
+  }
+  var ctx=document.getElementById('chart-loss');
+  if(ctx&&!ctx._chart){
+    ctx._chart=new Chart(ctx,{type:'doughnut',data:{labels:['Price too high','No response','Competitor','Not ready','Other'],datasets:[{data:[34,28,19,12,7],backgroundColor:['#9B3A2A','#B57B1F','#1F3A5F','#3F6E4A','#C8C2B6'],borderWidth:3,borderColor:'#FFFFFF',hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:true,aspectRatio:1.5,plugins:{legend:{position:'bottom',labels:{font:{family:'Inter',size:12,weight:'600'},boxWidth:12,boxHeight:12,padding:14,usePointStyle:true,pointStyle:'rectRounded'}},tooltip:{callbacks:{label:function(c){var total=c.dataset.data.reduce(function(a,b){return a+b;},0);return ' '+c.label+': '+Math.round(c.raw/total*100)+'% ('+c.raw+' leads)';}},titleFont:{family:'Inter',size:13,weight:'700'},bodyFont:{family:'Inter',size:12},padding:10,boxPadding:4}},cutout:'58%'}});
+    if(window.ResizeObserver){
+      new ResizeObserver(function(){if(ctx._chart)ctx._chart.resize();}).observe(ctx.parentElement);
+    }
+  }
+}
+
+
+var _helpOpen = false;
+var _hwPrio = 'medium';
+var _ticketCount = 2847;
+
+function toggleHelp(){
+  var w = document.getElementById('help-widget');
+  _helpOpen = !_helpOpen;
+  if(_helpOpen){
+    w.classList.add('on');
+    if(!document.getElementById('hw-msg-list').hasChildNodes()){
+      hwGreet();
+    }
+    hwRenderTickets();
+  } else {
+    w.classList.remove('on');
+  }
+}
+
+function hwTab(tab){
+  var tabs = ['chat','ticket','mytickets'];
+  for(var i=0;i<tabs.length;i++){
+    var t = document.getElementById('hwt-'+tabs[i]);
+    var p = document.getElementById('hwp-'+tabs[i]);
+    if(t) t.classList.remove('on');
+    if(p) p.classList.remove('on');
+  }
+  var at = document.getElementById('hwt-'+tab);
+  var ap = document.getElementById('hwp-'+tab);
+  if(at) at.classList.add('on');
+  if(ap) ap.classList.add('on');
+  if(tab==='mytickets') hwRenderTickets();
+}
+
+function hwGreet(){
+  var ml = document.getElementById('hw-msg-list');
+  var hour = new Date().getHours();
+  var greet = hour < 12 ? 'Good morning' : (hour < 17 ? 'Good afternoon' : 'Good evening');
+  hwAddMsg('bot', greet + ', John! I am the Hub support assistant. Ask me anything about your dashboard, reports, or data — or raise a ticket if you need the team.');
+}
+
+function hwAddMsg(type, text, extra){
+  var ml = document.getElementById('hw-msg-list');
+  var sugg = document.getElementById('hw-suggestions');
+  if(sugg) sugg.style.display = 'none';
+
+  var div = document.createElement('div');
+  div.className = 'msg msg-'+type;
+
+  var p = document.createElement('div');
+  p.textContent = text;
+  div.appendChild(p);
+
+  if(type==='bot' && extra){
+    if(extra.source){
+      var src = document.createElement('div');
+      src.className = 'msg-source';
+      src.innerHTML = '&#128196; ' + extra.source + ' &#8594;';
+      src.onclick = (function(s){return function(){showArticle(s);};})(extra.sourceId);
+      div.appendChild(src);
+    }
+    var rat = document.createElement('div');
+    rat.className = 'msg-rating';
+    rat.innerHTML = '<span class="msg-rating-lbl">Helpful?</span>'
+      + '<button class="rating-btn rating-yes" onclick="rateMsg(this,true)">Yes &#128077;</button>'
+      + '<button class="rating-btn rating-no" onclick="rateMsg(this,false)">No &#128078;</button>';
+    div.appendChild(rat);
+  }
+  ml.appendChild(div);
+  ml.scrollTop = ml.scrollHeight;
+}
+
+function rateMsg(btn, helpful){
+  var row = btn.parentElement;
+  if(helpful){
+    row.innerHTML = '<span style="font-size:12px;color:#3F6E4A;font-weight:600">&#128077; Thanks for the feedback!</span>';
+  } else {
+    row.innerHTML = '<span style="font-size:12px;color:#6B7680">Sorry about that. <span style="color:#1F3A5F;cursor:pointer;font-weight:600" onclick="hwTab(\'ticket\')">Raise a ticket?</span></span>';
+  }
+}
+
+function hwKeydown(e){ if(e.key==='Enter') hwSend(); }
+
+function hwAsk(q){
+  document.getElementById('hw-input').value = q;
+  hwSend();
+}
+
+var hwKnowledge = [
+  {q:['speed to lead','speed-to-lead','how is speed','lead time'],
+   a:'Speed to Lead is calculated as the time between when a lead is created (first CallRail call timestamp) and when your rep first contacts them in GHL. Formula: CallRail.first_call minus GHL.created_at. The SLA target is under 60 minutes.',
+   source:'Speed to Lead Explained', sourceId:'speed-to-lead'},
+  {q:['crm compliance','compliance low','compliance score','crm entry'],
+   a:'CRM Compliance % is the percentage of leads assigned to a rep that have all required fields completed in GHL. Fields checked include: lead source, outcome stage, contact date, and rep notes. Below 60% triggers an alert.',
+   source:'Understanding CRM Compliance', sourceId:'crm-compliance'},
+  {q:['whatconverts','what converts','wc connector'],
+   a:'To connect WhatConverts: go to Data Pipeline > Connectors tab > click Add Connector > select WhatConverts > authorise via OAuth. If it fails, check your WhatConverts account has API access enabled under Settings > Integrations.',
+   source:'Connecting WhatConverts', sourceId:'connect-whatconverts'},
+  {q:['pipeline funnel','funnel show','funnel work','drop off'],
+   a:'The Pipeline Funnel shows how many leads pass through each stage: Total Leads > Entered CRM > Appointment Set > Estimate Sent > Won. Each bar shows the count and the % conversion from the previous stage.',
+   source:'Pipeline Funnel Explained', sourceId:'funnel-explained'},
+  {q:['roi','cac','return on investment','cost per lead','marketing attribution'],
+   a:'ROI is calculated as Won Revenue from a channel divided by total spend on that channel. CAC (Customer Acquisition Cost) = channel spend divided by number of won deals from that channel. Both are pulled from your marketing expense imports and CRM won data.',
+   source:'How ROI and CAC are Computed', sourceId:'roi-calc'},
+  {q:['free plan','paid plan','upgrade','what changes','difference'],
+   a:'On the Free plan you get the full Dashboard overview only. Reports R1-R4, Communication Hub, and Weekly Audit are locked. Upgrading to Basic ($99/mo) unlocks all 5 reports, Communication Hub, and Weekly Audit for 1 branch.',
+   source:'Free vs Paid Plan', sourceId:'free-vs-paid'},
+  {q:['weekly audit','audit work','audit submission'],
+   a:'The Weekly Audit requires every rep to submit their activity summary by Sunday midnight. You can see who has submitted on the Weekly Audit screen. Pending reps can be nudged individually or in bulk. The compliance rate feeds into the R2 Rep Performance report.',
+   source:'How the Weekly Audit Works', sourceId:'weekly-audit'},
+  {q:['stuck leads','stuck','not moving'],
+   a:'Stuck leads are leads that have not had a pipeline stage change in 7 or more days. They appear in the Pipeline & Funnel report (R3) and trigger a Communication Hub alert when 5 or more leads are stuck. You can draft nudge messages to affected reps directly from the alert.',
+   source:'Pipeline Funnel Explained', sourceId:'funnel-explained'},
+  {q:['branch','add branch','new branch','multi location'],
+   a:'To add a new branch, go to your Company Setup (accessible from Billing > plan details). Click Add Branch, enter the branch name and location, assign a colour, and save. The new branch will appear in the branch filter strip on the dashboard immediately.',
+   source:'Getting Started', sourceId:'getting-started'},
+  {q:['churn','cancel','cancellation'],
+   a:'To cancel your plan, go to Subscription & Billing > Plan Details > Cancel Plan. You will keep access until the end of your current billing period. Your data is retained for 90 days after cancellation.',
+   source:'Billing & Plans', sourceId:'billing'},
+];
+
+function hwSend(){
+  var inp = document.getElementById('hw-input');
+  var q = inp.value.trim();
+  if(!q) return;
+  inp.value = '';
+
+  hwAddMsg('user', q);
+
+  var ml = document.getElementById('hw-msg-list');
+  var typing = document.createElement('div');
+  typing.className = 'typing-dots';
+  typing.id = 'typing-indicator';
+  typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  ml.appendChild(typing);
+  ml.scrollTop = ml.scrollHeight;
+
+  setTimeout(function(){
+    var ti = document.getElementById('typing-indicator');
+    if(ti && ti.parentNode) ti.parentNode.removeChild(ti);
+
+    var ql = q.toLowerCase();
+    var matched = null;
+    for(var i=0;i<hwKnowledge.length;i++){
+      var kw = hwKnowledge[i].q;
+      for(var j=0;j<kw.length;j++){
+        if(ql.indexOf(kw[j]) > -1){
+          matched = hwKnowledge[i];
+          break;
+        }
+      }
+      if(matched) break;
+    }
+
+    if(matched){
+      hwAddMsg('bot', matched.a, {source: matched.source, sourceId: matched.sourceId});
+    } else {
+      hwAddMsg('bot', 'I am not sure about that one. Let me connect you with the support team — they typically respond within 4 hours.');
+      var ml2 = document.getElementById('hw-msg-list');
+      var div = document.createElement('div');
+      div.style.cssText = 'align-self:flex-start;margin-top:-4px';
+      var btn = document.createElement('button');
+      btn.className = 'btn btn-primary btn-sm';
+      btn.textContent = 'Raise a Ticket';
+      btn.onclick = function(){
+        hwTab('ticket');
+        var subj = document.getElementById('tkt-subject');
+        if(subj) subj.value = q;
+      };
+      div.appendChild(btn);
+      ml2.appendChild(div);
+      ml2.scrollTop = ml2.scrollHeight;
+    }
+  }, 1100);
+}
+
+function setPrio(p){
+  _hwPrio = p;
+  var btns = ['low','medium','urgent'];
+  for(var i=0;i<btns.length;i++){
+    var b = document.getElementById('prio-'+btns[i]);
+    if(b){
+      b.classList.remove('on');
+      if(btns[i]===p) b.classList.add('on');
+    }
+  }
+}
+
+function submitTicket(){
+  var subj = document.getElementById('tkt-subject');
+  var desc = document.getElementById('tkt-desc');
+  if(!subj || !subj.value.trim()){
+    showToast('Please enter a subject for your ticket');
+    return;
+  }
+  _ticketCount++;
+  var ref = 'HUB-' + _ticketCount;
+  subj.value = '';
+  desc.value = '';
+  setPrio('medium');
+  hwTab('chat');
+  var ml = document.getElementById('hw-msg-list');
+  var div = document.createElement('div');
+  div.className = 'msg msg-bot';
+  div.innerHTML = '<div style="font-weight:700;color:#0E1B24;margin-bottom:4px">Ticket submitted &#10003;</div>'
+    + '<div>Your ticket <span style="color:#0F5866;font-weight:700">' + ref + '</span> has been received. '
+    + 'Expected response: <strong>' + (_hwPrio==='urgent'?'4 hours':_hwPrio==='medium'?'24 hours':'72 hours') + '</strong>.</div>'
+    + '<div style="font-size:12px;color:#6B7680;margin-top:6px">You can track it under My Tickets.</div>';
+  ml.appendChild(div);
+  ml.scrollTop = ml.scrollHeight;
+  showToast('Ticket ' + ref + ' submitted successfully');
+
+  var badge = document.querySelector('#help-btn .help-badge');
+  if(badge) badge.textContent = '!';
+}
+
+var _myTickets = [
+  {ref:'HUB-2847', subj:'WhatConverts connector failing', status:'progress', meta:'Opened 2 days ago · Last reply: 4 hours ago'},
+  {ref:'HUB-2831', subj:'Speed to lead showing wrong value', status:'open', meta:'Opened 5 days ago · Awaiting reply'},
+  {ref:'HUB-2810', subj:'How to add a new branch', status:'resolved', meta:'Resolved 1 week ago · ★ Rated helpful'},
+  {ref:'HUB-2798', subj:'Angi ROI dropped suddenly', status:'resolved', meta:'Resolved 2 weeks ago'},
+];
+
+function hwRenderTickets(){
+  var list = document.getElementById('hw-ticket-list');
+  if(!list) return;
+  list.innerHTML = '';
+  if(_myTickets.length === 0){
+    list.innerHTML = '<div class="hw-empty"><div class="hw-empty-icon">&#128203;</div>No tickets yet</div>';
+    return;
+  }
+  for(var i=0;i<_myTickets.length;i++){
+    var t = _myTickets[i];
+    var stCls = t.status==='open'?'st-open':(t.status==='progress'?'st-progress':'st-resolved');
+    var stLbl = t.status==='open'?'Open':(t.status==='progress'?'In Progress':'Resolved');
+    var div = document.createElement('div');
+    div.className = 'hw-tkt';
+    div.innerHTML = '<div class="hw-tkt-head"><span class="hw-tkt-ref">'+t.ref+'</span><span class="hw-tkt-status '+stCls+'">'+stLbl+'</span></div>'
+      + '<div class="hw-tkt-subj">'+t.subj+'</div>'
+      + '<div class="hw-tkt-meta">'+t.meta+'</div>';
+    list.appendChild(div);
+  }
+}
+
+// ── HELP SCREEN FUNCTIONS ──────────────────────────
+var helpArticles = {
+  'speed-to-lead':{cat:'Reports & Metrics', title:'How Speed to Lead is Calculated',
+    body:'<p>Speed to Lead measures how quickly your reps respond to a new lead. It is one of the strongest predictors of close rate in roofing sales.</p><h4>Formula</h4><p><code>Speed to Lead = CallRail.first_call_timestamp - GHL.lead_created_at</code></p><h4>Data Sources Required</h4><ol><li>CallRail must be connected (provides the first call timestamp)</li><li>GoHighLevel must be connected (provides the lead creation time)</li></ol><h4>SLA Target</h4><p>The Hub uses a default SLA of under 60 minutes. Leads responded to in under 60 minutes are marked compliant. The SLA target can be changed in your Company Settings.</p><h4>Why It Matters</h4><p>Research shows that responding within 5 minutes makes a lead 100x more likely to connect. The gap between 22 minutes (Marcus Webb) and 67 minutes (Tom Bradley) directly explains their 14-point close rate difference.</p>'},
+
+  'crm-compliance':{cat:'Reports & Metrics', title:'Understanding CRM Compliance %',
+    body:'<p>CRM Compliance % tells you how consistently your reps are filling in required fields in GoHighLevel after each lead interaction.</p><h4>What Gets Checked</h4><ul><li>Lead source (required)</li><li>Outcome / pipeline stage (required)</li><li>Contact date (required)</li><li>Rep notes (required for Won and Lost)</li></ul><h4>How It is Scored</h4><p>Each lead is checked for all required fields. A lead with all fields complete = 100% compliant. The rep score = average across all their leads.</p><h4>Alert Threshold</h4><p>Any rep below 60% triggers an alert in the Communication Hub. The Hub drafts a personalised message listing their specific incomplete leads.</p><h4>Why It Matters</h4><p>Low compliance means your reports are inaccurate. If a rep has 58% compliance, nearly half their leads have incomplete data — making their ROI, pipeline, and revenue numbers unreliable.</p>'},
+
+  'connect-whatconverts':{cat:'Data Pipeline', title:'Connecting WhatConverts to The Hub',
+    body:'<h4>Step-by-Step</h4><ol><li>Go to Data Pipeline in the left sidebar</li><li>Click the Connectors tab</li><li>Click Add Connector and select WhatConverts</li><li>You will be redirected to WhatConverts to authorise access</li><li>Log in with your WhatConverts account and click Authorise</li><li>You will be redirected back to The Hub and the sync will begin</li></ol><h4>Requirements</h4><ul><li>Your WhatConverts account must have API access enabled</li><li>Go to WhatConverts Settings > Integrations > API to enable it</li></ul><h4>If the Connection Fails</h4><p>Check that your WhatConverts subscription includes API access (Standard plan and above). If you see a 401 error, your OAuth token may have expired — click Reconnect on the connector card.</p><h4>What Gets Synced</h4><p>Phone calls, form submissions, and chat leads — all with source attribution. This powers the Marketing Attribution (R1) report.</p>'},
+
+  'funnel-explained':{cat:'Reports & Metrics', title:'What the Pipeline Funnel Shows',
+    body:'<p>The Pipeline Funnel in Report R3 shows how many leads move through each stage of your sales process and where they drop off.</p><h4>Stages</h4><ol><li><strong>Total Leads</strong> — all leads created in your CRM</li><li><strong>Entered CRM</strong> — leads with a rep assigned and source recorded</li><li><strong>Appointment Set</strong> — leads that reached appointment stage</li><li><strong>Estimate Sent</strong> — leads where an estimate was delivered</li><li><strong>Won</strong> — deals marked as closed/won</li></ol><h4>Reading the Funnel</h4><p>Each bar shows the count and the percentage of the previous stage. A drop from 162 appointments to 126 estimates means 36 appointments never got a follow-up estimate — a revenue leak to investigate.</p><h4>Stuck Leads</h4><p>Leads that have not moved stages in 7 or more days are flagged as stuck. These appear in the Stuck Leads KPI tile and trigger a Communication Hub alert.</p>'},
+
+  'roi-calc':{cat:'Reports & Metrics', title:'How ROI and CAC are Computed',
+    body:'<h4>ROI (Return on Investment)</h4><p><code>ROI = Won Revenue from channel / Total spend on channel</code></p><p>Example: Door Knock generated $89,000 in won revenue and cost $16,020 (180 CAC x 89 leads). ROI = 89,000 / 16,020 = 5.6x.</p><h4>CAC (Customer Acquisition Cost)</h4><p><code>CAC = Channel spend / Won leads from channel</code></p><p>Example: You spent $9,720 on Angi and won 18 leads. CAC = 9,720 / 18 = $540.</p><h4>Data Required</h4><ul><li>Marketing spend per channel (from manual XLSX import)</li><li>Lead source field completed in GHL (CRM compliance matters here)</li><li>Won/Lost stage set correctly in GHL pipeline</li></ul><h4>WoW Alerts</h4><p>If any channel ROI drops more than 30% week-over-week, The Hub fires an alert in the Communication Hub. This catches Angi or Google Ads performance drops before they waste significant budget.</p>'},
+
+  'free-vs-paid':{cat:'Billing & Plans', title:'Free Plan vs Paid Plan — What Changes',
+    body:'<h4>Free Plan (20-Day Trial)</h4><ul><li>Full Dashboard overview with all KPI tiles</li><li>Branch filter and date range filter</li><li>Up to 3 reps</li><li>1 branch only</li></ul><h4>What is Locked on Free</h4><ul><li>R1 Marketing Attribution — fully gated</li><li>R2 Rep Performance — fully gated</li><li>R3 Pipeline & Funnel — fully gated</li><li>R4 Revenue Intelligence — fully gated</li><li>Communication Hub — blocked</li><li>Weekly Audit — blocked</li></ul><h4>Basic Plan ($99/mo)</h4><ul><li>All 5 reports unlocked</li><li>Unlimited reps</li><li>1 branch</li><li>Communication Hub</li><li>Weekly Audit</li></ul><h4>Pro Plan ($150/mo)</h4><ul><li>Everything in Basic</li><li>Multiple branches</li><li>Network dashboard</li><li>Branch comparison views</li></ul>'},
+
+  'weekly-audit':{cat:'Tools', title:'How the Weekly Audit Works',
+    body:'<p>The Weekly Audit requires every rep to submit their activity summary by Sunday at midnight each week.</p><h4>For Reps</h4><p>Reps receive a reminder on Friday afternoon and a final reminder Sunday morning if they have not submitted. They complete a short form covering: leads contacted, appointments set, and any pipeline notes.</p><h4>For Managers</h4><p>The Weekly Audit screen shows the status of every rep: Submitted (with timestamp), Pending, or Missing. You can nudge individual reps with one click or bulk-notify all pending reps at once.</p><h4>Compliance Rate</h4><p>The weekly audit compliance rate (submitted reps / total reps) feeds directly into the R2 Rep Performance report as a data reliability signal. Reps who consistently miss submissions have lower data trust scores.</p><h4>Deadlines</h4><p>Sunday 11:59 PM. Submissions after midnight are marked Late. Three consecutive Late submissions trigger a Communication Hub alert to the branch manager.</p>'},
+};
+
+function showArticle(id){
+  var art = helpArticles[id];
+  if(!art){ showToast('Article coming soon'); return; }
+  var modal = document.getElementById('article-modal');
+  var content = document.getElementById('article-content');
+  content.innerHTML = '<div class="art-head">'
+    + '<div><span class="art-cat-pill">'+art.cat+'</span><div class="art-title">'+art.title+'</div><div class="art-meta">The Hub Knowledge Base &nbsp;&#183;&nbsp; Last updated June 2026</div></div>'
+    + '<button onclick="closeArticle()" style="width:28px;height:28px;background:#F4F1EC;border-radius:7px;border:none;cursor:pointer;font-size:16px;color:#6B7680;flex-shrink:0;margin-top:4px">&#10005;</button>'
+    + '</div>'
+    + '<div class="art-body">'+art.body+'</div>'
+    + '<div class="art-footer">'
+    + '<div style="font-size:13px;font-weight:600;color:#6B7680">Was this article helpful?</div>'
+    + '<div style="display:flex;gap:8px">'
+    + '<button class="rating-btn rating-yes" onclick="rateArticle(true)">Yes &#128077;</button>'
+    + '<button class="rating-btn rating-no" onclick="rateArticle(false)">No &#128078;</button>'
+    + '<button class="btn btn-outline btn-sm" onclick="closeArticle()">Close</button>'
+    + '</div></div>';
+  modal.classList.add('on');
+}
+
+function rateArticle(helpful){
+  closeArticle();
+  showToast(helpful ? 'Thanks for the feedback!' : 'Thanks — we will improve this article.');
+}
+
+function closeArticle(){
+  document.getElementById('article-modal').classList.remove('on');
+}
+
+function helpSearch(val){
+  var res = document.getElementById('help-search-results');
+  var list = document.getElementById('help-search-list');
+  if(!val || val.length < 2){ res.style.display='none'; return; }
+  var v = val.toLowerCase();
+  var matches = [];
+  var ids = Object.keys(helpArticles);
+  for(var i=0;i<ids.length;i++){
+    var a = helpArticles[ids[i]];
+    if(a.title.toLowerCase().indexOf(v)>-1 || a.body.toLowerCase().indexOf(v)>-1){
+      matches.push({id:ids[i], title:a.title, cat:a.cat});
+    }
+  }
+  if(matches.length === 0){
+    list.innerHTML = '<div style="padding:14px 18px;font-size:13px;color:#6B7680">No articles found. <span style="color:#1F3A5F;cursor:pointer;font-weight:600" onclick="hwTab(\'ticket\');toggleHelp()">Raise a ticket?</span></div>';
+  } else {
+    list.innerHTML = '';
+    for(var i=0;i<matches.length;i++){
+      var m = matches[i];
+      var row = document.createElement('div');
+      row.className = 'help-article-row';
+      row.style.padding = '11px 18px';
+      row.innerHTML = '&#128196; <div><div style="font-size:13px;font-weight:700">'+m.title+'</div><div style="font-size:11.5px;color:#6B7680">'+m.cat+'</div></div>';
+      row.onclick = (function(id){return function(){showArticle(id);};})(m.id);
+      list.appendChild(row);
+    }
+  }
+  res.style.display = 'block';
+}
+
+function helpOpenCat(cat){
+  showToast('Browsing: ' + cat + ' — full article list in production build');
+}
+
+</script>
+
+<!-- UPGRADE MODAL -->
+<div class="modal-back" id="modal-upgrade-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Unlock Full Access</div><div class="modal-sub">Upgrade to see all reports and tools</div></div><button class="modal-close" onclick="closeModal('upgrade-modal')">x</button></div>
+    <div class="modal-body">
+      <div style="background:#1F3A5F;border-radius:12px;padding:18px;margin-bottom:16px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.45);margin-bottom:10px">Basic plan unlocks ($99/mo)</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span>Full Marketing Attribution and ROI</div>
+          <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span>Full Rep Performance leaderboard</div>
+          <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span>Full Pipeline and Funnel analysis</div>
+          <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</span>Full Revenue Intelligence</div>
+          <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</span>Communication Hub and Weekly Audit</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="border:2px solid #1F3A5F;border-radius:10px;padding:16px;background:rgba(31,58,95,.04)">
+          <div style="font-size:14px;font-weight:800;margin-bottom:6px">Basic</div>
+          <div style="font-size:26px;font-weight:800">$99<span style="font-size:13px;font-weight:400;color:#6B7680">/mo</span></div>
+          <div style="font-size:12px;color:#6B7680;margin-top:4px">1 branch, unlimited reps</div>
+        </div>
+        <div style="border:2px solid #C8C2B6;border-radius:10px;padding:16px">
+          <div style="font-size:14px;font-weight:800;margin-bottom:6px">Pro</div>
+          <div style="font-size:26px;font-weight:800">$150<span style="font-size:13px;font-weight:400;color:#6B7680">/mo</span></div>
+          <div style="font-size:12px;color:#6B7680;margin-top:4px">Multi-branch, everything</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot" style="flex-direction:column;gap:8px;align-items:stretch">
+      <button class="btn btn-primary btn-full" style="font-size:15px;padding:14px" onclick="upgradePlan()">Upgrade Now - Unlock Everything</button>
+      <div style="text-align:center;font-size:12px;color:#6B7680">No contract. Cancel anytime.</div>
+    </div>
+  </div>
+</div>
+<!-- MOBILE MORE MODAL -->
+<div class="modal-back" id="modal-mob-menu-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head" style="padding:20px 20px 0"><div class="modal-title">More</div><button class="modal-close" onclick="closeModal('mob-menu-modal')">x</button></div>
+    <div class="modal-body" style="padding:16px 20px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div onclick="closeModal('mob-menu-modal');goApp('r2');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#127942;</div><div style="font-size:13px;font-weight:700">Rep Performance</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('r3');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128204;</div><div style="font-size:13px;font-weight:700">Pipeline &amp; Funnel</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('r4');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128176;</div><div style="font-size:13px;font-weight:700">Revenue</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('r5');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#9989;</div><div style="font-size:13px;font-weight:700">Data Quality</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('audit')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128203;</div><div style="font-size:13px;font-weight:700">Weekly Audit</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('billing')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128179;</div><div style="font-size:13px;font-weight:700">Billing</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE VIEWER MODAL -->
+<div class="article-modal-back" id="article-modal" onclick="if(event.target===this)closeArticle()">
+  <div class="article-modal" id="article-content">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+</body>
+</html>
