@@ -280,13 +280,19 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .plan-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--cyan);color:white;font-size:10px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase;}
 
 /* ── CRM CONNECTOR ───────────────────────────────── */
-.crm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
-.crm-card{border:1.5px solid var(--rule);border-radius:12px;padding:18px;cursor:pointer;background:white;transition:.2s;display:flex;align-items:center;gap:14px;}
+.crm-section-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:18px 0 8px;}
+.crm-section-label:first-child{margin-top:0;}
+.crm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.crm-card{border:1.5px solid var(--rule);border-radius:12px;padding:14px 16px;cursor:pointer;background:white;transition:.2s;display:flex;align-items:center;gap:12px;}
 .crm-card:hover{border-color:var(--slate);}
 .crm-card.on{border-color:var(--horizon);background:rgba(31,58,95,.03);}
-.crm-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.crm-name{font-size:13.5px;font-weight:700;}
-.crm-desc{font-size:11.5px;color:var(--muted);font-family:'Inter',sans-serif;}
+.crm-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.crm-name{font-size:13px;font-weight:700;}
+.crm-desc{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;}
+.crm-auth-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:99px;margin-top:3px;letter-spacing:.03em;}
+.crm-auth-badge.api{background:rgba(15,88,102,.1);color:var(--cyan);}
+.crm-auth-badge.pass{background:rgba(31,58,95,.08);color:var(--horizon);}
+.crm-divider{height:1px;background:var(--rule);margin:16px 0;}
 
 /* ── SYNC ANIMATION ──────────────────────────────── */
 .sync-step{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;margin-bottom:8px;transition:.3s;}
@@ -620,20 +626,66 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <!-- CRM PICKER -->
   <div class="auth-card scr" id="scr-crm-pick" style="max-width:480px;">
     <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-    <div class="auth-h1">Connect your CRM</div>
-    <div class="auth-sub">The Hub reads your pipeline data to compute metrics. Select your CRM to begin.</div>
+    <div class="auth-h1">Connect your tools</div>
+    <div class="auth-sub">The Hub reads your pipeline & marketing data to compute metrics. Select the tool you want to connect first.</div>
+
+    <!-- Marketing Tools -->
+    <div class="crm-section-label">Marketing Tools</div>
     <div class="crm-grid" id="crm-grid">
-      <div class="crm-card" onclick="pickCRM(this,'GHL')"><div class="crm-icon" style="background:#E8F5FF">🔷</div><div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div></div></div>
-      <div class="crm-card" onclick="pickCRM(this,'Leap')"><div class="crm-icon" style="background:#FFF3E8">🟠</div><div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div></div></div>
-      <div class="crm-card" onclick="pickCRM(this,'AccuLynx')"><div class="crm-icon" style="background:#F0FFF4">🟢</div><div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div></div></div>
-      <div class="crm-card" onclick="pickCRM(this,'JobNimbus')"><div class="crm-icon" style="background:#FFF0F0">🔴</div><div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div></div></div>
+      <div class="crm-card" onclick="pickCRM(this,'GHL','pass')">
+        <div class="crm-icon" style="background:#E8F5FF">🔷</div>
+        <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">Login</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'WhatConverts','api')">
+        <div class="crm-icon" style="background:#F3F0FF">📊</div>
+        <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'CallRail','api')">
+        <div class="crm-icon" style="background:#FFF0F8">📞</div>
+        <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'LeadTracker','pass')">
+        <div class="crm-icon" style="background:#FFFBE8">📍</div>
+        <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
+      </div>
     </div>
-    <div id="crm-creds" style="display:none">
-      <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email" placeholder="your@email.com"/></div>
-      <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+
+    <!-- CRM -->
+    <div class="crm-section-label">CRM</div>
+    <div class="crm-grid">
+      <div class="crm-card" onclick="pickCRM(this,'Leap','api')">
+        <div class="crm-icon" style="background:#FFF3E8">🟠</div>
+        <div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api')">
+        <div class="crm-icon" style="background:#F0FFF4">🟢</div>
+        <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass')">
+        <div class="crm-icon" style="background:#FFF0F0">🔴</div>
+        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
+      </div>
     </div>
-    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="display:none" onclick="authGo('syncing')">Connect & sync →</button>
-    <div style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted)">Connect more sources after setup — CallRail, WhatConverts, and more.</div>
+
+    <!-- Dynamic credential form -->
+    <div id="crm-creds" style="display:none;margin-top:16px;">
+      <div class="crm-divider" style="margin-top:0;"></div>
+      <!-- Login form -->
+      <div id="crm-form-pass">
+        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email" placeholder="your@email.com"/></div>
+        <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+      </div>
+      <!-- API key form -->
+      <div id="crm-form-api" style="display:none">
+        <div class="inp-row"><label class="lbl" id="crm-api-label">API Key</label><input class="inp" id="crm-apikey" placeholder="Paste your API key here"/></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint">Find this in your account settings → Integrations.</div>
+      </div>
+      <!-- Sync note -->
+      <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
+        <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="display:none;margin-top:14px;" onclick="authGo('syncing')">Connect & sync →</button>
   </div>
 
   <!-- SYNCING -->
@@ -1595,13 +1647,28 @@ function toggleCheck(row){
 }
 
 // CRM
-function pickCRM(card,name){
+var CRM_API_HINTS={
+  WhatConverts:'Find this under Account → API Access in WhatConverts.',
+  CallRail:'Find this under Settings → API Access in CallRail.',
+  Leap:'Find this under Settings → Integrations → API Key in Leap.',
+  AccuLynx:'Find this under My Profile → API Key in AccuLynx.'
+};
+function pickCRM(card,name,authType){
   var all=document.querySelectorAll('.crm-card');
   for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
   card.classList.add('on');
   document.getElementById('crm-creds').style.display='block';
   document.getElementById('crm-btn').style.display='flex';
-  document.getElementById('crm-email').placeholder=name+'@your-email.com';
+  var isApi=authType==='api';
+  document.getElementById('crm-form-pass').style.display=isApi?'none':'block';
+  document.getElementById('crm-form-api').style.display=isApi?'block':'none';
+  if(isApi){
+    document.getElementById('crm-api-label').textContent=name+' API Key';
+    document.getElementById('crm-apikey').placeholder='Paste your '+name+' API key here';
+    document.getElementById('crm-api-hint').textContent=CRM_API_HINTS[name]||'Find this in your account settings → Integrations.';
+  } else {
+    document.getElementById('crm-email').placeholder=name+'@your-email.com';
+  }
 }
 function checkMulti(){
   var v=document.getElementById('ctype').value;
