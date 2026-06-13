@@ -748,13 +748,13 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div id="multi-note" style="background:rgba(31,58,95,.06);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--slate);margin-bottom:16px;border:1px solid rgba(31,58,95,.12)">
       ℹ️ You'll add branches on the next step. Each branch gets its own filtered view.
     </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('branches')">Continue →</button>
+    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('plan')">Continue →</button>
   </div>
 
   <!-- BRANCH SETUP -->
   <div class="auth-card scr" id="scr-branches" style="max-width:460px;">
     <div class="auth-h1">Add your branches</div>
-    <div class="auth-sub" style="margin-bottom:20px">Add each location. You can always add more later.</div>
+    <div class="auth-sub" style="margin-bottom:20px">You selected <strong id="branches-expected-count">1 location</strong> on your plan. Add each one below — you can always add more later.</div>
     <div id="branch-list">
       <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#1F3A5F"></div><div><div style="font-size:13px;font-weight:700">NJ — Montclair</div><div style="font-size:11.5px;color:var(--muted)">8 reps</div></div></div>
@@ -773,7 +773,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <input class="inp" id="nb-name" placeholder="Branch name (e.g. Miami — Coral Gables)" style="flex:1"/>
       <button class="btn btn-outline" onclick="addBranch()">+ Add</button>
     </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('plan')">Continue to plan →</button>
+    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('crm-pick')">Continue →</button>
+    <div style="text-align:center;margin-top:10px;font-size:12.5px;color:var(--muted)"><a onclick="authGo('crm-pick')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Skip for now</a> — you can add branches later in Settings</div>
   </div>
 
   <!-- PLAN SELECTION -->
@@ -816,7 +817,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
       <div style="color:rgba(255,255,255,.5);font-size:12px;margin-top:4px" id="plan-total-sub">After your 30-day trial ends</div>
     </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('crm-pick')">Start 30-day free trial →</button>
+    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('branches')">Start 30-day free trial →</button>
     <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);font-family:'Inter',sans-serif">30-day trial, then billing begins at the price above. Cancel anytime.</div>
   </div>
 
@@ -1675,6 +1676,11 @@ function authGo(id){
   var el=document.getElementById('scr-'+id);
   if(el){el.style.display='block';el.style.animation='fadeUp .4s cubic-bezier(.22,1,.36,1) both';}
   if(id==='syncing')startSync();
+  if(id==='branches'){
+    var total=1+planState.locations;
+    var bc=document.getElementById('branches-expected-count');
+    if(bc)bc.textContent=total+(total===1?' location':' locations');
+  }
 }
 function toggleCheck(row){
   var cb=row.querySelector('.check-box');
