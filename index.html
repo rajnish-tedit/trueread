@@ -552,7 +552,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="auth-pattern"></div>
 
   <!-- SIGN IN -->
-  <div class="auth-card" id="scr-signin" style="display:block;">
+  <div class="auth-card" id="scr-signin" style="display:block;max-width:560px;">
     <div class="auth-logo">
       <div class="auth-logo-mark">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -582,7 +582,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
   <!-- SIGN UP -->
-  <div class="auth-card scr" id="scr-signup">
+  <div class="auth-card scr" id="scr-signup" style="max-width:560px;">
     <div class="auth-logo">
       <div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       <div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div>
@@ -624,80 +624,84 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
   <!-- CRM PICKER -->
-  <div class="auth-card scr" id="scr-crm-pick" style="max-width:480px;">
+  <div class="auth-card scr" id="scr-crm-pick" style="max-width:880px;">
     <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
     <div class="auth-h1">Connect your tools</div>
-    <div class="auth-sub">The Hub reads your pipeline & marketing data to compute metrics. <strong>You must connect a CRM to continue.</strong> Connecting a marketing tool is optional and can be added later.</div>
+    <div class="auth-sub" style="margin-bottom:18px;">The Hub reads your pipeline & marketing data to compute metrics. <strong>You must connect a CRM to continue.</strong> Connecting a marketing tool is optional and can be added later.</div>
 
-    <!-- CRM (required) -->
-    <div class="crm-section-label">CRM <span style="color:var(--crit);font-weight:700;">— required</span></div>
-    <div class="crm-grid" id="crm-grid-crm">
-      <div class="crm-card" onclick="pickCRM(this,'Leap','api','crm')">
-        <div class="crm-icon" style="background:#FFF3E8">🟠</div>
-        <div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div><span class="crm-auth-badge api">API Key</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api','crm')">
-        <div class="crm-icon" style="background:#F0FFF4">🟢</div>
-        <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
-        <div class="crm-icon" style="background:#FFF0F0">🔴</div>
-        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
-      </div>
-    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+      <!-- CRM (required) -->
+      <div>
+        <div class="crm-section-label" style="margin-top:0;">CRM <span style="color:var(--crit);font-weight:700;">— required</span></div>
+        <div class="crm-grid" id="crm-grid-crm" style="grid-template-columns:1fr;">
+          <div class="crm-card" onclick="pickCRM(this,'Leap','api','crm')">
+            <div class="crm-icon" style="background:#FFF3E8">🟠</div>
+            <div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div><span class="crm-auth-badge api">API Key</span></div>
+          </div>
+          <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api','crm')">
+            <div class="crm-icon" style="background:#F0FFF4">🟢</div>
+            <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
+          </div>
+          <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
+            <div class="crm-icon" style="background:#FFF0F0">🔴</div>
+            <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
+          </div>
+        </div>
 
-    <!-- CRM credential form -->
-    <div id="creds-crm" style="display:none;margin:14px 0;">
-      <div class="crm-divider" style="margin-top:0;"></div>
-      <div id="creds-crm-pass">
-        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-crm" placeholder="your@email.com"/></div>
-        <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+        <!-- CRM credential form -->
+        <div id="creds-crm" style="display:none;margin-top:12px;">
+          <div id="creds-crm-pass">
+            <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-crm" placeholder="your@email.com"/></div>
+            <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+          </div>
+          <div id="creds-crm-api" style="display:none">
+            <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
+            <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:0" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
+          </div>
+        </div>
       </div>
-      <div id="creds-crm-api" style="display:none">
-        <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
-      </div>
-    </div>
 
-    <!-- Marketing Tools (optional) -->
-    <div class="crm-section-label" style="margin-top:18px;">Marketing Tools <span style="color:var(--muted);font-weight:600;">— optional, can connect later</span></div>
-    <div class="crm-grid" id="crm-grid-marketing">
-      <div class="crm-card" onclick="pickCRM(this,'GHL','pass','marketing')">
-        <div class="crm-icon" style="background:#E8F5FF">🔷</div>
-        <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">Login</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'WhatConverts','api','marketing')">
-        <div class="crm-icon" style="background:#F3F0FF">📊</div>
-        <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'CallRail','api','marketing')">
-        <div class="crm-icon" style="background:#FFF0F8">📞</div>
-        <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'LeadTracker','pass','marketing')">
-        <div class="crm-icon" style="background:#FFFBE8">📍</div>
-        <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
-      </div>
-    </div>
+      <!-- Marketing Tools (optional) -->
+      <div>
+        <div class="crm-section-label" style="margin-top:0;">Marketing Tools <span style="color:var(--muted);font-weight:600;">— optional</span></div>
+        <div class="crm-grid" id="crm-grid-marketing" style="grid-template-columns:1fr 1fr;">
+          <div class="crm-card" onclick="pickCRM(this,'GHL','pass','marketing')">
+            <div class="crm-icon" style="background:#E8F5FF">🔷</div>
+            <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">Login</span></div>
+          </div>
+          <div class="crm-card" onclick="pickCRM(this,'WhatConverts','api','marketing')">
+            <div class="crm-icon" style="background:#F3F0FF">📊</div>
+            <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
+          </div>
+          <div class="crm-card" onclick="pickCRM(this,'CallRail','api','marketing')">
+            <div class="crm-icon" style="background:#FFF0F8">📞</div>
+            <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
+          </div>
+          <div class="crm-card" onclick="pickCRM(this,'LeadTracker','pass','marketing')">
+            <div class="crm-icon" style="background:#FFFBE8">📍</div>
+            <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
+          </div>
+        </div>
 
-    <!-- Marketing credential form -->
-    <div id="creds-marketing" style="display:none;margin:14px 0;">
-      <div class="crm-divider" style="margin-top:0;"></div>
-      <div id="creds-marketing-pass">
-        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-marketing" placeholder="your@email.com"/></div>
-        <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
-      </div>
-      <div id="creds-marketing-api" style="display:none">
-        <div class="inp-row"><label class="lbl" id="crm-api-label-marketing">API Key</label><input class="inp" id="crm-apikey-marketing" placeholder="Paste your API key here"/></div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-marketing">Find this in your account settings → Integrations.</div>
+        <!-- Marketing credential form -->
+        <div id="creds-marketing" style="display:none;margin-top:12px;">
+          <div id="creds-marketing-pass">
+            <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-marketing" placeholder="your@email.com"/></div>
+            <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+          </div>
+          <div id="creds-marketing-api" style="display:none">
+            <div class="inp-row"><label class="lbl" id="crm-api-label-marketing">API Key</label><input class="inp" id="crm-apikey-marketing" placeholder="Paste your API key here"/></div>
+            <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:0" id="crm-api-hint-marketing">Find this in your account settings → Integrations.</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Sync note -->
-    <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
+    <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin:18px 0 0;">
       <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
     </div>
-    <div id="crm-required-hint" style="font-size:12px;color:var(--crit);margin-top:8px;">Select a CRM above to continue.</div>
+    <div id="crm-required-hint-bottom" style="font-size:12px;color:var(--crit);margin-top:8px;">Select a CRM on the left to continue.</div>
     <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="margin-top:14px;opacity:.4;pointer-events:none;" onclick="authGo('syncing')">Connect & sync →</button>
   </div>
 
@@ -1672,7 +1676,7 @@ function pickCRM(card,name,authType,category){
     document.getElementById('crm-email-'+category).placeholder=name+'@your-email.com';
   }
   if(category==='crm'){
-    document.getElementById('crm-required-hint').style.display='none';
+    document.getElementById('crm-required-hint-bottom').style.display='none';
     var btn=document.getElementById('crm-btn');
     btn.style.opacity='1';
     btn.style.pointerEvents='auto';
