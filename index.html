@@ -63,20 +63,20 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--paper);col
 /* ── AUTH ──────────────────────────────────────────── */
 #auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative;background:var(--horizon);overflow:hidden;}
 .auth-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 80%, rgba(15,88,102,.4) 0%, transparent 50%),radial-gradient(circle at 80% 20%, rgba(31,58,95,.8) 0%, transparent 50%),repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px);}
-.auth-card{background:var(--paper);border-radius:20px;padding:40px;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 32px 80px rgba(0,0,0,.4);}
+.auth-card{background:var(--paper);border-radius:20px;padding:48px;width:100%;max-width:480px;position:relative;z-index:1;box-shadow:0 32px 80px rgba(0,0,0,.4);font-size:16px;}
 .auth-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
 .auth-logo-mark{width:36px;height:36px;background:var(--horizon);border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .auth-logo-mark::after{content:'';position:absolute;bottom:6px;right:6px;width:8px;height:8px;background:var(--cyan);border-radius:50%;}
 .auth-logo-mark svg{color:white;}
 .auth-logo-text{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
 .auth-logo-sub{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;font-style:italic;display:block;margin-top:-2px;}
-.auth-h1{font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-bottom:6px;}
-.auth-sub{font-size:14px;color:var(--muted);margin-bottom:28px;font-family:'Inter',sans-serif;}
+.auth-h1{font-size:28px;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-bottom:8px;}
+.auth-sub{font-size:15.5px;color:var(--muted);margin-bottom:28px;font-family:'Inter',sans-serif;}
 .scr{display:none;}.scr.on{display:block;animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both;}
 
 /* ── INPUTS ──────────────────────────────────────── */
-.lbl{display:block;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;}
-.inp{width:100%;padding:12px 15px;background:rgba(255,255,255,.7);border:1.5px solid var(--rule);border-radius:10px;font-size:14.5px;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:all .2s;}
+.lbl{display:block;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:7px;}
+.inp{width:100%;padding:14px 16px;background:rgba(255,255,255,.7);border:1.5px solid var(--rule);border-radius:10px;font-size:16px;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:all .2s;}
 .inp::placeholder{color:var(--muted);}
 .inp:focus{border-color:var(--cyan);background:white;box-shadow:0 0 0 3px rgba(15,88,102,.12);}
 select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7680'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
@@ -101,10 +101,10 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .btn-danger:hover{background:rgba(155,58,42,.15);}
 .btn-warn-soft{background:var(--caut-bg);color:var(--caut);border:1px solid rgba(181,123,31,.2);}
 .btn-ok{background:var(--pos-bg);color:var(--pos);border:1px solid rgba(63,110,74,.2);}
-.btn-lg{padding:14px 30px;font-size:14px;border-radius:12px;}
+.btn-lg{padding:16px 30px;font-size:15.5px;border-radius:12px;}
 .btn-sm{padding:6px 13px;font-size:12px;border-radius:8px;}
 .btn-xs{padding:4px 10px;font-size:11px;border-radius:6px;}
-.btn-google{background:white;color:var(--ink);border:1.5px solid var(--rule);width:100%;padding:12px;font-size:13.5px;gap:10px;}
+.btn-google{background:white;color:var(--ink);border:1.5px solid var(--rule);width:100%;padding:15px;font-size:15px;gap:10px;}
 .btn-google:hover{border-color:var(--cyan);box-shadow:0 4px 12px rgba(0,0,0,.08);}
 .btn-full{width:100%;}
 .btn-block{display:flex;width:100%;}
@@ -588,7 +588,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div>
     </div>
     <div class="auth-h1">Create your account</div>
-    <div class="auth-sub">20-day free trial. No card required.</div>
+    <div class="auth-sub">30-day free trial. No card required.</div>
     <button class="btn btn-google" onclick="authGo('crm-pick')">
       <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Continue with Google
@@ -627,65 +627,78 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="auth-card scr" id="scr-crm-pick" style="max-width:480px;">
     <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
     <div class="auth-h1">Connect your tools</div>
-    <div class="auth-sub">The Hub reads your pipeline & marketing data to compute metrics. Select the tool you want to connect first.</div>
+    <div class="auth-sub">The Hub reads your pipeline & marketing data to compute metrics. <strong>You must connect a CRM to continue.</strong> Connecting a marketing tool is optional and can be added later.</div>
 
-    <!-- Marketing Tools -->
-    <div class="crm-section-label">Marketing Tools</div>
-    <div class="crm-grid" id="crm-grid">
-      <div class="crm-card" onclick="pickCRM(this,'GHL','pass')">
-        <div class="crm-icon" style="background:#E8F5FF">🔷</div>
-        <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">Login</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'WhatConverts','api')">
-        <div class="crm-icon" style="background:#F3F0FF">📊</div>
-        <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'CallRail','api')">
-        <div class="crm-icon" style="background:#FFF0F8">📞</div>
-        <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
-      </div>
-      <div class="crm-card" onclick="pickCRM(this,'LeadTracker','pass')">
-        <div class="crm-icon" style="background:#FFFBE8">📍</div>
-        <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
-      </div>
-    </div>
-
-    <!-- CRM -->
-    <div class="crm-section-label">CRM</div>
-    <div class="crm-grid">
-      <div class="crm-card" onclick="pickCRM(this,'Leap','api')">
+    <!-- CRM (required) -->
+    <div class="crm-section-label">CRM <span style="color:var(--crit);font-weight:700;">— required</span></div>
+    <div class="crm-grid" id="crm-grid-crm">
+      <div class="crm-card" onclick="pickCRM(this,'Leap','api','crm')">
         <div class="crm-icon" style="background:#FFF3E8">🟠</div>
         <div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div><span class="crm-auth-badge api">API Key</span></div>
       </div>
-      <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api')">
+      <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api','crm')">
         <div class="crm-icon" style="background:#F0FFF4">🟢</div>
         <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
       </div>
-      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass')">
+      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
         <div class="crm-icon" style="background:#FFF0F0">🔴</div>
         <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
       </div>
     </div>
 
-    <!-- Dynamic credential form -->
-    <div id="crm-creds" style="display:none;margin-top:16px;">
+    <!-- CRM credential form -->
+    <div id="creds-crm" style="display:none;margin:14px 0;">
       <div class="crm-divider" style="margin-top:0;"></div>
-      <!-- Login form -->
-      <div id="crm-form-pass">
-        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email" placeholder="your@email.com"/></div>
+      <div id="creds-crm-pass">
+        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-crm" placeholder="your@email.com"/></div>
         <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
       </div>
-      <!-- API key form -->
-      <div id="crm-form-api" style="display:none">
-        <div class="inp-row"><label class="lbl" id="crm-api-label">API Key</label><input class="inp" id="crm-apikey" placeholder="Paste your API key here"/></div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint">Find this in your account settings → Integrations.</div>
-      </div>
-      <!-- Sync note -->
-      <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
-        <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
+      <div id="creds-crm-api" style="display:none">
+        <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
       </div>
     </div>
-    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="display:none;margin-top:14px;" onclick="authGo('syncing')">Connect & sync →</button>
+
+    <!-- Marketing Tools (optional) -->
+    <div class="crm-section-label" style="margin-top:18px;">Marketing Tools <span style="color:var(--muted);font-weight:600;">— optional, can connect later</span></div>
+    <div class="crm-grid" id="crm-grid-marketing">
+      <div class="crm-card" onclick="pickCRM(this,'GHL','pass','marketing')">
+        <div class="crm-icon" style="background:#E8F5FF">🔷</div>
+        <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">Login</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'WhatConverts','api','marketing')">
+        <div class="crm-icon" style="background:#F3F0FF">📊</div>
+        <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'CallRail','api','marketing')">
+        <div class="crm-icon" style="background:#FFF0F8">📞</div>
+        <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'LeadTracker','pass','marketing')">
+        <div class="crm-icon" style="background:#FFFBE8">📍</div>
+        <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
+      </div>
+    </div>
+
+    <!-- Marketing credential form -->
+    <div id="creds-marketing" style="display:none;margin:14px 0;">
+      <div class="crm-divider" style="margin-top:0;"></div>
+      <div id="creds-marketing-pass">
+        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-marketing" placeholder="your@email.com"/></div>
+        <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+      </div>
+      <div id="creds-marketing-api" style="display:none">
+        <div class="inp-row"><label class="lbl" id="crm-api-label-marketing">API Key</label><input class="inp" id="crm-apikey-marketing" placeholder="Paste your API key here"/></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-marketing">Find this in your account settings → Integrations.</div>
+      </div>
+    </div>
+
+    <!-- Sync note -->
+    <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
+      <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
+    </div>
+    <div id="crm-required-hint" style="font-size:12px;color:var(--crit);margin-top:8px;">Select a CRM above to continue.</div>
+    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="margin-top:14px;opacity:.4;pointer-events:none;" onclick="authGo('syncing')">Connect & sync →</button>
   </div>
 
   <!-- SYNCING -->
@@ -760,56 +773,44 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
   <!-- PLAN SELECTION -->
-  <div class="auth-card scr" id="scr-plan" style="max-width:600px;width:100%">
-    <div class="auth-h1">Choose a plan</div>
-    <div class="auth-sub" style="margin-bottom:20px">Start free — no card required. Upgrade anytime as you grow.</div>
+  <div class="auth-card scr" id="scr-plan" style="max-width:560px;width:100%">
+    <div class="auth-h1">Your subscription</div>
+    <div class="auth-sub" style="margin-bottom:20px">30-day free trial, no card required. Here's what it costs when your trial ends.</div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
       <div class="date-filter">
         <div class="df-opt on" onclick="setBilling(this,'monthly')">Monthly</div>
-        <div class="df-opt" onclick="setBilling(this,'annual')">Annual <span style="color:var(--pos);font-size:11px;font-weight:700"> 2 months free</span></div>
+        <div class="df-opt" onclick="setBilling(this,'annual')">Annual <span style="color:var(--pos);font-size:11px;font-weight:700"> save 2 months</span></div>
       </div>
     </div>
-    <div class="plan-grid">
-      <div class="plan-card" onclick="pickPlan(this)" style="padding-top:28px">
-        <div class="plan-name">Free</div>
-        <div class="plan-price">$0</div>
-        <div class="plan-period">20-day trial</div>
-        <ul class="plan-features">
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Dashboard overview only</li>
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Up to 3 reps</li>
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>No card required</li>
-          <li><div class="plan-check" style="background:var(--rule);color:var(--muted)">–</div>Communication Hub</li>
-          <li><div class="plan-check" style="background:var(--rule);color:var(--muted)">–</div>Multi-branch</li>
-        </ul>
+    <div class="card-sm" style="padding:20px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <div style="font-size:15px;font-weight:700">Base subscription</div>
+          <div style="font-size:12.5px;color:var(--muted)">Includes your first location, all reports</div>
+        </div>
+        <div style="font-size:18px;font-weight:800">$199<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div>
       </div>
-      <div class="plan-card featured" style="background:var(--horizon);border-color:var(--horizon);padding-top:28px">
-        <div class="plan-badge">Most popular</div>
-        <div class="plan-name" style="color:white">Basic</div>
-        <div class="plan-price" style="color:white">$99</div>
-        <div class="plan-period" style="color:rgba(255,255,255,.5)">/month</div>
-        <ul class="plan-features">
-          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>1 branch, all 5 reports</li>
-          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>Unlimited reps</li>
-          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>Communication Hub</li>
-          <li style="color:rgba(255,255,255,.75)"><div class="plan-check" style="background:rgba(255,255,255,.2);color:white">✓</div>Weekly audit tool</li>
-          <li style="color:rgba(255,255,255,.4)"><div class="plan-check" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.4)">–</div>Multi-branch</li>
-        </ul>
-      </div>
-      <div class="plan-card" onclick="pickPlan(this)" style="padding-top:28px">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">$150</div>
-        <div class="plan-period">/month</div>
-        <ul class="plan-features">
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Multiple branches</li>
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Network dashboard</li>
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Branch comparison</li>
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Everything in Basic</li>
-          <li><div class="plan-check" style="background:var(--pos-bg);color:var(--pos)">✓</div>Priority support</li>
-        </ul>
+      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding-top:14px">
+        <div>
+          <div style="font-size:15px;font-weight:700">Additional locations</div>
+          <div style="font-size:12.5px;color:var(--muted)">$149/month per additional location</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-outline btn-xs" onclick="setLocations(-1)">−</button>
+          <span id="plan-locations" style="font-size:15px;font-weight:700;min-width:16px;text-align:center">0</span>
+          <button class="btn btn-outline btn-xs" onclick="setLocations(1)">+</button>
+        </div>
       </div>
     </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="enterApp()">Start free trial →</button>
-    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);font-family:'Inter',sans-serif">20-day trial, then billing begins. Cancel anytime.</div>
+    <div class="card-sm" style="padding:18px 20px;margin-bottom:14px;background:var(--horizon);border-color:var(--horizon)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="color:rgba(255,255,255,.7);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em" id="plan-total-label">Total / month</div>
+        <div style="color:white;font-size:28px;font-weight:800" id="plan-total">$199</div>
+      </div>
+      <div style="color:rgba(255,255,255,.5);font-size:12px;margin-top:4px" id="plan-total-sub">After your 30-day trial ends</div>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="enterApp()">Start 30-day free trial →</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);font-family:'Inter',sans-serif">30-day trial, then billing begins at the price above. Cancel anytime.</div>
   </div>
 
 </div><!-- /auth-wrap -->
@@ -897,7 +898,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <!-- FREE TRIAL BAR -->
 <div id="trial-bar">
   <span>Trial active</span>
-  <strong style="margin-left:4px">20 days remaining</strong>
+  <strong style="margin-left:4px">30 days remaining</strong>
   <span style="margin-left:auto;display:flex;align-items:center;gap:8px">
     <span class="free-pill">FREE PLAN</span>
     <button class="btn btn-sm" onclick="openModal('upgrade-modal')" style="background:#B57B1F;color:white;border:none;padding:6px 12px">Upgrade Now</button>
@@ -982,7 +983,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div id="sb-nudge" onclick="openModal('upgrade-modal')">
     <div class="sbn-title">Reports partially locked</div>
     <div class="sbn-sub">Upgrade to unlock all 5 reports</div>
-    <div class="sbn-btn">Upgrade - $99/mo</div>
+    <div class="sbn-btn">Upgrade - $199/mo</div>
   </div>
   <div class="sb-bottom">
     <div class="sb-user">
@@ -1396,7 +1397,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div>
           <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#B57B1F;margin-bottom:6px">Current Plan</div>
           <div style="font-size:22px;font-weight:800;color:#0E1B24;margin-bottom:4px">Free Trial</div>
-          <div style="font-size:13px;color:#6B7680">20 days remaining &nbsp;·&nbsp; 1 branch &nbsp;·&nbsp; Up to 3 reps</div>
+          <div style="font-size:13px;color:#6B7680">30 days remaining &nbsp;·&nbsp; 1 branch &nbsp;·&nbsp; Up to 3 reps</div>
         </div>
         <div style="text-align:right">
           <div style="font-size:32px;font-weight:800;color:#0E1B24">$0<span style="font-size:14px;font-weight:400;color:#6B7680">/mo</span></div>
@@ -1413,7 +1414,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
           <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Communication Hub</div>
           <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Weekly Audit tool</div>
         </div>
-        <button class="btn btn-primary" style="margin-top:16px;width:100%;font-size:15px;padding:14px" onclick="previewPlan('paid');openModal('upgrade-modal')">Upgrade to Basic — $99/mo &nbsp;→</button>
+        <button class="btn btn-primary" style="margin-top:16px;width:100%;font-size:15px;padding:14px" onclick="previewPlan('paid');openModal('upgrade-modal')">Upgrade now — from $199/mo &nbsp;→</button>
       </div>
     </div>
   </div>
@@ -1653,21 +1654,28 @@ var CRM_API_HINTS={
   Leap:'Find this under Settings → Integrations → API Key in Leap.',
   AccuLynx:'Find this under My Profile → API Key in AccuLynx.'
 };
-function pickCRM(card,name,authType){
-  var all=document.querySelectorAll('.crm-card');
+function pickCRM(card,name,authType,category){
+  var grid=document.getElementById('crm-grid-'+category);
+  var all=grid.querySelectorAll('.crm-card');
   for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
   card.classList.add('on');
-  document.getElementById('crm-creds').style.display='block';
-  document.getElementById('crm-btn').style.display='flex';
+  var creds=document.getElementById('creds-'+category);
+  creds.style.display='block';
   var isApi=authType==='api';
-  document.getElementById('crm-form-pass').style.display=isApi?'none':'block';
-  document.getElementById('crm-form-api').style.display=isApi?'block':'none';
+  document.getElementById('creds-'+category+'-pass').style.display=isApi?'none':'block';
+  document.getElementById('creds-'+category+'-api').style.display=isApi?'block':'none';
   if(isApi){
-    document.getElementById('crm-api-label').textContent=name+' API Key';
-    document.getElementById('crm-apikey').placeholder='Paste your '+name+' API key here';
-    document.getElementById('crm-api-hint').textContent=CRM_API_HINTS[name]||'Find this in your account settings → Integrations.';
+    document.getElementById('crm-api-label-'+category).textContent=name+' API Key';
+    document.getElementById('crm-apikey-'+category).placeholder='Paste your '+name+' API key here';
+    document.getElementById('crm-api-hint-'+category).textContent=CRM_API_HINTS[name]||'Find this in your account settings → Integrations.';
   } else {
-    document.getElementById('crm-email').placeholder=name+'@your-email.com';
+    document.getElementById('crm-email-'+category).placeholder=name+'@your-email.com';
+  }
+  if(category==='crm'){
+    document.getElementById('crm-required-hint').style.display='none';
+    var btn=document.getElementById('crm-btn');
+    btn.style.opacity='1';
+    btn.style.pointerEvents='auto';
   }
 }
 function checkMulti(){
@@ -1690,16 +1698,34 @@ function addBranch(){
   document.getElementById('nb-name').value='';
 }
 
-// PLAN
-function pickPlan(card){
-  var all=document.querySelectorAll('.plan-card');
-  for(var i=0;i<all.length;i++){if(!all[i].classList.contains('featured'))all[i].classList.remove('on');}
-  card.classList.add('on');
+// PLAN PRICING — $199/mo base (incl. 1 location) + $149/mo per additional location.
+// Annual plan = 12 months billed, discounted by 2 months' worth (10x monthly rate).
+var BASE_PRICE=199, LOCATION_PRICE=149;
+var planState={locations:0,billing:'monthly'};
+function setLocations(delta){
+  planState.locations=Math.max(0,planState.locations+delta);
+  document.getElementById('plan-locations').textContent=planState.locations;
+  updatePlanTotal();
 }
 function setBilling(el,type){
   var all=document.querySelectorAll('.df-opt');
   for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
   el.classList.add('on');
+  planState.billing=type;
+  updatePlanTotal();
+}
+function updatePlanTotal(){
+  var monthly=BASE_PRICE+planState.locations*LOCATION_PRICE;
+  var totalEl=document.getElementById('plan-total');
+  var labelEl=document.getElementById('plan-total-label');
+  if(planState.billing==='annual'){
+    var annual=monthly*10; // 12 months billed at the rate of 10 (2 months free)
+    labelEl.textContent='Total / year';
+    totalEl.textContent='$'+annual.toLocaleString()+' /yr';
+  } else {
+    labelEl.textContent='Total / month';
+    totalEl.textContent='$'+monthly.toLocaleString();
+  }
 }
 
 // SYNC ANIMATION
@@ -1850,7 +1876,7 @@ function buildGates(){
       div.id='gate-'+r;
       div.style.cssText='display:none;position:relative;border-radius:14px;overflow:hidden;min-height:260px;margin-top:20px';
       var dummy='<div style="padding:20px;filter:blur(5px);opacity:0.4"><div style="height:50px;background:#C8C2B6;border-radius:8px;margin-bottom:10px"></div><div style="height:50px;background:#C8C2B6;border-radius:8px;margin-bottom:10px"></div><div style="height:100px;background:#C8C2B6;border-radius:8px"></div></div>';
-      var overlay='<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;background:linear-gradient(to bottom,rgba(244,241,236,0),rgba(244,241,236,0.95) 30%,rgba(244,241,236,1) 55%)"><div style="font-size:34px;margin-bottom:8px">&#128274;</div><div style="background:#1F3A5F;color:white;font-size:11px;font-weight:800;padding:5px 14px;border-radius:99px;margin-bottom:12px;letter-spacing:.04em;text-transform:uppercase">Paid Plan Required</div><div style="font-size:19px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em">'+cfg.title+'</div><div style="font-size:13.5px;color:#6B7680;line-height:1.5;margin-bottom:16px;max-width:300px">Available on the Basic plan ($99/mo) and above.</div><div style="display:flex;flex-direction:column;gap:4px;margin-bottom:20px;text-align:left;width:100%;max-width:280px">'+feats+'</div><button id="gbtn-'+r+'" class="btn btn-primary btn-lg" style="width:100%;max-width:280px;font-size:15px;padding:14px">Upgrade Now - Unlock All Reports</button><div style="margin-top:10px;font-size:12px;color:#6B7680">No contract. Cancel anytime.</div></div>';
+      var overlay='<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;background:linear-gradient(to bottom,rgba(244,241,236,0),rgba(244,241,236,0.95) 30%,rgba(244,241,236,1) 55%)"><div style="font-size:34px;margin-bottom:8px">&#128274;</div><div style="background:#1F3A5F;color:white;font-size:11px;font-weight:800;padding:5px 14px;border-radius:99px;margin-bottom:12px;letter-spacing:.04em;text-transform:uppercase">Paid Plan Required</div><div style="font-size:19px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em">'+cfg.title+'</div><div style="font-size:13.5px;color:#6B7680;line-height:1.5;margin-bottom:16px;max-width:300px">Available on the full subscription ($199/mo) and above.</div><div style="display:flex;flex-direction:column;gap:4px;margin-bottom:20px;text-align:left;width:100%;max-width:280px">'+feats+'</div><button id="gbtn-'+r+'" class="btn btn-primary btn-lg" style="width:100%;max-width:280px;font-size:15px;padding:14px">Upgrade Now - Unlock All Reports</button><div style="margin-top:10px;font-size:12px;color:#6B7680">No contract. Cancel anytime.</div></div>';
       div.innerHTML=dummy+overlay;
       screen.appendChild(div);
       var btn=document.getElementById('gbtn-'+r);
@@ -2121,7 +2147,7 @@ var hwKnowledge = [
    a:'ROI is calculated as Won Revenue from a channel divided by total spend on that channel. CAC (Customer Acquisition Cost) = channel spend divided by number of won deals from that channel. Both are pulled from your marketing expense imports and CRM won data.',
    source:'How ROI and CAC are Computed', sourceId:'roi-calc'},
   {q:['free plan','paid plan','upgrade','what changes','difference'],
-   a:'On the Free plan you get the full Dashboard overview only. Reports R1-R4, Communication Hub, and Weekly Audit are locked. Upgrading to Basic ($99/mo) unlocks all 5 reports, Communication Hub, and Weekly Audit for 1 branch.',
+   a:'On the Free plan you get the full Dashboard overview only. Reports R1-R4, Communication Hub, and Weekly Audit are locked. Upgrading to full subscription ($199/mo) unlocks all 5 reports, Communication Hub, and Weekly Audit for 1 branch.',
    source:'Free vs Paid Plan', sourceId:'free-vs-paid'},
   {q:['weekly audit','audit work','audit submission'],
    a:'The Weekly Audit requires every rep to submit their activity summary by Sunday midnight. You can see who has submitted on the Weekly Audit screen. Pending reps can be nudged individually or in bulk. The compliance rate feeds into the R2 Rep Performance report.',
@@ -2278,7 +2304,7 @@ var helpArticles = {
     body:'<h4>ROI (Return on Investment)</h4><p><code>ROI = Won Revenue from channel / Total spend on channel</code></p><p>Example: Door Knock generated $89,000 in won revenue and cost $16,020 (180 CAC x 89 leads). ROI = 89,000 / 16,020 = 5.6x.</p><h4>CAC (Customer Acquisition Cost)</h4><p><code>CAC = Channel spend / Won leads from channel</code></p><p>Example: You spent $9,720 on Angi and won 18 leads. CAC = 9,720 / 18 = $540.</p><h4>Data Required</h4><ul><li>Marketing spend per channel (from manual XLSX import)</li><li>Lead source field completed in GHL (CRM compliance matters here)</li><li>Won/Lost stage set correctly in GHL pipeline</li></ul><h4>WoW Alerts</h4><p>If any channel ROI drops more than 30% week-over-week, The Hub fires an alert in the Communication Hub. This catches Angi or Google Ads performance drops before they waste significant budget.</p>'},
 
   'free-vs-paid':{cat:'Billing & Plans', title:'Free Plan vs Paid Plan — What Changes',
-    body:'<h4>Free Plan (20-Day Trial)</h4><ul><li>Full Dashboard overview with all KPI tiles</li><li>Branch filter and date range filter</li><li>Up to 3 reps</li><li>1 branch only</li></ul><h4>What is Locked on Free</h4><ul><li>R1 Marketing Attribution — fully gated</li><li>R2 Rep Performance — fully gated</li><li>R3 Pipeline & Funnel — fully gated</li><li>R4 Revenue Intelligence — fully gated</li><li>Communication Hub — blocked</li><li>Weekly Audit — blocked</li></ul><h4>Basic Plan ($99/mo)</h4><ul><li>All 5 reports unlocked</li><li>Unlimited reps</li><li>1 branch</li><li>Communication Hub</li><li>Weekly Audit</li></ul><h4>Pro Plan ($150/mo)</h4><ul><li>Everything in Basic</li><li>Multiple branches</li><li>Network dashboard</li><li>Branch comparison views</li></ul>'},
+    body:'<h4>Free Trial (30 Days)</h4><ul><li>Full Dashboard overview with all KPI tiles</li><li>Branch filter and date range filter</li><li>Up to 3 reps</li><li>1 location only</li></ul><h4>What is Locked After Your Trial Ends</h4><ul><li>R1 Marketing Attribution — fully gated</li><li>R2 Rep Performance — fully gated</li><li>R3 Pipeline & Funnel — fully gated</li><li>R4 Revenue Intelligence — fully gated</li><li>Communication Hub — blocked</li><li>Weekly Audit — blocked</li></ul><h4>Paid Subscription ($199/mo base)</h4><ul><li>All 5 reports unlocked</li><li>Unlimited reps</li><li>1 location included</li><li>Communication Hub</li><li>Weekly Audit</li></ul><h4>Additional Locations ($149/mo each)</h4><ul><li>Add as many locations as you need</li><li>Network dashboard</li><li>Branch comparison views</li></ul><h4>Annual Plan</h4><ul><li>Pay for 10 months, get 12 (2 months free)</li></ul>'},
 
   'weekly-audit':{cat:'Tools', title:'How the Weekly Audit Works',
     body:'<p>The Weekly Audit requires every rep to submit their activity summary by Sunday at midnight each week.</p><h4>For Reps</h4><p>Reps receive a reminder on Friday afternoon and a final reminder Sunday morning if they have not submitted. They complete a short form covering: leads contacted, appointments set, and any pipeline notes.</p><h4>For Managers</h4><p>The Weekly Audit screen shows the status of every rep: Submitted (with timestamp), Pending, or Missing. You can nudge individual reps with one click or bulk-notify all pending reps at once.</p><h4>Compliance Rate</h4><p>The weekly audit compliance rate (submitted reps / total reps) feeds directly into the R2 Rep Performance report as a data reliability signal. Reps who consistently miss submissions have lower data trust scores.</p><h4>Deadlines</h4><p>Sunday 11:59 PM. Submissions after midnight are marked Late. Three consecutive Late submissions trigger a Communication Hub alert to the branch manager.</p>'},
@@ -2355,7 +2381,7 @@ function helpOpenCat(cat){
     <div class="modal-head"><div><div class="modal-title">Unlock Full Access</div><div class="modal-sub">Upgrade to see all reports and tools</div></div><button class="modal-close" onclick="closeModal('upgrade-modal')">x</button></div>
     <div class="modal-body">
       <div style="background:#1F3A5F;border-radius:12px;padding:18px;margin-bottom:16px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.45);margin-bottom:10px">Basic plan unlocks ($99/mo)</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.45);margin-bottom:10px">Your subscription unlocks ($199/mo base)</div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span>Full Marketing Attribution and ROI</div>
           <div style="display:flex;align-items:center;gap:10px;color:white;font-size:13.5px;font-weight:600"><span style="background:rgba(255,255,255,.15);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span>Full Rep Performance leaderboard</div>
@@ -2366,14 +2392,14 @@ function helpOpenCat(cat){
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div style="border:2px solid #1F3A5F;border-radius:10px;padding:16px;background:rgba(31,58,95,.04)">
-          <div style="font-size:14px;font-weight:800;margin-bottom:6px">Basic</div>
-          <div style="font-size:26px;font-weight:800">$99<span style="font-size:13px;font-weight:400;color:#6B7680">/mo</span></div>
-          <div style="font-size:12px;color:#6B7680;margin-top:4px">1 branch, unlimited reps</div>
+          <div style="font-size:14px;font-weight:800;margin-bottom:6px">Base subscription</div>
+          <div style="font-size:26px;font-weight:800">$199<span style="font-size:13px;font-weight:400;color:#6B7680">/mo</span></div>
+          <div style="font-size:12px;color:#6B7680;margin-top:4px">1 location, unlimited reps</div>
         </div>
         <div style="border:2px solid #C8C2B6;border-radius:10px;padding:16px">
-          <div style="font-size:14px;font-weight:800;margin-bottom:6px">Pro</div>
-          <div style="font-size:26px;font-weight:800">$150<span style="font-size:13px;font-weight:400;color:#6B7680">/mo</span></div>
-          <div style="font-size:12px;color:#6B7680;margin-top:4px">Multi-branch, everything</div>
+          <div style="font-size:14px;font-weight:800;margin-bottom:6px">+ Location</div>
+          <div style="font-size:26px;font-weight:800">$149<span style="font-size:13px;font-weight:400;color:#6B7680">/mo</span></div>
+          <div style="font-size:12px;color:#6B7680;margin-top:4px">Per additional location</div>
         </div>
       </div>
     </div>
