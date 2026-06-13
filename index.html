@@ -813,9 +813,13 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="card-sm" style="padding:18px 20px;margin-bottom:14px;background:var(--horizon);border-color:var(--horizon)">
       <div style="display:flex;justify-content:space-between;align-items:baseline">
         <div style="color:rgba(255,255,255,.7);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em" id="plan-total-label">Total / month</div>
-        <div style="color:white;font-size:28px;font-weight:800" id="plan-total">$199</div>
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span id="plan-total-strike" style="display:none;color:rgba(255,255,255,.4);font-size:16px;font-weight:700;text-decoration:line-through"></span>
+          <div style="color:white;font-size:28px;font-weight:800" id="plan-total">$199</div>
+        </div>
       </div>
       <div style="color:rgba(255,255,255,.5);font-size:12px;margin-top:4px" id="plan-total-sub">After your 30-day trial ends</div>
+      <div style="color:var(--pos);font-size:12.5px;font-weight:700;margin-top:6px;display:none" id="plan-savings"></div>
     </div>
     <button class="btn btn-primary btn-full btn-lg" onclick="authGo('branches')">Start 30-day free trial →</button>
     <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);font-family:'Inter',sans-serif">30-day trial, then billing begins at the price above. Cancel anytime.</div>
@@ -1762,13 +1766,23 @@ function updatePlanTotal(){
   var monthly=BASE_PRICE+planState.locations*LOCATION_PRICE;
   var totalEl=document.getElementById('plan-total');
   var labelEl=document.getElementById('plan-total-label');
+  var strikeEl=document.getElementById('plan-total-strike');
+  var savingsEl=document.getElementById('plan-savings');
   if(planState.billing==='annual'){
-    var annual=monthly*10; // 12 months billed at the rate of 10 (2 months free)
+    var fullAnnual=monthly*12;
+    var discountedAnnual=monthly*10; // 2 months free
+    var savings=fullAnnual-discountedAnnual;
     labelEl.textContent='Total / year';
-    totalEl.textContent='$'+annual.toLocaleString()+' /yr';
+    strikeEl.textContent='$'+fullAnnual.toLocaleString();
+    strikeEl.style.display='inline';
+    totalEl.textContent='$'+discountedAnnual.toLocaleString()+' /yr';
+    savingsEl.textContent='You save $'+savings.toLocaleString()+'/year (2 months free)';
+    savingsEl.style.display='block';
   } else {
     labelEl.textContent='Total / month';
+    strikeEl.style.display='none';
     totalEl.textContent='$'+monthly.toLocaleString();
+    savingsEl.style.display='none';
   }
 }
 
