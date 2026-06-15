@@ -1449,23 +1449,38 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
   <div id="billing-paid-view">
     <div class="billing-banner fu1">
-      <div><div class="billing-plan">The Hub — Pro Multi-Branch Monthly</div><div class="billing-meta">4 branches &nbsp;·&nbsp; 30 seats &nbsp;·&nbsp; Renews June 21, 2026</div></div>
-      <div style="text-align:right"><div class="billing-price">$1,380<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/mo</span></div><span class="pill pill-pos">Active</span></div>
+      <div><div class="billing-plan" id="billing-plan-name">The Hub — Pro Multi-Branch Annual</div><div class="billing-meta" id="billing-plan-meta">4 branches &nbsp;·&nbsp; 30 seats &nbsp;·&nbsp; Renews January 21, 2027</div></div>
+      <div style="text-align:right"><div class="billing-price" id="billing-plan-price">$13,800<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/yr</span></div><span class="pill pill-pos">Active</span></div>
     </div>
+
+    <!-- PENDING PLAN CHANGE BANNER — shown when a future-effective change is scheduled -->
+    <div id="pending-change-banner" class="fu1" style="display:none;background:rgba(15,88,102,.08);border:1.5px solid rgba(15,88,102,.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">&#128197;</span>
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:#0E1B24">Plan change scheduled</div>
+          <div id="pending-change-text" style="font-size:12.5px;color:#6B7680">Monthly billing starts on your renewal date</div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-xs" onclick="cancelPlanChange()">Cancel change</button>
+    </div>
+
     <div class="grid-2 fu2">
       <div class="card card-p">
         <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Invoice History</div></div>
-        <div class="seat-row"><div style="font-size:13px;font-weight:600">May 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,380</div></div>
-        <div class="seat-row"><div style="font-size:13px;font-weight:600">Apr 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,280</div></div>
-        <div class="seat-row"><div style="font-size:13px;font-weight:600">Mar 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,280</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">Jan 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$13,800</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">Jan 21, 2025</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$13,800</div></div>
       </div>
       <div class="card card-p">
         <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Plan Details</div></div>
         <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Plan</span><span style="font-size:13px;font-weight:600">Pro Multi-Branch</span></div>
-        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Billing</span><span style="font-size:13px;font-weight:600">Monthly</span></div>
+        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Billing</span><span id="billing-cycle-label" style="font-size:13px;font-weight:600">Annual</span></div>
         <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Seats</span><span style="font-size:13px;font-weight:600">30 (23 used)</span></div>
-        <div class="seat-row" style="border-bottom:none"><span style="font-size:13px;color:var(--muted)">Next charge</span><span style="font-size:13px;font-weight:600">$1,380 on Jun 21</span></div>
-        <div style="margin-top:14px;display:flex;gap:8px"><button class="btn btn-outline btn-sm">Switch to annual (save $2,760)</button><button class="btn btn-danger btn-sm" onclick="showToast('Contact support to cancel')">Cancel plan</button></div>
+        <div class="seat-row" style="border-bottom:none"><span style="font-size:13px;color:var(--muted)">Next charge</span><span id="next-charge-label" style="font-size:13px;font-weight:600">$13,800 on Jan 21, 2027</span></div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button id="switch-billing-btn" class="btn btn-outline btn-sm" onclick="requestBillingSwitch()">Switch to monthly</button>
+          <button class="btn btn-danger btn-sm" onclick="showToast('Contact support to cancel')">Cancel plan</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1816,6 +1831,73 @@ function startSync(){
 
 // PLAN STATE
 window._plan='paid';
+renderBillingCycle();
+
+// SUBSCRIPTION / BILLING-CYCLE STATE
+// Annual subscribers run out their paid 12-month term; a switch to Monthly
+// is scheduled to take effect on the renewal date instead of charged immediately.
+var RENEWAL_DATE='January 21, 2027';
+var subState={cycle:'annual',pendingCycle:null};
+
+function requestBillingSwitch(){
+  if(subState.cycle==='annual'){
+    if(subState.pendingCycle==='monthly'){return;}
+    subState.pendingCycle='monthly';
+    showToast('Plan change scheduled — Monthly billing starts '+RENEWAL_DATE);
+  } else {
+    // Monthly → Annual switches can apply at the next renewal too
+    if(subState.pendingCycle==='annual'){return;}
+    subState.pendingCycle='annual';
+    showToast('Plan change scheduled — Annual billing starts at your next renewal');
+  }
+  renderBillingCycle();
+}
+
+function cancelPlanChange(){
+  subState.pendingCycle=null;
+  showToast('Scheduled plan change cancelled — staying on current plan');
+  renderBillingCycle();
+}
+
+function renderBillingCycle(){
+  var banner=document.getElementById('pending-change-banner');
+  var text=document.getElementById('pending-change-text');
+  var switchBtn=document.getElementById('switch-billing-btn');
+  var cycleLabel=document.getElementById('billing-cycle-label');
+  var nextCharge=document.getElementById('next-charge-label');
+  var planName=document.getElementById('billing-plan-name');
+  var planMeta=document.getElementById('billing-plan-meta');
+  var planPrice=document.getElementById('billing-plan-price');
+
+  if(subState.cycle==='annual'){
+    cycleLabel.textContent='Annual';
+    planName.textContent='The Hub — Pro Multi-Branch Annual';
+    planMeta.textContent='4 branches · 30 seats · Renews '+RENEWAL_DATE;
+    planPrice.innerHTML='$13,800<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/yr</span>';
+    nextCharge.textContent='$13,800 on '+RENEWAL_DATE;
+    switchBtn.textContent='Switch to monthly';
+  } else {
+    cycleLabel.textContent='Monthly';
+    planName.textContent='The Hub — Pro Multi-Branch Monthly';
+    planMeta.textContent='4 branches · 30 seats · Renews '+RENEWAL_DATE;
+    planPrice.innerHTML='$1,380<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/mo</span>';
+    nextCharge.textContent='$1,380 on '+RENEWAL_DATE;
+    switchBtn.textContent='Switch to annual';
+  }
+
+  if(subState.pendingCycle){
+    banner.style.display='flex';
+    text.textContent=(subState.pendingCycle==='monthly'?'Monthly':'Annual')+' billing starts on '+RENEWAL_DATE+'. You\'ll keep your current plan until then.';
+    switchBtn.disabled=true;
+    switchBtn.style.opacity='0.5';
+    switchBtn.style.cursor='default';
+  } else {
+    banner.style.display='none';
+    switchBtn.disabled=false;
+    switchBtn.style.opacity='1';
+    switchBtn.style.cursor='pointer';
+  }
+}
 
 function applyPlan(){
   var free=(window._plan==='free');
