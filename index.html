@@ -237,10 +237,10 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .branch-dot{width:8px;height:8px;border-radius:50%;}
 
 /* ── DATE FILTER ─────────────────────────────────── */
-.date-filter{display:flex;gap:4px;background:white;border:1px solid var(--rule);border-radius:9px;padding:4px;}
-.df-opt{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:.15s;}
-.df-opt.on{background:var(--horizon);color:white;}
-.df-opt:hover:not(.on){background:var(--panel);}
+.date-filter{display:flex;gap:2px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.18);border-radius:9px;padding:3px;}
+.df-opt{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);cursor:pointer;transition:.15s;}
+.df-opt.on{background:white;color:var(--horizon);}
+.df-opt:hover:not(.on){background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);}
 
 /* ── MODAL ───────────────────────────────────────── */
 .modal-back{position:fixed;inset:0;background:rgba(14,27,36,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;}
@@ -952,10 +952,10 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
   <div class="tb-co-name" id="tb-co">Smith Roofing LLC</div>
   <div class="date-filter" style="margin-left:8px">
-    <div class="df-opt on" onclick="setDF(this)" style="color:rgba(255,255,255,.8);">30d</div>
-    <div class="df-opt" onclick="setDF(this)" style="color:rgba(255,255,255,.5);">7d</div>
-    <div class="df-opt" onclick="setDF(this)" style="color:rgba(255,255,255,.5);">MTD</div>
-    <div class="df-opt" onclick="setDF(this)" style="color:rgba(255,255,255,.5);">QTD</div>
+    <div class="df-opt on" onclick="setDF(this)">30d</div>
+    <div class="df-opt" onclick="setDF(this)">7d</div>
+    <div class="df-opt" onclick="setDF(this)">MTD</div>
+    <div class="df-opt" onclick="setDF(this)">QTD</div>
   </div>
   <div class="tb-right">
     <div class="tb-date" id="tb-date"></div>
