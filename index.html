@@ -984,6 +984,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="sbi" id="sbi-r3" onclick="goApp('r3')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></div>Pipeline & Funnel</div>
   <div class="sbi" id="sbi-r4" onclick="goApp('r4')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>Revenue Intelligence</div>
   <div class="sbi" id="sbi-r5" onclick="goApp('r5')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Data Quality</div>
+  <div class="sbi" id="sbi-r6" onclick="goApp('r6')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>Production & Completion</div>
+  <div class="sbi" id="sbi-r7" onclick="goApp('r7')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>Loyalty & Referrals</div>
   <div class="sb-sec">Tools</div>
   <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="pill pill-crit" style="margin-left:auto;font-size:10px;padding:2px 6px">3</span></div>
   <div class="sbi" id="sbi-audit" onclick="goApp('audit')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Weekly Audit</div>
@@ -1027,6 +1029,14 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="kpi caut"><div class="kpi-label">Speed to Lead</div><div class="kpi-value">47<span style="font-size:14px;font-weight:600;color:var(--muted)"> min</span></div><span class="kpi-delta flat">↓ 12min</span><div class="kpi-context">SLA: &lt;60 min · 78% compliant</div></div>
     <div class="kpi pos"><div class="kpi-label">Contact Rate</div><div class="kpi-value">84<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">264 of 312 in CRM</div></div>
     <div class="kpi caut"><div class="kpi-label">After-Hours Leads</div><div class="kpi-value">23<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">72 leads 6pm–8am</div></div>
+  </div>
+  <!-- KPI Row 1b: Qualification & Response -->
+  <div style="margin-bottom:6px;margin-top:4px"><div class="sec-head"><div class="sec-title">Qualification & Response</div><a class="sec-action" onclick="goApp('r3')">Pipeline report →</a></div></div>
+  <div class="kpi-grid fu2" style="margin-bottom:10px">
+    <div class="kpi pos"><div class="kpi-label">Qualified vs Unqualified</div><div class="kpi-value">71<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta up">↑ 5pts</span><div class="kpi-context">221 qualified of 312 leads</div></div>
+    <div class="kpi caut"><div class="kpi-label">Speed-to-Lead SLA %</div><div class="kpi-value">78<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">SLA: &lt;60 min target</div></div>
+    <div class="kpi pos"><div class="kpi-label">Inbound Calls / SMS / Email</div><div class="kpi-value">186</div><span class="kpi-delta up">↑ 12%</span><div class="kpi-context">Call: 94 · SMS: 61 · Email: 31</div></div>
+    <div class="kpi pos"><div class="kpi-label">Form / Survey Submissions</div><div class="kpi-value">47</div><span class="kpi-delta up">↑ 8%</span><div class="kpi-context">Web forms + CRM surveys</div></div>
   </div>
   <!-- KPI Row 2: Revenue -->
   <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">Revenue</div><a class="sec-action" onclick="goApp('r4')">Revenue report →</a></div></div>
@@ -1077,6 +1087,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="rep-card" onclick="goApp('r2')"><div class="rep-card-icon" style="background:rgba(15,88,102,.08)">🏆</div><div class="rep-card-title">Rep Performance</div><div class="rep-card-desc">Close rates, compliance, coaching signals</div></div>
     <div class="rep-card" onclick="goApp('r3')"><div class="rep-card-icon" style="background:rgba(181,123,31,.08)">🔽</div><div class="rep-card-title">Pipeline & Funnel</div><div class="rep-card-desc">Stage drop-off, stuck leads, loss reasons</div></div>
     <div class="rep-card" onclick="goApp('r4')"><div class="rep-card-icon" style="background:rgba(63,110,74,.08)">💰</div><div class="rep-card-title">Revenue Intelligence</div><div class="rep-card-desc">Target tracking, deal size, attribution</div></div>
+    <div class="rep-card" onclick="goApp('r6')"><div class="rep-card-icon" style="background:rgba(31,58,95,.06)">🏗</div><div class="rep-card-title">Production & Completion</div><div class="rep-card-desc">Handoff, cycle time, warranty, invoicing</div></div>
+    <div class="rep-card" onclick="goApp('r7')"><div class="rep-card-icon" style="background:rgba(63,110,74,.06)">⭐</div><div class="rep-card-title">Loyalty & Referrals</div><div class="rep-card-desc">Reviews, NPS, referrals, repeat customers</div></div>
   </div>
 </div>
 
@@ -1114,7 +1126,40 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </table>
     </div>
   </div>
-  <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📉</div><div><div class="alert-text-title" style="color:var(--crit)">Angi ROI dropped 55% week-over-week — from 2.4× to 1.4×</div><div class="alert-text-body">Spend is $540/lead. Recommend pausing or reducing Angi budget until source is reviewed. <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft message to marketing →</a></div></div></div>
+  <!-- Per-source attribution detail + inbound comms -->
+  <div class="grid-2 fu4" style="margin-bottom:20px">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Per-Source Attribution Detail</div><span style="font-size:11px;color:var(--muted);font-weight:600">UTM / Campaign / Mailer</span></div>
+      <table class="tbl">
+        <thead><tr><th>Source Detail</th><th>Leads</th><th>Win%</th><th>CAC</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700">Google Ads — Brand</td><td class="tbl-num">21</td><td><span class="pill pill-pos">28%</span></td><td class="tbl-num">$270</td></tr>
+          <tr><td style="font-weight:700">Google Ads — Storm</td><td class="tbl-num">15</td><td><span class="pill pill-caut">17%</span></td><td class="tbl-num">$380</td></tr>
+          <tr><td style="font-weight:700">Meta — Retarget</td><td class="tbl-num">14</td><td><span class="pill pill-caut">21%</span></td><td class="tbl-num">$340</td></tr>
+          <tr><td style="font-weight:700">Meta — Lookalike</td><td class="tbl-num">9</td><td><span class="pill pill-crit">14%</span></td><td class="tbl-num">$460</td></tr>
+          <tr><td style="font-weight:700">Direct Mail — Jun Mailer</td><td class="tbl-num">7</td><td><span class="pill pill-caut">17%</span></td><td class="tbl-num">$320</td></tr>
+          <tr><td style="font-weight:700">LSA — Roofing NJ</td><td class="tbl-num">12</td><td><span class="pill pill-pos">31%</span></td><td class="tbl-num">$195</td></tr>
+          <tr><td style="font-weight:700">Organic / GBP</td><td class="tbl-num">15</td><td><span class="pill pill-pos">24%</span></td><td class="tbl-num">$160</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Inbound Activity (30d)</div></div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Inbound Calls</span><span style="font-size:12px;font-weight:700;color:var(--pos)">94</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:76%;width:76%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Inbound SMS</span><span style="font-size:12px;font-weight:700;color:var(--pos)">61</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:49%;width:49%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Inbound Email</span><span style="font-size:12px;font-weight:700;color:var(--caut)">31</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:25%;width:25%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Form / Survey Submissions</span><span style="font-size:12px;font-weight:700;color:var(--pos)">47</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:38%;width:38%"></div></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding-top:14px;border-top:1px solid var(--rule)">
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800">233</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Total inbound touches</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--caut)">18</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Missed calls auto-text sent</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--pos)">83<span style="font-size:13px">%</span></div><div style="font-size:11px;color:var(--muted);margin-top:2px">Missed-call auto-text rate</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--caut)">9</div><div style="font-size:11px;color:var(--muted);margin-top:2px">After-hours unresponded</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="alert-banner crit fu5"><div class="alert-icon" style="background:var(--crit-bg)">📉</div><div><div class="alert-text-title" style="color:var(--crit)">Angi ROI dropped 55% week-over-week — from 2.4× to 1.4×</div><div class="alert-text-body">Spend is $540/lead. Recommend pausing or reducing Angi budget until source is reviewed. <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft message to marketing →</a></div></div></div>
 </div>
 
 <!-- ═══════════════════════════ R2 — REPS ═══ -->
@@ -1125,6 +1170,10 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="kpi pos"><div class="kpi-label">Gross Revenue per Rep</div><div class="kpi-value">$32.4K</div><span class="kpi-delta up">↑ 5%</span></div>
     <div class="kpi pos"><div class="kpi-label">Avg Speed to Quote</div><div class="kpi-value">2.1<span style="font-size:14px"> days</span></div><span class="kpi-delta up">↓ 0.4d (better)</span></div>
     <div class="kpi caut"><div class="kpi-label">Avg Follow-up Rate</div><div class="kpi-value">64<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+    <div class="kpi pos"><div class="kpi-label">Decision Velocity (avg)</div><div class="kpi-value">3.4<span style="font-size:14px"> days</span></div><span class="kpi-delta up">↓ 0.6d (better)</span><div class="kpi-context">Proposal → decision</div></div>
+    <div class="kpi caut"><div class="kpi-label">Show Rate</div><div class="kpi-value">81<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">162 of 200 appointments held</div></div>
+    <div class="kpi crit"><div class="kpi-label">No-Show Rate</div><div class="kpi-value">11<span style="font-size:14px">%</span></div><span class="kpi-delta down">↑ 2pts</span><div class="kpi-context">22 no-shows this period</div></div>
+    <div class="kpi pos"><div class="kpi-label">Cancellation Rate</div><div class="kpi-value">8<span style="font-size:14px">%</span></div><span class="kpi-delta up">↓ 1pt (better)</span><div class="kpi-context">16 cancelled appointments</div></div>
   </div>
   <div class="card fu2" style="margin-bottom:20px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Leaderboard</div></div></div>
     <table class="tbl">
@@ -1138,17 +1187,32 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </tbody>
     </table>
   </div>
-  <div class="alert-banner caut fu3"><div class="alert-icon" style="background:var(--caut-bg)">⏱</div><div><div class="alert-text-title" style="color:var(--caut)">Speed to lead insight: low close rate often means slow response, not poor sales</div><div class="alert-text-body">Tom Bradley averages 67 min speed-to-lead with 24% close rate. Marcus Webb averages 22 min with 38%. Same market, same scripts. Response time is the variable.</div></div></div>
+  <!-- Performance by Rep Type -->
+  <div class="card fu3" style="margin-bottom:20px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Performance by Rep Type</div><span style="font-size:11px;color:var(--muted);font-weight:600">On-site Replacement / Repair / Virtual</span></div></div>
+    <table class="tbl">
+      <thead><tr><th>Rep Type</th><th>Reps</th><th>Leads</th><th>Won Rev</th><th>Close%</th><th>Avg Deal</th><th>Speed to Quote</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">On-site Replacement</td><td class="tbl-num">3</td><td class="tbl-num">124</td><td class="tbl-num">$174K</td><td><span class="pill pill-pos">32%</span></td><td class="tbl-num">$16.1K</td><td class="tbl-num">1.8d</td></tr>
+        <tr><td style="font-weight:700">On-site Repair</td><td class="tbl-num">2</td><td class="tbl-num">98</td><td class="tbl-num">$72K</td><td><span class="pill pill-caut">24%</span></td><td class="tbl-num">$7.4K</td><td class="tbl-num">2.3d</td></tr>
+        <tr><td style="font-weight:700">Virtual</td><td class="tbl-num">2</td><td class="tbl-num">90</td><td class="tbl-num">$40K</td><td><span class="pill pill-caut">19%</span></td><td class="tbl-num">$11.8K</td><td class="tbl-num">3.1d</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert-banner caut fu4"><div class="alert-icon" style="background:var(--caut-bg)">⏱</div><div><div class="alert-text-title" style="color:var(--caut)">Speed to lead insight: low close rate often means slow response, not poor sales</div><div class="alert-text-body">Tom Bradley averages 67 min speed-to-lead with 24% close rate. Marcus Webb averages 22 min with 38%. Same market, same scripts. Response time is the variable.</div></div></div>
 </div>
 
 <!-- ═══════════════════════════ R3 — PIPELINE ═══ -->
 <div class="app-scr" id="app-r3">
   <div class="pg-header fu"><div><div class="pg-title">Pipeline & Funnel</div><div class="pg-sub">Where leads drop off and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
   <div class="kpi-grid fu1">
-    <div class="kpi pos"><div class="kpi-label">Appointment Rate</div><div class="kpi-value">52<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts</span></div>
+    <div class="kpi pos"><div class="kpi-label">Appointments Booked</div><div class="kpi-value">162</div><span class="kpi-delta up">↑ 14</span><div class="kpi-context">52% appointment rate (312 leads)</div></div>
+    <div class="kpi pos"><div class="kpi-label">Show Rate</div><div class="kpi-value">81<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">131 of 162 held</div></div>
+    <div class="kpi crit"><div class="kpi-label">No-Show Rate</div><div class="kpi-value">11<span style="font-size:14px">%</span></div><span class="kpi-delta down">↑ 2pts</span><div class="kpi-context">18 no-shows this period</div></div>
+    <div class="kpi pos"><div class="kpi-label">Cancellation Rate</div><div class="kpi-value">8<span style="font-size:14px">%</span></div><span class="kpi-delta up">↓ 1pt</span><div class="kpi-context">13 cancelled</div></div>
     <div class="kpi pos"><div class="kpi-label">Estimate Presented</div><div class="kpi-value">78<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 2pts</span></div>
-    <div class="kpi crit"><div class="kpi-label">In Follow-Up &gt; 7 Days</div><div class="kpi-value">27</div><span class="kpi-delta down">↑ 8 this week</span><div class="kpi-context">Stage monitor — configurable in settings</div></div>
+    <div class="kpi crit"><div class="kpi-label">Stuck &gt; 7 Days</div><div class="kpi-value">27</div><span class="kpi-delta down">↑ 8 this week</span><div class="kpi-context">Stage monitor</div></div>
     <div class="kpi caut"><div class="kpi-label">Overall Win Rate</div><div class="kpi-value">28<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+    <div class="kpi pos"><div class="kpi-label">Pipeline Velocity</div><div class="kpi-value">5.2<span style="font-size:14px"> days</span></div><span class="kpi-delta up">↓ 0.8d (better)</span><div class="kpi-context">Avg cycle time per stage</div></div>
   </div>
   <div class="grid-2 fu2" style="margin-bottom:20px;align-items:start;">
     <div class="card card-p">
@@ -1163,6 +1227,15 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div>
   </div>
   <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📌</div><div><div class="alert-text-title" style="color:var(--crit)">27 leads stuck >7 days — mostly NJ branch</div><div class="alert-text-body">14 leads in NJ haven't moved in 7+ days. Reps: Marcus (4), Tom (6), Raj (4). <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft nudge messages →</a></div></div></div>
+
+  <!-- Insurance / Storm Metrics (P1) -->
+  <div style="margin:20px 0 8px"><div class="sec-head"><div class="sec-title">Insurance / Storm Leads</div><span style="font-size:11px;color:var(--muted);font-weight:600">P1 · Storm/Insurance pipeline — Stage 4</span></div></div>
+  <div class="kpi-grid fu4">
+    <div class="kpi pos"><div class="kpi-label">Insurance Lead %</div><div class="kpi-value">34<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">106 of 312 leads</div></div>
+    <div class="kpi caut"><div class="kpi-label">Insurance Pipeline Conv.</div><div class="kpi-value">21<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Won ÷ insurance leads</div></div>
+    <div class="kpi pos"><div class="kpi-label">Avg Claim Approved</div><div class="kpi-value">$18.4K</div><span class="kpi-delta up">↑ 8%</span></div>
+    <div class="kpi caut"><div class="kpi-label">Claim Status Breakdown</div><div class="kpi-value">3</div><span class="kpi-delta flat">Pending adjuster</span><div class="kpi-context">Approved: 14 · Denied: 4 · Open: 3</div></div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════ R4 — REVENUE ═══ -->
@@ -1173,6 +1246,10 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="kpi crit"><div class="kpi-label">Monthly Target</div><div class="kpi-value">$320K</div><span class="kpi-delta down">$34K gap</span><div class="kpi-context"><a onclick="openModal('target-modal')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Edit target →</a></div></div>
     <div class="kpi pos"><div class="kpi-label">Expected Rev</div><div class="kpi-value">$312K</div><span class="kpi-delta up">Pipeline × close%</span></div>
     <div class="kpi pos"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value">$14.2K</div><span class="kpi-delta up">↑ 7%</span></div>
+    <div class="kpi pos"><div class="kpi-label">Avg Proposal Value</div><div class="kpi-value">$16.8K</div><span class="kpi-delta up">↑ 4%</span><div class="kpi-context">All proposals delivered</div></div>
+    <div class="kpi caut"><div class="kpi-label">Profit Margin per Job</div><div class="kpi-value">38<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Revenue − cost ÷ revenue</div></div>
+    <div class="kpi pos"><div class="kpi-label">Total Revenue (period)</div><div class="kpi-value">$286K</div><span class="kpi-delta up">↑ 9%</span><div class="kpi-context">All won deals · June 2026</div></div>
+    <div class="kpi pos"><div class="kpi-label">Win Rate by Lead Source</div><div class="kpi-value">28<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Best: Referrals 42%</div></div>
   </div>
   <div class="card fu2" style="margin-bottom:20px;padding:22px">
     <div class="sec-head" style="margin-bottom:6px"><div class="sec-title">Revenue vs Target — June 2026</div></div>
@@ -1186,25 +1263,40 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div>
     <div style="margin-top:14px;padding:12px 14px;background:var(--crit-bg);border-radius:8px;font-size:12.5px;color:var(--crit);border:1px solid rgba(155,58,42,.2)">⚠ $34K gap on day 20. At current pace, month ends at ~$304K. Top closers must accelerate 2 deals.</div>
   </div>
-  <div class="card fu3"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Revenue Attribution</div></div></div>
-    <table class="tbl"><thead><tr><th>Rep</th><th>Won Revenue</th><th>Deal Count</th><th>Avg Deal</th><th>Share</th></tr></thead>
-    <tbody>
-      <tr><td style="font-weight:700">Marcus Webb</td><td class="tbl-num">$48K</td><td class="tbl-num">4</td><td class="tbl-num">$12K</td><td><span class="pill pill-pos">16.8%</span></td></tr>
-      <tr><td style="font-weight:700">Lisa Chen</td><td class="tbl-num">$41K</td><td class="tbl-num">3</td><td class="tbl-num">$13.7K</td><td><span class="pill pill-pos">14.3%</span></td></tr>
-      <tr><td style="font-weight:700">Derek Osei</td><td class="tbl-num">$37K</td><td class="tbl-num">3</td><td class="tbl-num">$12.3K</td><td><span class="pill pill-caut">12.9%</span></td></tr>
-      <tr><td style="font-weight:700">Nina Vega</td><td class="tbl-num">$31K</td><td class="tbl-num">2</td><td class="tbl-num">$15.5K</td><td><span class="pill pill-caut">10.8%</span></td></tr>
-    </tbody></table>
+  <div class="grid-2 fu3" style="margin-bottom:20px">
+    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Revenue Attribution</div></div></div>
+      <table class="tbl"><thead><tr><th>Rep</th><th>Won Revenue</th><th>Deal Count</th><th>Avg Deal</th><th>Share</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">Marcus Webb</td><td class="tbl-num">$48K</td><td class="tbl-num">4</td><td class="tbl-num">$12K</td><td><span class="pill pill-pos">16.8%</span></td></tr>
+        <tr><td style="font-weight:700">Lisa Chen</td><td class="tbl-num">$41K</td><td class="tbl-num">3</td><td class="tbl-num">$13.7K</td><td><span class="pill pill-pos">14.3%</span></td></tr>
+        <tr><td style="font-weight:700">Derek Osei</td><td class="tbl-num">$37K</td><td class="tbl-num">3</td><td class="tbl-num">$12.3K</td><td><span class="pill pill-caut">12.9%</span></td></tr>
+        <tr><td style="font-weight:700">Nina Vega</td><td class="tbl-num">$31K</td><td class="tbl-num">2</td><td class="tbl-num">$15.5K</td><td><span class="pill pill-caut">10.8%</span></td></tr>
+      </tbody></table>
+    </div>
+    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Win Rate by Deal Value Tier</div><span style="font-size:11px;color:var(--muted);font-weight:600">P1</span></div></div>
+      <table class="tbl"><thead><tr><th>Deal Tier</th><th>Opps</th><th>Won</th><th>Win Rate</th><th>Avg Size</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">&lt; $5K (Repair)</td><td class="tbl-num">48</td><td class="tbl-num">18</td><td><span class="pill pill-pos">38%</span></td><td class="tbl-num">$3.8K</td></tr>
+        <tr><td style="font-weight:700">$5K – $15K</td><td class="tbl-num">89</td><td class="tbl-num">27</td><td><span class="pill pill-pos">30%</span></td><td class="tbl-num">$10.2K</td></tr>
+        <tr><td style="font-weight:700">$15K – $30K</td><td class="tbl-num">62</td><td class="tbl-num">14</td><td><span class="pill pill-caut">23%</span></td><td class="tbl-num">$21.4K</td></tr>
+        <tr><td style="font-weight:700">&gt; $30K</td><td class="tbl-num">18</td><td class="tbl-num">3</td><td><span class="pill pill-crit">17%</span></td><td class="tbl-num">$41.7K</td></tr>
+      </tbody></table>
+    </div>
   </div>
 </div>
 
 <!-- ═══════════════════════════ R5 — DATA QUALITY ═══ -->
 <div class="app-scr" id="app-r5">
-  <div class="pg-header fu"><div><div class="pg-title">Data Quality</div><div class="pg-sub">Can you trust the other 4 reports? Composite score: 74 / 100</div></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Data Quality & Compliance</div><div class="pg-sub">Can you trust the other reports? Composite score: 74 / 100</div></div></div>
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label" title="Data integrity measures how completely your connected tools are populating required fields.">Data Field Integrity</div><div class="kpi-value">88<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts</span></div>
-    <div class="kpi caut"><div class="kpi-label" title="CRM Compliance measures how consistently your reps fill in required fields (source, outcome, contact date, notes) after each lead interaction.">CRM Compliance</div><div class="kpi-value">74<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
-    <div class="kpi pos"><div class="kpi-label" title="Duplicate Rate is the share of leads identified as duplicate records across your connected sources.">Duplicate Rate</div><div class="kpi-value">2.1<span style="font-size:14px">%</span></div><span class="kpi-delta up">↓ 0.8% (better)</span></div>
+    <div class="kpi caut"><div class="kpi-label" title="CRM Compliance measures how consistently your reps fill in required fields after each lead interaction.">CRM Compliance</div><div class="kpi-value">74<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+    <div class="kpi pos"><div class="kpi-label" title="Duplicate Rate is the share of leads identified as duplicate records.">Duplicate Rate</div><div class="kpi-value">2.1<span style="font-size:14px">%</span></div><span class="kpi-delta up">↓ 0.8% (better)</span></div>
     <div class="kpi caut"><div class="kpi-label">Source Name Hygiene</div><div class="kpi-value">82<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+    <div class="kpi caut"><div class="kpi-label">SLA Compliance per Workflow</div><div class="kpi-value">84<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">On-time fires ÷ total fires</div></div>
+    <div class="kpi caut"><div class="kpi-label">Stage Discipline %</div><div class="kpi-value">71<span style="font-size:14px">%</span></div><span class="kpi-delta down">↓ 3pts</span><div class="kpi-context">Opps with all timestamps filled</div></div>
+    <div class="kpi caut"><div class="kpi-label">Compliance Audit Pass Rate</div><div class="kpi-value">79<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 2pts</span><div class="kpi-context">Rep actions ÷ rules evaluated</div></div>
+    <div class="kpi crit"><div class="kpi-label">Read-Receipt Response &lt;48h</div><div class="kpi-value">68<span style="font-size:14px">%</span></div><span class="kpi-delta down">↓ 5pts</span><div class="kpi-context">Rep replies ≤48h of message sent</div></div>
   </div>
   <div class="grid-2 fu2">
     <div class="card card-p">
@@ -1227,6 +1319,104 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div class="connector-item" style="padding:10px 0"><div class="conn-icon" style="background:#FFF3E8">🟠</div><div><div class="conn-name">Leap CRM</div><div class="conn-detail">87 jobs · Synced 12 min ago</div></div><div class="conn-status"><span class="pill pill-pos">Healthy</span></div></div>
       <div class="connector-item" style="padding:10px 0"><div class="conn-icon" style="background:#F0FFF4">📞</div><div><div class="conn-name">CallRail</div><div class="conn-detail">1,204 calls · Synced 8 min ago</div></div><div class="conn-status"><span class="pill pill-pos">Healthy</span></div></div>
       <div class="connector-item" style="padding:10px 0;border-bottom:none"><div class="conn-icon" style="background:#FFF0F0">📊</div><div><div class="conn-name">WhatConverts</div><div class="conn-detail">Last sync failed · 3 hrs ago</div></div><div class="conn-status"><span class="pill pill-crit">Failed</span><button class="btn btn-outline btn-xs" onclick="showToast('🔄 Reconnecting WhatConverts...')">Reconnect</button></div></div>
+    </div>
+  </div>
+  <!-- Data Hygiene Coverage + Workflow Health -->
+  <div class="grid-2 fu3" style="margin-top:20px">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Contact Data Hygiene</div><span style="font-size:11px;color:var(--muted);font-weight:600">P1</span></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Email Coverage</span><span style="font-size:12px;font-weight:700;color:var(--pos)">91%</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:91%;width:91%"></div></div><div style="font-size:11px;color:var(--muted);margin-top:3px">284 of 312 contacts have email</div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Phone Coverage</span><span style="font-size:12px;font-weight:700;color:var(--caut)">87%</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:87%;width:87%"></div></div><div style="font-size:11px;color:var(--muted);margin-top:3px">271 of 312 contacts have phone</div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Unreachable Contacts</span><span style="font-size:12px;font-weight:700;color:var(--crit)">14</span></div><div class="prog-track"><div class="prog-fill crit" style="--w:4%;width:4%"></div></div><div style="font-size:11px;color:var(--muted);margin-top:3px">No email AND no phone on record</div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Duplicate Contact Rate</span><span style="font-size:12px;font-weight:700;color:var(--pos)">2.1%</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:2%;width:2%"></div></div></div>
+      </div>
+    </div>
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Workflow Execution Health</div><span style="font-size:11px;color:var(--muted);font-weight:600">P1</span></div>
+      <table class="tbl">
+        <thead><tr><th>Workflow</th><th>Fires</th><th>Success</th><th>Fail Rate</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700">Speed-to-lead SMS</td><td class="tbl-num">312</td><td class="tbl-num">298</td><td><span class="pill pill-pos">4.5%</span></td></tr>
+          <tr><td style="font-weight:700">Missed-call auto-text</td><td class="tbl-num">21</td><td class="tbl-num">18</td><td><span class="pill pill-caut">14.3%</span></td></tr>
+          <tr><td style="font-weight:700">Appt reminder</td><td class="tbl-num">162</td><td class="tbl-num">161</td><td><span class="pill pill-pos">0.6%</span></td></tr>
+          <tr><td style="font-weight:700">Post-close review ask</td><td class="tbl-num">20</td><td class="tbl-num">17</td><td><span class="pill pill-caut">15%</span></td></tr>
+          <tr><td style="font-weight:700">Follow-up drip (no-show)</td><td class="tbl-num">22</td><td class="tbl-num">19</td><td><span class="pill pill-caut">13.6%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ R6 — PRODUCTION & COMPLETION ═══ -->
+<div class="app-scr" id="app-r6">
+  <div class="pg-header fu"><div><div class="pg-title">Production & Completion</div><div class="pg-sub">Handoff, job cycle, completion milestones, and invoicing — Stage 5–7</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <!-- P0: Handoff + Production cycle -->
+  <div class="kpi-grid fu1">
+    <div class="kpi pos"><div class="kpi-label">Handoff Success Rate</div><div class="kpi-value">94<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 3pts</span><div class="kpi-context">Handoffs completed ÷ contracts signed</div></div>
+    <div class="kpi caut"><div class="kpi-label">Production Cycle Time</div><div class="kpi-value">4.2<span style="font-size:14px"> days</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Production start → completion</div></div>
+    <div class="kpi caut"><div class="kpi-label">Handoff Cycle Time</div><div class="kpi-value">1.8<span style="font-size:14px"> days</span></div><span class="kpi-delta up">↓ 0.3d (better)</span><div class="kpi-context">Contract signed → handoff complete</div></div>
+    <div class="kpi pos"><div class="kpi-label">Material Delivery On-Time</div><div class="kpi-value">88<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 5pts</span><div class="kpi-context">Delivered on-time ÷ scheduled</div></div>
+    <div class="kpi caut"><div class="kpi-label">Change Order Frequency</div><div class="kpi-value">1.3</div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Avg change orders per job</div></div>
+    <div class="kpi caut"><div class="kpi-label">Change Order Value %</div><div class="kpi-value">8.4<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Sum(CO value) ÷ sum(deal value)</div></div>
+    <div class="kpi crit"><div class="kpi-label">Production Silence Rate</div><div class="kpi-value">7</div><span class="kpi-delta down">↑ 2 this week</span><div class="kpi-context">Jobs &gt;7 days without customer comms</div></div>
+    <div class="kpi pos"><div class="kpi-label">Stage-Stuck (Production)</div><div class="kpi-value">3</div><span class="kpi-delta up">↓ 2 (better)</span><div class="kpi-context">In production stage &gt;N days</div></div>
+  </div>
+  <!-- Completion milestones -->
+  <div style="margin:20px 0 8px"><div class="sec-head"><div class="sec-title">Completion Milestones</div><span style="font-size:11px;color:var(--muted);font-weight:600">Stage 7</span></div></div>
+  <div class="kpi-grid fu2">
+    <div class="kpi pos"><div class="kpi-label">Walkthrough Completion Rate</div><div class="kpi-value">86<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts</span><div class="kpi-context">Held ÷ scheduled walkthroughs</div></div>
+    <div class="kpi caut"><div class="kpi-label">Punch List Completion %</div><div class="kpi-value">79<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Punch lists closed ÷ opened</div></div>
+    <div class="kpi caut"><div class="kpi-label">Time to Final Invoice</div><div class="kpi-value">2.4<span style="font-size:14px"> days</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Production complete → invoice sent</div></div>
+    <div class="kpi pos"><div class="kpi-label">Time to Payment</div><div class="kpi-value">8.1<span style="font-size:14px"> days</span></div><span class="kpi-delta up">↓ 1.2d (better)</span><div class="kpi-context">Invoice sent → payment received</div></div>
+    <div class="kpi pos"><div class="kpi-label">Warranty Delivery Completion</div><div class="kpi-value">91<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">Warranty delivered ÷ closed jobs</div></div>
+  </div>
+  <!-- Job status table -->
+  <div class="card fu3" style="margin-top:20px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Active Jobs Status</div></div></div>
+    <table class="tbl">
+      <thead><tr><th>Job</th><th>Stage</th><th>Days in Stage</th><th>Material</th><th>CO Count</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">NJ-0842</td><td>Production</td><td class="tbl-num">2</td><td><span class="pill pill-pos">On-time</span></td><td class="tbl-num">0</td><td><span class="pill pill-pos">On track</span></td></tr>
+        <tr><td style="font-weight:700">NY-0831</td><td>Punch List</td><td class="tbl-num">5</td><td><span class="pill pill-pos">Delivered</span></td><td class="tbl-num">1</td><td><span class="pill pill-caut">CO open</span></td></tr>
+        <tr><td style="font-weight:700">FL-0819</td><td>Production</td><td class="tbl-num">9</td><td><span class="pill pill-crit">Delayed</span></td><td class="tbl-num">2</td><td><span class="pill pill-crit">Stuck &gt;7d</span></td></tr>
+        <tr><td style="font-weight:700">NJ-0838</td><td>Walkthrough</td><td class="tbl-num">1</td><td><span class="pill pill-pos">Delivered</span></td><td class="tbl-num">0</td><td><span class="pill pill-pos">On track</span></td></tr>
+        <tr><td style="font-weight:700">NY-0826</td><td>Invoice</td><td class="tbl-num">3</td><td><span class="pill pill-pos">Delivered</span></td><td class="tbl-num">0</td><td><span class="pill pill-caut">Payment pending</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ R7 — LOYALTY & REFERRALS ═══ -->
+<div class="app-scr" id="app-r7">
+  <div class="pg-header fu"><div><div class="pg-title">Loyalty & Referrals</div><div class="pg-sub">Reviews, NPS, referrals, and post-completion customer engagement — Stage 8</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="kpi-grid fu1">
+    <div class="kpi caut"><div class="kpi-label">Review Request Rate</div><div class="kpi-value">72<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Requests sent ÷ closed jobs</div></div>
+    <div class="kpi caut"><div class="kpi-label">Review Submission Rate</div><div class="kpi-value">41<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">Reviews left ÷ requests sent</div></div>
+    <div class="kpi pos"><div class="kpi-label">Avg Review Score / NPS</div><div class="kpi-value">4.6<span style="font-size:14px"> / 5</span></div><span class="kpi-delta up">↑ 0.2</span><div class="kpi-context">NPS: +62</div></div>
+    <div class="kpi pos"><div class="kpi-label">Referral Rate</div><div class="kpi-value">18<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 3pts</span><div class="kpi-context">Referrals made ÷ closed jobs</div></div>
+    <div class="kpi pos"><div class="kpi-label">Referral Conversion</div><div class="kpi-value">43<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 5pts</span><div class="kpi-context">Referrals closed ÷ referrals made</div></div>
+  </div>
+  <div class="grid-2 fu2" style="margin-top:20px">
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Review Funnel (30d)</div></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Jobs closed</span><span style="font-size:12px;font-weight:700">20</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:100%;width:100%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Review requests sent</span><span style="font-size:12px;font-weight:700">14 (72%)</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:72%;width:72%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Reviews received</span><span style="font-size:12px;font-weight:700">6 (41%)</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:41%;width:41%"></div></div></div>
+        <div style="padding:12px;background:var(--caut-bg);border-radius:8px;font-size:12px;color:var(--caut);border:1px solid rgba(181,123,31,.2)">⚠ 6 closed jobs received no review request — workflow gap or rep skip detected.</div>
+      </div>
+    </div>
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Referral Pipeline (30d)</div></div>
+      <table class="tbl">
+        <thead><tr><th>Referring Customer</th><th>Referrals Made</th><th>Won</th><th>Conv.</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700">Marcus W. (NJ-0791)</td><td class="tbl-num">3</td><td class="tbl-num">2</td><td><span class="pill pill-pos">67%</span></td></tr>
+          <tr><td style="font-weight:700">L. Rodriguez (NY-0784)</td><td class="tbl-num">2</td><td class="tbl-num">1</td><td><span class="pill pill-caut">50%</span></td></tr>
+          <tr><td style="font-weight:700">P. Singh (FL-0778)</td><td class="tbl-num">2</td><td class="tbl-num">0</td><td><span class="pill pill-crit">0%</span></td></tr>
+          <tr><td style="font-weight:700">A. Kim (NJ-0769)</td><td class="tbl-num">1</td><td class="tbl-num">1</td><td><span class="pill pill-pos">100%</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -2477,6 +2667,8 @@ function helpOpenCat(cat){
         <div onclick="closeModal('mob-menu-modal');goApp('r3');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128204;</div><div style="font-size:13px;font-weight:700">Pipeline &amp; Funnel</div></div>
         <div onclick="closeModal('mob-menu-modal');goApp('r4');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128176;</div><div style="font-size:13px;font-weight:700">Revenue</div></div>
         <div onclick="closeModal('mob-menu-modal');goApp('r5');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#9989;</div><div style="font-size:13px;font-weight:700">Data Quality</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('r6');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#127959;</div><div style="font-size:13px;font-weight:700">Production</div></div>
+        <div onclick="closeModal('mob-menu-modal');goApp('r7');mnActive('r1')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#11088;</div><div style="font-size:13px;font-weight:700">Loyalty</div></div>
         <div onclick="closeModal('mob-menu-modal');goApp('audit')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128203;</div><div style="font-size:13px;font-weight:700">Weekly Audit</div></div>
         <div onclick="closeModal('mob-menu-modal');goApp('billing')" style="background:#F4F1EC;border-radius:10px;padding:14px;cursor:pointer"><div style="font-size:22px;margin-bottom:6px">&#128179;</div><div style="font-size:13px;font-weight:700">Billing</div></div>
       </div>
