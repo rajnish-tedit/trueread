@@ -1,0 +1,26 @@
+Category,Alert Name,Trigger / Condition,Priority,Response Window,Status in Prototype,Recommended Action for Owner,Draft Message?,Report Home
+Revenue,Revenue gap vs monthly target,"Won revenue falls behind pace (e.g. day 20 < 89% of target)",Critical,Same day,Implemented,Identify top closers and push pipeline,Yes,Revenue Intelligence
+Revenue,Pipeline value dropped >10% WoW,Week-over-week pipeline sum drops more than 10%,Warning,24–48h,Missing,Review lost/stalled deals and source quality,Yes,Revenue Intelligence
+Revenue,High-value deal (>$20K) with no follow-up in 48h,Opportunity monetary_value >$20K and no stage change in 48h,Critical,Same day,Missing,Assign rep to follow up immediately,Yes,Pipeline & Funnel
+Revenue,Profit margin on a job below threshold,Job margin drops below configured % (e.g. <25%),Warning,24–48h,Missing,Review job cost — check change orders or discounts given,No,Revenue Intelligence
+Lead Intake,Missed call not texted back within 15 min,Inbound call missed + no auto-text sent within 15 min,Critical,Immediate,Missing,Trigger auto-text or alert rep to call back now,Yes,Action Items
+Lead Intake,Rep hasn't contacted a new lead in >30 min,Lead received_at + no first_outbound_at within 30 min,Critical,Immediate,Missing,Notify rep and branch manager,Yes,Action Items
+Lead Intake,Speed-to-lead SLA breach per rep,Individual rep speed_to_lead_minutes > SLA target,Warning,Same day,Partially (insight only),Coaching note to rep — show peer benchmark,Yes,Rep Performance
+Lead Intake,WhatConverts sync failed,Connector last sync status = Failed,Critical,Immediate,In Data Quality only — not in Action Items,Reconnect and review missed lead count,No,Data Integrations
+Sales Process,Leads stuck >7 days in pipeline,Opportunity in same stage for >7 days with no activity,Critical,Same day,Implemented,Draft nudge messages to reps,Yes,Pipeline & Funnel
+Sales Process,No-show rate spike >30% this week,No-show count this week / appointments booked >30%,Warning,24–48h,Missing,Review appointment confirmation workflow,Yes,Pipeline & Funnel
+Sales Process,Win rate dropped 2 consecutive weeks per rep,Rep close% down week-on-week for 2+ weeks,Insight,Weekly,Missing,Schedule coaching call with rep,Yes,Rep Performance
+Sales Process,Decision velocity slowing (>5 days avg),avg(decision_at - proposal_delivered_at) > 5 days,Warning,24–48h,Missing,Follow up on pending proposals — check objections,Yes,Pipeline & Funnel
+Rep Performance,Read-receipt reply >48h by rep,Rep response to customer message >48h after delivery,Warning,Same day,Added as KPI only,Send compliance reminder to rep,Yes,Weekly Audit
+Rep Performance,CRM compliance below 70% for a rep,Rep CRM entry compliance rate <70% this week,Warning,24–48h,In Weekly Audit aggregate only,Personal nudge with specific missing fields,Yes,Weekly Audit
+Rep Performance,Weekly audit not submitted by deadline,Rep has not submitted weekly audit by Sunday 11:59 PM,Warning,Same day,Implemented,Bulk nudge with personalized reminder,Yes,Weekly Audit
+Rep Performance,New rep outperforming team average in first 30 days,Rep close% or speed-to-lead better than team avg within 30 days,Insight,Weekly,Missing,Celebrate win — share approach with team,No,Rep Performance
+Channel / Marketing,Angi (or any channel) ROI dropped >30% WoW,Channel ROI week-over-week decline >30%,Critical,Same day,Implemented,Pause or reduce channel budget,Yes,Marketing Attribution
+Channel / Marketing,CAC for a channel exceeds won deal avg,Channel CAC > avg deal value for that source,Critical,24–48h,Missing,Pause spend on that channel immediately,No,Marketing Attribution
+Channel / Marketing,Lead volume from top channel drops >20% WoW,Lead count from best-performing source drops significantly,Warning,24–48h,Missing,Check campaign status / budget pacing,No,Marketing Attribution
+Production,Job stuck in production >10 days with no update,Active job with no progress note or stage change >10 days,Critical,Same day,Missing,Contact production coordinator — risk of bad review,Yes,Pipeline & Funnel
+Production,Production cycle time trending up 2+ weeks,avg cycle time increasing week-on-week for 2+ weeks,Insight,Weekly,Missing,Review crew capacity and job scheduling,No,Pipeline & Funnel
+Production,Handoff failure (contract signed but not handed off),handoff_status = failed or null after 48h of contract sign,Warning,24–48h,Missing,Re-assign production coordinator and reprocess,Yes,Action Items
+Capacity / Operations,Branch at 100% seat capacity,Branch active users = max seats for that branch,Warning,Before it blocks growth,Missing — Miami is at this point,Add seats or reallocate before next hire,No,Users & Seats
+Capacity / Operations,Duplicate contact rate exceeds 5%,Dedup pass shows >5% duplicate contacts,Warning,Weekly,In Data Quality only,Run dedup review and merge records,No,Data Integrations
+Capacity / Operations,Integration sync failure (any connector),Any connector sync attempt fails,Critical,Immediate,In Data Quality only — not in Action Items,Reconnect and quantify data gap,No,Data Integrations
