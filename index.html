@@ -58,6 +58,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--paper);col
 #topbar{height:58px;background:var(--horizon);display:none;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.08);}
 #body-wrap{display:flex;flex:1;overflow:hidden;}
 #sidebar{width:232px;background:var(--ink);display:none;flex-direction:column;overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06);}
+@media (min-width:1600px){#sidebar{width:268px;}}
+@media (min-width:1920px){#sidebar{width:296px;}}
 #main{flex:1;overflow-y:auto;background:var(--paper);}
 
 /* ── AUTH ──────────────────────────────────────────── */
@@ -360,6 +362,8 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .tab:hover:not(.on){color:var(--slate);}
 .tab-panel{display:none;}
 .tab-panel.on{display:block;animation:fadeIn .2s ease both;}
+.subtab-panel{display:none;}
+.subtab-panel.on{display:block;animation:fadeIn .2s ease both;}
 
 /* ── BILLING PLAN ────────────────────────────────── */
 .billing-banner{background:var(--horizon);border-radius:14px;padding:24px;color:white;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:20px;}
@@ -1086,8 +1090,14 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Total Marketing Spend</div><div class="kpi-value">$18.4K</div><span class="kpi-delta flat">→ $18.1K prior</span></div>
     <div class="kpi pos"><div class="kpi-label">Average Customer Acquisition Cost</div><div class="kpi-value">$247</div><span class="kpi-delta up">↓ $19 (better)</span></div>
-    <div class="kpi pos"><div class="kpi-label">Best ROI</div><div class="kpi-value">6.2×</div><span class="kpi-delta up">Canvassing</span></div>
+    <div class="kpi pos"><div class="kpi-label">Qualified Lead Rate</div><div class="kpi-value">68<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 5pts</span><div class="kpi-context">212 qualified · 100 unqualified</div></div>
     <div class="kpi crit"><div class="kpi-label">Lowest ROI</div><div class="kpi-value">1.4×</div><span class="kpi-delta down">Angi ↓ 55% WoW</span></div>
+  </div>
+  <div class="kpi-grid fu1" style="margin-top:-10px">
+    <div class="kpi pos"><div class="kpi-label">Inbound Calls</div><div class="kpi-value">184</div><span class="kpi-delta up">↑ 12%</span><div class="kpi-context">via CallRail + WhatConverts</div></div>
+    <div class="kpi caut"><div class="kpi-label">Inbound SMS</div><div class="kpi-value">97</div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">GHL conversations</div></div>
+    <div class="kpi pos"><div class="kpi-label">Inbound Emails</div><div class="kpi-value">31</div><span class="kpi-delta up">↑ 3</span><div class="kpi-context">GHL conversations</div></div>
+    <div class="kpi caut"><div class="kpi-label">Form / Survey Submissions</div><div class="kpi-value">58</div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">GHL forms + surveys</div></div>
   </div>
   <div class="grid-2 fu2" style="margin-bottom:20px">
     <div class="card card-p">
@@ -1138,6 +1148,14 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </tbody>
     </table>
   </div>
+  <div class="card fu3" style="margin-bottom:20px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Performance by Rep Type</div><span style="font-size:11.5px;color:var(--muted);font-weight:400">on-site replacement · repair · virtual</span></div></div>
+    <table class="tbl"><thead><tr><th>Rep Type</th><th>Reps</th><th>Won Rev</th><th>Close%</th><th>Avg Deal</th><th>Avg Speed to Quote</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">On-site Replacement</td><td class="tbl-num">8</td><td class="tbl-num">$162K</td><td><span class="pill pill-pos">32%</span></td><td class="tbl-num">$18.2K</td><td class="tbl-num">1.8 days</td></tr>
+      <tr><td style="font-weight:700">Repair</td><td class="tbl-num">9</td><td class="tbl-num">$74K</td><td><span class="pill pill-caut">24%</span></td><td class="tbl-num">$6.4K</td><td class="tbl-num">2.4 days</td></tr>
+      <tr><td style="font-weight:700">Virtual</td><td class="tbl-num">6</td><td class="tbl-num">$50K</td><td><span class="pill pill-caut">21%</span></td><td class="tbl-num">$12.1K</td><td class="tbl-num">2.9 days</td></tr>
+    </tbody></table>
+  </div>
   <div class="alert-banner caut fu3"><div class="alert-icon" style="background:var(--caut-bg)">⏱</div><div><div class="alert-text-title" style="color:var(--caut)">Speed to lead insight: low close rate often means slow response, not poor sales</div><div class="alert-text-body">Tom Bradley averages 67 min speed-to-lead with 24% close rate. Marcus Webb averages 22 min with 38%. Same market, same scripts. Response time is the variable.</div></div></div>
 </div>
 
@@ -1145,10 +1163,16 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <div class="app-scr" id="app-r3">
   <div class="pg-header fu"><div><div class="pg-title">Pipeline & Funnel</div><div class="pg-sub">Where leads drop off and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
   <div class="kpi-grid fu1">
-    <div class="kpi pos"><div class="kpi-label">Appointment Rate</div><div class="kpi-value">52<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts</span></div>
-    <div class="kpi pos"><div class="kpi-label">Estimate Presented</div><div class="kpi-value">78<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 2pts</span></div>
-    <div class="kpi crit"><div class="kpi-label">In Follow-Up &gt; 7 Days</div><div class="kpi-value">27</div><span class="kpi-delta down">↑ 8 this week</span><div class="kpi-context">Stage monitor — configurable in settings</div></div>
+    <div class="kpi pos"><div class="kpi-label">Appts Booked</div><div class="kpi-value">163</div><span class="kpi-delta up">↑ 4%</span><div class="kpi-context">52% of 312 leads</div></div>
+    <div class="kpi pos"><div class="kpi-label">Show Rate</div><div class="kpi-value">74<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 3pts</span><div class="kpi-context">121 of 163 held</div></div>
+    <div class="kpi crit"><div class="kpi-label">No-Show Rate</div><div class="kpi-value">26<span style="font-size:14px">%</span></div><span class="kpi-delta down">↑ 2pts</span><div class="kpi-context">42 no-shows this period</div></div>
     <div class="kpi caut"><div class="kpi-label">Overall Win Rate</div><div class="kpi-value">28<span style="font-size:14px">%</span></div><span class="kpi-delta flat">→ flat</span></div>
+  </div>
+  <div class="kpi-grid fu1" style="margin-top:-10px">
+    <div class="kpi pos"><div class="kpi-label">Avg Proposal Value</div><div class="kpi-value">$16.8K</div><span class="kpi-delta up">↑ 4%</span><div class="kpi-context">Roofr → GHL</div></div>
+    <div class="kpi caut"><div class="kpi-label">Decision Velocity</div><div class="kpi-value">4.2<span style="font-size:14px"> days</span></div><span class="kpi-delta down">↑ 0.6d (slower)</span><div class="kpi-context">proposal → decision avg</div></div>
+    <div class="kpi crit"><div class="kpi-label">In Follow-Up &gt; 7 Days</div><div class="kpi-value">27</div><span class="kpi-delta down">↑ 8 this week</span><div class="kpi-context">Stage monitor</div></div>
+    <div class="kpi pos"><div class="kpi-label">Estimate Presented</div><div class="kpi-value">78<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 2pts</span></div>
   </div>
   <div class="grid-2 fu2" style="margin-bottom:20px;align-items:start;">
     <div class="card card-p">
@@ -1162,6 +1186,30 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
     </div>
   </div>
+  <div class="grid-2 fu3" style="margin-bottom:20px">
+    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Win Rate by Lead Source</div></div></div>
+      <table class="tbl"><thead><tr><th>Source</th><th>Leads</th><th>Won</th><th>Win Rate</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">Referrals</td><td class="tbl-num">14</td><td class="tbl-num">6</td><td><span class="pill pill-pos">42%</span></td></tr>
+        <tr><td style="font-weight:600">Canvassing</td><td class="tbl-num">89</td><td class="tbl-num">28</td><td><span class="pill pill-pos">31%</span></td></tr>
+        <tr><td style="font-weight:600">Inbound Call</td><td class="tbl-num">64</td><td class="tbl-num">18</td><td><span class="pill pill-pos">28%</span></td></tr>
+        <tr><td style="font-weight:600">Google LSA</td><td class="tbl-num">22</td><td class="tbl-num">6</td><td><span class="pill pill-caut">26%</span></td></tr>
+        <tr><td style="font-weight:600">Google Ads</td><td class="tbl-num">47</td><td class="tbl-num">10</td><td><span class="pill pill-caut">22%</span></td></tr>
+        <tr><td style="font-weight:600">Angi</td><td class="tbl-num">18</td><td class="tbl-num">2</td><td><span class="pill pill-crit">12%</span></td></tr>
+      </tbody></table>
+    </div>
+    <div class="card card-p">
+      <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Production Handoff</div></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Handoff Success Rate</span><span style="font-size:12px;font-weight:700;color:var(--pos)">91%</span></div><div class="prog-track"><div class="prog-fill pos" style="--w:91%;width:91%"></div></div><div style="font-size:11.5px;color:var(--muted);margin-top:3px">91 of 100 contracts handed off cleanly</div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:600">Production Cycle Time</span><span style="font-size:12px;font-weight:700;color:var(--caut)">8.4 days avg</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:56%;width:56%"></div></div><div style="font-size:11.5px;color:var(--muted);margin-top:3px">Target: ≤7 days · Leap CRM</div></div>
+        <div style="padding-top:12px;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--crit)">9</div><div style="font-size:11px;color:var(--muted)">Failed handoffs</div></div>
+          <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--caut)">4</div><div style="font-size:11px;color:var(--muted)">Jobs >10 days cycle</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📌</div><div><div class="alert-text-title" style="color:var(--crit)">27 leads stuck >7 days — mostly NJ branch</div><div class="alert-text-body">14 leads in NJ haven't moved in 7+ days. Reps: Marcus (4), Tom (6), Raj (4). <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft nudge messages →</a></div></div></div>
 </div>
 
@@ -1171,8 +1219,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Won Revenue</div><div class="kpi-value">$286K</div><span class="kpi-delta up">↑ 9%</span></div>
     <div class="kpi crit"><div class="kpi-label">Monthly Target</div><div class="kpi-value">$320K</div><span class="kpi-delta down">$34K gap</span><div class="kpi-context"><a onclick="openModal('target-modal')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Edit target →</a></div></div>
-    <div class="kpi pos"><div class="kpi-label">Expected Rev</div><div class="kpi-value">$312K</div><span class="kpi-delta up">Pipeline × close%</span></div>
     <div class="kpi pos"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value">$14.2K</div><span class="kpi-delta up">↑ 7%</span></div>
+    <div class="kpi caut"><div class="kpi-label">Avg Profit Margin / Job</div><div class="kpi-value">34<span style="font-size:14px">%</span></div><span class="kpi-delta down">↓ 2pts</span><div class="kpi-context">Revenue − cost ÷ revenue · Leap</div></div>
   </div>
   <div class="card fu2" style="margin-bottom:20px;padding:22px">
     <div class="sec-head" style="margin-bottom:6px"><div class="sec-title">Revenue vs Target — June 2026</div></div>
@@ -1187,12 +1235,12 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div style="margin-top:14px;padding:12px 14px;background:var(--crit-bg);border-radius:8px;font-size:12.5px;color:var(--crit);border:1px solid rgba(155,58,42,.2)">⚠ $34K gap on day 20. At current pace, month ends at ~$304K. Top closers must accelerate 2 deals.</div>
   </div>
   <div class="card fu3"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Revenue Attribution</div></div></div>
-    <table class="tbl"><thead><tr><th>Rep</th><th>Won Revenue</th><th>Deal Count</th><th>Avg Deal</th><th>Share</th></tr></thead>
+    <table class="tbl"><thead><tr><th>Rep</th><th>Won Revenue</th><th>Deal Count</th><th>Avg Deal</th><th>Avg Margin</th><th>Share</th></tr></thead>
     <tbody>
-      <tr><td style="font-weight:700">Marcus Webb</td><td class="tbl-num">$48K</td><td class="tbl-num">4</td><td class="tbl-num">$12K</td><td><span class="pill pill-pos">16.8%</span></td></tr>
-      <tr><td style="font-weight:700">Lisa Chen</td><td class="tbl-num">$41K</td><td class="tbl-num">3</td><td class="tbl-num">$13.7K</td><td><span class="pill pill-pos">14.3%</span></td></tr>
-      <tr><td style="font-weight:700">Derek Osei</td><td class="tbl-num">$37K</td><td class="tbl-num">3</td><td class="tbl-num">$12.3K</td><td><span class="pill pill-caut">12.9%</span></td></tr>
-      <tr><td style="font-weight:700">Nina Vega</td><td class="tbl-num">$31K</td><td class="tbl-num">2</td><td class="tbl-num">$15.5K</td><td><span class="pill pill-caut">10.8%</span></td></tr>
+      <tr><td style="font-weight:700">Marcus Webb</td><td class="tbl-num">$48K</td><td class="tbl-num">4</td><td class="tbl-num">$12K</td><td><span class="pill pill-pos">38%</span></td><td><span class="pill pill-pos">16.8%</span></td></tr>
+      <tr><td style="font-weight:700">Lisa Chen</td><td class="tbl-num">$41K</td><td class="tbl-num">3</td><td class="tbl-num">$13.7K</td><td><span class="pill pill-pos">36%</span></td><td><span class="pill pill-pos">14.3%</span></td></tr>
+      <tr><td style="font-weight:700">Derek Osei</td><td class="tbl-num">$37K</td><td class="tbl-num">3</td><td class="tbl-num">$12.3K</td><td><span class="pill pill-caut">31%</span></td><td><span class="pill pill-caut">12.9%</span></td></tr>
+      <tr><td style="font-weight:700">Nina Vega</td><td class="tbl-num">$31K</td><td class="tbl-num">2</td><td class="tbl-num">$15.5K</td><td><span class="pill pill-caut">29%</span></td><td><span class="pill pill-caut">10.8%</span></td></tr>
     </tbody></table>
   </div>
 </div>
@@ -1290,10 +1338,11 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <!-- ═══════════════════════════ WEEKLY AUDIT ═══ -->
 <div class="app-scr" id="app-audit">
   <div class="pg-header fu"><div><div class="pg-title">Weekly Audit</div><div class="pg-sub">Upload deadline: Sunday, June 8 at 11:59 PM — <strong style="color:var(--crit)">4 reps pending</strong></div></div><div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="showToast('📨 Bulk nudge sent to 4 pending reps')">Notify all pending</button></div></div>
-  <div class="kpi-grid fu1" style="grid-template-columns:repeat(3,1fr)">
+  <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Submitted</div><div class="kpi-value">19</div><span class="kpi-delta up">of 23 reps</span></div>
     <div class="kpi crit"><div class="kpi-label">Pending</div><div class="kpi-value">4</div><span class="kpi-delta down">deadline: Sunday</span></div>
     <div class="kpi pos"><div class="kpi-label">Compliance Rate</div><div class="kpi-value">83<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 4pts vs last wk</span></div>
+    <div class="kpi caut"><div class="kpi-label">Read-Receipt Reply ≤ 48h</div><div class="kpi-value">71<span style="font-size:14px">%</span></div><span class="kpi-delta down">↓ 6pts</span><div class="kpi-context">36 of 51 messages replied in time</div></div>
   </div>
   <div class="card fu2"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Rep Status — Week of June 2</div></div></div>
     <div style="padding:0 20px 16px">
@@ -1312,8 +1361,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="tabs fu1">
     <div class="tab on" onclick="switchTab(this,'dp-connectors')">Integrations</div>
     <div class="tab" onclick="switchTab(this,'dp-import')">Manual Import</div>
-    <div class="tab" onclick="switchTab(this,'dp-dedup')">Duplicate Review</div>
-    <div class="tab" onclick="switchTab(this,'dp-log')">Sync Log</div>
   </div>
   <div class="tab-panel on" id="tab-dp-connectors">
     <div class="card fu"><div style="padding:2px 0">
@@ -1324,6 +1371,12 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div></div>
   </div>
   <div class="tab-panel" id="tab-dp-import">
+    <div class="tabs fu" style="margin-bottom:16px">
+      <div class="tab on" onclick="switchSubTab(this,'dpi-upload')">Upload</div>
+      <div class="tab" onclick="switchSubTab(this,'dpi-dedup')">Duplicate Review</div>
+      <div class="tab" onclick="switchSubTab(this,'dpi-log')">Sync Log</div>
+    </div>
+    <div class="subtab-panel on" id="subtab-dpi-upload">
     <div class="upload-zone fu" onclick="showToast('📂 File picker opened')">
       <div class="upload-icon">📄</div>
       <div class="upload-title">Drop a file here or click to browse</div>
@@ -1346,8 +1399,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <tr><td style="font-weight:600">rep_salaries_apr2026.csv</td><td>Apr 30</td><td><span class="pill pill-neutral">Rep comp</span></td><td>23</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs">Rollback</button></td></tr>
       </tbody></table>
     </div>
-  </div>
-  <div class="tab-panel" id="tab-dp-dedup">
+    </div>
+    <div class="subtab-panel" id="subtab-dpi-dedup">
     <div class="card fu"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Duplicate Groups — Requires Review</div><span class="pill pill-caut">3 groups</span></div></div>
       <table class="tbl"><thead><tr><th>Lead Name</th><th>Match Type</th><th>Sources</th><th>Master Source</th><th></th></tr></thead>
       <tbody>
@@ -1356,8 +1409,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <tr><td style="font-weight:600">James T. Roark</td><td><span class="pill pill-crit">CRM ID conflict</span></td><td>Manual + GHL</td><td><span class="pill pill-crit">Review needed</span></td><td><button class="btn btn-danger btn-xs" onclick="openModal('dedup-modal')">Review</button></td></tr>
       </tbody></table>
     </div>
-  </div>
-  <div class="tab-panel" id="tab-dp-log">
+    </div>
+    <div class="subtab-panel" id="subtab-dpi-log">
     <div class="card fu"><table class="tbl"><thead><tr><th>Time</th><th>Connector</th><th>Event</th><th>Records</th><th>Status</th><th></th></tr></thead>
     <tbody>
       <tr><td style="color:var(--muted)">Today 2:34 PM</td><td>GoHighLevel</td><td>Scheduled sync</td><td>312</td><td><span class="pill pill-pos">✓ Complete</span></td><td></td></tr>
@@ -1365,6 +1418,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <tr><td style="color:var(--muted)">Today 11:30 AM</td><td>WhatConverts</td><td>Scheduled sync</td><td>0</td><td><span class="pill pill-crit">✗ Failed</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('🔄 Retry queued')">Retry</button></td></tr>
       <tr><td style="color:var(--muted)">Today 8:00 AM</td><td>GoHighLevel</td><td>Scheduled sync</td><td>298</td><td><span class="pill pill-pos">✓ Complete</span></td><td></td></tr>
     </tbody></table></div>
+    </div>
   </div>
 </div>
 
@@ -1449,23 +1503,38 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
   <div id="billing-paid-view">
     <div class="billing-banner fu1">
-      <div><div class="billing-plan">The Hub — Pro Multi-Branch Monthly</div><div class="billing-meta">4 branches &nbsp;·&nbsp; 30 seats &nbsp;·&nbsp; Renews June 21, 2026</div></div>
-      <div style="text-align:right"><div class="billing-price">$1,380<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/mo</span></div><span class="pill pill-pos">Active</span></div>
+      <div><div class="billing-plan" id="billing-plan-name">The Hub — Pro Multi-Branch Annual</div><div class="billing-meta" id="billing-plan-meta">4 branches &nbsp;·&nbsp; 30 seats &nbsp;·&nbsp; Renews January 21, 2027</div></div>
+      <div style="text-align:right"><div class="billing-price" id="billing-plan-price">$13,800<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/yr</span></div><span class="pill pill-pos">Active</span></div>
     </div>
+
+    <!-- PENDING PLAN CHANGE BANNER — shown when a future-effective change is scheduled -->
+    <div id="pending-change-banner" class="fu1" style="display:none;background:rgba(15,88,102,.08);border:1.5px solid rgba(15,88,102,.25);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">&#128197;</span>
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:#0E1B24">Plan change scheduled</div>
+          <div id="pending-change-text" style="font-size:12.5px;color:#6B7680">Monthly billing starts on your renewal date</div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-xs" onclick="cancelPlanChange()">Cancel change</button>
+    </div>
+
     <div class="grid-2 fu2">
       <div class="card card-p">
         <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Invoice History</div></div>
-        <div class="seat-row"><div style="font-size:13px;font-weight:600">May 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,380</div></div>
-        <div class="seat-row"><div style="font-size:13px;font-weight:600">Apr 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,280</div></div>
-        <div class="seat-row"><div style="font-size:13px;font-weight:600">Mar 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$1,280</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">Jan 21, 2026</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$13,800</div></div>
+        <div class="seat-row"><div style="font-size:13px;font-weight:600">Jan 21, 2025</div><div><span class="pill pill-pos" style="font-size:11px">Paid</span></div><div style="font-size:13px;font-weight:700;margin-left:auto">$13,800</div></div>
       </div>
       <div class="card card-p">
         <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Plan Details</div></div>
         <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Plan</span><span style="font-size:13px;font-weight:600">Pro Multi-Branch</span></div>
-        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Billing</span><span style="font-size:13px;font-weight:600">Monthly</span></div>
+        <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Billing</span><span id="billing-cycle-label" style="font-size:13px;font-weight:600">Annual</span></div>
         <div class="seat-row"><span style="font-size:13px;color:var(--muted)">Seats</span><span style="font-size:13px;font-weight:600">30 (23 used)</span></div>
-        <div class="seat-row" style="border-bottom:none"><span style="font-size:13px;color:var(--muted)">Next charge</span><span style="font-size:13px;font-weight:600">$1,380 on Jun 21</span></div>
-        <div style="margin-top:14px;display:flex;gap:8px"><button class="btn btn-outline btn-sm">Switch to annual (save $2,760)</button><button class="btn btn-danger btn-sm" onclick="showToast('Contact support to cancel')">Cancel plan</button></div>
+        <div class="seat-row" style="border-bottom:none"><span style="font-size:13px;color:var(--muted)">Next charge</span><span id="next-charge-label" style="font-size:13px;font-weight:600">$13,800 on Jan 21, 2027</span></div>
+        <div style="margin-top:14px;display:flex;gap:10px">
+          <button id="switch-billing-btn" class="btn btn-sm" style="background:var(--cyan,#0F5866);color:#fff;border:1.5px solid var(--cyan,#0F5866);font-weight:700" onclick="requestBillingSwitch()">Switch to monthly</button>
+          <button class="btn btn-sm" style="background:#fff;color:#9B3A2A;border:1.5px solid #9B3A2A;font-weight:700" onclick="showToast('Contact support to cancel')">Cancel plan</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1816,6 +1885,73 @@ function startSync(){
 
 // PLAN STATE
 window._plan='paid';
+renderBillingCycle();
+
+// SUBSCRIPTION / BILLING-CYCLE STATE
+// Annual subscribers run out their paid 12-month term; a switch to Monthly
+// is scheduled to take effect on the renewal date instead of charged immediately.
+var RENEWAL_DATE='January 21, 2027';
+var subState={cycle:'annual',pendingCycle:null};
+
+function requestBillingSwitch(){
+  if(subState.cycle==='annual'){
+    if(subState.pendingCycle==='monthly'){return;}
+    subState.pendingCycle='monthly';
+    showToast('Plan change scheduled — Monthly billing starts '+RENEWAL_DATE);
+  } else {
+    // Monthly → Annual switches can apply at the next renewal too
+    if(subState.pendingCycle==='annual'){return;}
+    subState.pendingCycle='annual';
+    showToast('Plan change scheduled — Annual billing starts at your next renewal');
+  }
+  renderBillingCycle();
+}
+
+function cancelPlanChange(){
+  subState.pendingCycle=null;
+  showToast('Scheduled plan change cancelled — staying on current plan');
+  renderBillingCycle();
+}
+
+function renderBillingCycle(){
+  var banner=document.getElementById('pending-change-banner');
+  var text=document.getElementById('pending-change-text');
+  var switchBtn=document.getElementById('switch-billing-btn');
+  var cycleLabel=document.getElementById('billing-cycle-label');
+  var nextCharge=document.getElementById('next-charge-label');
+  var planName=document.getElementById('billing-plan-name');
+  var planMeta=document.getElementById('billing-plan-meta');
+  var planPrice=document.getElementById('billing-plan-price');
+
+  if(subState.cycle==='annual'){
+    cycleLabel.textContent='Annual';
+    planName.textContent='The Hub — Pro Multi-Branch Annual';
+    planMeta.textContent='4 branches · 30 seats · Renews '+RENEWAL_DATE;
+    planPrice.innerHTML='$13,800<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/yr</span>';
+    nextCharge.textContent='$13,800 on '+RENEWAL_DATE;
+    switchBtn.textContent='Switch to monthly';
+  } else {
+    cycleLabel.textContent='Monthly';
+    planName.textContent='The Hub — Pro Multi-Branch Monthly';
+    planMeta.textContent='4 branches · 30 seats · Renews '+RENEWAL_DATE;
+    planPrice.innerHTML='$1,380<span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.35)">/mo</span>';
+    nextCharge.textContent='$1,380 on '+RENEWAL_DATE;
+    switchBtn.textContent='Switch to annual';
+  }
+
+  if(subState.pendingCycle){
+    banner.style.display='flex';
+    text.textContent=(subState.pendingCycle==='monthly'?'Monthly':'Annual')+' billing starts on '+RENEWAL_DATE+'. You\'ll keep your current plan until then.';
+    switchBtn.disabled=true;
+    switchBtn.style.opacity='0.5';
+    switchBtn.style.cursor='default';
+  } else {
+    banner.style.display='none';
+    switchBtn.disabled=false;
+    switchBtn.style.opacity='1';
+    switchBtn.style.cursor='pointer';
+  }
+}
 
 function applyPlan(){
   var free=(window._plan==='free');
@@ -1970,6 +2106,18 @@ function switchTab(tab,panelId){
   var panels=scr.querySelectorAll('.tab-panel');
   for(var i=0;i<panels.length;i++){panels[i].classList.remove('on');}
   var panel=document.getElementById('tab-'+panelId);
+  if(panel)panel.classList.add('on');
+}
+
+function switchSubTab(tab,panelId){
+  var parent=tab.closest('.tabs');
+  var tabs=parent.querySelectorAll('.tab');
+  for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('on');}
+  tab.classList.add('on');
+  var container=parent.closest('.tab-panel');
+  var panels=container.querySelectorAll('.subtab-panel');
+  for(var i=0;i<panels.length;i++){panels[i].classList.remove('on');}
+  var panel=document.getElementById('subtab-'+panelId);
   if(panel)panel.classList.add('on');
 }
 
