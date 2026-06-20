@@ -15,7 +15,7 @@ Rep Performance,Read-receipt reply >48h by rep,Rep response to customer message 
 Rep Performance,CRM compliance below 70% for a rep,Rep CRM entry compliance rate <70% this week,Warning,24–48h,In Weekly Audit aggregate only,Personal nudge with specific missing fields,Yes,Weekly Audit
 Rep Performance,Weekly audit not submitted by deadline,Rep has not submitted weekly audit by Sunday 11:59 PM,Warning,Same day,Implemented,Bulk nudge with personalized reminder,Yes,Weekly Audit
 Rep Performance,New rep outperforming team average in first 30 days,Rep close% or speed-to-lead better than team avg within 30 days,Insight,Weekly,Missing,Celebrate win — share approach with team,No,Rep Performance
-Channel / Marketing,Directory Sites (or any channel) ROI dropped >30% WoW,Channel ROI week-over-week decline >30%,Critical,Same day,Implemented,Pause or reduce channel budget,Yes,Marketing Attribution
+Channel / Marketing,Angi (or any channel) ROI dropped >30% WoW,Channel ROI week-over-week decline >30%,Critical,Same day,Implemented,Pause or reduce channel budget,Yes,Marketing Attribution
 Channel / Marketing,CAC for a channel exceeds won deal avg,Channel CAC > avg deal value for that source,Critical,24–48h,Missing,Pause spend on that channel immediately,No,Marketing Attribution
 Channel / Marketing,Lead volume from top channel drops >20% WoW,Lead count from best-performing source drops significantly,Warning,24–48h,Missing,Check campaign status / budget pacing,No,Marketing Attribution
 Production,Job stuck in production >10 days with no update,Active job with no progress note or stage change >10 days,Critical,Same day,Missing,Contact production coordinator — risk of bad review,Yes,Pipeline & Funnel
