@@ -1000,6 +1000,12 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="tb-badge"></div>
     </div>
+    <select id="role-switcher" onchange="switchRole(this.value)" title="Preview as role" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;font-size:11.5px;font-weight:700;padding:6px 8px;cursor:pointer;">
+      <option value="general_manager">👑 General Manager</option>
+      <option value="sales_manager">Sales Manager</option>
+      <option value="marketing_manager">Marketing Manager</option>
+      <option value="sales_rep">Sales Rep</option>
+    </select>
     <div class="tb-avatar" id="tb-av" onclick="showToast('👤 Profile settings')">JS</div>
     <!-- Notif tray -->
     <div id="notif-tray">
@@ -1020,6 +1026,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
   <div class="sb-sec">Reports</div>
   <div class="sbi on" id="sbi-dashboard" onclick="goApp('dashboard')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>Overview</div>
+  <div class="sbi" id="sbi-contacts" onclick="goApp('contacts')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>Contacts &amp; Leads</div>
   <div class="sbi" id="sbi-r1" onclick="goApp('r1')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-4"/></svg></div>Marketing Attribution</div>
   <div class="sbi" id="sbi-r2" onclick="goApp('r2')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>Rep Performance</div>
   <div class="sbi" id="sbi-r3" onclick="goApp('r3')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></div>Pipeline & Funnel</div>
@@ -1049,19 +1056,20 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <div id="main">
 <!-- ═══════════════════════════ DASHBOARD ═══ -->
 <div class="app-scr on" id="app-dashboard">
-  <div class="alert-banner crit fu">
+  <div class="alert-banner crit fu rbac-sales-only" id="dash-alert-banner">
     <div class="alert-icon" style="background:var(--crit-bg)">⚠️</div>
     <div style="flex:1"><div class="alert-text-title" style="color:var(--crit)">Revenue gap: $34,200 behind June target on day 20</div><div class="alert-text-body">Top 2 closers (Marcus Webb, Lisa Chen) have been identified. Draft message ready — <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">review in Action Items →</a></div></div>
     <button class="btn btn-danger btn-sm" onclick="this.parentElement.style.display='none'">Dismiss</button>
   </div>
-  <div class="branch-strip fu1">
+  <div class="branch-strip fu1" id="dash-branch-strip">
     <div class="branch-chip on" onclick="filterBranch(this,'all')"><div class="branch-dot" style="background:#1F3A5F"></div>All Branches</div>
     <div class="branch-chip" onclick="filterBranch(this,'nj')"><div class="branch-dot" style="background:#1F3A5F"></div>NJ — Montclair</div>
     <div class="branch-chip" onclick="filterBranch(this,'ny')"><div class="branch-dot" style="background:#0F5866"></div>NY — Queens</div>
     <div class="branch-chip" onclick="filterBranch(this,'fl')"><div class="branch-dot" style="background:#B57B1F"></div>FL — Tampa</div>
     <div class="branch-chip" onclick="filterBranch(this,'mi')"><div class="branch-dot" style="background:#3F6E4A"></div>Miami</div>
   </div>
-  <!-- KPI Row 1: Leads -->
+  <!-- KPI Row 1: Leads (GM / SM) -->
+  <div id="dash-leads-row" class="rbac-sales-row">
   <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">Leads</div><a class="sec-action" onclick="goApp('r1')">Attribution report →</a></div></div>
   <div class="kpi-grid fu2">
     <div class="kpi pos"><div class="kpi-label">Total Leads (30d)</div><div class="kpi-value">312</div><span class="kpi-delta up">↑ 18%</span><div class="kpi-context">vs prior 30 days</div></div>
@@ -1069,7 +1077,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="kpi pos"><div class="kpi-label">Contact Rate</div><div class="kpi-value">84<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">264 of 312 in CRM</div></div>
     <div class="kpi caut"><div class="kpi-label">After-Hours Leads</div><div class="kpi-value">23<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">72 leads 6pm–8am</div></div>
   </div>
-  <!-- KPI Row 2: Revenue -->
+  </div>
+  <!-- KPI Row 2: Revenue (GM only) -->
+  <div id="dash-revenue-row" class="rbac-gm-only">
   <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">Revenue</div><a class="sec-action" onclick="goApp('r4')">Revenue report →</a></div></div>
   <div class="kpi-grid fu3">
     <div class="kpi pos"><div class="kpi-label">Won Revenue</div><div class="kpi-value">$286K</div><span class="kpi-delta up">↑ 9%</span><div class="kpi-context">Target: $320K this month</div></div>
@@ -1077,53 +1087,101 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="kpi pos"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value">$14.2K</div><span class="kpi-delta up">↑ 7%</span><div class="kpi-context">Up from $13.3K</div></div>
     <div class="kpi caut"><div class="kpi-label">Rev vs Target</div><div class="kpi-value">89<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">↓ $34K gap</span><div class="kpi-context">Day 20 of 30</div></div>
   </div>
+  </div>
+  <!-- KPI Row: Marketing (Marketing Manager only) -->
+  <div id="dash-marketing-row" style="display:none">
+  <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">Marketing</div><a class="sec-action" onclick="goApp('r1')">Attribution report →</a></div></div>
+  <div class="kpi-grid fu2">
+    <div class="kpi pos"><div class="kpi-label">Lead Volume by Source</div><div class="kpi-value">312</div><span class="kpi-delta up">↑ 18%</span><div class="kpi-context">vs prior 30 days</div></div>
+    <div class="kpi pos"><div class="kpi-label">Cost per Lead</div><div class="kpi-value">$59</div><span class="kpi-delta up">↓ $6 (better)</span><div class="kpi-context">Blended across channels</div></div>
+    <div class="kpi pos"><div class="kpi-label">Channel ROI</div><div class="kpi-value">4.1×</div><span class="kpi-delta up">↑ 0.3×</span><div class="kpi-context">Weighted avg, all channels</div></div>
+    <div class="kpi caut"><div class="kpi-label">Attribution Confidence</div><div class="kpi-value">81<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">Source matched to lead record</div></div>
+  </div>
+  </div>
+  <!-- KPI Row: Sales Rep only -->
+  <div id="dash-rep-row" style="display:none">
+  <div style="margin-bottom:6px"><div class="sec-head"><div class="sec-title">My Performance</div></div></div>
+  <div class="kpi-grid fu2">
+    <div class="kpi pos"><div class="kpi-label">My Leads This Week</div><div class="kpi-value">14</div><span class="kpi-delta up">↑ 2</span><div class="kpi-context">vs prior week</div></div>
+    <div class="kpi pos"><div class="kpi-label">My Close Rate</div><div class="kpi-value">38<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta up">↑ 3pts</span><div class="kpi-context">Last 30 days</div></div>
+    <div class="kpi caut"><div class="kpi-label">My Speed to Lead</div><div class="kpi-value">52<span style="font-size:14px;font-weight:600;color:var(--muted)"> min</span></div><span class="kpi-delta flat">→ flat</span><div class="kpi-context">SLA: &lt;60 min</div></div>
+    <div class="kpi pos"><div class="kpi-label">My CRM Compliance</div><div class="kpi-value">94<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><span class="kpi-delta up">↑ 6pts</span><div class="kpi-context">Notes & stage updates logged</div></div>
+  </div>
+  </div>
   <!-- 2-col charts -->
-  <div class="grid-2 fu4" style="margin-bottom:20px">
+  <div class="grid-2 fu4" style="margin-bottom:20px" id="dash-charts-row">
     <div class="card card-p">
       <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Leads by Source</div></div>
       <canvas id="chart-sources" height="180"></canvas>
     </div>
-    <div class="card card-p">
+    <div class="card card-p rbac-sales-only">
       <div class="sec-head" style="margin-bottom:16px"><div class="sec-title">Pipeline Funnel</div></div>
       <div id="funnel-wrap"></div>
     </div>
   </div>
   <!-- Branch + Reps tables -->
-  <div class="grid-2 fu5" style="margin-bottom:20px">
-    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Branch Comparison</div></div></div>
+  <div class="grid-2 fu5" style="margin-bottom:20px" id="dash-branch-reps-row">
+    <div class="card rbac-sales-only" id="dash-branch-table-card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Branch Comparison</div></div></div>
       <table class="tbl">
         <thead><tr><th>Branch</th><th>Leads</th><th>Won Rev</th><th>Win %</th><th>Compliance</th></tr></thead>
         <tbody>
-          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#1F3A5F"></div>NJ</div></td><td class="tbl-num">98</td><td class="tbl-num">$94K</td><td><span class="pill pill-pos">31%</span></td><td><span class="pill pill-pos">87%</span></td></tr>
-          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#0F5866"></div>NY</div></td><td class="tbl-num">87</td><td class="tbl-num">$82K</td><td><span class="pill pill-pos">28%</span></td><td><span class="pill pill-caut">74%</span></td></tr>
-          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#B57B1F"></div>FL</div></td><td class="tbl-num">79</td><td class="tbl-num">$67K</td><td><span class="pill pill-caut">26%</span></td><td><span class="pill pill-caut">71%</span></td></tr>
-          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#3F6E4A"></div>Miami</div></td><td class="tbl-num">48</td><td class="tbl-num">$43K</td><td><span class="pill pill-pos">41%</span></td><td><span class="pill pill-crit">62%</span></td></tr>
+          <tr data-branch="nj"><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#1F3A5F"></div>NJ</div></td><td class="tbl-num">98</td><td class="tbl-num">$94K</td><td><span class="pill pill-pos">31%</span></td><td><span class="pill pill-pos">87%</span></td></tr>
+          <tr data-branch="ny"><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#0F5866"></div>NY</div></td><td class="tbl-num">87</td><td class="tbl-num">$82K</td><td><span class="pill pill-pos">28%</span></td><td><span class="pill pill-caut">74%</span></td></tr>
+          <tr data-branch="fl"><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#B57B1F"></div>FL</div></td><td class="tbl-num">79</td><td class="tbl-num">$67K</td><td><span class="pill pill-caut">26%</span></td><td><span class="pill pill-caut">71%</span></td></tr>
+          <tr data-branch="mi"><td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#3F6E4A"></div>Miami</div></td><td class="tbl-num">48</td><td class="tbl-num">$43K</td><td><span class="pill pill-pos">41%</span></td><td><span class="pill pill-crit">62%</span></td></tr>
         </tbody>
       </table></div>
-    <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Top Reps</div><a class="sec-action" onclick="goApp('r2')">Full leaderboard →</a></div></div>
+    <div class="card rbac-sales-only"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Top Reps</div><a class="sec-action" onclick="goApp('r2')">Full leaderboard →</a></div></div>
       <table class="tbl">
         <thead><tr><th>#</th><th>Rep</th><th>Won Rev</th><th>Close %</th><th>CRM</th></tr></thead>
         <tbody>
-          <tr><td style="font-weight:800;color:var(--muted)">1</td><td><div style="font-weight:700">Marcus Webb</div><div style="font-size:11px;color:var(--muted)">NJ</div></td><td class="tbl-num">$48K</td><td><span class="pill pill-pos">38%</span></td><td><span class="pill pill-pos">94%</span></td></tr>
-          <tr><td style="font-weight:800;color:var(--muted)">2</td><td><div style="font-weight:700">Lisa Chen</div><div style="font-size:11px;color:var(--muted)">NY</div></td><td class="tbl-num">$41K</td><td><span class="pill pill-pos">34%</span></td><td><span class="pill pill-pos">88%</span></td></tr>
-          <tr><td style="font-weight:800;color:var(--muted)">3</td><td><div style="font-weight:700">Derek Osei</div><div style="font-size:11px;color:var(--muted)">FL</div></td><td class="tbl-num">$37K</td><td><span class="pill pill-caut">29%</span></td><td><span class="pill pill-caut">76%</span></td></tr>
-          <tr><td style="font-weight:800;color:var(--muted)">4</td><td><div style="font-weight:700">Nina Vega</div><div style="font-size:11px;color:var(--muted)">Miami</div></td><td class="tbl-num">$31K</td><td><span class="pill pill-pos">41%</span></td><td><span class="pill pill-crit">58%</span></td></tr>
+          <tr data-branch="nj"><td style="font-weight:800;color:var(--muted)">1</td><td><div style="font-weight:700">Marcus Webb</div><div style="font-size:11px;color:var(--muted)">NJ</div></td><td class="tbl-num">$48K</td><td><span class="pill pill-pos">38%</span></td><td><span class="pill pill-pos">94%</span></td></tr>
+          <tr data-branch="ny"><td style="font-weight:800;color:var(--muted)">2</td><td><div style="font-weight:700">Lisa Chen</div><div style="font-size:11px;color:var(--muted)">NY</div></td><td class="tbl-num">$41K</td><td><span class="pill pill-pos">34%</span></td><td><span class="pill pill-pos">88%</span></td></tr>
+          <tr data-branch="fl"><td style="font-weight:800;color:var(--muted)">3</td><td><div style="font-weight:700">Derek Osei</div><div style="font-size:11px;color:var(--muted)">FL</div></td><td class="tbl-num">$37K</td><td><span class="pill pill-caut">29%</span></td><td><span class="pill pill-caut">76%</span></td></tr>
+          <tr data-branch="mi"><td style="font-weight:800;color:var(--muted)">4</td><td><div style="font-weight:700">Nina Vega</div><div style="font-size:11px;color:var(--muted)">Miami</div></td><td class="tbl-num">$31K</td><td><span class="pill pill-pos">41%</span></td><td><span class="pill pill-crit">58%</span></td></tr>
         </tbody>
       </table></div>
   </div>
   <!-- Report cards -->
-  <div class="sec-title" style="margin-bottom:14px">Deep Reports</div>
-  <div class="report-grid fu">
-    <div class="rep-card" onclick="goApp('r1')"><div class="rep-card-icon" style="background:rgba(31,58,95,.08)">📊</div><div class="rep-card-title">Marketing Attribution</div><div class="rep-card-desc">CAC, ROI by channel, spend efficiency</div></div>
-    <div class="rep-card" onclick="goApp('r2')"><div class="rep-card-icon" style="background:rgba(15,88,102,.08)">🏆</div><div class="rep-card-title">Rep Performance</div><div class="rep-card-desc">Close rates, compliance, coaching signals</div></div>
-    <div class="rep-card" onclick="goApp('r3')"><div class="rep-card-icon" style="background:rgba(181,123,31,.08)">🔽</div><div class="rep-card-title">Pipeline & Funnel</div><div class="rep-card-desc">Stage drop-off, stuck leads, loss reasons</div></div>
-    <div class="rep-card" onclick="goApp('r4')"><div class="rep-card-icon" style="background:rgba(63,110,74,.08)">💰</div><div class="rep-card-title">Revenue Intelligence</div><div class="rep-card-desc">Target tracking, deal size, attribution</div></div>
+  <div class="sec-title rbac-reports-only" id="dash-reports-title" style="margin-bottom:14px">Deep Reports</div>
+  <div class="report-grid fu rbac-reports-only" id="dash-report-grid">
+    <div class="rep-card" data-report="r1" onclick="goApp('r1')"><div class="rep-card-icon" style="background:rgba(31,58,95,.08)">📊</div><div class="rep-card-title">Marketing Attribution</div><div class="rep-card-desc">CAC, ROI by channel, spend efficiency</div></div>
+    <div class="rep-card" data-report="r2" onclick="goApp('r2')"><div class="rep-card-icon" style="background:rgba(15,88,102,.08)">🏆</div><div class="rep-card-title">Rep Performance</div><div class="rep-card-desc">Close rates, compliance, coaching signals</div></div>
+    <div class="rep-card" data-report="r3" onclick="goApp('r3')"><div class="rep-card-icon" style="background:rgba(181,123,31,.08)">🔽</div><div class="rep-card-title">Pipeline & Funnel</div><div class="rep-card-desc">Stage drop-off, stuck leads, loss reasons</div></div>
+    <div class="rep-card" data-report="r4" onclick="goApp('r4')"><div class="rep-card-icon" style="background:rgba(63,110,74,.08)">💰</div><div class="rep-card-title">Revenue Intelligence</div><div class="rep-card-desc">Target tracking, deal size, attribution</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ CONTACTS / LEADS ═══ -->
+<div class="app-scr" id="app-contacts">
+  <div class="pg-header fu"><div><div class="pg-title" id="contacts-title">Contacts &amp; Leads</div><div class="pg-sub" id="contacts-sub">Every lead synced from your connected tools</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm rbac-export" data-report="contacts" id="contacts-export-btn">⬇ Export</button></div></div>
+  <div class="card">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Source / UTM</th>
+          <th class="col-branch">Branch</th>
+          <th class="col-rep">Assigned Rep</th>
+          <th class="col-rep">Deal Value</th>
+          <th>Stage</th>
+        </tr>
+      </thead>
+      <tbody id="contacts-tbody">
+        <tr data-branch="nj" data-rep="Marcus Webb"><td style="font-weight:700">Tom Reilly</td><td>Google Ads — utm_campaign=roof-repair</td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$12.4K</td><td><span class="pill pill-pos">Estimate Sent</span></td></tr>
+        <tr data-branch="ny" data-rep="Lisa Chen"><td style="font-weight:700">Priya Nair</td><td>Facebook Ads — utm_campaign=spring-promo</td><td class="col-branch">NY</td><td class="col-rep">Lisa Chen</td><td class="col-rep tbl-num">$8.9K</td><td><span class="pill pill-caut">Appointment Set</span></td></tr>
+        <tr data-branch="fl" data-rep="Derek Osei"><td style="font-weight:700">Carlos Mendez</td><td>Canvassing — door knock</td><td class="col-branch">FL</td><td class="col-rep">Derek Osei</td><td class="col-rep tbl-num">$15.1K</td><td><span class="pill pill-pos">Won</span></td></tr>
+        <tr data-branch="mi" data-rep="Nina Vega"><td style="font-weight:700">Allison Brooks</td><td>Angi — referral</td><td class="col-branch">Miami</td><td class="col-rep">Nina Vega</td><td class="col-rep tbl-num">$6.2K</td><td><span class="pill pill-caut">Contacted</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb"><td style="font-weight:700">Sandra Kim</td><td>Inbound Call — CallRail</td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$9.8K</td><td><span class="pill pill-crit">Stuck &gt;7d</span></td></tr>
+      </tbody>
+    </table>
+    <div id="contacts-empty" style="display:none;padding:30px;text-align:center;color:var(--muted);font-size:13px;">No contacts assigned to you yet.</div>
   </div>
 </div>
 
 <!-- ═══════════════════════════ R1 — MARKETING ═══ -->
 <div class="app-scr" id="app-r1">
-  <div class="pg-header fu"><div><div class="pg-title">Marketing Attribution & ROI</div><div class="pg-sub">Which channels deliver the best leads at the lowest cost — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Marketing Attribution & ROI</div><div class="pg-sub">Which channels deliver the best leads at the lowest cost — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm rbac-export" data-report="r1">⬇ Export</button></div></div>
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Total Marketing Spend</div><div class="kpi-value">$18.4K</div><span class="kpi-delta flat">→ $18.1K prior</span></div>
     <div class="kpi pos"><div class="kpi-label">Average Customer Acquisition Cost</div><div class="kpi-value">$247</div><span class="kpi-delta up">↓ $19 (better)</span></div>
@@ -1166,7 +1224,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- ═══════════════════════════ R2 — REPS ═══ -->
 <div class="app-scr" id="app-r2">
-  <div class="pg-header fu"><div><div class="pg-title">Rep Performance</div><div class="pg-sub">Who's performing, who needs coaching, and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Rep Performance</div><div class="pg-sub">Who's performing, who needs coaching, and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm rbac-export" data-report="r2">⬇ Export</button></div></div>
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Avg Close Rate</div><div class="kpi-value">28<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 3pts</span></div>
     <div class="kpi pos"><div class="kpi-label">Gross Revenue per Rep</div><div class="kpi-value">$32.4K</div><span class="kpi-delta up">↑ 5%</span></div>
@@ -1198,7 +1256,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- ═══════════════════════════ R3 — PIPELINE ═══ -->
 <div class="app-scr" id="app-r3">
-  <div class="pg-header fu"><div><div class="pg-title">Pipeline & Funnel</div><div class="pg-sub">Where leads drop off and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Pipeline & Funnel</div><div class="pg-sub">Where leads drop off and why — last 30 days</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm rbac-export" data-report="r3">⬇ Export</button></div></div>
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Appts Booked</div><div class="kpi-value">163</div><span class="kpi-delta up">↑ 4%</span><div class="kpi-context">52% of 312 leads</div></div>
     <div class="kpi pos"><div class="kpi-label">Show Rate</div><div class="kpi-value">74<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 3pts</span><div class="kpi-context">121 of 163 held</div></div>
@@ -1252,7 +1310,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- ═══════════════════════════ R4 — REVENUE ═══ -->
 <div class="app-scr" id="app-r4">
-  <div class="pg-header fu"><div><div class="pg-title">Revenue Intelligence</div><div class="pg-sub">Revenue vs target, deal sizes, rep attribution — current month</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm">⬇ Export</button></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Revenue Intelligence</div><div class="pg-sub">Revenue vs target, deal sizes, rep attribution — current month</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm rbac-export" data-report="r4">⬇ Export</button></div></div>
   <div class="kpi-grid fu1">
     <div class="kpi pos"><div class="kpi-label">Won Revenue</div><div class="kpi-value">$286K</div><span class="kpi-delta up">↑ 9%</span></div>
     <div class="kpi crit"><div class="kpi-label">Monthly Target</div><div class="kpi-value">$320K</div><span class="kpi-delta down">$34K gap</span><div class="kpi-context"><a onclick="openModal('target-modal')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Edit target →</a></div></div>
@@ -1461,7 +1519,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- ═══════════════════════════ USERS & SEATS ═══ -->
 <div class="app-scr" id="app-users">
-  <div class="pg-header fu"><div><div class="pg-title">Users & Seats</div><div class="pg-sub">Network-wide seat pool — one seat consumed per accepted invite</div></div><div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="openModal('invite-modal')">+ Invite user</button><button class="btn btn-outline btn-sm" onclick="showToast('Role preview: Branch Manager')">Preview as role</button></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Users & Seats</div><div class="pg-sub">Network-wide seat pool — one seat consumed per accepted invite</div></div><div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="openModal('invite-modal')">+ Invite user</button></div></div>
   <div class="grid-2 fu1" style="margin-bottom:20px">
     <div class="kpi pos"><div class="kpi-label">Active Users</div><div class="kpi-value">23</div><span class="kpi-delta up">of 30 seats</span></div>
     <div class="kpi caut"><div class="kpi-label">Pending Invites</div><div class="kpi-value">2</div><span class="kpi-delta flat">seat reserved</span></div>
@@ -1736,7 +1794,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="modal-head"><div><div class="modal-title">Invite a team member</div><div class="modal-sub">1 seat will be reserved on invite, consumed on acceptance</div></div><button class="modal-close" onclick="closeModal('invite-modal')">×</button></div>
     <div class="modal-body">
       <div class="inp-row"><label class="lbl">Email address</label><input class="inp" placeholder="team@smithroofing.com"/></div>
-      <div class="inp-row"><label class="lbl">Role</label><select class="inp"><option>Sales Rep — sees own performance only</option><option>Branch Manager — sees one branch</option><option>Owner — full access</option></select></div>
+      <div class="inp-row"><label class="lbl">Role</label><select class="inp"><option>Sales Rep — sees own assigned leads only</option><option>Sales Manager — sees one branch</option><option>Marketing Manager — sees marketing/attribution data</option><option>General Manager — full access</option></select></div>
       <div class="inp-row"><label class="lbl">Branch</label><select class="inp"><option>NJ — Montclair</option><option>NY — Queens</option><option>FL — Tampa</option><option>Miami</option></select></div>
     </div>
     <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('invite-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('invite-modal');showToast('📧 Invite sent — 1 seat reserved')">Send invite</button></div>
@@ -2018,13 +2076,13 @@ function startSync(){
 
 // PLAN STATE
 window._plan='paid';
-renderBillingCycle();
 
 // SUBSCRIPTION / BILLING-CYCLE STATE
 // Annual subscribers run out their paid 12-month term; a switch to Monthly
 // is scheduled to take effect on the renewal date instead of charged immediately.
 var RENEWAL_DATE='January 21, 2027';
 var subState={cycle:'annual',pendingCycle:null};
+renderBillingCycle();
 
 function requestBillingSwitch(){
   if(subState.cycle==='annual'){
@@ -2136,6 +2194,169 @@ function previewPlan(plan){
   }
 }
 
+// ═══════════════════════════════════ RBAC ═══
+// Hardcoded role-permission config — single source of truth.
+// Permissions are role-derived, never attached directly to a user.
+var ROLES={
+  GENERAL_MANAGER:'general_manager',
+  SALES_MANAGER:'sales_manager',
+  MARKETING_MANAGER:'marketing_manager',
+  SALES_REP:'sales_rep'
+};
+var PERMISSIONS={
+  general_manager:{dashboardScope:'all',reports:['R1','R2','R3','R4','R5'],contactsScope:'all',canAddUsers:true,canAssignRoles:true,canInviteUsers:true,canDownloadData:true,canManageBilling:true,canManageBranches:true,canApproveAlerts:'all',canManageConnectors:true,weeklyAuditScope:'all'},
+  sales_manager:{dashboardScope:'branch',reports:['R2','R3','R5'],contactsScope:'branch',canAddUsers:false,canAssignRoles:false,canInviteUsers:'reps_only',canDownloadData:false,canManageBilling:false,canManageBranches:false,canApproveAlerts:'branch',canManageConnectors:false,weeklyAuditScope:'branch'},
+  marketing_manager:{dashboardScope:'marketing',reports:['R1','R3_lead_source','R5_attribution'],contactsScope:'lead_source_only',canAddUsers:false,canAssignRoles:false,canInviteUsers:false,canDownloadData:'marketing_only',canManageBilling:false,canManageBranches:false,canApproveAlerts:'marketing',canManageConnectors:false,weeklyAuditScope:false},
+  sales_rep:{dashboardScope:'self',reports:[],contactsScope:'own_assigned',canAddUsers:false,canAssignRoles:false,canInviteUsers:false,canDownloadData:false,canManageBilling:false,canManageBranches:false,canApproveAlerts:false,canManageConnectors:false,weeklyAuditScope:'self'}
+};
+// Rank used only to pick the more permissive scope-style value when a user
+// holds multiple roles in parallel tracks (e.g. Sales Manager + Marketing Manager).
+var SCOPE_RANK={all:5,branch:4,marketing:4,reps_only:3,marketing_only:3,lead_source_only:2,own_assigned:2,self:1,false:0};
+function mergePermVal(a,b){
+  if(a===undefined)return b;
+  if(b===undefined)return a;
+  if(Array.isArray(a)||Array.isArray(b)){
+    return Array.from(new Set((Array.isArray(a)?a:[]).concat(Array.isArray(b)?b:[])));
+  }
+  if(typeof a==='boolean'&&typeof b==='boolean')return a||b;
+  var ra=SCOPE_RANK[a]!==undefined?SCOPE_RANK[a]:(a?1:0);
+  var rb=SCOPE_RANK[b]!==undefined?SCOPE_RANK[b]:(b?1:0);
+  return ra>=rb?a:b;
+}
+// Union of permissions across all of a user's roles — a higher role already
+// implies everything a lower role in the same track can do, so callers never
+// need to also list the lower role.
+function getEffectivePermissions(user){
+  var roles=(user&&user.roles)||[];
+  if(!roles.length)return PERMISSIONS.sales_rep;
+  var result={};
+  for(var i=0;i<roles.length;i++){
+    var p=PERMISSIONS[roles[i]];
+    if(!p)continue;
+    for(var k in p){result[k]=mergePermVal(result[k],p[k]);}
+  }
+  return result;
+}
+function hasReport(perms,code){
+  return perms.reports.some(function(r){return r===code||r.indexOf(code)===0;});
+}
+var ROLE_LABELS={general_manager:'General Manager',sales_manager:'Sales Manager',marketing_manager:'Marketing Manager',sales_rep:'Sales Rep'};
+var ROLE_INITIALS={general_manager:'JS',sales_manager:'KN',marketing_manager:'AM',sales_rep:'MW'};
+var ROLE_NAMES={general_manager:'John Smith',sales_manager:'Kim Nguyen',marketing_manager:'Amy Marsh',sales_rep:'Marcus Webb'};
+var SELF_BRANCH='nj';
+var SELF_REP='Marcus Webb';
+// Single isAdmin flag, independent of role — Admin (add users / assign roles)
+// is a system capability, not part of the GM permission set, so it is checked
+// separately even though GM defaults to isAdmin:true in this prototype.
+var currentUser={id:'usr_001',name:ROLE_NAMES.general_manager,roles:[ROLES.GENERAL_MANAGER],isAdmin:true};
+
+function switchRole(roleKey){
+  currentUser.roles=[roleKey];
+  currentUser.isAdmin=(roleKey===ROLES.GENERAL_MANAGER);
+  currentUser.name=ROLE_NAMES[roleKey]||currentUser.name;
+  applyRoleUI();
+  goApp(roleKey===ROLES.SALES_REP?'contacts':'dashboard');
+  showToast('Previewing as: '+(ROLE_LABELS[roleKey]||roleKey));
+}
+
+function setNavVisible(id,visible){
+  var el=document.getElementById(id);
+  if(el)el.style.display=visible?'':'none';
+}
+
+function applyRoleUI(){
+  var perms=getEffectivePermissions(currentUser);
+  window._perms=perms;
+  var role=currentUser.roles[0];
+
+  // Sidebar nav gating — never scatter raw role checks elsewhere, always go through perms.
+  setNavVisible('sbi-r1',hasReport(perms,'R1'));
+  setNavVisible('sbi-r2',hasReport(perms,'R2'));
+  setNavVisible('sbi-r3',hasReport(perms,'R3'));
+  setNavVisible('sbi-r4',hasReport(perms,'R4'));
+  setNavVisible('sbi-r5',hasReport(perms,'R5'));
+  setNavVisible('sbi-comms',!!perms.canApproveAlerts);
+  setNavVisible('sbi-audit',!!perms.weeklyAuditScope);
+  setNavVisible('sbi-pipeline',!!perms.canManageConnectors);
+  setNavVisible('sbi-users',!!currentUser.isAdmin);
+  setNavVisible('sbi-billing',!!perms.canManageBilling);
+  setNavVisible('sbi-dashboard',perms.dashboardScope!=='self');
+
+  // Sidebar user badge
+  var av=document.querySelector('.sb-av');
+  if(av)av.textContent=ROLE_INITIALS[role]||'JS';
+  var unameEl=document.getElementById('sb-uname')||document.querySelector('.sb-uname');
+  if(unameEl)unameEl.textContent=currentUser.name;
+  var uroleEl=document.querySelector('.sb-urole');
+  if(uroleEl)uroleEl.textContent=ROLE_LABELS[role]||role;
+  var tbAv=document.getElementById('tb-av');
+  if(tbAv)tbAv.textContent=ROLE_INITIALS[role]||'JS';
+  var switcher=document.getElementById('role-switcher');
+  if(switcher)switcher.value=role;
+
+  // Branch selector only makes sense when scoped to "all" branches
+  setNavVisible('dash-branch-strip',perms.dashboardScope==='all');
+
+  // Dashboard KPI rows — exactly one of these is shown, matching the user's dashboardScope
+  setNavVisible('dash-leads-row',perms.dashboardScope==='all'||perms.dashboardScope==='branch');
+  setNavVisible('dash-revenue-row',perms.dashboardScope==='all');
+  setNavVisible('dash-marketing-row',perms.dashboardScope==='marketing');
+  setNavVisible('dash-rep-row',perms.dashboardScope==='self');
+
+  // Sales-only dashboard sections (leaderboard, funnel, deep-report shortcuts, revenue alert)
+  var salesOnly=(perms.dashboardScope==='all'||perms.dashboardScope==='branch');
+  document.querySelectorAll('.rbac-sales-only').forEach(function(el){el.style.display=salesOnly?'':'none';});
+  document.querySelectorAll('.rbac-gm-only').forEach(function(el){el.style.display=(perms.dashboardScope==='all')?'':'none';});
+  document.querySelectorAll('.rbac-reports-only').forEach(function(el){el.style.display=perms.reports.length?'':'none';});
+  setNavVisible('dash-charts-row',perms.dashboardScope!=='self');
+  setNavVisible('dash-branch-reps-row',salesOnly);
+
+  // Deep-report shortcut cards only link to reports the user can actually open
+  document.querySelectorAll('#dash-report-grid .rep-card').forEach(function(card){
+    card.style.display=hasReport(perms,card.getAttribute('data-report').toUpperCase())?'':'none';
+  });
+
+  // Branch-scope row filtering on dashboard tables (Branch Comparison / Top Reps)
+  document.querySelectorAll('#app-dashboard tr[data-branch]').forEach(function(row){
+    row.style.display=(perms.dashboardScope==='branch'&&row.getAttribute('data-branch')!==SELF_BRANCH)?'none':'';
+  });
+
+  // Export buttons — gated per-report by canDownloadData (true / 'marketing_only' / false)
+  document.querySelectorAll('.rbac-export').forEach(function(btn){
+    var report=btn.getAttribute('data-report');
+    var visible=perms.canDownloadData===true||(perms.canDownloadData==='marketing_only'&&report==='r1');
+    btn.style.display=visible?'':'none';
+  });
+
+  applyContactsScope(perms);
+}
+
+function applyContactsScope(perms){
+  var rows=document.querySelectorAll('#contacts-tbody tr');
+  var anyVisible=false;
+  rows.forEach(function(row){
+    var branch=row.getAttribute('data-branch');
+    var rep=row.getAttribute('data-rep');
+    var visible=true;
+    if(perms.contactsScope==='branch')visible=(branch===SELF_BRANCH);
+    else if(perms.contactsScope==='own_assigned')visible=(rep===SELF_REP);
+    row.style.display=visible?'':'none';
+    if(visible)anyVisible=true;
+  });
+  document.getElementById('contacts-empty').style.display=anyVisible?'none':'block';
+  // Marketing Manager only sees lead-source/UTM data — no rep assignment, no deal value
+  document.querySelectorAll('#app-contacts .col-rep').forEach(function(el){
+    el.style.display=(perms.contactsScope==='lead_source_only')?'none':'';
+  });
+  var sub=document.getElementById('contacts-sub');
+  if(sub){
+    if(perms.contactsScope==='all')sub.textContent='Every lead synced from your connected tools — all branches';
+    else if(perms.contactsScope==='branch')sub.textContent='Leads for your branch only';
+    else if(perms.contactsScope==='lead_source_only')sub.textContent='Lead source & attribution data — no rep assignment or deal value shown';
+    else if(perms.contactsScope==='own_assigned')sub.textContent='Leads assigned to you';
+  }
+}
+
 // ENTER APP
 function enterApp(){
   document.getElementById('auth-wrap').style.display='none';
@@ -2149,8 +2370,9 @@ function enterApp(){
   window._plan=(freeSel&&freeSel.textContent.trim().toLowerCase()==='free')?'free':'paid';
   applyPlan();
   buildGates();
+  applyRoleUI();
   document.getElementById('help-btn').style.display='flex';
-  goApp('dashboard');
+  goApp(currentUser.roles[0]===ROLES.SALES_REP?'contacts':'dashboard');
   setTimeout(initCharts,300);
   setTimeout(checkPWABanner,5000);
 }
@@ -2159,6 +2381,10 @@ function enterApp(){
 function goApp(id){
   if(window._plan==='free'&&(id==='comms'||id==='audit')){
     openModal('upgrade-modal');
+    return;
+  }
+  if(!canAccessScreen(id)){
+    showToast('Not available for your role');
     return;
   }
   var screens=document.querySelectorAll('.app-scr');
@@ -2172,6 +2398,21 @@ function goApp(id){
   document.getElementById('main').scrollTop=0;
   if(id==='r1'&&!window._r1)setTimeout(initR1Charts,200);
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
+}
+
+// Permission check for full-screen navigation — mirrors the sidebar's visibility
+// logic so a screen can never be reached by URL/click even if its nav item is hidden.
+function canAccessScreen(id){
+  var perms=window._perms||getEffectivePermissions(currentUser);
+  var reportIds={r1:'R1',r2:'R2',r3:'R3',r4:'R4',r5:'R5'};
+  if(reportIds[id])return hasReport(perms,reportIds[id]);
+  if(id==='comms')return !!perms.canApproveAlerts;
+  if(id==='audit')return !!perms.weeklyAuditScope;
+  if(id==='pipeline')return !!perms.canManageConnectors;
+  if(id==='users')return !!currentUser.isAdmin;
+  if(id==='billing')return !!perms.canManageBilling;
+  if(id==='dashboard')return perms.dashboardScope!=='self';
+  return true; // contacts, help, and any other screens are always reachable
 }
 
 function mnActive(id){
