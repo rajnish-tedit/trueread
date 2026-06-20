@@ -969,7 +969,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div class="ni-head"><div class="ni-head-title">Notifications</div><div class="ni-mark" onclick="showToast('✓ All marked read')">Mark all read</div></div>
       <div class="ni" onclick="goApp('comms');toggleNotif()"><div class="ni-dot"></div><div class="ni-icon" style="background:var(--crit-bg)">⚠️</div><div class="ni-body"><div class="ni-title">Revenue gap: $34K behind target</div><div class="ni-text">Day 20 of June. Top 2 closers drafted a message for your review.</div><div class="ni-time">2 min ago</div></div></div>
       <div class="ni" onclick="goApp('r3');toggleNotif()"><div class="ni-dot"></div><div class="ni-icon" style="background:var(--caut-bg)">📊</div><div class="ni-body"><div class="ni-title">27 leads stuck >7 days</div><div class="ni-text">NJ branch — 14 leads need follow-up. Notify reps?</div><div class="ni-time">1 hr ago</div></div></div>
-      <div class="ni" onclick="goApp('r1');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📉</div><div class="ni-body"><div class="ni-title">Angi ROI dropped to 1.4×</div><div class="ni-text">Week-over-week drop from 2.4×. Review or pause spend.</div><div class="ni-time">Yesterday</div></div></div>
+      <div class="ni" onclick="goApp('r1');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📉</div><div class="ni-body"><div class="ni-title">Directory Sites ROI dropped to 1.5×</div><div class="ni-text">Week-over-week drop from 2.9×. Review or pause spend.</div><div class="ni-time">Yesterday</div></div></div>
       <div class="ni" onclick="goApp('comms');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📋</div><div class="ni-body"><div class="ni-title">Weekly audit: 4 reps pending</div><div class="ni-text">Deadline Sunday midnight. Draft nudge messages?</div><div class="ni-time">Yesterday</div></div></div>
     </div>
   </div>
@@ -1091,7 +1091,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="kpi pos"><div class="kpi-label">Total Marketing Spend</div><div class="kpi-value">$18.4K</div><span class="kpi-delta flat">→ $18.1K prior</span></div>
     <div class="kpi pos"><div class="kpi-label">Average Customer Acquisition Cost</div><div class="kpi-value">$247</div><span class="kpi-delta up">↓ $19 (better)</span></div>
     <div class="kpi pos"><div class="kpi-label">Qualified Lead Rate</div><div class="kpi-value">68<span style="font-size:14px">%</span></div><span class="kpi-delta up">↑ 5pts</span><div class="kpi-context">212 qualified · 100 unqualified</div></div>
-    <div class="kpi crit"><div class="kpi-label">Lowest ROI</div><div class="kpi-value">1.4×</div><span class="kpi-delta down">Angi ↓ 55% WoW</span></div>
+    <div class="kpi crit"><div class="kpi-label">Lowest ROI</div><div class="kpi-value">1.5×</div><span class="kpi-delta down">Directory Sites ↓ 48% WoW</span></div>
   </div>
   <div class="kpi-grid fu1" style="margin-top:-10px">
     <div class="kpi pos"><div class="kpi-label">Inbound Calls</div><div class="kpi-value">184</div><span class="kpi-delta up">↑ 12%</span><div class="kpi-context">via CallRail + WhatConverts</div></div>
@@ -1108,23 +1108,19 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <table class="tbl">
         <thead><tr><th>Source</th><th>Leads</th><th>Win %</th><th>CAC</th><th>ROI</th></tr></thead>
         <tbody>
-          <tr><td class="tbl-num" style="font-weight:700">Canvassing</td><td class="tbl-num">89</td><td><span class="pill pill-pos">31%</span></td><td class="tbl-num">$180</td><td><span class="pill pill-pos">6.2×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Inbound Call</td><td class="tbl-num">64</td><td><span class="pill pill-pos">28%</span></td><td class="tbl-num">$240</td><td><span class="pill pill-pos">4.8×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Google Ads</td><td class="tbl-num">47</td><td><span class="pill pill-caut">22%</span></td><td class="tbl-num">$310</td><td><span class="pill pill-caut">3.1×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Social Media</td><td class="tbl-num">29</td><td><span class="pill pill-caut">18%</span></td><td class="tbl-num">$390</td><td><span class="pill pill-caut">2.4×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Angi</td><td class="tbl-num">18</td><td><span class="pill pill-crit">12%</span></td><td class="tbl-num">$540</td><td><span class="pill pill-crit">1.4×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Google Local Services Ads</td><td class="tbl-num">22</td><td><span class="pill pill-pos">26%</span></td><td class="tbl-num">$210</td><td><span class="pill pill-pos">4.3×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Google Business Profile</td><td class="tbl-num">15</td><td><span class="pill pill-pos">24%</span></td><td class="tbl-num">$160</td><td><span class="pill pill-pos">5.1×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Website</td><td class="tbl-num">11</td><td><span class="pill pill-caut">19%</span></td><td class="tbl-num">$280</td><td><span class="pill pill-caut">2.9×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Yard Signs</td><td class="tbl-num">9</td><td><span class="pill pill-pos">30%</span></td><td class="tbl-num">$90</td><td><span class="pill pill-pos">7.4×</span></td></tr>
-          <tr title="Referral ROI is naturally high due to near-zero acquisition cost — expected and acceptable."><td class="tbl-num" style="font-weight:700">Referrals</td><td class="tbl-num">14</td><td><span class="pill pill-pos">42%</span></td><td class="tbl-num">$40</td><td><span class="pill pill-pos">11.8×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Direct Mail</td><td class="tbl-num">7</td><td><span class="pill pill-caut">17%</span></td><td class="tbl-num">$320</td><td><span class="pill pill-caut">2.2×</span></td></tr>
-          <tr><td class="tbl-num" style="font-weight:700">Modernize</td><td class="tbl-num">12</td><td><span class="pill pill-caut">16%</span></td><td class="tbl-num">$410</td><td><span class="pill pill-caut">1.9×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Google Business Profile</td><td class="tbl-num">58</td><td><span class="pill pill-pos">24%</span></td><td class="tbl-num">$160</td><td><span class="pill pill-pos">5.1×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Google Local Service Ads</td><td class="tbl-num">52</td><td><span class="pill pill-pos">27%</span></td><td class="tbl-num">$210</td><td><span class="pill pill-pos">4.3×</span></td></tr>
+          <tr title="Offline ROI is naturally high due to near-zero acquisition cost — expected and acceptable."><td class="tbl-num" style="font-weight:700">Offline</td><td class="tbl-num">48</td><td><span class="pill pill-pos">32%</span></td><td class="tbl-num">$85</td><td><span class="pill pill-pos">7.6×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Facebook / Instagram Ads</td><td class="tbl-num">41</td><td><span class="pill pill-caut">18%</span></td><td class="tbl-num">$390</td><td><span class="pill pill-caut">2.4×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Directory Sites</td><td class="tbl-num">36</td><td><span class="pill pill-crit">14%</span></td><td class="tbl-num">$480</td><td><span class="pill pill-crit">1.5×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">Facebook / Instagram Organic</td><td class="tbl-num">34</td><td><span class="pill pill-pos">21%</span></td><td class="tbl-num">$70</td><td><span class="pill pill-pos">7.9×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">TikTok, YouTube, LinkedIn</td><td class="tbl-num">23</td><td><span class="pill pill-caut">16%</span></td><td class="tbl-num">$410</td><td><span class="pill pill-caut">1.9×</span></td></tr>
+          <tr><td class="tbl-num" style="font-weight:700">External Channel</td><td class="tbl-num">20</td><td><span class="pill pill-caut">19%</span></td><td class="tbl-num">$300</td><td><span class="pill pill-caut">2.6×</span></td></tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📉</div><div><div class="alert-text-title" style="color:var(--crit)">Angi ROI dropped 55% week-over-week — from 2.4× to 1.4×</div><div class="alert-text-body">Spend is $540/lead. Recommend pausing or reducing Angi budget until source is reviewed. <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft message to marketing →</a></div></div></div>
+  <div class="alert-banner crit fu3"><div class="alert-icon" style="background:var(--crit-bg)">📉</div><div><div class="alert-text-title" style="color:var(--crit)">Directory Sites ROI dropped 48% week-over-week — from 2.9× to 1.5×</div><div class="alert-text-body">Spend is $480/lead. Recommend pausing or reducing Directory Sites budget until source is reviewed. <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Draft message to marketing →</a></div></div></div>
 </div>
 
 <!-- ═══════════════════════════ R2 — REPS ═══ -->
@@ -1190,12 +1186,12 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="card"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Win Rate by Lead Source</div></div></div>
       <table class="tbl"><thead><tr><th>Source</th><th>Leads</th><th>Won</th><th>Win Rate</th></tr></thead>
       <tbody>
-        <tr><td style="font-weight:600">Referrals</td><td class="tbl-num">14</td><td class="tbl-num">6</td><td><span class="pill pill-pos">42%</span></td></tr>
-        <tr><td style="font-weight:600">Canvassing</td><td class="tbl-num">89</td><td class="tbl-num">28</td><td><span class="pill pill-pos">31%</span></td></tr>
-        <tr><td style="font-weight:600">Inbound Call</td><td class="tbl-num">64</td><td class="tbl-num">18</td><td><span class="pill pill-pos">28%</span></td></tr>
-        <tr><td style="font-weight:600">Google LSA</td><td class="tbl-num">22</td><td class="tbl-num">6</td><td><span class="pill pill-caut">26%</span></td></tr>
-        <tr><td style="font-weight:600">Google Ads</td><td class="tbl-num">47</td><td class="tbl-num">10</td><td><span class="pill pill-caut">22%</span></td></tr>
-        <tr><td style="font-weight:600">Angi</td><td class="tbl-num">18</td><td class="tbl-num">2</td><td><span class="pill pill-crit">12%</span></td></tr>
+        <tr><td style="font-weight:600">Offline</td><td class="tbl-num">48</td><td class="tbl-num">15</td><td><span class="pill pill-pos">32%</span></td></tr>
+        <tr><td style="font-weight:600">Google Local Service Ads</td><td class="tbl-num">52</td><td class="tbl-num">14</td><td><span class="pill pill-pos">27%</span></td></tr>
+        <tr><td style="font-weight:600">Google Business Profile</td><td class="tbl-num">58</td><td class="tbl-num">14</td><td><span class="pill pill-pos">24%</span></td></tr>
+        <tr><td style="font-weight:600">External Channel</td><td class="tbl-num">20</td><td class="tbl-num">4</td><td><span class="pill pill-caut">19%</span></td></tr>
+        <tr><td style="font-weight:600">Facebook / Instagram Ads</td><td class="tbl-num">41</td><td class="tbl-num">7</td><td><span class="pill pill-caut">18%</span></td></tr>
+        <tr><td style="font-weight:600">Directory Sites</td><td class="tbl-num">36</td><td class="tbl-num">5</td><td><span class="pill pill-crit">14%</span></td></tr>
       </tbody></table>
     </div>
     <div class="card card-p">
@@ -1725,7 +1721,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="modal-head"><div><div class="modal-title">Duplicate Review — James T. Roark</div><div class="modal-sub">CRM ID conflict between manual import and GHL</div></div><button class="modal-close" onclick="closeModal('dedup-modal')">×</button></div>
     <div class="modal-body">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-        <div style="background:var(--panel);border-radius:10px;padding:14px;font-size:12.5px"><div style="font-weight:700;margin-bottom:8px;color:var(--cyan)">GHL Record</div><div>Phone: (973) 555-0142</div><div>Email: james@roark.com</div><div>Source: Canvassing</div><div style="margin-top:8px"><span class="pill pill-pos" style="font-size:11px">Master data rule</span></div></div>
+        <div style="background:var(--panel);border-radius:10px;padding:14px;font-size:12.5px"><div style="font-weight:700;margin-bottom:8px;color:var(--cyan)">GHL Record</div><div>Phone: (973) 555-0142</div><div>Email: james@roark.com</div><div>Source: Google Business Profile</div><div style="margin-top:8px"><span class="pill pill-pos" style="font-size:11px">Master data rule</span></div></div>
         <div style="background:var(--panel);border-radius:10px;padding:14px;font-size:12.5px"><div style="font-weight:700;margin-bottom:8px">Manual Import</div><div>Phone: (973) 555-0142</div><div>Email: j.roark@email.net</div><div>Source: Inbound Call</div><div style="margin-top:8px"><span class="pill pill-caut" style="font-size:11px">Secondary</span></div></div>
       </div>
     </div>
@@ -2051,7 +2047,7 @@ function mnActive(id){
 // GATE OVERLAYS
 function buildGates(){
   var list=[
-    {key:'r1',title:'Full Marketing Attribution',feats:['CAC by channel (Canvassing, Google, Angi)','ROI multiplier per source','Week-over-week ROI alerts','Full spend vs return breakdown']},
+    {key:'r1',title:'Full Marketing Attribution',feats:['CAC by channel (Google, Facebook/Instagram, Directory Sites)','ROI multiplier per source','Week-over-week ROI alerts','Full spend vs return breakdown']},
     {key:'r2',title:'Full Rep Performance Leaderboard',feats:['All reps ranked by close rate and revenue','Speed-to-lead per rep','CRM compliance with coaching flags','Follow-up rate tracking']},
     {key:'r3',title:'Full Pipeline and Funnel Breakdown',feats:['Stage-by-stage drop-off counts','Stuck leads list with rep names','Loss reason chart','Avg days per stage']},
     {key:'r4',title:'Full Revenue Intelligence',feats:['Revenue vs monthly target','Expected revenue from pipeline','Rep-level attribution','Gap alerts and closer targeting']}
@@ -2206,7 +2202,7 @@ function dismissPWA(){
 function initCharts(){
   var c1=document.getElementById('chart-sources');
   if(c1&&!c1._chart){
-    c1._chart=new Chart(c1,{type:'bar',data:{labels:['Canvassing','Inbound','Google','Social','Angi'],datasets:[{data:[89,64,47,29,18],backgroundColor:['#1F3A5F','#0F5866','#3F6E4A','#B57B1F','#9B3A2A'],borderRadius:6,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{family:'Inter',size:12}}},y:{grid:{color:'rgba(200,194,182,.4)'},ticks:{font:{family:'Inter',size:12}}}}}});
+    c1._chart=new Chart(c1,{type:'bar',data:{labels:['GBP','Google LSA','Offline','FB/IG Ads','Directory'],datasets:[{data:[58,52,48,41,36],backgroundColor:['#1F3A5F','#0F5866','#3F6E4A','#B57B1F','#9B3A2A'],borderRadius:6,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{family:'Inter',size:12}}},y:{grid:{color:'rgba(200,194,182,.4)'},ticks:{font:{family:'Inter',size:12}}}}}});
   }
   var fw=document.getElementById('funnel-wrap');
   if(fw&&!fw._built){
@@ -2223,7 +2219,7 @@ function initR1Charts(){
   window._r1=true;
   var c=document.getElementById('chart-roi');
   if(c&&!c._chart){
-    c._chart=new Chart(c,{type:'bar',data:{labels:['Canvassing','Inbound','Google Ads','Social','Angi'],datasets:[{data:[6.2,4.8,3.1,2.4,1.4],backgroundColor:function(ctx){var v=ctx.raw;return v>=4?'#3F6E4A':(v>=2.5?'#B57B1F':'#9B3A2A');},borderRadius:6,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{family:'Inter',size:12}}},y:{grid:{color:'rgba(200,194,182,.4)'},ticks:{font:{family:'Inter',size:12},callback:function(v){return v+'x';}}}}}});
+    c._chart=new Chart(c,{type:'bar',data:{labels:['GBP','Google LSA','Offline','FB/IG Ads','Directory'],datasets:[{data:[5.1,4.3,7.6,2.4,1.5],backgroundColor:function(ctx){var v=ctx.raw;return v>=4?'#3F6E4A':(v>=2.5?'#B57B1F':'#9B3A2A');},borderRadius:6,borderSkipped:false}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{family:'Inter',size:12}}},y:{grid:{color:'rgba(200,194,182,.4)'},ticks:{font:{family:'Inter',size:12},callback:function(v){return v+'x';}}}}}});
   }
 }
 
@@ -2468,7 +2464,7 @@ var _myTickets = [
   {ref:'HUB-2847', subj:'WhatConverts connector failing', status:'progress', meta:'Opened 2 days ago · Last reply: 4 hours ago'},
   {ref:'HUB-2831', subj:'Speed to lead showing wrong value', status:'open', meta:'Opened 5 days ago · Awaiting reply'},
   {ref:'HUB-2810', subj:'How to add a new branch', status:'resolved', meta:'Resolved 1 week ago · ★ Rated helpful'},
-  {ref:'HUB-2798', subj:'Angi ROI dropped suddenly', status:'resolved', meta:'Resolved 2 weeks ago'},
+  {ref:'HUB-2798', subj:'Directory Sites ROI dropped suddenly', status:'resolved', meta:'Resolved 2 weeks ago'},
 ];
 
 function hwRenderTickets(){
@@ -2507,7 +2503,7 @@ var helpArticles = {
     body:'<p>The Pipeline Funnel in Report R3 shows how many leads move through each stage of your sales process and where they drop off.</p><h4>Stages</h4><ol><li><strong>Total Leads</strong> — all leads created in your CRM</li><li><strong>Entered CRM</strong> — leads with a rep assigned and source recorded</li><li><strong>Appointment Set</strong> — leads that reached appointment stage</li><li><strong>Estimate Sent</strong> — leads where an estimate was delivered</li><li><strong>Won</strong> — deals marked as closed/won</li></ol><h4>Reading the Funnel</h4><p>Each bar shows the count and the percentage of the previous stage. A drop from 162 appointments to 126 estimates means 36 appointments never got a follow-up estimate — a revenue leak to investigate.</p><h4>Stuck Leads</h4><p>Leads that have not moved stages in 7 or more days are flagged as stuck. These appear in the Stuck Leads KPI tile and trigger an Action Items alert.</p>'},
 
   'roi-calc':{cat:'Reports & Metrics', title:'How ROI and CAC are Computed',
-    body:'<h4>ROI (Return on Investment)</h4><p><code>ROI = Won Revenue from channel / Total spend on channel</code></p><p>Example: Canvassing generated $89,000 in won revenue and cost $16,020 (180 CAC x 89 leads). ROI = 89,000 / 16,020 = 5.6x.</p><h4>CAC (Customer Acquisition Cost)</h4><p><code>CAC = Channel spend / Won leads from channel</code></p><p>Example: You spent $9,720 on Angi and won 18 leads. CAC = 9,720 / 18 = $540.</p><h4>Data Required</h4><ul><li>Marketing spend per channel (from manual XLSX import)</li><li>Lead source field completed in GHL (CRM compliance matters here)</li><li>Won/Lost stage set correctly in GHL pipeline</li></ul><h4>WoW Alerts</h4><p>If any channel ROI drops more than 30% week-over-week, The Hub fires an alert in the Action Items. This catches Angi or Google Ads performance drops before they waste significant budget.</p>'},
+    body:'<h4>ROI (Return on Investment)</h4><p><code>ROI = Won Revenue from channel / Total spend on channel</code></p><p>Example: Google Business Profile generated $58,000 in won revenue and cost $9,280 (160 CAC x 58 leads). ROI = 58,000 / 9,280 = 6.2x.</p><h4>CAC (Customer Acquisition Cost)</h4><p><code>CAC = Channel spend / Won leads from channel</code></p><p>Example: You spent $17,280 on Directory Sites and won 36 leads. CAC = 17,280 / 36 = $480.</p><h4>Data Required</h4><ul><li>Marketing spend per channel (from manual XLSX import)</li><li>Lead source field completed in GHL (CRM compliance matters here)</li><li>Won/Lost stage set correctly in GHL pipeline</li></ul><h4>WoW Alerts</h4><p>If any channel ROI drops more than 30% week-over-week, The Hub fires an alert in the Action Items. This catches Directory Sites or Facebook/Instagram Ads performance drops before they waste significant budget.</p>'},
 
   'free-vs-paid':{cat:'Billing & Plans', title:'Free Plan vs Paid Plan — What Changes',
     body:'<h4>Free Trial (30 Days)</h4><ul><li>Full Dashboard overview with all KPI tiles</li><li>Branch filter and date range filter</li><li>Up to 3 reps</li><li>1 location only</li></ul><h4>What is Locked After Your Trial Ends</h4><ul><li>R1 Marketing Attribution — fully gated</li><li>R2 Rep Performance — fully gated</li><li>R3 Pipeline & Funnel — fully gated</li><li>R4 Revenue Intelligence — fully gated</li><li>Action Items — blocked</li><li>Weekly Audit — blocked</li></ul><h4>Paid Subscription ($199/mo base)</h4><ul><li>All 5 reports unlocked</li><li>Unlimited reps</li><li>1 location included</li><li>Action Items</li><li>Weekly Audit</li></ul><h4>Additional Locations ($149/mo each)</h4><ul><li>Add as many locations as you need</li><li>Network dashboard</li><li>Branch comparison views</li></ul><h4>Annual Plan</h4><ul><li>Pay for 10 months, get 12 (2 months free)</li></ul>'},
