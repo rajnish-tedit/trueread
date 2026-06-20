@@ -628,96 +628,123 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
   <!-- CRM PICKER -->
-  <div class="auth-card scr" id="scr-crm-pick" style="max-width:880px;">
+  <div class="auth-card scr" id="scr-crm-pick" style="max-width:480px;">
     <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-    <div class="auth-h1">Connect your tools</div>
-    <div class="auth-sub" style="margin-bottom:18px;">The Hub reads your pipeline & marketing data to compute metrics. <strong>You must connect a CRM to continue.</strong> Connecting a marketing tool is optional and can be added later.</div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--cyan);margin-bottom:6px;">STEP 1 OF 2</div>
+    <div class="auth-h1">Connect your CRM</div>
+    <div class="auth-sub">The Hub reads your pipeline data to compute core metrics. This step is required.</div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
-      <!-- CRM (required) -->
-      <div>
-        <div class="crm-section-label" style="margin-top:0;">CRM <span style="color:var(--crit);font-weight:700;">— required</span></div>
-        <div class="crm-grid" id="crm-grid-crm" style="grid-template-columns:1fr;">
-          <div class="crm-card" onclick="pickCRM(this,'Leap','api','crm')">
-            <div class="crm-icon" style="background:#FFF3E8">🟠</div>
-            <div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div><span class="crm-auth-badge api">API Key</span></div>
-          </div>
-          <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api','crm')">
-            <div class="crm-icon" style="background:#F0FFF4">🟢</div>
-            <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
-          </div>
-          <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
-            <div class="crm-icon" style="background:#FFF0F0">🔴</div>
-            <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
-          </div>
-        </div>
-
-        <!-- CRM credential form -->
-        <div id="creds-crm" style="display:none;margin-top:12px;">
-          <div id="creds-crm-pass">
-            <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-crm" placeholder="your@email.com"/></div>
-            <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
-          </div>
-          <div id="creds-crm-api" style="display:none">
-            <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
-            <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:0" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
-          </div>
-        </div>
+    <div class="crm-section-label" style="margin-top:0;">CRM <span style="color:var(--crit);font-weight:800;">— Required</span></div>
+    <div class="crm-grid" id="crm-grid-crm">
+      <div class="crm-card" onclick="pickCRM(this,'Leap','api','crm')">
+        <div class="crm-icon" style="background:#FFF3E8">🟠</div>
+        <div><div class="crm-name">Leap CRM</div><div class="crm-desc">Job & estimate data</div><span class="crm-auth-badge api">API Key</span></div>
       </div>
-
-      <!-- Marketing Tools (optional) -->
-      <div>
-        <div class="crm-section-label" style="margin-top:0;">Marketing Tools <span style="color:var(--muted);font-weight:600;">— optional</span></div>
-        <div class="crm-grid" id="crm-grid-marketing" style="grid-template-columns:1fr 1fr;">
-          <div class="crm-card" onclick="pickCRM(this,'GHL','pass','marketing')">
-            <div class="crm-icon" style="background:#E8F5FF">🔷</div>
-            <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">Login</span></div>
-          </div>
-          <div class="crm-card" onclick="pickCRM(this,'WhatConverts','api','marketing')">
-            <div class="crm-icon" style="background:#F3F0FF">📊</div>
-            <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
-          </div>
-          <div class="crm-card" onclick="pickCRM(this,'CallRail','api','marketing')">
-            <div class="crm-icon" style="background:#FFF0F8">📞</div>
-            <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
-          </div>
-          <div class="crm-card" onclick="pickCRM(this,'LeadTracker','pass','marketing')">
-            <div class="crm-icon" style="background:#FFFBE8">📍</div>
-            <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
-          </div>
-        </div>
-
-        <!-- Marketing credential form -->
-        <div id="creds-marketing" style="display:none;margin-top:12px;">
-          <div id="creds-marketing-pass">
-            <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-marketing" placeholder="your@email.com"/></div>
-            <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
-          </div>
-          <div id="creds-marketing-api" style="display:none">
-            <div class="inp-row"><label class="lbl" id="crm-api-label-marketing">API Key</label><input class="inp" id="crm-apikey-marketing" placeholder="Paste your API key here"/></div>
-            <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:0" id="crm-api-hint-marketing">Find this in your account settings → Integrations.</div>
-          </div>
-        </div>
+      <div class="crm-card" onclick="pickCRM(this,'AccuLynx','api','crm')">
+        <div class="crm-icon" style="background:#F0FFF4">🟢</div>
+        <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
+        <div class="crm-icon" style="background:#FFF0F0">🔴</div>
+        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
       </div>
     </div>
 
-    <!-- Sync note -->
-    <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin:18px 0 0;">
-      <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
+    <!-- CRM credential form -->
+    <div id="creds-crm" style="display:none;margin-top:16px;">
+      <div class="crm-divider" style="margin-top:0;"></div>
+      <div id="creds-crm-pass">
+        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-crm" placeholder="your@email.com"/></div>
+        <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+      </div>
+      <div id="creds-crm-api" style="display:none">
+        <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
+      </div>
+      <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
+        <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
+      </div>
     </div>
-    <div id="crm-required-hint-bottom" style="font-size:12px;color:var(--crit);margin-top:8px;">Select a CRM on the left to continue.</div>
-    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="margin-top:14px;opacity:.4;pointer-events:none;" onclick="authGo('syncing')">Connect & sync →</button>
+    <div id="crm-required-hint-bottom" style="font-size:12px;color:var(--crit);margin-top:14px;">Select a CRM to continue.</div>
+    <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="margin-top:14px;opacity:.4;pointer-events:none;" onclick="connectCRM()">Connect & sync →</button>
+  </div>
+
+  <!-- MARKETING TOOLS PICKER (STEP 2 OF 2) -->
+  <div class="auth-card scr" id="scr-marketing-pick" style="max-width:480px;">
+    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--cyan);margin-bottom:6px;">STEP 2 OF 2</div>
+    <div class="auth-h1">Connect marketing tools</div>
+    <div class="auth-sub">Unlocks lead attribution & speed-to-lead. Optional — you can add these anytime from Settings.</div>
+
+    <div class="crm-section-label" style="margin-top:0;">Marketing Tools <span style="color:var(--muted);font-weight:700;">— Optional</span></div>
+    <div class="crm-grid" id="crm-grid-marketing">
+      <div class="crm-card" onclick="pickMarketing(this,'GHL','ghl')">
+        <div class="crm-icon" style="background:#E8F5FF">🔷</div>
+        <div><div class="crm-name">GoHighLevel</div><div class="crm-desc">GHL sub-account</div><span class="crm-auth-badge pass">App Install</span></div>
+      </div>
+      <div class="crm-card" onclick="pickMarketing(this,'WhatConverts','api')">
+        <div class="crm-icon" style="background:#F3F0FF">📊</div>
+        <div><div class="crm-name">WhatConverts</div><div class="crm-desc">Lead attribution</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickMarketing(this,'CallRail','api')">
+        <div class="crm-icon" style="background:#FFF0F8">📞</div>
+        <div><div class="crm-name">CallRail</div><div class="crm-desc">Call tracking</div><span class="crm-auth-badge api">API Key</span></div>
+      </div>
+      <div class="crm-card" onclick="pickMarketing(this,'LeadTracker','pass')">
+        <div class="crm-icon" style="background:#FFFBE8">📍</div>
+        <div><div class="crm-name">Lead Tracker</div><div class="crm-desc">Field lead capture</div><span class="crm-auth-badge pass">Login</span></div>
+      </div>
+    </div>
+
+    <!-- GHL install flow -->
+    <div id="mkt-ghl-flow" style="display:none;margin-top:16px;">
+      <div class="crm-divider" style="margin-top:0;"></div>
+      <div style="background:var(--panel);border-radius:10px;padding:18px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Connect your GoHighLevel sub-account</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:14px;">We'll request read-only access to contacts, pipeline & opportunities.</div>
+        <button class="btn btn-primary btn-full" id="ghl-continue-btn" onclick="continueWithGHL()">Continue with GHL →</button>
+        <div id="ghl-install-wrap" style="display:none">
+          <button class="btn btn-cyan btn-full" id="ghl-install-btn" style="margin-top:10px;" onclick="installGHL()">⬇ Install The Hub app in GHL</button>
+          <div style="font-size:11px;color:var(--muted);margin-top:8px;">You'll be redirected to GHL to approve the install, then brought back here automatically.</div>
+        </div>
+      </div>
+      <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:11px 14px;font-size:11.5px;color:#78350F;margin-top:12px;">
+        ⏳ GHL limits how much data we can pull per request — full historical sync can take a few hours. Recent activity is available right away.
+      </div>
+    </div>
+
+    <!-- Standard credential form for non-GHL marketing tools -->
+    <div id="creds-marketing" style="display:none;margin-top:16px;">
+      <div class="crm-divider" style="margin-top:0;"></div>
+      <div id="creds-marketing-pass">
+        <div class="inp-row"><label class="lbl">Email / Username</label><input class="inp" id="crm-email-marketing" placeholder="your@email.com"/></div>
+        <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+      </div>
+      <div id="creds-marketing-api" style="display:none">
+        <div class="inp-row"><label class="lbl" id="crm-api-label-marketing">API Key</label><input class="inp" id="crm-apikey-marketing" placeholder="Paste your API key here"/></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-marketing">Find this in your account settings → Integrations.</div>
+      </div>
+      <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
+        <strong>⏱ About data sync</strong> — Some tools rate-limit how much data can be pulled per request. Your dashboard fills in as data arrives.
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:18px;">
+      <button class="btn btn-outline btn-full" onclick="authGo('crm-pick')">← Back</button>
+      <button class="btn btn-outline btn-full" onclick="skipMarketing()">Skip →</button>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" id="mkt-btn" style="display:none;margin-top:10px;" onclick="connectMarketing()">Connect & sync →</button>
   </div>
 
   <!-- SYNCING -->
   <div class="auth-card scr" id="scr-syncing" style="max-width:440px;">
-    <div class="auth-h1" style="margin-bottom:6px">Syncing your account</div>
-    <div class="auth-sub" style="margin-bottom:22px">Reading your GHL data. This takes about 15 seconds.</div>
+    <div class="auth-h1" style="margin-bottom:6px" id="sync-title">Syncing your account</div>
+    <div class="auth-sub" style="margin-bottom:22px" id="sync-sub">Reading your data. This takes about 15 seconds.</div>
     <div id="sync-steps">
-      <div class="sync-step pending" id="ss1"><div class="sync-dot pending" id="ss1-dot">1</div><div><div class="sync-label">Authenticating with GHL</div><div class="sync-sub">Checking credentials</div></div></div>
-      <div class="sync-step pending" id="ss2"><div class="sync-dot pending" id="ss2-dot">2</div><div><div class="sync-label">OAuth handshake & token</div><div class="sync-sub">Securing your connection</div></div></div>
-      <div class="sync-step pending" id="ss3"><div class="sync-dot pending" id="ss3-dot">3</div><div><div class="sync-label">Reading contacts, pipeline & reps</div><div class="sync-sub">Syncing your account data</div></div></div>
-      <div class="sync-step pending" id="ss4"><div class="sync-dot pending" id="ss4-dot">4</div><div><div class="sync-label">Computing your metrics</div><div class="sync-sub">Building reports from your data</div></div></div>
+      <div class="sync-step pending" id="ss1"><div class="sync-dot pending" id="ss1-dot">1</div><div><div class="sync-label" id="ss1-label">Authenticating</div><div class="sync-sub">Checking credentials</div></div></div>
+      <div class="sync-step pending" id="ss2"><div class="sync-dot pending" id="ss2-dot">2</div><div><div class="sync-label" id="ss2-label">OAuth handshake & token</div><div class="sync-sub">Securing your connection</div></div></div>
+      <div class="sync-step pending" id="ss3"><div class="sync-dot pending" id="ss3-dot">3</div><div><div class="sync-label" id="ss3-label">Reading contacts, pipeline & reps</div><div class="sync-sub">Syncing your account data</div></div></div>
+      <div class="sync-step pending" id="ss4"><div class="sync-dot pending" id="ss4-dot">4</div><div><div class="sync-label" id="ss4-label">Computing your metrics</div><div class="sync-sub">Building reports from your data</div></div></div>
     </div>
     <div id="sync-done" style="display:none;margin-top:20px;">
       <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">KPIs now computing</div>
@@ -727,7 +754,17 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">REPS</span>Close rate, CRM compliance</div>
         <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">REVENUE</span>Won revenue, pipeline value</div>
       </div>
-      <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⚠ Connect <strong>WhatConverts</strong> & <strong>CallRail</strong> after setup to unlock attribution & speed-to-lead.</div>
+      <div id="sync-banner" style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⚠ Connect marketing tools next to unlock attribution & speed-to-lead.</div>
+      <button class="btn btn-primary btn-full" id="sync-done-btn" onclick="authGo('marketing-pick')">Continue to marketing tools →</button>
+    </div>
+    <!-- Partial / long-running sync (e.g. GHL) -->
+    <div id="sync-partial" style="display:none;margin-top:20px;">
+      <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">What's ready now</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+        <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--pos);margin-bottom:3px">✓ LAST 30 DAYS</span>Leads & contacts ready</div>
+        <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--pos);margin-bottom:3px">✓ OPEN PIPELINE</span>Active opportunities ready</div>
+      </div>
+      <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⏳ <strong>Historical sync in progress</strong> — GHL rate-limits how much we can pull per request. Older contacts and full call/SMS history will continue syncing in the background and may take a few hours. We'll notify you when it's complete — no action needed, your dashboard already works with what's synced.</div>
       <button class="btn btn-primary btn-full" onclick="enterApp()">Go to your dashboard →</button>
     </div>
   </div>
@@ -1797,6 +1834,67 @@ function checkMulti(){
   document.getElementById('multi-note').style.display=(v.indexOf('Multi')>-1||v.indexOf('Franchise')>-1)?'block':'none';
 }
 
+var SYNC_CTX={type:'crm',name:'your CRM'};
+
+function connectCRM(){
+  var on=document.querySelector('#crm-grid-crm .crm-card.on');
+  var name=on?on.querySelector('.crm-name').textContent:'your CRM';
+  SYNC_CTX={type:'crm',name:name};
+  authGo('syncing');
+}
+
+function pickMarketing(card,name,authType){
+  var grid=document.getElementById('crm-grid-marketing');
+  var all=grid.querySelectorAll('.crm-card');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  card.classList.add('on');
+  var ghlFlow=document.getElementById('mkt-ghl-flow');
+  var creds=document.getElementById('creds-marketing');
+  var btn=document.getElementById('mkt-btn');
+  if(authType==='ghl'){
+    ghlFlow.style.display='block';
+    creds.style.display='none';
+    btn.style.display='none';
+    document.getElementById('ghl-continue-btn').style.display='block';
+    document.getElementById('ghl-install-wrap').style.display='none';
+    return;
+  }
+  ghlFlow.style.display='none';
+  creds.style.display='block';
+  var isApi=authType==='api';
+  document.getElementById('creds-marketing-pass').style.display=isApi?'none':'block';
+  document.getElementById('creds-marketing-api').style.display=isApi?'block':'none';
+  if(isApi){
+    document.getElementById('crm-api-label-marketing').textContent=name+' API Key';
+    document.getElementById('crm-apikey-marketing').placeholder='Paste your '+name+' API key here';
+    document.getElementById('crm-api-hint-marketing').textContent=CRM_API_HINTS[name]||'Find this in your account settings → Integrations.';
+  } else {
+    document.getElementById('crm-email-marketing').placeholder=name+'@your-email.com';
+  }
+  btn.style.display='block';
+}
+
+function continueWithGHL(){
+  document.getElementById('ghl-continue-btn').style.display='none';
+  document.getElementById('ghl-install-wrap').style.display='block';
+}
+
+function installGHL(){
+  SYNC_CTX={type:'ghl',name:'GoHighLevel'};
+  authGo('syncing');
+}
+
+function connectMarketing(){
+  var on=document.querySelector('#crm-grid-marketing .crm-card.on');
+  var name=on?on.querySelector('.crm-name').textContent:'your marketing tool';
+  SYNC_CTX={type:'marketing',name:name};
+  authGo('syncing');
+}
+
+function skipMarketing(){
+  authGo('company-setup');
+}
+
 // BRANCHES
 function addBranch(){
   var n=document.getElementById('nb-name').value.trim();
@@ -1857,6 +1955,27 @@ function updatePlanTotal(){
 
 // SYNC ANIMATION
 function startSync(){
+  var ctx=SYNC_CTX||{type:'crm',name:'your CRM'};
+  var title=document.getElementById('sync-title');
+  var sub=document.getElementById('sync-sub');
+  var ss3label=document.getElementById('ss3-label');
+  if(title)title.textContent='Syncing '+ctx.name;
+  if(sub)sub.textContent=ctx.type==='ghl'
+    ?'Connecting to GoHighLevel. Recent activity will be ready in a moment — full history may take a few hours.'
+    :'Reading your '+ctx.name+' data. This takes about 15 seconds.';
+  if(ss3label)ss3label.textContent=ctx.type==='ghl'?'Reading recent contacts & pipeline':'Reading contacts, pipeline & reps';
+
+  for(var n=1;n<=4;n++){
+    var dot0=document.getElementById('ss'+n+'-dot');
+    var step0=document.getElementById('ss'+n);
+    if(dot0){dot0.className='sync-dot pending';dot0.innerHTML=n;}
+    if(step0)step0.className='sync-step pending';
+  }
+  var sd0=document.getElementById('sync-done');
+  var sp0=document.getElementById('sync-partial');
+  if(sd0)sd0.style.display='none';
+  if(sp0)sp0.style.display='none';
+
   var delay=[400,1200,2400,3800];
   for(var n=1;n<=4;n++){
     (function(i){
@@ -1873,8 +1992,22 @@ function startSync(){
           step.className='sync-step done';
           if(i===4){
             setTimeout(function(){
-              var sd=document.getElementById('sync-done');
-              if(sd)sd.style.display='block';
+              if(ctx.type==='ghl'){
+                var sp=document.getElementById('sync-partial');
+                if(sp)sp.style.display='block';
+                return;
+              }
+              var sdEl=document.getElementById('sync-done');
+              var banner=document.getElementById('sync-banner');
+              var btn=document.getElementById('sync-done-btn');
+              if(ctx.type==='crm'){
+                if(banner)banner.style.display='block';
+                if(btn){btn.textContent='Continue to marketing tools →';btn.onclick=function(){authGo('marketing-pick');};}
+              } else {
+                if(banner)banner.style.display='none';
+                if(btn){btn.textContent='Continue to company setup →';btn.onclick=function(){authGo('company-setup');};}
+              }
+              if(sdEl)sdEl.style.display='block';
             },400);
           }
         },900);
