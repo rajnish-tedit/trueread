@@ -1121,6 +1121,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="pill pill-crit" style="margin-left:auto;font-size:10px;padding:2px 6px">3</span></div>
   <div class="sbi" id="sbi-audit" onclick="goApp('audit')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Weekly Audit</div>
   <div class="sbi" id="sbi-pipeline" onclick="goApp('pipeline')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>Data Integrations</div>
+  <div class="sbi" id="sbi-rules" onclick="goApp('rules')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Accountability Rules</div>
   <div class="sb-sec">Account</div>
   <div class="sbi" id="sbi-help" onclick="goApp('help')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>Help &amp; Support</div>
   <div class="sbi" id="sbi-settings" onclick="goApp('settings')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>Settings</div>
@@ -1600,6 +1601,285 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <tr><td style="color:var(--muted)">Today 8:00 AM</td><td>GoHighLevel</td><td>Scheduled sync</td><td>298</td><td><span class="pill pill-pos">✓ Complete</span></td><td></td></tr>
     </tbody></table></div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ ACCOUNTABILITY RULES ═══ -->
+<div class="app-scr" id="app-rules">
+  <div class="pg-header fu">
+    <div>
+      <div class="pg-title">Accountability Rules</div>
+      <div class="pg-sub">Define your standards for follow-up speed, pipeline movement, and data entry — The Hub flags reps who fall behind and notifies the right people automatically</div>
+    </div>
+  </div>
+
+  <div class="tabs fu1" id="rules-tabs">
+    <div class="tab on" id="rtab-pipeline" onclick="switchTab(this,'rules-pipeline')">Pipeline Rules</div>
+    <div class="tab" id="rtab-activity" onclick="switchTab(this,'rules-activity')">Rep Activity Rules</div>
+    <div class="tab" id="rtab-routing" onclick="switchTab(this,'rules-routing')">Notification Routing</div>
+  </div>
+
+  <!-- ── TAB 1: PIPELINE RULES ── -->
+  <div class="tab-panel on" id="tab-rules-pipeline">
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:680px">
+      Stages below are pulled from your connected CRM pipeline (GoHighLevel / Leap). Pick a stage, set how long a lead can sit there, and which fields must be filled before it counts as "done."
+    </div>
+
+    <!-- Rule: Stage Advancement SLA -->
+    <div class="card card-p fu2" style="margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Stage Advancement SLA</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Flag a lead that's been sitting in a stage too long without moving forward</div>
+        </div>
+        <div class="wh-toggle on" id="rule-stage-sla" onclick="toggleRule(this)"></div>
+      </div>
+      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">If lead is in stage</label>
+          <select class="inp">
+            <option selected>Appointment Set</option>
+            <option>Estimate Sent</option>
+            <option>Contract Sent</option>
+            <option>Job Scheduled</option>
+          </select>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Without advancing for</label>
+          <input class="inp" type="number" value="7" min="1" max="60"/>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Applies to</label>
+          <select class="inp">
+            <option selected>All branches</option>
+            <option>NJ — Montclair</option>
+            <option>NY — Queens</option>
+            <option>FL — Tampa</option>
+            <option>Miami</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-info-box" style="margin-top:14px">
+        ⓘ Rep gets a reminder on day 5. Sales Manager is alerted on day 7. CEO is notified if still unresolved by day 10.
+      </div>
+    </div>
+
+    <!-- Rule: Required Fields at Stage -->
+    <div class="card card-p fu3" style="margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Required Fields at Stage</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Flag a lead that reached a stage but is missing data your reports depend on</div>
+        </div>
+        <div class="wh-toggle on" id="rule-required-fields" onclick="toggleRule(this)"></div>
+      </div>
+      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">When lead reaches stage</label>
+          <select class="inp">
+            <option selected>Won</option>
+            <option>Lost</option>
+            <option>Appointment Set</option>
+          </select>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Grace period to fill it in</label>
+          <select class="inp">
+            <option selected>24 hours</option>
+            <option>12 hours</option>
+            <option>48 hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="inp-row" style="margin-bottom:0">
+        <label class="lbl">Required fields</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="pill pill-pos" style="cursor:pointer" onclick="this.classList.toggle('pill-pos');this.classList.toggle('pill-off')">✓ Job Value</span>
+          <span class="pill pill-pos" style="cursor:pointer" onclick="this.classList.toggle('pill-pos');this.classList.toggle('pill-off')">✓ Loss Reason</span>
+          <span class="pill" style="cursor:pointer;background:var(--panel);color:var(--muted)" onclick="this.classList.toggle('pill-pos');this.classList.toggle('pill-off')">Lead Source</span>
+          <span class="pill" style="cursor:pointer;background:var(--panel);color:var(--muted)" onclick="this.classList.toggle('pill-pos');this.classList.toggle('pill-off')">Contact Date</span>
+        </div>
+      </div>
+      <div class="settings-info-box" style="margin-top:14px">
+        ⓘ Missing job values directly distort Rev vs Target and Revenue Intelligence accuracy.
+      </div>
+    </div>
+
+    <button class="btn btn-outline fu3" onclick="showToast('Rule builder for custom stage transitions — coming soon')">+ Add a custom pipeline rule</button>
+  </div>
+
+  <!-- ── TAB 2: REP ACTIVITY RULES ── -->
+  <div class="tab-panel" id="tab-rules-activity">
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:680px">
+      These apply company-wide to every rep, regardless of which CRM stage a lead is in.
+    </div>
+
+    <!-- Rule: Speed-to-Lead SLA -->
+    <div class="card card-p fu1" style="margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Speed-to-Lead SLA</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">New lead must be contacted within a set window — the most impactful rule in the system</div>
+        </div>
+        <div class="wh-toggle on" id="rule-speed-to-lead" onclick="toggleRule(this)"></div>
+      </div>
+      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Must contact within</label>
+          <input class="inp" type="number" value="60" min="5" max="480"/>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Minutes — counted during</label>
+          <select class="inp">
+            <option selected>Business hours only</option>
+            <option>24/7, no exception</option>
+          </select>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">After-hours leads</label>
+          <select class="inp">
+            <option selected>Clock starts next business day</option>
+            <option>Clock runs continuously</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rule: Estimate Delivery Rate -->
+    <div class="card card-p fu2" style="margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Estimate Delivery Rate</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Appointment held but no estimate sent — the #1 drop-off point in the roofing funnel</div>
+        </div>
+        <div class="wh-toggle on" id="rule-estimate-delivery" onclick="toggleRule(this)"></div>
+      </div>
+      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Estimate must be sent within</label>
+          <input class="inp" type="number" value="3" min="1" max="14"/>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Business days, counting from</label>
+          <select class="inp">
+            <option selected>Appointment Held</option>
+            <option>Appointment Set</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rule: Ghost Rep Rule -->
+    <div class="card card-p fu3" style="margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">CRM Activity Minimum <span style="font-weight:600;color:var(--muted);font-size:12px">(Ghost Rep Rule)</span></div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Catches reps who are disengaged before it shows up in close rates — flagged to managers, not the rep</div>
+        </div>
+        <div class="wh-toggle on" id="rule-ghost-rep" onclick="toggleRule(this)"></div>
+      </div>
+      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Rep has at least this many open leads</label>
+          <input class="inp" type="number" value="5" min="1" max="50"/>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">With zero CRM activity for</label>
+          <select class="inp">
+            <option selected>3 days</option>
+            <option>5 days</option>
+            <option>7 days</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 3: NOTIFICATION ROUTING ── -->
+  <div class="tab-panel" id="tab-rules-routing">
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:680px">
+      Not every breach should reach the CEO. Configure an escalation ladder so reps get a reminder first, managers step in if it's not fixed, and only repeat or serious patterns go to the top.
+    </div>
+
+    <!-- Escalation Ladder -->
+    <div class="card card-p fu1" style="margin-bottom:16px">
+      <div class="settings-section-title" style="margin-top:0">Escalation Ladder</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.15)">
+          <span class="pill" style="background:var(--cyan);color:white;flex-shrink:0">Level 1</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Warning — Rep only</div>
+            <div style="font-size:12px;color:var(--muted)">First occurrence, within grace period. Tone: reminder, not accusation.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;background:rgba(181,123,31,.07);border:1px solid rgba(181,123,31,.2)">
+          <span class="pill pill-caut" style="flex-shrink:0">Level 2</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Alert — Rep + Sales Manager</div>
+            <div style="font-size:12px;color:var(--muted)">Grace period expired, first breach. Tone: action required.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;background:rgba(155,58,42,.06);border:1px solid rgba(155,58,42,.18)">
+          <span class="pill pill-crit" style="flex-shrink:0">Level 3</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Escalation — Sales Manager + CEO</div>
+            <div style="font-size:12px;color:var(--muted)">Second consecutive breach, or broken 3+ times in 30 days. Tone: pattern identified, needs intervention.</div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-grid-2" style="margin-top:16px;max-width:520px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Escalate to CEO after</label>
+          <select class="inp">
+            <option selected>2 consecutive breaches</option>
+            <option>3 breaches in 30 days</option>
+            <option>Never — Sales Manager only</option>
+          </select>
+        </div>
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">Rep can see CEO was notified</label>
+          <select class="inp">
+            <option selected>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Per-branch routing -->
+    <div class="card card-p fu2" style="margin-bottom:16px">
+      <div class="settings-section-title" style="margin-top:0">Who Gets Notified, Per Branch</div>
+      <div style="display:flex;flex-direction:column">
+        <div class="wh-row">
+          <div class="wh-day" style="width:160px">NJ — Montclair</div>
+          <select class="inp" style="flex:1;max-width:260px"><option>Marcus Webb — Sales Manager</option><option>Lisa Chen — Sales Manager</option></select>
+          <select class="inp" style="flex:1;max-width:200px"><option selected>Real-time</option><option>Weekly digest</option></select>
+        </div>
+        <div class="wh-row">
+          <div class="wh-day" style="width:160px">NY — Queens</div>
+          <select class="inp" style="flex:1;max-width:260px"><option>Lisa Chen — Sales Manager</option><option>Marcus Webb — Sales Manager</option></select>
+          <select class="inp" style="flex:1;max-width:200px"><option selected>Weekly digest</option><option>Real-time</option></select>
+        </div>
+        <div class="wh-row">
+          <div class="wh-day" style="width:160px">FL — Tampa</div>
+          <select class="inp" style="flex:1;max-width:260px"><option>Dana Ruiz — Sales Manager</option></select>
+          <select class="inp" style="flex:1;max-width:200px"><option selected>Real-time</option><option>Weekly digest</option></select>
+        </div>
+        <div class="wh-row">
+          <div class="wh-day" style="width:160px">Miami</div>
+          <select class="inp" style="flex:1;max-width:260px"><option>Dana Ruiz — Sales Manager</option></select>
+          <select class="inp" style="flex:1;max-width:200px"><option selected>Weekly digest</option><option>Real-time</option></select>
+        </div>
+      </div>
+      <div class="settings-info-box" style="margin-top:14px">
+        ⓘ Critical rules (Speed-to-Lead, Ghost Rep) always send real-time regardless of this setting — only chronic issues (Stage Advancement, Field Completeness) respect the digest choice.
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:10px">
+    <button class="btn btn-primary" onclick="saveRules()">Save Accountability Rules</button>
+    <button class="btn btn-outline" onclick="showToast('Changes discarded')">Cancel</button>
   </div>
 </div>
 
@@ -2635,6 +2915,7 @@ function applyRoleUI(){
   setNavVisible('sbi-comms',!!perms.canApproveAlerts);
   setNavVisible('sbi-audit',!!perms.weeklyAuditScope);
   setNavVisible('sbi-pipeline',!!perms.canManageConnectors);
+  setNavVisible('sbi-rules',!!currentUser.isAdmin);
   setNavVisible('sbi-users',!!currentUser.isAdmin);
   setNavVisible('sbi-billing',!!perms.canManageBilling);
   setNavVisible('sbi-dashboard',perms.dashboardScope!=='self');
@@ -2767,6 +3048,7 @@ function canAccessScreen(id){
   if(id==='audit')return !!perms.weeklyAuditScope;
   if(id==='pipeline')return !!perms.canManageConnectors;
   if(id==='users')return !!currentUser.isAdmin;
+  if(id==='rules')return !!currentUser.isAdmin;
   if(id==='billing')return !!perms.canManageBilling;
   if(id==='dashboard')return perms.dashboardScope!=='self';
   return true; // contacts, help, and any other screens are always reachable
@@ -3385,6 +3667,19 @@ function signOut(){
   for(var i=0; i<all.length; i++){ all[i].style.display='none'; }
   document.getElementById('scr-signin').style.display='block';
   showToast('You have been signed out');
+}
+
+// ── ACCOUNTABILITY RULES ─────────────────────────
+function toggleRule(el){
+  el.classList.toggle('on');
+  var card = el.closest('.card');
+  var body = card ? card.querySelector('.rule-body') : null;
+  var isOn = el.classList.contains('on');
+  if(body) body.style.opacity = isOn ? '1' : '.4';
+  if(body) body.style.pointerEvents = isOn ? '' : 'none';
+}
+function saveRules(){
+  showToast('Accountability rules saved successfully');
 }
 
 </script>
