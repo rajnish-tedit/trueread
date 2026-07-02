@@ -84,6 +84,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--paper);col
 select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7680'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 .inp-row{margin-bottom:18px;}
 .inp-hint{font-size:11.5px;color:var(--muted);margin-top:5px;font-family:'Inter',sans-serif;}
+.addr-suggest{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1px solid var(--rule);border-radius:10px;box-shadow:0 12px 32px rgba(30,50,70,.16);z-index:30;overflow:hidden;}
+.addr-suggest.on{display:block;animation:fadeUp .18s cubic-bezier(.22,1,.36,1) both;}
+.addr-suggest-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(200,194,182,.35);}
+.addr-suggest-item:last-child{border-bottom:none;}
+.addr-suggest-item:hover,.addr-suggest-item.hl{background:var(--panel);}
+.addr-pin{font-size:14px;flex-shrink:0;}
+.addr-line{font-size:13.5px;font-weight:600;color:var(--ink);}
+.addr-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.addr-suggest-foot{padding:7px 14px;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;background:var(--panel);}
 .check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;cursor:pointer;}
 .check-box{width:17px;height:17px;border:1.5px solid var(--rule);border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.2s;background:white;cursor:pointer;}
 .check-box.on{background:var(--horizon);border-color:var(--horizon);}
@@ -845,9 +854,13 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="auth-h1">Company setup</div>
     <div class="auth-sub" style="margin-bottom:22px">Tell us about your business. This configures your dashboard and branch structure.</div>
     <div class="inp-row"><label class="lbl">Company name</label><input class="inp" value="Smith Roofing LLC" id="inp-co"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="inp-row"><label class="lbl">State</label><select class="inp"><option>New Jersey</option><option>New York</option><option>Florida</option><option>Texas</option></select></div>
-      <div class="inp-row"><label class="lbl">City</label><input class="inp" value="Montclair"/></div>
+    <div class="inp-row" style="position:relative">
+      <label class="lbl">Business address</label>
+      <input class="inp" id="inp-address" value="123 Bloomfield Ave, Montclair, NJ 07042" placeholder="Start typing your business address..." autocomplete="off" oninput="addressAutocomplete(this)" onfocus="addressAutocomplete(this)"/>
+      <input type="hidden" id="inp-address-city" value="Montclair"/>
+      <input type="hidden" id="inp-address-state" value="New Jersey"/>
+      <div class="addr-suggest" id="addr-suggest"></div>
+      <div class="inp-hint">Start typing and select your address from the list — powered by Google</div>
     </div>
     <div class="inp-row"><label class="lbl">Business phone</label><input class="inp" value="+1 (973) 555-0100"/></div>
     <div class="inp-row"><label class="lbl">Company type</label>
@@ -2963,6 +2976,56 @@ function checkMulti(){
   var v=document.getElementById('ctype').value;
   document.getElementById('multi-note').style.display=(v.indexOf('Multi')>-1||v.indexOf('Franchise')>-1)?'block':'none';
 }
+
+// BUSINESS ADDRESS AUTOCOMPLETE (simulated Google Places)
+var ADDRESS_SUGGESTIONS=[
+  {line:'123 Bloomfield Ave',city:'Montclair',state:'New Jersey',abbr:'NJ',zip:'07042'},
+  {line:'55 Grove St',city:'Montclair',state:'New Jersey',abbr:'NJ',zip:'07042'},
+  {line:'210 Main St',city:'Hackensack',state:'New Jersey',abbr:'NJ',zip:'07601'},
+  {line:'45 Queens Blvd',city:'Queens',state:'New York',abbr:'NY',zip:'11375'},
+  {line:'350 5th Ave',city:'New York',state:'New York',abbr:'NY',zip:'10118'},
+  {line:'800 W Kennedy Blvd',city:'Tampa',state:'Florida',abbr:'FL',zip:'33606'},
+  {line:'120 Ocean Dr',city:'Miami Beach',state:'Florida',abbr:'FL',zip:'33139'},
+  {line:'500 Congress Ave',city:'Austin',state:'Texas',abbr:'TX',zip:'78701'},
+  {line:'900 Main St',city:'Houston',state:'Texas',abbr:'TX',zip:'77002'}
+];
+var _addrMatches=[];
+function addressAutocomplete(input){
+  var q=input.value.trim().toLowerCase();
+  var box=document.getElementById('addr-suggest');
+  if(q.length<2){closeAddrSuggest();return;}
+  _addrMatches=ADDRESS_SUGGESTIONS.filter(function(a){
+    return (a.line+' '+a.city+' '+a.state+' '+a.abbr+' '+a.zip).toLowerCase().indexOf(q)!==-1;
+  }).slice(0,5);
+  if(!_addrMatches.length){closeAddrSuggest();return;}
+  var html='';
+  for(var i=0;i<_addrMatches.length;i++){
+    var a=_addrMatches[i];
+    html+='<div class="addr-suggest-item" onclick="selectAddress('+i+')"><span class="addr-pin">📍</span><div><div class="addr-line">'+a.line+'</div><div class="addr-sub">'+a.city+', '+a.abbr+' '+a.zip+'</div></div></div>';
+  }
+  html+='<div class="addr-suggest-foot">Powered by Google</div>';
+  box.innerHTML=html;
+  box.classList.add('on');
+}
+function selectAddress(i){
+  var a=_addrMatches[i];
+  if(!a)return;
+  document.getElementById('inp-address').value=a.line+', '+a.city+', '+a.abbr+' '+a.zip;
+  document.getElementById('inp-address-city').value=a.city;
+  document.getElementById('inp-address-state').value=a.state;
+  closeAddrSuggest();
+}
+function closeAddrSuggest(){
+  var box=document.getElementById('addr-suggest');
+  if(!box)return;
+  box.classList.remove('on');
+  box.innerHTML='';
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#inp-address')&&!e.target.closest('#addr-suggest')){
+    closeAddrSuggest();
+  }
+});
 
 var SYNC_CTX={type:'crm',name:'your CRM'};
 
