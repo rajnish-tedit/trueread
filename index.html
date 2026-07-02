@@ -84,6 +84,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--paper);col
 select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7680'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 .inp-row{margin-bottom:18px;}
 .inp-hint{font-size:11.5px;color:var(--muted);margin-top:5px;font-family:'Inter',sans-serif;}
+.addr-suggest{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1px solid var(--rule);border-radius:10px;box-shadow:0 12px 32px rgba(30,50,70,.16);z-index:30;overflow:hidden;}
+.addr-suggest.on{display:block;animation:fadeUp .18s cubic-bezier(.22,1,.36,1) both;}
+.addr-suggest-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(200,194,182,.35);}
+.addr-suggest-item:last-child{border-bottom:none;}
+.addr-suggest-item:hover,.addr-suggest-item.hl{background:var(--panel);}
+.addr-pin{font-size:14px;flex-shrink:0;}
+.addr-line{font-size:13.5px;font-weight:600;color:var(--ink);}
+.addr-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.addr-suggest-foot{padding:7px 14px;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;background:var(--panel);}
 .check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;cursor:pointer;}
 .check-box{width:17px;height:17px;border:1.5px solid var(--rule);border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.2s;background:white;cursor:pointer;}
 .check-box.on{background:var(--horizon);border-color:var(--horizon);}
@@ -253,6 +262,8 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .modal-close{width:28px;height:28px;border-radius:7px;background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:16px;color:var(--muted);flex-shrink:0;margin-top:4px;}
 .modal-close:hover{background:var(--rule);}
 .modal-foot{padding:0 28px 24px;display:flex;gap:8px;justify-content:flex-end;}
+.reminder-row{margin-bottom:16px;}
+.reminder-row-name{font-size:13px;font-weight:700;margin-bottom:6px;}
 
 /* ── TOAST ───────────────────────────────────────── */
 #toast-wrap{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
@@ -323,7 +334,25 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .ai-chip{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
 .alert-item-title{font-size:15px;font-weight:700;margin-bottom:4px;}
 .alert-item-body{font-size:13.5px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.5;margin-bottom:10px;}
-.alert-item-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.alert-item-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+/* ── ALERT TIMESTAMPING / TRIAGE ─────────────────── */
+.alert-item{border-left:3px solid transparent;transition:border-color .2s,opacity .2s;}
+.alert-item.pending-48{border-left-color:var(--caut);}
+.alert-item.pending-72{border-left-color:var(--crit);}
+.alert-item.ack{opacity:.62;}
+.alert-item.snoozed{opacity:.55;}
+.alert-item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.alert-age-group{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.alert-age{font-size:11.5px;color:var(--muted);font-family:'Inter',sans-serif;white-space:nowrap;}
+.alert-pending-pill{font-size:10px;padding:2px 8px;white-space:nowrap;}
+.snooze-wrap{position:relative;display:inline-block;}
+.snooze-pop{display:none;position:absolute;top:calc(100% + 6px);left:0;background:white;border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(30,50,70,.16);padding:6px;min-width:172px;z-index:40;}
+.snooze-pop.on{display:block;animation:fadeUp .2s cubic-bezier(.22,1,.36,1) both;}
+.snooze-pop button{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:7px;border:none;background:none;font-size:12.5px;font-weight:600;color:var(--slate);cursor:pointer;font-family:'Inter',sans-serif;}
+.snooze-pop button:hover{background:var(--panel);}
+@keyframes pillPulse{0%,100%{box-shadow:0 0 0 0 rgba(155,58,42,.45);}50%{box-shadow:0 0 0 4px rgba(155,58,42,0);}}
+.pill-pulse{animation:pillPulse 1.6s ease-in-out infinite;}
 
 /* ── WEEKLY AUDIT ────────────────────────────────── */
 .audit-rep{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(200,194,182,.35);}
@@ -825,9 +854,13 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="auth-h1">Company setup</div>
     <div class="auth-sub" style="margin-bottom:22px">Tell us about your business. This configures your dashboard and branch structure.</div>
     <div class="inp-row"><label class="lbl">Company name</label><input class="inp" value="Smith Roofing LLC" id="inp-co"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="inp-row"><label class="lbl">State</label><select class="inp"><option>New Jersey</option><option>New York</option><option>Florida</option><option>Texas</option></select></div>
-      <div class="inp-row"><label class="lbl">City</label><input class="inp" value="Montclair"/></div>
+    <div class="inp-row" style="position:relative">
+      <label class="lbl">Business address</label>
+      <input class="inp" id="inp-address" value="123 Bloomfield Ave, Montclair, NJ 07042" placeholder="Start typing your business address..." autocomplete="off" oninput="addressAutocomplete(this)" onfocus="addressAutocomplete(this)"/>
+      <input type="hidden" id="inp-address-city" value="Montclair"/>
+      <input type="hidden" id="inp-address-state" value="New Jersey"/>
+      <div class="addr-suggest" id="addr-suggest"></div>
+      <div class="inp-hint">Start typing and select your address from the list — powered by Google</div>
     </div>
     <div class="inp-row"><label class="lbl">Business phone</label><input class="inp" value="+1 (973) 555-0100"/></div>
     <div class="inp-row"><label class="lbl">Company type</label>
@@ -1119,7 +1152,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="sbi" id="sbi-r4" onclick="goApp('r4')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>Revenue Intelligence</div>
   <div class="sbi" id="sbi-r5" onclick="goApp('r5')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Data Quality</div>
   <div class="sb-sec">Tools</div>
-  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="pill pill-crit" style="margin-left:auto;font-size:10px;padding:2px 6px">6</span></div>
+  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="pill pill-crit" id="sbi-comms-count" style="margin-left:auto;font-size:10px;padding:2px 6px">6</span></div>
   <div class="sbi" id="sbi-audit" onclick="goApp('audit')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Weekly Audit</div>
   <div class="sbi" id="sbi-pipeline" onclick="goApp('pipeline')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>Data Integrations</div>
   <div class="sbi" id="sbi-rules" onclick="goApp('rules')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Accountability Rules</div>
@@ -1474,28 +1507,69 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
     <!-- ── REVENUE / PIPELINE ALERTS ── -->
     <div style="font-size:11px;font-weight:800;letter-spacing:.07em;color:var(--muted);padding:4px 0 10px;text-transform:uppercase">Revenue &amp; Pipeline</div>
-    <div class="alert-item">
+    <div class="alert-item pending-72">
       <div class="ai-chip" style="background:var(--crit-bg)">💰</div>
       <div style="flex:1">
-        <div class="alert-item-title">Revenue gap: $34K behind on day 20 of June</div>
+        <div class="alert-item-head">
+          <div class="alert-item-title" style="margin-bottom:0">Revenue gap: $34K behind on day 20 of June</div>
+          <div class="alert-age-group"><span class="pill pill-crit alert-pending-pill">Needs action · 3 days</span><span class="alert-age">3 days ago</span></div>
+        </div>
         <div class="alert-item-body">Expected pace: $320K. Actual: $286K. At current rate, month closes at ~$304K. Top 2 closers identified: Marcus Webb (NJ) and Lisa Chen (NY).</div>
-        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Review draft message</button><button class="btn btn-outline btn-sm" onclick="showToast('Alert snoozed 24hrs')">Snooze</button></div>
+        <div class="alert-item-actions">
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('revenue-gap')">Review draft message</button>
+          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
+          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
+            <div class="snooze-pop">
+              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
+              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
+              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="alert-item">
+    <div class="alert-item pending-48">
       <div class="ai-chip" style="background:var(--crit-bg)">📌</div>
       <div style="flex:1">
-        <div class="alert-item-title">27 leads stuck >7 days — NJ branch</div>
+        <div class="alert-item-head">
+          <div class="alert-item-title" style="margin-bottom:0">27 leads stuck >7 days — NJ branch</div>
+          <div class="alert-age-group"><span class="pill pill-caut alert-pending-pill">Pending · 2 days</span><span class="alert-age">2 days ago</span></div>
+        </div>
         <div class="alert-item-body">Reps: Tom Bradley (8 stuck), Raj Kumar (6 stuck), others (13). These leads have not had a stage change in 7+ days.</div>
-        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✓ Draft nudge messages ready')">Draft nudge messages</button><button class="btn btn-outline btn-sm">View leads</button></div>
+        <div class="alert-item-actions">
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('stuck-leads')">Draft nudge messages</button>
+          <button class="btn btn-outline btn-sm">View leads</button>
+          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
+          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
+            <div class="snooze-pop">
+              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
+              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
+              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="alert-item">
       <div class="ai-chip" style="background:var(--caut-bg)">📋</div>
       <div style="flex:1">
-        <div class="alert-item-title">Weekly audit: 4 reps haven't submitted — Sunday deadline</div>
+        <div class="alert-item-head">
+          <div class="alert-item-title" style="margin-bottom:0">Weekly audit: 4 reps haven't submitted — Sunday deadline</div>
+          <div class="alert-age-group"><span class="alert-age">20 hours ago</span></div>
+        </div>
         <div class="alert-item-body">Pending: Tom Bradley, Raj Kumar, Sam Torres, Mike Ortiz. Deadline: Sunday 11:59 PM. 3 personalized reminder messages ready.</div>
-        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✓ 4 reminders queued for review')">Review reminders</button><button class="btn btn-ok btn-sm" onclick="showToast('✓ All 4 approved and sending')">Approve all</button></div>
+        <div class="alert-item-actions">
+          <button class="btn btn-primary btn-sm" onclick="openModal('reminders-modal')">Review reminders</button>
+          <button class="btn btn-ok btn-sm" onclick="showToast('✓ All 4 approved and sending')">Approve all</button>
+          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
+          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
+            <div class="snooze-pop">
+              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
+              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
+              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1506,31 +1580,46 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="alert-item">
       <div class="ai-chip" style="background:rgba(155,58,42,.1)">⬆️</div>
       <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="alert-item-head">
           <div class="alert-item-title" style="margin-bottom:0">Dave Chen — 2 leads past manager escalation threshold in Estimate</div>
-          <span class="pill pill-crit" style="font-size:10px;padding:2px 7px;flex-shrink:0">Escalation</span>
+          <div class="alert-age-group"><span class="pill pill-crit" style="font-size:10px;padding:2px 7px;flex-shrink:0">Escalation</span><span class="alert-age">1 day ago</span></div>
         </div>
         <div class="alert-item-body">Dave was flagged at day 7. Manager escalation threshold (day 10) passed 1 day ago. Oldest lead: Henderson Roofing — 11 days in Estimate, last activity Jun 21. Green Valley Homes — 10 days, no presentation set.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Draft message to Dave</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('dave-escalation')">Draft message to Dave</button>
           <button class="btn btn-outline btn-sm" onclick="goApp('rules');setTimeout(function(){switchTab(document.getElementById('rtab-matrix'),\'rules-matrix\')},100)">View in Compliance Matrix</button>
-          <button class="btn btn-outline btn-sm" onclick="showToast('Alert snoozed 24hrs')">Snooze</button>
+          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
+          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
+            <div class="snooze-pop">
+              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
+              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
+              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Stage pile-up alert -->
-    <div class="alert-item">
+    <div class="alert-item pending-48">
       <div class="ai-chip" style="background:rgba(181,123,31,.1)">📊</div>
       <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="alert-item-head">
           <div class="alert-item-title" style="margin-bottom:0">Tom Bradley — 4 leads piled up in Follow-up simultaneously</div>
-          <span class="pill pill-caut" style="font-size:10px;padding:2px 7px;flex-shrink:0">Stage Pile-up</span>
+          <div class="alert-age-group"><span class="pill pill-caut" style="font-size:10px;padding:2px 7px;flex-shrink:0">Stage Pile-up</span><span class="pill pill-caut alert-pending-pill">Pending · 2 days</span><span class="alert-age">2 days ago</span></div>
         </div>
         <div class="alert-item-body">Threshold: 3 leads in one stage at the same time. Tom has 4 leads in Follow-up — 3 of them over 10 days, 1 at 14 days (inside-sales handoff due). Pattern may indicate overload or disengagement.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="showToast('✓ Draft nudge prepared for Tom Bradley')">Draft nudge to Tom</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('tom-pileup')">Draft nudge to Tom</button>
           <button class="btn btn-outline btn-sm">View leads</button>
+          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
+          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
+            <div class="snooze-pop">
+              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
+              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
+              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1539,14 +1628,21 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="alert-item">
       <div class="ai-chip" style="background:rgba(181,123,31,.1)">📉</div>
       <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="alert-item-head">
           <div class="alert-item-title" style="margin-bottom:0">Mike Ortiz compliance dropped to 64% — below 80% floor</div>
-          <span class="pill pill-caut" style="font-size:10px;padding:2px 7px;flex-shrink:0">Compliance Floor</span>
+          <div class="alert-age-group"><span class="pill pill-caut" style="font-size:10px;padding:2px 7px;flex-shrink:0">Compliance Floor</span><span class="alert-age">6 hours ago</span></div>
         </div>
         <div class="alert-item-body">Active leads in compliance: 9 of 14. Issues: 3 leads past stage SLA with no action, 2 leads missing required fields after appointment completion. Down from 79% last week.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Draft coaching message</button>
-          <button class="btn btn-outline btn-sm" onclick="showToast('✓ Marked as reviewed')">Mark reviewed</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('mike-compliance')">Draft coaching message</button>
+          <button class="btn btn-outline btn-sm" onclick="ackAlert(this,'✓ Marked as reviewed')">Mark reviewed</button>
+          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
+            <div class="snooze-pop">
+              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
+              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
+              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2731,15 +2827,38 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <!-- ════════════════════════════════════════════════ MODALS ═══ -->
 <div class="modal-back" id="modal-draft-modal" onclick="closeModalBack(event)">
   <div class="modal">
-    <div class="modal-head"><div><div class="modal-title">Draft Message — Revenue Gap</div><div class="modal-sub">AI-drafted based on gap size, closer ranking, and past response patterns</div></div><button class="modal-close" onclick="closeModal('draft-modal')">×</button></div>
+    <div class="modal-head"><div><div class="modal-title" id="draft-modal-title">Draft Message — Revenue Gap</div><div class="modal-sub" id="draft-modal-sub">AI-drafted based on gap size, closer ranking, and past response patterns</div></div><button class="modal-close" onclick="closeModal('draft-modal')">×</button></div>
     <div class="modal-body">
-      <div style="background:var(--panel);border-radius:10px;padding:16px;font-size:13.5px;line-height:1.7;font-family:'Inter',sans-serif;color:var(--slate);margin-bottom:16px">
-        "Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you push 1–2 deals this week to close the gap? Anything I can do to help — let me know. — John"
-      </div>
-      <div class="inp-row"><label class="lbl">Send via</label><select class="inp"><option>SMS</option><option>Email</option><option>In-app</option></select></div>
-      <div class="inp-row"><label class="lbl">Recipients</label><input class="inp" value="Marcus Webb, Lisa Chen"/></div>
+      <div class="inp-row"><label class="lbl">Message</label><textarea class="inp" id="draft-modal-message" rows="6" style="resize:vertical;font-size:13.5px;line-height:1.7;font-family:'Inter',sans-serif;color:var(--slate)"></textarea></div>
+      <div class="inp-row"><label class="lbl">Send via</label><select class="inp"><option>Email</option><option>In-app</option></select></div>
+      <div class="inp-row"><label class="lbl">Recipients</label><input class="inp" id="draft-modal-recipients" value="Marcus Webb, Lisa Chen"/></div>
     </div>
-    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('draft-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('draft-modal');showToast('✅ Messages sent to Marcus & Lisa')">Approve & send</button></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('draft-modal')">Cancel</button><button class="btn btn-primary" onclick="sendDraftModal()">Approve & send</button></div>
+  </div>
+</div>
+
+<div class="modal-back" id="modal-reminders-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-head"><div><div class="modal-title">Review Reminders — Weekly Audit</div><div class="modal-sub">4 reps haven't submitted their weekly activity summary. Deadline: Sunday 11:59 PM. Edit any message below before sending.</div></div><button class="modal-close" onclick="closeModal('reminders-modal')">×</button></div>
+    <div class="modal-body" style="max-height:56vh;overflow-y:auto">
+      <div class="reminder-row">
+        <div class="reminder-row-name">Tom Bradley <span style="color:var(--muted);font-weight:400">— NJ, Montclair</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Tom — friendly reminder to submit your weekly activity summary before Sunday 11:59 PM. Takes about 2 minutes — leads contacted, appointments set, and any pipeline notes. — John</textarea>
+      </div>
+      <div class="reminder-row">
+        <div class="reminder-row-name">Raj Kumar <span style="color:var(--muted);font-weight:400">— NJ, Montclair</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Raj — quick reminder your weekly activity summary is due Sunday 11:59 PM. Covers leads contacted, appointments set, and pipeline notes. — John</textarea>
+      </div>
+      <div class="reminder-row">
+        <div class="reminder-row-name">Sam Torres <span style="color:var(--muted);font-weight:400">— FL, Tampa</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Sam — you haven't submitted your weekly activity summary yet. Deadline is Sunday 11:59 PM — can you get it in? — John</textarea>
+      </div>
+      <div class="reminder-row" style="margin-bottom:0">
+        <div class="reminder-row-name">Mike Ortiz <span style="color:var(--muted);font-weight:400">— Miami</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Mike — reminder to submit your weekly activity summary before Sunday 11:59 PM. Let me know if anything's blocking you. — John</textarea>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('reminders-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('reminders-modal');showToast('✅ 4 reminders sent')">Approve all &amp; send</button></div>
   </div>
 </div>
 
@@ -2857,6 +2976,56 @@ function checkMulti(){
   var v=document.getElementById('ctype').value;
   document.getElementById('multi-note').style.display=(v.indexOf('Multi')>-1||v.indexOf('Franchise')>-1)?'block':'none';
 }
+
+// BUSINESS ADDRESS AUTOCOMPLETE (simulated Google Places)
+var ADDRESS_SUGGESTIONS=[
+  {line:'123 Bloomfield Ave',city:'Montclair',state:'New Jersey',abbr:'NJ',zip:'07042'},
+  {line:'55 Grove St',city:'Montclair',state:'New Jersey',abbr:'NJ',zip:'07042'},
+  {line:'210 Main St',city:'Hackensack',state:'New Jersey',abbr:'NJ',zip:'07601'},
+  {line:'45 Queens Blvd',city:'Queens',state:'New York',abbr:'NY',zip:'11375'},
+  {line:'350 5th Ave',city:'New York',state:'New York',abbr:'NY',zip:'10118'},
+  {line:'800 W Kennedy Blvd',city:'Tampa',state:'Florida',abbr:'FL',zip:'33606'},
+  {line:'120 Ocean Dr',city:'Miami Beach',state:'Florida',abbr:'FL',zip:'33139'},
+  {line:'500 Congress Ave',city:'Austin',state:'Texas',abbr:'TX',zip:'78701'},
+  {line:'900 Main St',city:'Houston',state:'Texas',abbr:'TX',zip:'77002'}
+];
+var _addrMatches=[];
+function addressAutocomplete(input){
+  var q=input.value.trim().toLowerCase();
+  var box=document.getElementById('addr-suggest');
+  if(q.length<2){closeAddrSuggest();return;}
+  _addrMatches=ADDRESS_SUGGESTIONS.filter(function(a){
+    return (a.line+' '+a.city+' '+a.state+' '+a.abbr+' '+a.zip).toLowerCase().indexOf(q)!==-1;
+  }).slice(0,5);
+  if(!_addrMatches.length){closeAddrSuggest();return;}
+  var html='';
+  for(var i=0;i<_addrMatches.length;i++){
+    var a=_addrMatches[i];
+    html+='<div class="addr-suggest-item" onclick="selectAddress('+i+')"><span class="addr-pin">📍</span><div><div class="addr-line">'+a.line+'</div><div class="addr-sub">'+a.city+', '+a.abbr+' '+a.zip+'</div></div></div>';
+  }
+  html+='<div class="addr-suggest-foot">Powered by Google</div>';
+  box.innerHTML=html;
+  box.classList.add('on');
+}
+function selectAddress(i){
+  var a=_addrMatches[i];
+  if(!a)return;
+  document.getElementById('inp-address').value=a.line+', '+a.city+', '+a.abbr+' '+a.zip;
+  document.getElementById('inp-address-city').value=a.city;
+  document.getElementById('inp-address-state').value=a.state;
+  closeAddrSuggest();
+}
+function closeAddrSuggest(){
+  var box=document.getElementById('addr-suggest');
+  if(!box)return;
+  box.classList.remove('on');
+  box.innerHTML='';
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#inp-address')&&!e.target.closest('#addr-suggest')){
+    closeAddrSuggest();
+  }
+});
 
 var SYNC_CTX={type:'crm',name:'your CRM'};
 
@@ -3502,6 +3671,101 @@ function showToast(msg){
     setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);
   },3000);
 }
+
+// DRAFT MESSAGE MODAL
+var DRAFT_PRESETS={
+  'revenue-gap':{title:'Draft Message — Revenue Gap',sub:'AI-drafted based on gap size, closer ranking, and past response patterns',message:"Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you push 1–2 deals this week to close the gap? Anything I can do to help — let me know. — John",recipients:'Marcus Webb, Lisa Chen'},
+  'stuck-leads':{title:'Draft Nudge — Stuck Leads (NJ Branch)',sub:'AI-drafted based on stuck-lead count per rep and days since last stage change',message:"Hey team — a few leads haven't moved in 7+ days and could use a follow-up. Tom: 8 stuck (oldest 12 days). Raj: 6 stuck (oldest 9 days). Can you review your list today and update the stage or close out anything that's gone cold? — John",recipients:'Tom Bradley, Raj Kumar'},
+  'dave-escalation':{title:'Draft Message — Dave Chen Escalation',sub:'AI-drafted based on the Estimate-stage escalation rule (day 10 threshold)',message:"Hey Dave — a couple of your estimates have been sitting a while. Henderson Roofing is at 11 days and Green Valley Homes is at 10. Can you get presentations scheduled this week? I want to make sure these don't slip through the cracks. Let me know if you need help prepping the decks. — John",recipients:'Dave Chen'},
+  'tom-pileup':{title:'Draft Nudge — Tom Bradley Stage Pile-up',sub:'AI-drafted based on the Follow-up stage pile-up rule (3+ leads threshold)',message:"Hey Tom — you've got 4 leads sitting in Follow-up right now, 3 of them over 10 days and 1 at 14 days. Want to hop on a quick call to triage these together, or should I loop the 14-day one in to inside sales? — John",recipients:'Tom Bradley'},
+  'mike-compliance':{title:'Draft Coaching Message — Mike Ortiz',sub:'AI-drafted based on the CRM compliance floor rule (80% minimum)',message:"Hey Mike — your CRM compliance is at 64% this week, which is below our 80% floor. I noticed 3 leads that haven't had a stage update and 2 where the appointment disposition is still missing. Takes 5 minutes to clean up — can you get those sorted by EOD tomorrow? It keeps our numbers accurate for everyone. — John",recipients:'Mike Ortiz'}
+};
+function openDraftModal(key){
+  var d=DRAFT_PRESETS[key];
+  if(!d)return;
+  document.getElementById('draft-modal-title').textContent=d.title;
+  document.getElementById('draft-modal-sub').textContent=d.sub;
+  document.getElementById('draft-modal-message').value=d.message;
+  document.getElementById('draft-modal-recipients').value=d.recipients;
+  openModal('draft-modal');
+}
+function sendDraftModal(){
+  var rec=document.getElementById('draft-modal-recipients').value||'recipients';
+  closeModal('draft-modal');
+  showToast('✅ Message sent to '+rec);
+}
+
+// ALERT TIMESTAMPING / TRIAGE
+function toggleSnooze(e,btn){
+  e.stopPropagation();
+  var pop=btn.nextElementSibling;
+  var open=pop.classList.contains('on');
+  var all=document.querySelectorAll('.snooze-pop');
+  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  if(!open)pop.classList.add('on');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.snooze-wrap')){
+    var all=document.querySelectorAll('.snooze-pop');
+    for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
+  }
+});
+function applySnooze(e,btn,label){
+  e.stopPropagation();
+  var item=btn.closest('.alert-item');
+  if(!item)return;
+  item.classList.remove('pending-48','pending-72');
+  item.classList.add('snoozed');
+  var pend=item.querySelector('.alert-pending-pill');
+  if(pend)pend.remove();
+  var age=item.querySelector('.alert-age');
+  if(age)age.textContent='Snoozed until '+label;
+  item.querySelectorAll('.alert-item-actions .btn').forEach(function(b){
+    if(b.textContent.indexOf('Acknowledge')!==-1||b.textContent.indexOf('Snooze')!==-1){
+      b.disabled=true;b.style.opacity='.5';b.style.cursor='default';
+    }
+  });
+  var pop=btn.closest('.snooze-pop');
+  if(pop)pop.classList.remove('on');
+  showToast('💤 Snoozed until '+label);
+  recalcAlertCounts();
+}
+function ackAlert(btn,msg){
+  var item=btn.closest('.alert-item');
+  if(!item||item.classList.contains('ack')||item.classList.contains('snoozed'))return;
+  item.classList.remove('pending-48','pending-72');
+  item.classList.add('ack');
+  var pend=item.querySelector('.alert-pending-pill');
+  if(pend)pend.remove();
+  var age=item.querySelector('.alert-age');
+  if(age)age.textContent='Seen just now · Still open';
+  btn.disabled=true;
+  btn.textContent=btn.textContent.indexOf('Mark reviewed')!==-1?'Reviewed ✓':'Acknowledged ✓';
+  btn.style.opacity='.6';
+  btn.style.cursor='default';
+  showToast(msg||'✓ Marked as seen — still open');
+  recalcAlertCounts();
+}
+function recalcAlertCounts(){
+  var panel=document.getElementById('tab-comms-alerts');
+  if(!panel)return;
+  var items=panel.querySelectorAll('.alert-item');
+  var active=0,overdue=0;
+  for(var i=0;i<items.length;i++){
+    var it=items[i];
+    if(it.classList.contains('ack')||it.classList.contains('snoozed'))continue;
+    active++;
+    if(it.classList.contains('pending-72'))overdue++;
+  }
+  var tabPill=document.getElementById('alerts-count-pill');
+  var sbPill=document.getElementById('sbi-comms-count');
+  [tabPill,sbPill].forEach(function(p){
+    if(!p)return;
+    p.textContent=active;
+    if(overdue>0)p.classList.add('pill-pulse');else p.classList.remove('pill-pulse');
+  });
+}
+recalcAlertCounts();
 
 // OTP
 function otpNext(inp,i){
