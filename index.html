@@ -253,6 +253,8 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .modal-close{width:28px;height:28px;border-radius:7px;background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:16px;color:var(--muted);flex-shrink:0;margin-top:4px;}
 .modal-close:hover{background:var(--rule);}
 .modal-foot{padding:0 28px 24px;display:flex;gap:8px;justify-content:flex-end;}
+.reminder-row{margin-bottom:16px;}
+.reminder-row-name{font-size:13px;font-weight:700;margin-bottom:6px;}
 
 /* ── TOAST ───────────────────────────────────────── */
 #toast-wrap{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
@@ -1501,7 +1503,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
         <div class="alert-item-body">Expected pace: $320K. Actual: $286K. At current rate, month closes at ~$304K. Top 2 closers identified: Marcus Webb (NJ) and Lisa Chen (NY).</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Review draft message</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('revenue-gap')">Review draft message</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
             <div class="snooze-pop">
@@ -1522,7 +1524,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
         <div class="alert-item-body">Reps: Tom Bradley (8 stuck), Raj Kumar (6 stuck), others (13). These leads have not had a stage change in 7+ days.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="showToast('✓ Draft nudge messages ready')">Draft nudge messages</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('stuck-leads')">Draft nudge messages</button>
           <button class="btn btn-outline btn-sm">View leads</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
@@ -1544,7 +1546,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
         <div class="alert-item-body">Pending: Tom Bradley, Raj Kumar, Sam Torres, Mike Ortiz. Deadline: Sunday 11:59 PM. 3 personalized reminder messages ready.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="showToast('✓ 4 reminders queued for review')">Review reminders</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('reminders-modal')">Review reminders</button>
           <button class="btn btn-ok btn-sm" onclick="showToast('✓ All 4 approved and sending')">Approve all</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
@@ -1571,7 +1573,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
         <div class="alert-item-body">Dave was flagged at day 7. Manager escalation threshold (day 10) passed 1 day ago. Oldest lead: Henderson Roofing — 11 days in Estimate, last activity Jun 21. Green Valley Homes — 10 days, no presentation set.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Draft message to Dave</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('dave-escalation')">Draft message to Dave</button>
           <button class="btn btn-outline btn-sm" onclick="goApp('rules');setTimeout(function(){switchTab(document.getElementById('rtab-matrix'),\'rules-matrix\')},100)">View in Compliance Matrix</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
@@ -1595,7 +1597,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
         <div class="alert-item-body">Threshold: 3 leads in one stage at the same time. Tom has 4 leads in Follow-up — 3 of them over 10 days, 1 at 14 days (inside-sales handoff due). Pattern may indicate overload or disengagement.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="showToast('✓ Draft nudge prepared for Tom Bradley')">Draft nudge to Tom</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('tom-pileup')">Draft nudge to Tom</button>
           <button class="btn btn-outline btn-sm">View leads</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
@@ -1619,7 +1621,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
         <div class="alert-item-body">Active leads in compliance: 9 of 14. Issues: 3 leads past stage SLA with no action, 2 leads missing required fields after appointment completion. Down from 79% last week.</div>
         <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openModal('draft-modal')">Draft coaching message</button>
+          <button class="btn btn-primary btn-sm" onclick="openDraftModal('mike-compliance')">Draft coaching message</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this,'✓ Marked as reviewed')">Mark reviewed</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
             <div class="snooze-pop">
@@ -2812,15 +2814,38 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <!-- ════════════════════════════════════════════════ MODALS ═══ -->
 <div class="modal-back" id="modal-draft-modal" onclick="closeModalBack(event)">
   <div class="modal">
-    <div class="modal-head"><div><div class="modal-title">Draft Message — Revenue Gap</div><div class="modal-sub">AI-drafted based on gap size, closer ranking, and past response patterns</div></div><button class="modal-close" onclick="closeModal('draft-modal')">×</button></div>
+    <div class="modal-head"><div><div class="modal-title" id="draft-modal-title">Draft Message — Revenue Gap</div><div class="modal-sub" id="draft-modal-sub">AI-drafted based on gap size, closer ranking, and past response patterns</div></div><button class="modal-close" onclick="closeModal('draft-modal')">×</button></div>
     <div class="modal-body">
-      <div style="background:var(--panel);border-radius:10px;padding:16px;font-size:13.5px;line-height:1.7;font-family:'Inter',sans-serif;color:var(--slate);margin-bottom:16px">
-        "Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you push 1–2 deals this week to close the gap? Anything I can do to help — let me know. — John"
-      </div>
-      <div class="inp-row"><label class="lbl">Send via</label><select class="inp"><option>SMS</option><option>Email</option><option>In-app</option></select></div>
-      <div class="inp-row"><label class="lbl">Recipients</label><input class="inp" value="Marcus Webb, Lisa Chen"/></div>
+      <div class="inp-row"><label class="lbl">Message</label><textarea class="inp" id="draft-modal-message" rows="6" style="resize:vertical;font-size:13.5px;line-height:1.7;font-family:'Inter',sans-serif;color:var(--slate)"></textarea></div>
+      <div class="inp-row"><label class="lbl">Send via</label><select class="inp"><option>Email</option><option>In-app</option></select></div>
+      <div class="inp-row"><label class="lbl">Recipients</label><input class="inp" id="draft-modal-recipients" value="Marcus Webb, Lisa Chen"/></div>
     </div>
-    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('draft-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('draft-modal');showToast('✅ Messages sent to Marcus & Lisa')">Approve & send</button></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('draft-modal')">Cancel</button><button class="btn btn-primary" onclick="sendDraftModal()">Approve & send</button></div>
+  </div>
+</div>
+
+<div class="modal-back" id="modal-reminders-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-head"><div><div class="modal-title">Review Reminders — Weekly Audit</div><div class="modal-sub">4 reps haven't submitted their weekly activity summary. Deadline: Sunday 11:59 PM. Edit any message below before sending.</div></div><button class="modal-close" onclick="closeModal('reminders-modal')">×</button></div>
+    <div class="modal-body" style="max-height:56vh;overflow-y:auto">
+      <div class="reminder-row">
+        <div class="reminder-row-name">Tom Bradley <span style="color:var(--muted);font-weight:400">— NJ, Montclair</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Tom — friendly reminder to submit your weekly activity summary before Sunday 11:59 PM. Takes about 2 minutes — leads contacted, appointments set, and any pipeline notes. — John</textarea>
+      </div>
+      <div class="reminder-row">
+        <div class="reminder-row-name">Raj Kumar <span style="color:var(--muted);font-weight:400">— NJ, Montclair</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Raj — quick reminder your weekly activity summary is due Sunday 11:59 PM. Covers leads contacted, appointments set, and pipeline notes. — John</textarea>
+      </div>
+      <div class="reminder-row">
+        <div class="reminder-row-name">Sam Torres <span style="color:var(--muted);font-weight:400">— FL, Tampa</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Sam — you haven't submitted your weekly activity summary yet. Deadline is Sunday 11:59 PM — can you get it in? — John</textarea>
+      </div>
+      <div class="reminder-row" style="margin-bottom:0">
+        <div class="reminder-row-name">Mike Ortiz <span style="color:var(--muted);font-weight:400">— Miami</span></div>
+        <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Mike — reminder to submit your weekly activity summary before Sunday 11:59 PM. Let me know if anything's blocking you. — John</textarea>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('reminders-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('reminders-modal');showToast('✅ 4 reminders sent')">Approve all &amp; send</button></div>
   </div>
 </div>
 
@@ -3582,6 +3607,29 @@ function showToast(msg){
     t.style.opacity='0';
     setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);
   },3000);
+}
+
+// DRAFT MESSAGE MODAL
+var DRAFT_PRESETS={
+  'revenue-gap':{title:'Draft Message — Revenue Gap',sub:'AI-drafted based on gap size, closer ranking, and past response patterns',message:"Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you push 1–2 deals this week to close the gap? Anything I can do to help — let me know. — John",recipients:'Marcus Webb, Lisa Chen'},
+  'stuck-leads':{title:'Draft Nudge — Stuck Leads (NJ Branch)',sub:'AI-drafted based on stuck-lead count per rep and days since last stage change',message:"Hey team — a few leads haven't moved in 7+ days and could use a follow-up. Tom: 8 stuck (oldest 12 days). Raj: 6 stuck (oldest 9 days). Can you review your list today and update the stage or close out anything that's gone cold? — John",recipients:'Tom Bradley, Raj Kumar'},
+  'dave-escalation':{title:'Draft Message — Dave Chen Escalation',sub:'AI-drafted based on the Estimate-stage escalation rule (day 10 threshold)',message:"Hey Dave — a couple of your estimates have been sitting a while. Henderson Roofing is at 11 days and Green Valley Homes is at 10. Can you get presentations scheduled this week? I want to make sure these don't slip through the cracks. Let me know if you need help prepping the decks. — John",recipients:'Dave Chen'},
+  'tom-pileup':{title:'Draft Nudge — Tom Bradley Stage Pile-up',sub:'AI-drafted based on the Follow-up stage pile-up rule (3+ leads threshold)',message:"Hey Tom — you've got 4 leads sitting in Follow-up right now, 3 of them over 10 days and 1 at 14 days. Want to hop on a quick call to triage these together, or should I loop the 14-day one in to inside sales? — John",recipients:'Tom Bradley'},
+  'mike-compliance':{title:'Draft Coaching Message — Mike Ortiz',sub:'AI-drafted based on the CRM compliance floor rule (80% minimum)',message:"Hey Mike — your CRM compliance is at 64% this week, which is below our 80% floor. I noticed 3 leads that haven't had a stage update and 2 where the appointment disposition is still missing. Takes 5 minutes to clean up — can you get those sorted by EOD tomorrow? It keeps our numbers accurate for everyone. — John",recipients:'Mike Ortiz'}
+};
+function openDraftModal(key){
+  var d=DRAFT_PRESETS[key];
+  if(!d)return;
+  document.getElementById('draft-modal-title').textContent=d.title;
+  document.getElementById('draft-modal-sub').textContent=d.sub;
+  document.getElementById('draft-modal-message').value=d.message;
+  document.getElementById('draft-modal-recipients').value=d.recipients;
+  openModal('draft-modal');
+}
+function sendDraftModal(){
+  var rec=document.getElementById('draft-modal-recipients').value||'recipients';
+  closeModal('draft-modal');
+  showToast('✅ Message sent to '+rec);
 }
 
 // ALERT TIMESTAMPING / TRIAGE
