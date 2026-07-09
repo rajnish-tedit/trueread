@@ -627,6 +627,43 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 .art-body ol,.art-body ul{padding-left:18px;margin-bottom:10px;}
 .art-body li{margin-bottom:5px;}
 .art-footer{padding:0 24px 20px;border-top:1px solid #EDE8DE;margin-top:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:14px;}
+/* BRANCH/MANAGER ONBOARDING */
+.nb-form{background:var(--paper);border:1.5px solid var(--rule);border-radius:14px;padding:18px;margin-bottom:16px;}
+.nb-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.nb-tz-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(15,88,102,.08);border-radius:20px;padding:4px 10px;font-size:11.5px;font-weight:700;color:var(--cyan);margin-top:6px;}
+.nb-zip-warn{font-size:11.5px;color:#B57B1F;margin-top:4px;display:none;}
+.branch-row-mgr{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border:1.5px solid var(--rule);border-radius:12px;margin-bottom:8px;}
+.mgr-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700;}
+.mgr-pill-pending{background:#FEF3C7;color:#92400E;}
+.mgr-pill-joined{background:#D1FAE5;color:#065F46;}
+.mgr-pill-none{background:#F3F4F6;color:#6B7280;}
+/* INVITE EMAIL SCREEN */
+#scr-invite-email{max-width:600px;padding:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;}
+.email-mock{background:white;border-radius:16px;box-shadow:0 4px 32px rgba(0,0,0,.12);overflow:hidden;width:100%;}
+.email-chrome{background:#F3F4F6;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #E5E7EB;}
+.email-chrome-dot{width:10px;height:10px;border-radius:50%;}
+.email-header{background:#0E1B24;padding:24px 32px;color:white;}
+.email-body{padding:32px;}
+.email-body p{font-size:14px;color:#374151;line-height:1.7;margin-bottom:14px;}
+/* MANAGER JOIN FLOW */
+.join-locked-email{background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:8px;padding:10px 14px;font-size:13.5px;color:#6B7280;display:flex;align-items:center;gap:8px;}
+.join-or{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12.5px;}
+.join-or::before,.join-or::after{content:'';flex:1;height:1px;background:var(--rule);}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:11px;border:1.5px solid #E5E7EB;border-radius:10px;background:white;font-size:13.5px;font-weight:600;cursor:pointer;color:#374151;font-family:'Inter',sans-serif;}
+.btn-google:hover{background:#F9FAFB;}
+/* DEMO CONTROL BAR */
+#demo-bar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#0E1B24;border-radius:40px;padding:8px 10px;display:flex;align-items:center;gap:6px;box-shadow:0 8px 32px rgba(0,0,0,.35);z-index:9999;border:1px solid rgba(255,255,255,.1);}
+.demo-bar-label{font-size:10.5px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:0 6px;white-space:nowrap;}
+.demo-btn{padding:6px 12px;border-radius:24px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;color:white;background:transparent;white-space:nowrap;}
+.demo-btn:hover{background:rgba(255,255,255,.1);}
+.demo-btn.on{background:rgba(110,231,183,.15);border-color:#6EE7B7;color:#6EE7B7;}
+.demo-sep{width:1px;height:20px;background:rgba(255,255,255,.1);}
+/* SETTINGS BRANCHES TABLE */
+.mgr-table{width:100%;border-collapse:collapse;}
+.mgr-table th{text-align:left;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 12px;border-bottom:2px solid var(--rule);}
+.mgr-table td{padding:12px 12px;border-bottom:1px solid var(--rule);font-size:13.5px;vertical-align:middle;}
+.mgr-table tr:last-child td{border-bottom:none;}
+.mgr-action-row{display:flex;gap:6px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -876,30 +913,130 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <button class="btn btn-primary btn-full btn-lg" onclick="authGo('plan')">Continue →</button>
   </div>
 
-  <!-- BRANCH SETUP -->
-  <div class="auth-card scr" id="scr-branches" style="max-width:460px;">
+  <!-- BRANCH SETUP (SCREEN A) -->
+  <div class="auth-card scr" id="scr-branches" style="max-width:500px;">
     <div class="auth-h1">Add your branches</div>
-    <div class="auth-sub" style="margin-bottom:20px">You selected <strong id="branches-expected-count">1 location</strong> on your plan. Add each one below — you can always add more later.</div>
+    <div class="auth-sub" style="margin-bottom:20px">You selected <strong id="branches-expected-count">2 locations</strong> on your plan. Add each one below and invite a branch manager.</div>
     <div id="branch-list">
-      <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#1F3A5F"></div><div><div style="font-size:13px;font-weight:700">NJ — Montclair</div><div style="font-size:11.5px;color:var(--muted)">8 reps</div></div></div>
-        <span class="pill pill-pos" style="font-size:11px">Primary</span>
+      <div class="branch-row-mgr">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:10px;height:10px;border-radius:50%;background:#1F3A5F;flex-shrink:0"></div>
+          <div><div style="font-size:13px;font-weight:700">NJ — Montclair</div><div style="font-size:11.5px;color:var(--muted)">America/New_York</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pill pill-pos" style="font-size:11px">Primary</span>
+          <span class="mgr-pill mgr-pill-joined">&#10003; Priya joined</span>
+        </div>
       </div>
-      <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#0F5866"></div><div><div style="font-size:13px;font-weight:700">NY — Queens</div><div style="font-size:11.5px;color:var(--muted)">6 reps</div></div></div>
-        <button class="btn btn-outline btn-xs">Edit</button>
-      </div>
-      <div class="card-sm" style="padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#B57B1F"></div><div><div style="font-size:13px;font-weight:700">FL — Tampa</div><div style="font-size:11.5px;color:var(--muted)">5 reps</div></div></div>
-        <button class="btn btn-outline btn-xs">Edit</button>
+      <div class="branch-row-mgr" id="ny-branch-row">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:10px;height:10px;border-radius:50%;background:#0F5866;flex-shrink:0"></div>
+          <div><div style="font-size:13px;font-weight:700">NY — Queens</div><div style="font-size:11.5px;color:var(--muted)">America/New_York</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="mgr-pill mgr-pill-pending">&#9203; invite pending</span>
+          <button class="btn btn-outline btn-xs" onclick="showToast('&#128231; Invite resent to marcus@smithroofing.com')">Resend</button>
+        </div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:8px;margin-bottom:20px">
-      <input class="inp" id="nb-name" placeholder="Branch name (e.g. Miami — Coral Gables)" style="flex:1"/>
-      <button class="btn btn-outline" onclick="addBranch()">+ Add</button>
+    <!-- Add branch form -->
+    <div class="nb-form" style="margin-top:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Add another branch</div>
+      <div class="nb-form-row">
+        <div class="inp-row" style="margin-bottom:0"><label class="lbl">Branch name</label><input class="inp" id="nb-name" placeholder="e.g. FL — Tampa"/></div>
+        <div class="inp-row" style="margin-bottom:0"><label class="lbl">City</label><input class="inp" id="nb-city" placeholder="Tampa"/></div>
+      </div>
+      <div class="nb-form-row" style="margin-bottom:8px">
+        <div class="inp-row" style="margin-bottom:0">
+          <label class="lbl">ZIP Code</label>
+          <input class="inp" id="nb-zip" placeholder="33601" oninput="onZipInput(this.value)"/>
+          <div class="nb-zip-warn" id="nb-zip-warn">&#9888;&#65039; City may not match — double-check</div>
+          <div id="nb-tz-chip" style="display:none"><div class="nb-tz-chip">&#128336; <span id="nb-tz-label">America/New_York</span></div></div>
+        </div>
+        <div class="inp-row" style="margin-bottom:0"><label class="lbl">Manager email (optional)</label><input class="inp" id="nb-mgr-email" placeholder="manager@company.com" type="email"/></div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="addBranch()" style="width:100%">+ Add branch</button>
     </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('crm-pick')">Continue →</button>
-    <div style="text-align:center;margin-top:10px;font-size:12.5px;color:var(--muted)"><a onclick="authGo('crm-pick')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Skip for now</a> — you can add branches later in Settings</div>
+    <button class="btn btn-primary btn-full btn-lg" style="margin-top:16px" onclick="branchesFinish()">Continue — send invites &#8594;</button>
+    <div style="text-align:center;margin-top:10px;font-size:12.5px;color:var(--muted)"><a onclick="authGo('crm-pick')" style="color:var(--cyan);font-weight:700;cursor:pointer;">Skip for now</a> — add branches later in Settings</div>
+  </div>
+
+  <!-- INVITE EMAIL PREVIEW (SCREEN B) -->
+  <div class="scr" id="scr-invite-email" style="max-width:600px;width:100%;padding:0;background:transparent;box-shadow:none;">
+    <div style="text-align:center;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.06em">&#128231; Preview &#8212; Branch Manager Invite Email</div>
+    <div class="email-mock">
+      <div class="email-chrome">
+        <div class="email-chrome-dot" style="background:#FF5F57"></div>
+        <div class="email-chrome-dot" style="background:#FEBC2E"></div>
+        <div class="email-chrome-dot" style="background:#28C840"></div>
+        <div style="flex:1;background:white;border-radius:6px;padding:4px 12px;font-size:11.5px;color:#9CA3AF;margin-left:8px">The Hub &#8212; Branch Manager Invitation</div>
+      </div>
+      <div class="email-header">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Smith Roofing LLC &#183; The Hub</div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.02em">You're invited to manage<br>NY &#8212; Queens</div>
+      </div>
+      <div class="email-body">
+        <p>Hi Marcus,</p>
+        <p>James Smith has invited you to manage the <strong>NY &#8212; Queens</strong> branch on The Hub &#8212; your team's sales performance and CRM compliance platform.</p>
+        <p>As branch manager you'll have visibility into your team's pipeline, rep-by-rep performance, and compliance scores &#8212; and you'll be the first to know when action is needed.</p>
+        <div style="background:#F9FAFB;border-radius:10px;padding:16px;margin:20px 0;font-size:13px;color:#374151">
+          <div style="font-weight:700;margin-bottom:4px">Your branch: NY &#8212; Queens</div>
+          <div style="color:#6B7280">Invited by: James Smith (Owner)</div>
+          <div style="color:#6B7280;margin-top:4px">Expires in 7 days</div>
+        </div>
+        <button class="btn btn-primary btn-full" style="font-size:14px;padding:14px" onclick="authGo('join-accept')">Accept invite &amp; set up your account &#8594;</button>
+        <p style="font-size:12px;color:#9CA3AF;margin-top:16px;text-align:center">If you weren't expecting this, you can safely ignore this email.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn btn-outline" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2)" onclick="authGo('join-accept')">Preview accept flow &#8594;</button>
+    </div>
+  </div>
+
+  <!-- MANAGER JOIN: ACCEPT (SCREEN C1) -->
+  <div class="auth-card scr" id="scr-join-accept" style="max-width:420px;">
+    <div style="text-align:center;margin-bottom:12px"><div style="background:#0E1B24;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;font-size:26px">&#127970;</div></div>
+    <div class="auth-h1" style="text-align:center">Join Smith Roofing LLC</div>
+    <div class="auth-sub" style="text-align:center;margin-bottom:20px">You've been invited as <strong>Branch Manager</strong> for <strong>NY &#8212; Queens</strong>.</div>
+    <div class="inp-row" style="margin-bottom:14px">
+      <label class="lbl">Your email (locked)</label>
+      <div class="join-locked-email">&#128274; marcus.webb@gmail.com</div>
+    </div>
+    <div class="inp-row" style="margin-bottom:14px">
+      <label class="lbl">Set a password</label>
+      <input class="inp" type="password" placeholder="Min. 8 characters" id="join-password"/>
+    </div>
+    <button class="btn btn-primary btn-full" style="margin-bottom:10px" onclick="managerJoin()">Accept invite &amp; create account &#8594;</button>
+    <div class="join-or">or</div>
+    <button class="btn-google" onclick="managerJoinGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">By accepting you agree to The Hub's Terms of Service</div>
+  </div>
+
+  <!-- MANAGER JOIN: PROFILE (SCREEN C2) -->
+  <div class="auth-card scr" id="scr-join-profile" style="max-width:420px;">
+    <div class="auth-h1">Complete your profile <span style="font-size:13px;font-weight:400;color:var(--muted)">(optional)</span></div>
+    <div class="auth-sub" style="margin-bottom:20px">Help your team recognise you. You can update this anytime.</div>
+    <div class="nb-form-row">
+      <div class="inp-row" style="margin-bottom:0"><label class="lbl">First name</label><input class="inp" value="Marcus"/></div>
+      <div class="inp-row" style="margin-bottom:0"><label class="lbl">Last name</label><input class="inp" value="Webb"/></div>
+    </div>
+    <div class="inp-row" style="margin-top:10px;margin-bottom:10px">
+      <label class="lbl">Mobile (for SMS alerts)</label>
+      <input class="inp" type="tel" placeholder="+1 (555) 000-0000"/>
+    </div>
+    <button class="btn btn-primary btn-full" style="margin-bottom:10px;margin-top:6px" onclick="managerProfileDone()">Go to my dashboard &#8594;</button>
+    <div style="text-align:center"><a onclick="managerProfileDone()" style="color:var(--cyan);font-weight:700;cursor:pointer;font-size:13px">Skip for now</a></div>
+  </div>
+
+  <!-- INVITE EXPIRED (SCREEN C expired variant) -->
+  <div class="auth-card scr" id="scr-invite-expired" style="max-width:420px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:16px">&#9200;</div>
+    <div class="auth-h1">This invite has expired</div>
+    <div class="auth-sub" style="margin-bottom:24px">Invite links expire after 7 days. Ask your owner to resend the invite from Settings &#8594; Branches.</div>
+    <button class="btn btn-outline btn-full" onclick="authGo('login')">&#8592; Back to sign in</button>
   </div>
 
   <!-- PLAN SELECTION -->
@@ -951,6 +1088,20 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
 </div><!-- /auth-wrap -->
+
+<!-- DEMO CONTROL BAR (SCREEN F) -->
+<div id="demo-bar">
+  <div class="demo-bar-label">View as</div>
+  <button class="demo-btn on" id="demo-btn-owner" onclick="demoSwitchRole('owner')">Owner</button>
+  <button class="demo-btn" id="demo-btn-manager" onclick="demoSwitchRole('manager')">Priya (NJ Mgr)</button>
+  <button class="demo-btn" id="demo-btn-regional" onclick="demoSwitchRole('regional')">Regional</button>
+  <div class="demo-sep"></div>
+  <button class="demo-btn" onclick="demoOpenInviteEmail()">&#128231; Invite email</button>
+  <div class="demo-sep"></div>
+  <div class="demo-bar-label">Simulate</div>
+  <button class="demo-btn" onclick="demoSimulate('expired')">Expired invite</button>
+  <button class="demo-btn" onclick="demoSimulate('joins')">Manager joins</button>
+</div>
 
 <!-- HELP BUTTON -->
 <div id="help-btn" onclick="toggleHelp()">
@@ -1161,6 +1312,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="sbi" id="sbi-settings" onclick="goApp('settings')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>Settings</div>
   <div class="sbi" id="sbi-users" onclick="goApp('users')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Users & Seats</div>
   <div class="sbi" id="sbi-billing" onclick="goApp('billing')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>Subscription</div>
+  <div class="sbi" id="sbi-branches" onclick="goApp('settings');setTimeout(function(){switchTab(document.getElementById('stab-branches-mgr'),'settings-branches-mgr');},100)"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></div>Branches</div>
   <div id="sb-nudge" onclick="openModal('upgrade-modal')">
     <div class="sbn-title">Reports partially locked</div>
     <div class="sbn-sub">Upgrade to unlock all 5 reports</div>
@@ -1181,6 +1333,14 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="alert-icon" style="background:var(--crit-bg)">⚠️</div>
     <div style="flex:1"><div class="alert-text-title" style="color:var(--crit)">Revenue gap: $34,200 behind June target on day 20</div><div class="alert-text-body">Top 2 closers (Marcus Webb, Lisa Chen) have been identified. Draft message ready — <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">review in Action Items →</a></div></div>
     <button class="btn btn-danger btn-sm" onclick="this.parentElement.style.display='none'">Dismiss</button>
+  </div>
+  <!-- Branch-locked header (visible for manager role only) -->
+  <div id="dash-branch-kpi-header" style="display:none;align-items:center;gap:12px;padding:10px 0 14px;border-bottom:1.5px solid var(--rule);margin-bottom:16px;">
+    <div style="width:12px;height:12px;border-radius:50%;background:#1F3A5F;flex-shrink:0"></div>
+    <div style="font-size:15px;font-weight:800;color:var(--ink)" id="dash-kpi-branch-name">NJ — Montclair</div>
+    <span class="mgr-pill mgr-pill-joined" style="font-size:11px">Branch Manager</span>
+    <div style="flex:1"></div>
+    <span style="font-size:12.5px;color:var(--muted)">Your branch only &#183; cross-branch view restricted</span>
   </div>
   <div class="branch-strip fu1" id="dash-branch-strip">
     <div class="branch-chip on" onclick="filterBranch(this,'all')"><div class="branch-dot" style="background:#1F3A5F"></div>All Branches</div>
@@ -2439,6 +2599,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="tab on" id="stab-business" onclick="switchTab(this,'settings-business')">
       Business Configuration
     </div>
+    <div class="tab" id="stab-branches-mgr" onclick="switchTab(this,'settings-branches-mgr')">
+      Branches &amp; Managers
+    </div>
     <div class="tab" id="stab-profile" onclick="switchTab(this,'settings-profile')">
       Personal Profile
     </div>
@@ -2606,7 +2769,84 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
     </div>
   </div>
-  <!-- ── TAB 2: PERSONAL PROFILE ── -->
+  <!-- ── TAB 2: BRANCHES & MANAGERS (SCREEN E) ── -->
+  <div class="tab-panel" id="tab-settings-branches-mgr">
+    <div class="card card-p fu2" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div>
+          <div class="settings-section-title" style="margin:0">Branches &amp; Managers</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Manage branch managers, invite new ones, and update assignments.</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('invite-branch-mgr-modal')">+ Invite Manager</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="mgr-table" id="branches-mgr-table">
+          <thead>
+            <tr>
+              <th>Branch</th>
+              <th>Manager</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="branches-mgr-tbody">
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#1F3A5F"></div><strong>NJ — Montclair</strong><span class="pill pill-pos" style="font-size:10px;margin-left:4px">Primary</span></div></td>
+              <td><div style="font-weight:600">Priya Patel</div><div style="font-size:12px;color:var(--muted)">priya@smithroofing.com</div></td>
+              <td><span class="mgr-pill mgr-pill-joined">&#10003; Active</span></td>
+              <td>
+                <div class="mgr-action-row">
+                  <button class="btn btn-outline btn-xs" onclick="showToast('Role changed to Sales Manager')">Change role</button>
+                  <button class="btn btn-outline btn-xs" onclick="showToast('Priya Patel reassigned to NY — Queens')">Reassign</button>
+                  <button class="btn btn-outline btn-xs" style="color:#DC2626;border-color:#FCA5A5" onclick="showToast('Priya Patel removed from NJ — Montclair')">Remove</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#0F5866"></div><strong>NY — Queens</strong></div></td>
+              <td><div style="font-weight:600">Marcus Webb</div><div style="font-size:12px;color:var(--muted)">marcus.webb@gmail.com</div></td>
+              <td><span class="mgr-pill mgr-pill-pending">&#9203; Invite pending</span></td>
+              <td>
+                <div class="mgr-action-row">
+                  <button class="btn btn-outline btn-xs" onclick="showToast('&#128231; Invite resent to marcus.webb@gmail.com')">Resend invite</button>
+                  <button class="btn btn-outline btn-xs" style="color:#DC2626;border-color:#FCA5A5" onclick="revokeInvite('ny-queens','Marcus Webb')">Revoke</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#B57B1F"></div><strong>FL — Tampa</strong></div></td>
+              <td><div style="color:var(--muted);font-style:italic">No manager assigned</div></td>
+              <td><span class="mgr-pill mgr-pill-none">No manager</span></td>
+              <td>
+                <div class="mgr-action-row">
+                  <button class="btn btn-outline btn-xs" onclick="openModal('invite-branch-mgr-modal')">Invite manager</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#3F6E4A"></div><strong>Miami</strong></div></td>
+              <td><div style="color:var(--muted);font-style:italic">No manager assigned</div></td>
+              <td><span class="mgr-pill mgr-pill-none">No manager</span></td>
+              <td>
+                <div class="mgr-action-row">
+                  <button class="btn btn-outline btn-xs" onclick="openModal('invite-branch-mgr-modal')">Invite manager</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card card-p fu3">
+      <div class="settings-section-title" style="margin-top:0">Plan &amp; Location Limits</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Your current plan includes <strong>4 locations</strong>. You're using all 4. To add more, upgrade your plan.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="goApp('billing')">Upgrade plan &#8594;</button>
+        <button class="btn btn-outline btn-sm" onclick="showToast('Support ticket created')">Contact support</button>
+      </div>
+    </div>
+  </div>
+  <!-- ── TAB 3: PERSONAL PROFILE ── -->
   <div class="tab-panel" id="tab-settings-profile">
     <div class="grid-2 fu2" style="align-items:start">
       <!-- Profile Info -->
@@ -2900,6 +3140,46 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- PLAN LIMIT MODAL -->
+<div class="modal-back" id="modal-plan-limit-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head"><div><div class="modal-title">Location limit reached</div><div class="modal-sub">Your plan includes <span id="plan-limit-count">2</span> locations</div></div><button class="modal-close" onclick="closeModal('plan-limit-modal')">&#215;</button></div>
+    <div style="padding:20px">
+      <div style="background:rgba(181,123,31,.08);border:1.5px solid rgba(181,123,31,.25);border-radius:10px;padding:14px;font-size:13px;color:#78350F;margin-bottom:16px">
+        &#9888;&#65039; You've reached your location limit. Additional branches cost <strong>$149/month</strong> each.
+      </div>
+      <div style="font-size:13.5px;color:var(--slate);margin-bottom:16px">Add another location to your plan to continue, or skip and manage branches from Settings later.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('plan-limit-modal')">Not now</button>
+      <button class="btn btn-primary" onclick="closeModal('plan-limit-modal');goApp('billing');showToast('Redirected to Subscription &#8212; add a location to continue')">Add location ($149/mo) &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVITE BRANCH MANAGER MODAL -->
+<div class="modal-back" id="modal-invite-branch-mgr-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head"><div><div class="modal-title">Invite a branch manager</div><div class="modal-sub">They'll receive an email to set up their account</div></div><button class="modal-close" onclick="closeModal('invite-branch-mgr-modal')">&#215;</button></div>
+    <div style="padding:20px;display:flex;flex-direction:column;gap:12px">
+      <div class="inp-row" style="margin:0"><label class="lbl">Branch</label>
+        <select class="inp">
+          <option>NJ &#8212; Montclair</option>
+          <option selected>NY &#8212; Queens</option>
+          <option>FL &#8212; Tampa</option>
+          <option>Miami</option>
+        </select>
+      </div>
+      <div class="inp-row" style="margin:0"><label class="lbl">Manager email</label><input class="inp" placeholder="manager@company.com" type="email"/></div>
+      <div class="inp-row" style="margin:0"><label class="lbl">Manager name (optional)</label><input class="inp" placeholder="Full name"/></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('invite-branch-mgr-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('invite-branch-mgr-modal');showToast('&#128231; Invite sent &#8212; manager will receive email within 2 minutes')">Send invite</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-back" id="modal-dedup-modal" onclick="closeModalBack(event)">
   <div class="modal">
     <div class="modal-head"><div><div class="modal-title">Duplicate Review — James T. Roark</div><div class="modal-sub">CRM ID conflict between manual import and GHL</div></div><button class="modal-close" onclick="closeModal('dedup-modal')">×</button></div>
@@ -3088,19 +3368,203 @@ function skipMarketing(){
   enterApp();
 }
 
-// BRANCHES
+// ZIP → city/timezone lookup (demo data)
+var ZIP_DATA={
+  '07042':{city:'Montclair',tz:'America/New_York'},
+  '07302':{city:'Jersey City',tz:'America/New_York'},
+  '10001':{city:'New York',tz:'America/New_York'},
+  '11101':{city:'Long Island City',tz:'America/New_York'},
+  '33601':{city:'Tampa',tz:'America/New_York'},
+  '33101':{city:'Miami',tz:'America/New_York'},
+  '60601':{city:'Chicago',tz:'America/Chicago'},
+  '75201':{city:'Dallas',tz:'America/Chicago'},
+  '85001':{city:'Phoenix',tz:'America/Phoenix'},
+  '90001':{city:'Los Angeles',tz:'America/Los_Angeles'},
+  '98101':{city:'Seattle',tz:'America/Los_Angeles'},
+  '30301':{city:'Atlanta',tz:'America/New_York'}
+};
+function onZipInput(zip){
+  var warn=document.getElementById('nb-zip-warn');
+  var tzChip=document.getElementById('nb-tz-chip');
+  var tzLabel=document.getElementById('nb-tz-label');
+  var cityInp=document.getElementById('nb-city');
+  warn.style.display='none';
+  tzChip.style.display='none';
+  if(zip.length===5){
+    var d=ZIP_DATA[zip];
+    if(d){
+      tzLabel.textContent=d.tz;
+      tzChip.style.display='block';
+      var cityVal=(cityInp.value||'').trim().toLowerCase();
+      if(cityVal && cityVal!==d.city.toLowerCase()){
+        warn.style.display='block';
+      }
+    }
+  }
+}
+
+// DEMO STATE
+var demoState={
+  branches:[
+    {id:'nj',name:'NJ — Montclair',color:'#1F3A5F',tz:'America/New_York',manager:{name:'Priya Patel',email:'priya@smithroofing.com',status:'joined'}},
+    {id:'ny',name:'NY — Queens',color:'#0F5866',tz:'America/New_York',manager:{name:'Marcus Webb',email:'marcus.webb@gmail.com',status:'pending'}}
+  ],
+  planLimit:4,
+  currentRole:'owner'
+};
+
+// BRANCHES ONBOARDING
 function addBranch(){
   var n=document.getElementById('nb-name').value.trim();
   if(!n)return;
-  var colors=['#1F3A5F','#0F5866','#B57B1F','#3F6E4A','#9B3A2A'];
-  var el=document.getElementById('branch-list');
-  var col=colors[el.querySelectorAll('div').length%colors.length];
+  var planBranches=document.getElementById('branch-list').querySelectorAll('.branch-row-mgr').length;
+  if(planBranches>=demoState.planLimit){
+    document.getElementById('plan-limit-count').textContent=demoState.planLimit;
+    openModal('plan-limit-modal');
+    return;
+  }
+  var colors=['#B57B1F','#3F6E4A','#9B3A2A','#6D28D9','#0891B2'];
+  var col=colors[planBranches%colors.length];
+  var mgrEmail=(document.getElementById('nb-mgr-email').value||'').trim();
+  var tz=(document.getElementById('nb-tz-label').textContent)||'America/New_York';
+  var mgrPill=mgrEmail
+    ? '<span class="mgr-pill mgr-pill-pending">&#9203; invite pending</span>'
+    : '<span class="mgr-pill mgr-pill-none">No manager yet</span>';
   var d=document.createElement('div');
-  d.className='card-sm';
-  d.style.cssText='padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between';
-  d.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:'+col+'"></div><div style="font-size:13px;font-weight:700">'+n+'</div></div><button class="btn btn-outline btn-xs">Edit</button>';
-  el.appendChild(d);
+  d.className='branch-row-mgr';
+  d.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></div><div><div style="font-size:13px;font-weight:700">'+n+'</div><div style="font-size:11.5px;color:var(--muted)">'+tz+'</div></div></div><div>'+mgrPill+'</div>';
+  document.getElementById('branch-list').appendChild(d);
   document.getElementById('nb-name').value='';
+  document.getElementById('nb-city').value='';
+  document.getElementById('nb-zip').value='';
+  document.getElementById('nb-mgr-email').value='';
+  document.getElementById('nb-zip-warn').style.display='none';
+  document.getElementById('nb-tz-chip').style.display='none';
+}
+
+function branchesFinish(){
+  var hasPending=document.getElementById('branch-list').querySelectorAll('.mgr-pill-pending').length>0;
+  if(hasPending) showToast('&#128231; Invites sent to branch managers');
+  authGo('crm-pick');
+}
+
+// MANAGER JOIN FLOW
+function managerJoin(){
+  var pw=(document.getElementById('join-password')||{}).value||'';
+  if(pw.length<8){showToast('Password must be at least 8 characters');return;}
+  authGo('join-profile');
+}
+function managerJoinGoogle(){
+  showToast('Connecting to Google…');
+  setTimeout(function(){authGo('join-profile');},800);
+}
+function managerProfileDone(){
+  demoState.currentRole='manager';
+  demoState.branches[1].manager.status='joined';
+  var btn=document.getElementById('demo-btn-manager');
+  if(btn)btn.classList.add('on');
+  enterAppAsManager();
+}
+function enterAppAsManager(){
+  applyManagerRole();
+  enterApp();
+  showToast('&#127970; Welcome, Marcus! You\'re managing NY — Queens.');
+}
+
+// DEMO CONTROL BAR
+function demoSwitchRole(role){
+  demoState.currentRole=role;
+  document.querySelectorAll('.demo-btn[id^="demo-btn-"]').forEach(function(b){b.classList.remove('on');});
+  var btn=document.getElementById('demo-btn-'+role);
+  if(btn)btn.classList.add('on');
+  if(role==='owner'){
+    applyOwnerRole();
+    showToast('&#128100; Viewing as Owner (James Smith)');
+  } else if(role==='manager'){
+    applyManagerRole();
+    showToast('&#127970; Viewing as Priya Patel — NJ Branch Manager');
+  } else if(role==='regional'){
+    applyRegionalRole();
+    showToast('&#127760; Viewing as Regional Manager (2 branches)');
+  }
+}
+function demoOpenInviteEmail(){
+  document.getElementById('shell').style.display='none';
+  document.getElementById('auth-wrap').style.display='flex';
+  authGo('invite-email');
+}
+function demoSimulate(scenario){
+  if(scenario==='expired'){
+    document.getElementById('shell').style.display='none';
+    document.getElementById('auth-wrap').style.display='flex';
+    authGo('invite-expired');
+  } else if(scenario==='joins'){
+    showToast('&#127881; Marcus Webb accepted the NY — Queens invite!');
+    var nyRow=document.getElementById('ny-branch-row');
+    if(nyRow){
+      var pill=nyRow.querySelector('.mgr-pill-pending');
+      if(pill){pill.className='mgr-pill mgr-pill-joined';pill.textContent='✓ Marcus joined';}
+    }
+    var tbody=document.getElementById('branches-mgr-tbody');
+    if(tbody){
+      var rows=tbody.querySelectorAll('tr');
+      if(rows[1]){
+        var statusCell=rows[1].cells[2];
+        if(statusCell)statusCell.innerHTML='<span class="mgr-pill mgr-pill-joined">&#10003; Active</span>';
+        var actionsCell=rows[1].cells[3];
+        if(actionsCell)actionsCell.innerHTML='<div class="mgr-action-row"><button class="btn btn-outline btn-xs" onclick="showToast(\'Role changed\')">Change role</button><button class="btn btn-outline btn-xs" onclick="showToast(\'Reassigned\')">Reassign</button><button class="btn btn-outline btn-xs" style="color:#DC2626;border-color:#FCA5A5" onclick="showToast(\'Marcus removed\')">Remove</button></div>';
+      }
+    }
+  }
+}
+
+function applyOwnerRole(){
+  setNavVisible('sbi-billing',true);
+  setNavVisible('sbi-branches',true);
+  var branchCard=document.getElementById('dash-branch-table-card');
+  if(branchCard)branchCard.style.display='';
+  var kpiHeader=document.getElementById('dash-branch-kpi-header');
+  if(kpiHeader)kpiHeader.style.display='none';
+  document.getElementById('tb-branch-name').textContent='All Branches';
+  currentUser.isAdmin=true;
+  currentUser.role='general_manager';
+  applyRoleUI();
+}
+function applyManagerRole(){
+  setNavVisible('sbi-billing',false);
+  var branchCard=document.getElementById('dash-branch-table-card');
+  if(branchCard)branchCard.style.display='none';
+  var kpiHeader=document.getElementById('dash-branch-kpi-header');
+  if(kpiHeader){kpiHeader.style.display='flex';document.getElementById('dash-kpi-branch-name').textContent='NJ — Montclair';}
+  document.getElementById('tb-branch-name').textContent='NJ — Montclair';
+  currentUser.isAdmin=false;
+  currentUser.role='sales_manager';
+  applyRoleUI();
+}
+function applyRegionalRole(){
+  setNavVisible('sbi-billing',false);
+  var branchCard=document.getElementById('dash-branch-table-card');
+  if(branchCard)branchCard.style.display='';
+  var kpiHeader=document.getElementById('dash-branch-kpi-header');
+  if(kpiHeader)kpiHeader.style.display='none';
+  document.getElementById('tb-branch-name').textContent='NJ + NY';
+  currentUser.isAdmin=false;
+  currentUser.role='sales_manager';
+  applyRoleUI();
+}
+
+function revokeInvite(branchId, name){
+  showToast('Invite revoked for '+name);
+  var tbody=document.getElementById('branches-mgr-tbody');
+  if(!tbody)return;
+  var rows=tbody.querySelectorAll('tr');
+  rows.forEach(function(r){
+    var cell=r.cells[0];
+    if(cell&&cell.textContent.indexOf('Queens')>-1){
+      r.cells[2].innerHTML='<span class="mgr-pill mgr-pill-none">No manager</span>';
+      r.cells[3].innerHTML='<div class="mgr-action-row"><button class="btn btn-outline btn-xs" onclick="openModal(\'invite-branch-mgr-modal\')">Invite manager</button></div>';
+    }
+  });
 }
 
 // PLAN PRICING — $199/mo base (incl. 1 location) + $149/mo per additional location.
@@ -3416,6 +3880,7 @@ function applyRoleUI(){
   setNavVisible('sbi-rules',!!currentUser.isAdmin);
   setNavVisible('sbi-users',!!currentUser.isAdmin);
   setNavVisible('sbi-billing',!!perms.canManageBilling);
+  setNavVisible('sbi-branches',!!perms.canManageBranches);
   setNavVisible('sbi-dashboard',perms.dashboardScope!=='self');
 
   // Sidebar user badge
@@ -3508,6 +3973,7 @@ function enterApp(){
   buildGates();
   applyRoleUI();
   document.getElementById('help-btn').style.display='flex';
+  document.getElementById('demo-bar').style.display='flex';
   goApp(currentUser.roles[0]===ROLES.SALES_REP?'contacts':'dashboard');
   setTimeout(initCharts,300);
   setTimeout(checkPWABanner,5000);
