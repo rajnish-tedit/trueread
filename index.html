@@ -941,11 +941,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div>
     <!-- Add branch form -->
     <div class="nb-form" style="margin-top:12px">
-      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Add another branch</div>
-      <div class="nb-form-row" style="margin-bottom:8px">
-        <div class="inp-row" style="margin-bottom:0"><label class="lbl">Branch city</label><input class="inp" id="nb-city" placeholder="e.g. Tampa"/></div>
-        <div class="inp-row" style="margin-bottom:0"><label class="lbl">Manager email (optional)</label><input class="inp" id="nb-mgr-email" placeholder="manager@company.com" type="email"/></div>
-      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em">Add another branch</div>
+      <div class="inp-row" style="margin-bottom:10px"><label class="lbl">Branch city</label><input class="inp" id="nb-city" placeholder="e.g. Tampa, Miami, Dallas…"/></div>
+      <div class="inp-row" style="margin-bottom:14px"><label class="lbl">Manager email <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="inp" id="nb-mgr-email" placeholder="manager@company.com" type="email"/></div>
       <button class="btn btn-primary btn-sm" onclick="addBranch()" style="width:100%">+ Add branch</button>
     </div>
     <button class="btn btn-primary btn-full btn-lg" style="margin-top:16px" onclick="branchesFinish()">Continue — send invites &#8594;</button>
