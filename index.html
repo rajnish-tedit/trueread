@@ -921,7 +921,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div class="branch-row-mgr">
         <div style="display:flex;align-items:center;gap:10px">
           <div style="width:10px;height:10px;border-radius:50%;background:#1F3A5F;flex-shrink:0"></div>
-          <div><div style="font-size:13px;font-weight:700">NJ — Montclair</div><div style="font-size:11.5px;color:var(--muted)">America/New_York</div></div>
+          <div style="font-size:13px;font-weight:700">NJ — Montclair</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="pill pill-pos" style="font-size:11px">Primary</span>
@@ -931,7 +931,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div class="branch-row-mgr" id="ny-branch-row">
         <div style="display:flex;align-items:center;gap:10px">
           <div style="width:10px;height:10px;border-radius:50%;background:#0F5866;flex-shrink:0"></div>
-          <div><div style="font-size:13px;font-weight:700">NY — Queens</div><div style="font-size:11.5px;color:var(--muted)">America/New_York</div></div>
+          <div style="font-size:13px;font-weight:700">NY — Queens</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="mgr-pill mgr-pill-pending">&#9203; invite pending</span>
@@ -942,17 +942,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <!-- Add branch form -->
     <div class="nb-form" style="margin-top:12px">
       <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Add another branch</div>
-      <div class="nb-form-row">
-        <div class="inp-row" style="margin-bottom:0"><label class="lbl">Branch name</label><input class="inp" id="nb-name" placeholder="e.g. FL — Tampa"/></div>
-        <div class="inp-row" style="margin-bottom:0"><label class="lbl">City</label><input class="inp" id="nb-city" placeholder="Tampa"/></div>
-      </div>
       <div class="nb-form-row" style="margin-bottom:8px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">ZIP Code</label>
-          <input class="inp" id="nb-zip" placeholder="33601" oninput="onZipInput(this.value)"/>
-          <div class="nb-zip-warn" id="nb-zip-warn">&#9888;&#65039; City may not match — double-check</div>
-          <div id="nb-tz-chip" style="display:none"><div class="nb-tz-chip">&#128336; <span id="nb-tz-label">America/New_York</span></div></div>
-        </div>
+        <div class="inp-row" style="margin-bottom:0"><label class="lbl">Branch city</label><input class="inp" id="nb-city" placeholder="e.g. Tampa"/></div>
         <div class="inp-row" style="margin-bottom:0"><label class="lbl">Manager email (optional)</label><input class="inp" id="nb-mgr-email" placeholder="manager@company.com" type="email"/></div>
       </div>
       <button class="btn btn-primary btn-sm" onclick="addBranch()" style="width:100%">+ Add branch</button>
@@ -3415,8 +3406,8 @@ var demoState={
 
 // BRANCHES ONBOARDING
 function addBranch(){
-  var n=document.getElementById('nb-name').value.trim();
-  if(!n)return;
+  var city=(document.getElementById('nb-city').value||'').trim();
+  if(!city)return;
   var planBranches=document.getElementById('branch-list').querySelectorAll('.branch-row-mgr').length;
   if(planBranches>=demoState.planLimit){
     document.getElementById('plan-limit-count').textContent=demoState.planLimit;
@@ -3426,20 +3417,15 @@ function addBranch(){
   var colors=['#B57B1F','#3F6E4A','#9B3A2A','#6D28D9','#0891B2'];
   var col=colors[planBranches%colors.length];
   var mgrEmail=(document.getElementById('nb-mgr-email').value||'').trim();
-  var tz=(document.getElementById('nb-tz-label').textContent)||'America/New_York';
   var mgrPill=mgrEmail
     ? '<span class="mgr-pill mgr-pill-pending">&#9203; invite pending</span>'
     : '<span class="mgr-pill mgr-pill-none">No manager yet</span>';
   var d=document.createElement('div');
   d.className='branch-row-mgr';
-  d.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></div><div><div style="font-size:13px;font-weight:700">'+n+'</div><div style="font-size:11.5px;color:var(--muted)">'+tz+'</div></div></div><div>'+mgrPill+'</div>';
+  d.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></div><div style="font-size:13px;font-weight:700">'+city+'</div></div><div>'+mgrPill+'</div>';
   document.getElementById('branch-list').appendChild(d);
-  document.getElementById('nb-name').value='';
   document.getElementById('nb-city').value='';
-  document.getElementById('nb-zip').value='';
   document.getElementById('nb-mgr-email').value='';
-  document.getElementById('nb-zip-warn').style.display='none';
-  document.getElementById('nb-tz-chip').style.display='none';
 }
 
 function branchesFinish(){
