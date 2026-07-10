@@ -1081,10 +1081,10 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- DEMO CONTROL BAR (SCREEN F) -->
 <div id="demo-bar">
-  <div class="demo-bar-label">View as</div>
-  <button class="demo-btn on" id="demo-btn-owner" onclick="demoSwitchRole('owner')">Owner</button>
-  <button class="demo-btn" id="demo-btn-manager" onclick="demoSwitchRole('manager')">Priya (NJ Mgr)</button>
-  <button class="demo-btn" id="demo-btn-regional" onclick="demoSwitchRole('regional')">Regional</button>
+  <div class="demo-bar-label">Role</div>
+  <button class="demo-btn on" id="demo-btn-owner" onclick="demoSwitchRole('owner')">&#128081; Owner</button>
+  <button class="demo-btn" id="demo-btn-manager" onclick="demoSwitchRole('manager')">&#127970; Branch Manager</button>
+  <button class="demo-btn" id="demo-btn-regional" onclick="demoSwitchRole('regional')">&#127760; Regional Manager</button>
   <div class="demo-sep"></div>
   <button class="demo-btn" onclick="demoOpenInviteEmail()">&#128231; Invite email</button>
   <div class="demo-sep"></div>
@@ -1226,8 +1226,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="tb-badge"></div>
     </div>
-    <select id="role-switcher" onchange="switchRole(this.value)" title="Preview as role" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;font-size:11.5px;font-weight:700;padding:6px 8px;cursor:pointer;">
-      <option value="general_manager">👑 General Manager</option>
+    <div id="tb-role-chip" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:11.5px;font-weight:700;padding:6px 12px;white-space:nowrap;">&#128081; Owner</div>
+    <select id="role-switcher" onchange="switchRole(this.value)" title="Preview as role" style="display:none">
+      <option value="general_manager">General Manager</option>
       <option value="sales_manager">Sales Manager</option>
       <option value="marketing_manager">Marketing Manager</option>
       <option value="sales_rep">Sales Rep</option>
@@ -1325,12 +1326,14 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <button class="btn btn-danger btn-sm" onclick="this.parentElement.style.display='none'">Dismiss</button>
   </div>
   <!-- Branch-locked header (visible for manager role only) -->
-  <div id="dash-branch-kpi-header" style="display:none;align-items:center;gap:12px;padding:10px 0 14px;border-bottom:1.5px solid var(--rule);margin-bottom:16px;">
+  <div id="dash-branch-kpi-header" style="display:none;align-items:center;gap:12px;padding:12px 16px 12px;background:rgba(31,58,95,.06);border-radius:12px;margin-bottom:16px;border:1.5px solid rgba(31,58,95,.1);">
     <div style="width:12px;height:12px;border-radius:50%;background:#1F3A5F;flex-shrink:0"></div>
-    <div style="font-size:15px;font-weight:800;color:var(--ink)" id="dash-kpi-branch-name">NJ — Montclair</div>
-    <span class="mgr-pill mgr-pill-joined" style="font-size:11px">Branch Manager</span>
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px" id="dash-kpi-role-badge">Branch Manager</div>
+      <div style="font-size:15px;font-weight:800;color:var(--ink)" id="dash-kpi-branch-name">NJ — Montclair</div>
+    </div>
     <div style="flex:1"></div>
-    <span style="font-size:12.5px;color:var(--muted)">Your branch only &#183; cross-branch view restricted</span>
+    <span style="font-size:12px;color:var(--muted)">&#128274; Scoped to your location only</span>
   </div>
   <div class="branch-strip fu1" id="dash-branch-strip">
     <div class="branch-chip on" onclick="filterBranch(this,'all')"><div class="branch-dot" style="background:#1F3A5F"></div>All Branches</div>
@@ -3480,13 +3483,13 @@ function demoSwitchRole(role){
   if(btn)btn.classList.add('on');
   if(role==='owner'){
     applyOwnerRole();
-    showToast('&#128100; Viewing as Owner (James Smith)');
+    showToast('&#128081; Role: Owner — full access across all branches');
   } else if(role==='manager'){
     applyManagerRole();
-    showToast('&#127970; Viewing as Priya Patel — NJ Branch Manager');
+    showToast('&#127970; Role: Branch Manager — NJ Montclair only');
   } else if(role==='regional'){
     applyRegionalRole();
-    showToast('&#127760; Viewing as Regional Manager (2 branches)');
+    showToast('&#127760; Role: Regional Manager — NJ + NY branches');
   }
 }
 function demoOpenInviteEmail(){
@@ -3519,6 +3522,27 @@ function demoSimulate(scenario){
   }
 }
 
+function _setRoleUI(name, roleLabel, roleBadge, roleSwitcherVal){
+  var sbUname=document.querySelector('.sb-uname');
+  var sbUrole=document.querySelector('.sb-urole');
+  var pdRole=document.querySelector('.pd-role');
+  var pdName=document.querySelector('.pd-name');
+  var pdAv=document.querySelector('.pd-av');
+  var tbAv=document.getElementById('tb-av');
+  if(sbUname)sbUname.textContent=name;
+  if(sbUrole)sbUrole.textContent=roleLabel;
+  if(pdRole)pdRole.textContent=roleLabel+' · Smith Roofing';
+  if(pdName)pdName.textContent=name;
+  // sync topbar role chip
+  var chip=document.getElementById('tb-role-chip');
+  if(chip)chip.textContent=roleBadge.split('·')[0].trim();
+  var rs=document.getElementById('role-switcher');
+  if(rs&&roleSwitcherVal)rs.value=roleSwitcherVal;
+  // role badge on KPI header
+  var badge=document.getElementById('dash-kpi-role-badge');
+  if(badge)badge.textContent=roleBadge;
+}
+
 function applyOwnerRole(){
   setNavVisible('sbi-billing',true);
   setNavVisible('sbi-branches',true);
@@ -3526,31 +3550,49 @@ function applyOwnerRole(){
   if(branchCard)branchCard.style.display='';
   var kpiHeader=document.getElementById('dash-branch-kpi-header');
   if(kpiHeader)kpiHeader.style.display='none';
+  var strip=document.getElementById('dash-branch-strip');
+  if(strip){strip.style.display='flex';strip.querySelectorAll('.branch-chip').forEach(function(c){c.style.display='';});}
   document.getElementById('tb-branch-name').textContent='All Branches';
   currentUser.isAdmin=true;
   currentUser.role='general_manager';
+  _setRoleUI('John Smith','Owner','Owner','general_manager');
   applyRoleUI();
 }
 function applyManagerRole(){
   setNavVisible('sbi-billing',false);
+  setNavVisible('sbi-branches',false);
   var branchCard=document.getElementById('dash-branch-table-card');
   if(branchCard)branchCard.style.display='none';
+  var strip=document.getElementById('dash-branch-strip');
+  if(strip)strip.style.display='none';
   var kpiHeader=document.getElementById('dash-branch-kpi-header');
   if(kpiHeader){kpiHeader.style.display='flex';document.getElementById('dash-kpi-branch-name').textContent='NJ — Montclair';}
   document.getElementById('tb-branch-name').textContent='NJ — Montclair';
   currentUser.isAdmin=false;
   currentUser.role='sales_manager';
+  _setRoleUI('Branch Manager','Branch Manager','Branch Manager · NJ only','sales_manager');
   applyRoleUI();
 }
 function applyRegionalRole(){
   setNavVisible('sbi-billing',false);
+  setNavVisible('sbi-branches',false);
   var branchCard=document.getElementById('dash-branch-table-card');
   if(branchCard)branchCard.style.display='';
+  var strip=document.getElementById('dash-branch-strip');
+  if(strip)strip.style.display='flex';
+  // Show only NJ+NY chips, hide FL and Miami
+  if(strip){
+    strip.querySelectorAll('.branch-chip').forEach(function(c){
+      var t=c.textContent.trim();
+      c.style.display=(t==='All Branches'||t.indexOf('Montclair')>-1||t.indexOf('Queens')>-1)?'':'none';
+    });
+  }
   var kpiHeader=document.getElementById('dash-branch-kpi-header');
   if(kpiHeader)kpiHeader.style.display='none';
   document.getElementById('tb-branch-name').textContent='NJ + NY';
   currentUser.isAdmin=false;
   currentUser.role='sales_manager';
+  _setRoleUI('Regional Manager','Regional Manager','Regional Manager · NJ + NY','sales_manager');
   applyRoleUI();
 }
 
