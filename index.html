@@ -2477,12 +2477,14 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div>
   </div>
   <div class="card fu3"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">All Users</div></div></div>
-    <table class="tbl"><thead><tr><th>Name</th><th>Role</th><th>Branch</th><th>Status</th><th></th></tr></thead>
+    <table class="tbl" id="users-table"><thead><tr><th>Name</th><th>Role</th><th>Branch</th><th>Status</th><th></th></tr></thead>
     <tbody>
-      <tr><td style="font-weight:700">John Smith</td><td><span class="pill pill-blue">Owner</span></td><td>All branches</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs">Edit</button></td></tr>
-      <tr><td style="font-weight:700">Marcus Webb</td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NJ</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs">Edit</button></td></tr>
-      <tr><td style="font-weight:700">Lisa Chen</td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NY</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs">Edit</button></td></tr>
-      <tr><td style="font-weight:700">Kim Nguyen <span style="font-size:11px;color:var(--muted)">(pending)</span></td><td><span class="pill pill-cyan">Branch Mgr</span></td><td>Miami</td><td><span class="pill pill-caut">Invited</span></td><td><button class="btn btn-danger btn-xs" onclick="showToast('✓ Invite revoked — seat freed')">Revoke</button></td></tr>
+      <tr id="urow-john"><td style="font-weight:700">John Smith<div style="font-size:11.5px;color:var(--muted);font-weight:400">john@smithroofing.com</div></td><td><span class="pill pill-blue">Owner</span></td><td>All branches</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs" onclick="openEditUser('john','John Smith','Owner','All branches','john@smithroofing.com')">Edit</button></td></tr>
+      <tr id="urow-marcus"><td style="font-weight:700">Marcus Webb<div style="font-size:11.5px;color:var(--muted);font-weight:400">marcus@smithroofing.com</div></td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NJ — Montclair</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('marcus','Marcus Webb','Sales Rep','NJ — Montclair','marcus@smithroofing.com')">Edit</button></div></td></tr>
+      <tr id="urow-lisa"><td style="font-weight:700">Lisa Chen<div style="font-size:11.5px;color:var(--muted);font-weight:400">lisa@smithroofing.com</div></td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NY — Queens</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('lisa','Lisa Chen','Sales Rep','NY — Queens','lisa@smithroofing.com')">Edit</button></div></td></tr>
+      <tr id="urow-derek"><td style="font-weight:700">Derek Osei<div style="font-size:11.5px;color:var(--muted);font-weight:400">derek@smithroofing.com</div></td><td><span class="pill pill-neutral">Sales Rep</span></td><td>FL — Tampa</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('derek','Derek Osei','Sales Rep','FL — Tampa','derek@smithroofing.com')">Edit</button></div></td></tr>
+      <tr id="urow-priya"><td style="font-weight:700">Priya Patel<div style="font-size:11.5px;color:var(--muted);font-weight:400">priya@smithroofing.com</div></td><td><span class="pill pill-cyan">Branch Mgr</span></td><td>NJ — Montclair</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('priya','Priya Patel','Branch Manager','NJ — Montclair','priya@smithroofing.com')">Edit</button></div></td></tr>
+      <tr id="urow-kim"><td style="font-weight:700">Kim Nguyen<div style="font-size:11.5px;color:var(--muted);font-weight:400">kim@smithroofing.com</div> <span style="font-size:11px;color:var(--muted)">(pending)</span></td><td><span class="pill pill-cyan">Branch Mgr</span></td><td>Miami</td><td><span class="pill pill-caut">Invited</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="resendUserInvite('kim','Kim Nguyen')">Re-invite</button><button class="btn btn-danger btn-xs" onclick="revokeUserInvite('kim','Kim Nguyen')">Revoke</button></div></td></tr>
     </tbody></table>
   </div>
 </div>
@@ -3108,6 +3110,52 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- EDIT USER MODAL -->
+<div class="modal-back" id="modal-edit-user-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head">
+      <div><div class="modal-title">Edit user</div><div class="modal-sub" id="edit-user-email-sub">user@company.com</div></div>
+      <button class="modal-close" onclick="closeModal('edit-user-modal')">&#215;</button>
+    </div>
+    <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+      <div class="inp-row" style="margin:0">
+        <label class="lbl">Full name</label>
+        <input class="inp" id="edit-user-name"/>
+      </div>
+      <div class="inp-row" style="margin:0">
+        <label class="lbl">Role</label>
+        <select class="inp" id="edit-user-role">
+          <option>Owner</option>
+          <option>Branch Manager</option>
+          <option>Sales Manager</option>
+          <option>Sales Rep</option>
+          <option>Marketing Manager</option>
+        </select>
+      </div>
+      <div class="inp-row" style="margin:0">
+        <label class="lbl">Branch</label>
+        <select class="inp" id="edit-user-branch">
+          <option>All branches</option>
+          <option>NJ — Montclair</option>
+          <option>NY — Queens</option>
+          <option>FL — Tampa</option>
+          <option>Miami</option>
+        </select>
+      </div>
+      <div style="padding:10px 14px;background:rgba(181,123,31,.07);border-radius:8px;font-size:12.5px;color:#78350F;border:1px solid rgba(181,123,31,.18)">
+        &#9888;&#65039; Changing role takes effect immediately. The user will see their new permissions on next page load.
+      </div>
+    </div>
+    <div class="modal-foot" style="justify-content:space-between">
+      <button class="btn btn-outline" style="color:#DC2626;border-color:#FCA5A5" onclick="removeUser()">Remove user</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" onclick="closeModal('edit-user-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditUser()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-back" id="modal-invite-modal" onclick="closeModalBack(event)">
   <div class="modal">
     <div class="modal-head"><div><div class="modal-title">Invite a team member</div><div class="modal-sub">1 seat will be reserved on invite, consumed on acceptance</div></div><button class="modal-close" onclick="closeModal('invite-modal')">×</button></div>
@@ -3595,6 +3643,62 @@ function applyRegionalRole(){
   currentUser.role='sales_manager';
   _setRoleUI('Regional Manager','Regional Manager','Regional Manager · NJ + NY','sales_manager');
   applyRoleUI();
+}
+
+// USERS & SEATS
+var _editingUserId = null;
+function openEditUser(id, name, role, branch, email){
+  _editingUserId = id;
+  document.getElementById('edit-user-name').value = name;
+  document.getElementById('edit-user-email-sub').textContent = email;
+  var roleSelect = document.getElementById('edit-user-role');
+  for(var i=0;i<roleSelect.options.length;i++){
+    if(roleSelect.options[i].value===role||roleSelect.options[i].text===role){roleSelect.selectedIndex=i;break;}
+  }
+  var branchSelect = document.getElementById('edit-user-branch');
+  for(var j=0;j<branchSelect.options.length;j++){
+    if(branchSelect.options[j].text===branch){branchSelect.selectedIndex=j;break;}
+  }
+  openModal('edit-user-modal');
+}
+function saveEditUser(){
+  var name = document.getElementById('edit-user-name').value.trim();
+  var role = document.getElementById('edit-user-role').value;
+  var branch = document.getElementById('edit-user-branch').value;
+  var row = document.getElementById('urow-'+_editingUserId);
+  if(row){
+    row.cells[0].childNodes[0].textContent = name;
+    var rolePills = {
+      'Owner':'pill-blue','Branch Manager':'pill-cyan','Sales Manager':'pill-cyan',
+      'Sales Rep':'pill-neutral','Marketing Manager':'pill-neutral'
+    };
+    row.cells[1].innerHTML = '<span class="pill '+(rolePills[role]||'pill-neutral')+'">'+role+'</span>';
+    row.cells[2].textContent = branch;
+  }
+  closeModal('edit-user-modal');
+  showToast('&#10003; '+name+' updated — '+role+', '+branch);
+}
+function removeUser(){
+  var row = document.getElementById('urow-'+_editingUserId);
+  if(row){
+    var name = document.getElementById('edit-user-name').value;
+    row.style.transition='opacity .3s';
+    row.style.opacity='0';
+    setTimeout(function(){if(row.parentNode)row.parentNode.removeChild(row);},300);
+    showToast('&#128465;&#65039; '+name+' removed — seat freed');
+  }
+  closeModal('edit-user-modal');
+}
+function resendUserInvite(id, name){
+  showToast('&#128231; Invite resent to '+name);
+}
+function revokeUserInvite(id, name){
+  var row = document.getElementById('urow-'+id);
+  if(row){
+    row.cells[3].innerHTML = '<span class="pill pill-neg">Revoked</span>';
+    row.cells[4].innerHTML = '<button class="btn btn-outline btn-xs" onclick="resendUserInvite(\''+id+'\',\''+name+'\')">Re-invite</button>';
+  }
+  showToast('&#10003; Invite revoked for '+name+' — seat freed');
 }
 
 function revokeInvite(branchId, name){
