@@ -4213,6 +4213,136 @@ function enterApp(){
   window._isManagerJoin=false;
 }
 
+// CRM SYNC SIMULATION
+var _syncTimer=null, _syncPct=0, _syncMinimized=false;
+var _syncStreams={
+  contacts:{el:'ss-contacts-bar',count:'ss-contacts-count',total:3400,done:0,speed:18,unit:'contacts'},
+  deals:{el:'ss-deals-bar',count:'ss-deals-count',total:820,done:0,speed:4,unit:'deals'},
+  activities:{el:'ss-activities-bar',count:'ss-activities-count',total:12000,done:0,speed:60,unit:'activities'},
+  locations:{el:'ss-locations-bar',count:'ss-locations-count',total:100,done:0,speed:0.5,unit:''}
+};
+var _syncLogs=[
+  'Authenticating with CRM API…','Connection established ✓',
+  'Fetching contact records…','Pulling deal pipeline data…',
+  'Importing activity history…','Detecting branch locations…',
+  'Processing NJ — Montclair data…','Processing NY — Queens data…',
+  'Resolving duplicate contacts…','Calculating lead scores…',
+  'Building rep performance index…','Mapping deal stages…',
+  'Syncing email activity…','Importing call logs…',
+  'Running data quality checks…','Finalising location map…',
+  'Almost there — running final validation…'
+];
+var _syncLogIdx=1;
+
+function startSyncModal(){
+  if(window._isManagerJoin)return;
+  _syncPct=0; _syncMinimized=false; _syncLogIdx=1;
+  Object.keys(_syncStreams).forEach(function(k){_syncStreams[k].done=0;});
+  document.getElementById('sync-overlay').style.display='block';
+  document.getElementById('sync-chip').style.display='none';
+  _syncTimer=setInterval(_syncTick,800);
+}
+
+function _syncTick(){
+  // Advance each stream at different speeds
+  var totalPct=0;
+  Object.keys(_syncStreams).forEach(function(k){
+    var s=_syncStreams[k];
+    if(s.done<s.total){
+      s.done=Math.min(s.total, s.done + s.speed + Math.random()*s.speed*0.5);
+    }
+    var pct=Math.round((s.done/s.total)*100);
+    totalPct+=pct;
+    var bar=document.getElementById(s.el);
+    if(bar)bar.style.width=pct+'%';
+    var cnt=document.getElementById(s.count);
+    if(cnt){
+      if(k==='locations'){
+        cnt.textContent=pct>=100?'3 locations found':pct>40?'Scanning…':'Detecting…';
+      } else {
+        cnt.textContent=Math.round(s.done).toLocaleString()+' / ~'+s.total.toLocaleString();
+      }
+    }
+  });
+  _syncPct=Math.min(99,Math.round(totalPct/4));
+
+  // Update main bar + ETA
+  var bar=document.getElementById('sync-bar');
+  if(bar)bar.style.width=_syncPct+'%';
+  var pctEl=document.getElementById('sync-pct');
+  if(pctEl)pctEl.textContent=_syncPct+'%';
+  var chipPct=document.getElementById('sync-chip-pct');
+  if(chipPct)chipPct.textContent=_syncPct+'%';
+
+  // ETA countdown
+  var remaining=Math.max(0,Math.round((100-_syncPct)*0.45));
+  var etaEl=document.getElementById('sync-eta');
+  if(etaEl){
+    if(remaining>60)etaEl.textContent='Est. ~'+Math.round(remaining/60)+' hr remaining';
+    else if(remaining>1)etaEl.textContent='Est. ~'+remaining+' min remaining';
+    else etaEl.textContent='Finishing up…';
+  }
+
+  // Scroll live log
+  if(_syncLogIdx<_syncLogs.length && Math.random()>0.4){
+    var l1=document.getElementById('sync-log-line1');
+    var l2=document.getElementById('sync-log-line2');
+    var l3=document.getElementById('sync-log-line3');
+    if(l3&&l2&&l1){
+      l3.textContent=l2.textContent;
+      l3.style.color='rgba(255,255,255,.08)';
+      l2.textContent=l1.textContent;
+      l2.style.color='rgba(255,255,255,.2)';
+      l1.textContent='→ '+_syncLogs[_syncLogIdx];
+      l1.style.color='rgba(255,255,255,.45)';
+      _syncLogIdx++;
+    }
+  }
+
+  // Complete at 99% after a beat
+  if(_syncPct>=99){
+    clearInterval(_syncTimer);
+    setTimeout(_syncComplete,1200);
+  }
+}
+
+function _syncComplete(){
+  _syncPct=100;
+  var bar=document.getElementById('sync-bar');if(bar)bar.style.width='100%';
+  var pctEl=document.getElementById('sync-pct');if(pctEl)pctEl.textContent='100%';
+  var lbl=document.getElementById('sync-status-label');
+  if(lbl){lbl.textContent='Sync complete ✓';lbl.style.color='#6FCF8E';}
+  var spinner=document.getElementById('sync-spinner');
+  if(spinner){spinner.style.borderTopColor='#6FCF8E';spinner.style.border='2px solid #6FCF8E';spinner.style.animation='none';}
+  var etaEl=document.getElementById('sync-eta');if(etaEl)etaEl.textContent='Done!';
+  var l1=document.getElementById('sync-log-line1');
+  if(l1){l1.textContent='✓ All data synced successfully. Dashboard is ready.';l1.style.color='#6FCF8E';}
+  showToast('✅ CRM sync complete — your dashboard is ready!');
+  setTimeout(function(){
+    var ov=document.getElementById('sync-overlay');if(ov)ov.style.display='none';
+    var chip=document.getElementById('sync-chip');if(chip)chip.style.display='none';
+  },3000);
+}
+
+function minimizeSyncModal(){
+  _syncMinimized=true;
+  document.getElementById('sync-overlay').style.display='none';
+  var chip=document.getElementById('sync-chip');
+  if(chip){chip.style.display='flex';}
+}
+
+function restoreSyncModal(){
+  _syncMinimized=false;
+  document.getElementById('sync-overlay').style.display='block';
+  document.getElementById('sync-chip').style.display='none';
+}
+
+function syncNotifyMe(){
+  var btn=document.getElementById('sync-notify-btn');
+  if(btn){btn.textContent='✓ We\'ll email you when done';btn.style.color='#6FCF8E';btn.style.borderColor='rgba(111,207,142,.4)';btn.disabled=true;}
+  showToast('📧 We\'ll email you when sync is complete');
+}
+
 // NAV
 function goApp(id){
   if(window._plan==='free'&&(id==='comms'||id==='audit')){
@@ -5096,9 +5226,108 @@ function saveRules(){
 
     <div style="padding:16px 24px;border-top:1px solid var(--rule);display:flex;gap:10px;align-items:center;justify-content:space-between">
       <div style="font-size:12px;color:var(--muted)">Trial ends: <strong id="welcome-trial-end-foot">Aug 10, 2026</strong></div>
-      <button class="btn btn-primary" onclick="closeModal('welcome-email-modal')" style="padding:12px 24px">Go to my dashboard →</button>
+      <button class="btn btn-primary" onclick="closeModal('welcome-email-modal');startSyncModal()" style="padding:12px 24px">Go to my dashboard →</button>
     </div>
   </div>
+</div>
+
+<!-- CRM SYNC PROGRESS MODAL -->
+<div id="sync-overlay" style="display:none;position:fixed;inset:0;z-index:9000;pointer-events:none">
+  <!-- Blurred dashboard hint behind -->
+  <div style="position:absolute;inset:0;background:rgba(14,27,36,.55);backdrop-filter:blur(3px)"></div>
+  <!-- Card — bottom-anchored, non-blocking feel -->
+  <div style="position:absolute;bottom:0;left:0;right:0;pointer-events:all;background:var(--ink);border-radius:20px 20px 0 0;padding:0;box-shadow:0 -12px 48px rgba(0,0,0,.45);max-width:520px;margin:0 auto">
+
+    <!-- Header -->
+    <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div id="sync-spinner" style="width:10px;height:10px;border-radius:50%;border:2px solid rgba(111,207,142,.3);border-top-color:#6FCF8E;animation:spin .8s linear infinite;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6FCF8E" id="sync-status-label">Syncing your CRM data…</span>
+        </div>
+        <div style="font-size:18px;font-weight:800;color:white;letter-spacing:-.02em">Your dashboard is being prepared</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);margin-top:3px">Data is loading in the background — you can explore the app while we work.</div>
+      </div>
+      <button onclick="minimizeSyncModal()" style="background:rgba(255,255,255,.08);border:none;border-radius:8px;color:rgba(255,255,255,.5);font-size:12px;font-weight:700;padding:6px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0">Minimize</button>
+    </div>
+
+    <!-- Overall progress bar -->
+    <div style="padding:16px 24px 0">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+        <span style="font-size:12.5px;font-weight:700;color:rgba(255,255,255,.7)">Overall progress</span>
+        <div style="display:flex;align-items:baseline;gap:6px">
+          <span style="font-size:20px;font-weight:800;color:white" id="sync-pct">0%</span>
+          <span style="font-size:12px;color:rgba(255,255,255,.35)" id="sync-eta">Est. ~45 min remaining</span>
+        </div>
+      </div>
+      <div style="height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden">
+        <div id="sync-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#6FCF8E,#0F5866);border-radius:99px;transition:width .6s ease"></div>
+      </div>
+    </div>
+
+    <!-- Data streams -->
+    <div style="padding:14px 24px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+
+      <div class="sync-stream-row" id="ss-contacts">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <span style="font-size:14px">👥</span>
+          <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.7)">Contacts</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.3)" id="ss-contacts-count">0 / ~3,400</span>
+        </div>
+        <div style="height:4px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden"><div id="ss-contacts-bar" style="height:100%;width:0%;background:#6FCF8E;border-radius:99px;transition:width .6s ease"></div></div>
+      </div>
+
+      <div class="sync-stream-row" id="ss-deals">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <span style="font-size:14px">💼</span>
+          <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.7)">Deals</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.3)" id="ss-deals-count">0 / ~820</span>
+        </div>
+        <div style="height:4px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden"><div id="ss-deals-bar" style="height:100%;width:0%;background:#60A5FA;border-radius:99px;transition:width .6s ease"></div></div>
+      </div>
+
+      <div class="sync-stream-row" id="ss-activities">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <span style="font-size:14px">📋</span>
+          <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.7)">Activities</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.3)" id="ss-activities-count">0 / ~12,000</span>
+        </div>
+        <div style="height:4px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden"><div id="ss-activities-bar" style="height:100%;width:0%;background:#FBBF24;border-radius:99px;transition:width .6s ease"></div></div>
+      </div>
+
+      <div class="sync-stream-row" id="ss-locations">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <span style="font-size:14px">📍</span>
+          <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.7)">Locations</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.3)" id="ss-locations-count">Detecting…</span>
+        </div>
+        <div style="height:4px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden"><div id="ss-locations-bar" style="height:100%;width:0%;background:#C084FC;border-radius:99px;transition:width .6s ease"></div></div>
+      </div>
+
+    </div>
+
+    <!-- Live log -->
+    <div style="margin:14px 24px 0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;height:58px;overflow:hidden;position:relative">
+      <div id="sync-log" style="font-size:11.5px;color:rgba(255,255,255,.35);font-family:monospace;line-height:1.7">
+        <div id="sync-log-line1">→ Connecting to CRM…</div>
+        <div id="sync-log-line2" style="color:rgba(255,255,255,.15)"></div>
+        <div id="sync-log-line3" style="color:rgba(255,255,255,.08)"></div>
+      </div>
+    </div>
+
+    <!-- Footer actions -->
+    <div style="padding:14px 24px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div style="font-size:12px;color:rgba(255,255,255,.3)">Your dashboard shows sample data until sync completes.</div>
+      <button id="sync-notify-btn" onclick="syncNotifyMe()" style="background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:8px;color:rgba(255,255,255,.65);font-size:12px;font-weight:700;padding:7px 14px;cursor:pointer;white-space:nowrap">🔔 Notify me when done</button>
+    </div>
+  </div>
+</div>
+
+<!-- SYNC MINIMIZED CHIP -->
+<div id="sync-chip" onclick="restoreSyncModal()" style="display:none;position:fixed;bottom:20px;right:20px;z-index:9001;background:var(--ink);border:1.5px solid rgba(111,207,142,.3);border-radius:99px;padding:8px 16px;cursor:pointer;display:none;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.4)">
+  <div style="width:8px;height:8px;border-radius:50%;border:2px solid rgba(111,207,142,.4);border-top-color:#6FCF8E;animation:spin .8s linear infinite"></div>
+  <span style="font-size:12px;font-weight:700;color:white" id="sync-chip-pct">0%</span>
+  <span style="font-size:12px;color:rgba(255,255,255,.4)">syncing…</span>
 </div>
 
 <div class="modal-back" id="modal-mob-menu-modal" onclick="closeModalBack(event)">
