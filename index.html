@@ -909,7 +909,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </select>
     </div>
     <div id="multi-note" style="background:rgba(31,58,95,.06);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--slate);margin-bottom:16px;border:1px solid rgba(31,58,95,.12)">
-      ℹ️ You'll add branches on the next step. Each branch gets its own filtered view.
+      ℹ️ Your locations are detected automatically when your CRM connects — no need to enter them manually.
     </div>
     <button class="btn btn-primary btn-full btn-lg" onclick="authGo('plan')">Continue →</button>
   </div>
@@ -1030,52 +1030,50 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <button class="btn btn-outline btn-full" onclick="authGo('login')">&#8592; Back to sign in</button>
   </div>
 
-  <!-- PLAN SELECTION -->
-  <div class="auth-card scr" id="scr-plan" style="max-width:560px;width:100%">
-    <div class="auth-h1">Your subscription</div>
-    <div class="auth-sub" style="margin-bottom:20px">30-day free trial, no card required. Here's what it costs when your trial ends.</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
-      <div class="date-filter">
-        <div class="df-opt on" onclick="setBilling(this,'monthly')">Monthly</div>
-        <div class="df-opt" onclick="setBilling(this,'annual')">Annual <span style="color:var(--pos);font-size:11px;font-weight:700"> save 2 months</span></div>
+  <!-- PLAN / PRICING TRANSPARENCY -->
+  <div class="auth-card scr" id="scr-plan" style="max-width:540px;width:100%">
+    <div class="auth-h1">Start free for 30 days</div>
+    <div class="auth-sub" style="margin-bottom:20px">No card required. Here's exactly what you'll pay when your trial ends.</div>
+
+    <!-- Pricing cards: Monthly vs Annual -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <!-- Monthly -->
+      <div id="plan-card-monthly" style="border:2px solid var(--horizon);border-radius:14px;padding:20px;background:rgba(31,58,95,.04);cursor:pointer" onclick="selectBillingCycle('monthly')">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--horizon);margin-bottom:8px">Monthly</div>
+        <div style="font-size:26px;font-weight:800;letter-spacing:-.03em">$199<span style="font-size:13px;font-weight:400;color:var(--muted)">/mo</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">1 location included</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">+ $149/mo per extra location</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><div id="plan-dot-monthly" style="width:14px;height:14px;border-radius:50%;border:2px solid var(--horizon);background:var(--horizon);flex-shrink:0"></div><span style="font-size:12px;font-weight:700;color:var(--horizon)">Selected</span></div>
+      </div>
+      <!-- Annual -->
+      <div id="plan-card-annual" style="border:2px solid var(--rule);border-radius:14px;padding:20px;background:white;cursor:pointer;position:relative" onclick="selectBillingCycle('annual')">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--pos);color:white;font-size:10px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap">SAVE 2 MONTHS</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px">Annual</div>
+        <div style="font-size:26px;font-weight:800;letter-spacing:-.03em">$166<span style="font-size:13px;font-weight:400;color:var(--muted)">/mo</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Billed $1,990/yr · 1 location</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">+ $1,490/yr per extra location</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:6px"><div id="plan-dot-annual" style="width:14px;height:14px;border-radius:50%;border:2px solid var(--rule);background:white;flex-shrink:0"></div><span style="font-size:12px;font-weight:600;color:var(--muted)">Select</span></div>
       </div>
     </div>
-    <div class="card-sm" style="padding:20px;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <div>
-          <div style="font-size:15px;font-weight:700">Base subscription</div>
-          <div style="font-size:12.5px;color:var(--muted)">Includes your first location, all reports</div>
-        </div>
-        <div style="font-size:18px;font-weight:800">$199<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding-top:14px">
-        <div>
-          <div style="font-size:15px;font-weight:700">Additional locations</div>
-          <div style="font-size:12.5px;color:var(--muted)">$149/month per additional location</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <button class="btn btn-outline btn-xs" onclick="setLocations(-1)">−</button>
-          <span id="plan-locations" style="font-size:15px;font-weight:700;min-width:16px;text-align:center">0</span>
-          <button class="btn btn-outline btn-xs" onclick="setLocations(1)">+</button>
-        </div>
-      </div>
-      <div style="text-align:right;font-size:12.5px;color:var(--muted);margin-top:10px;border-top:1px solid var(--rule);padding-top:10px">
-        Total: <strong id="plan-locations-total" style="color:var(--ink)">1 location</strong> (1 included + <span id="plan-locations-extra">0</span> additional)
+
+    <!-- CRM auto-detect note -->
+    <div style="background:rgba(15,88,102,.07);border:1px solid rgba(15,88,102,.18);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--slate);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:15px;flex-shrink:0">🔗</span>
+      <span>Your locations are detected automatically when your CRM connects. <strong>Pricing adjusts instantly</strong> — you only pay for what's found. No manual entry needed.</span>
+    </div>
+
+    <!-- What changes at end of trial -->
+    <div style="border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:16px">
+      <div style="padding:10px 14px;background:var(--panel);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">What happens after your trial</div>
+      <div style="padding:14px">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--rule)"><span style="color:var(--slate)">Day 1–30</span><span style="font-weight:700;color:var(--pos)">Free — no charge</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--rule)"><span style="color:var(--slate)">Day 31 · 1 location</span><span style="font-weight:700" id="plan-day31-1loc">$199/mo</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px"><span style="color:var(--slate)">Each additional location</span><span style="font-weight:700" id="plan-extra-loc">+$149/mo</span></div>
       </div>
     </div>
-    <div class="card-sm" style="padding:18px 20px;margin-bottom:14px;background:var(--horizon);border-color:var(--horizon)">
-      <div style="display:flex;justify-content:space-between;align-items:baseline">
-        <div style="color:rgba(255,255,255,.7);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em" id="plan-total-label">Total / month</div>
-        <div style="display:flex;align-items:baseline;gap:8px">
-          <span id="plan-total-strike" style="display:none;color:rgba(255,255,255,.4);font-size:16px;font-weight:700;text-decoration:line-through"></span>
-          <div style="color:white;font-size:28px;font-weight:800" id="plan-total">$199</div>
-        </div>
-      </div>
-      <div style="color:rgba(255,255,255,.6);font-size:12px;margin-top:4px" id="plan-total-sub">After your 30-day trial ends</div>
-      <div style="color:#6FCF8E;font-size:12.5px;font-weight:700;margin-top:6px;display:none" id="plan-savings"></div>
-    </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="authGo('branches')">Start 30-day free trial →</button>
-    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);font-family:'Inter',sans-serif">30-day trial, then billing begins at the price above. Cancel anytime.</div>
+
+    <button class="btn btn-primary btn-full btn-lg" onclick="startFreeTrial()">Start 30-day free trial — no card needed →</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted)">You can choose monthly or annual anytime during your trial from Settings. Cancel anytime.</div>
   </div>
 
 </div><!-- /auth-wrap -->
@@ -3503,7 +3501,7 @@ function managerProfileDone(){
   enterAppAsManager();
 }
 function enterAppAsManager(){
-  // Lock dashboard to the invited branch before entering
+  window._isManagerJoin=true;
   currentUser.isAdmin=false;
   currentUser.role='sales_manager';
   var branchName='NY — Queens';
@@ -4106,6 +4104,39 @@ function applyContactsScope(perms){
   }
 }
 
+// PLAN SCREEN — billing cycle selection
+var _billingCycle='monthly';
+function selectBillingCycle(cycle){
+  _billingCycle=cycle;
+  var mCard=document.getElementById('plan-card-monthly');
+  var aCard=document.getElementById('plan-card-annual');
+  var mDot=document.getElementById('plan-dot-monthly');
+  var aDot=document.getElementById('plan-dot-annual');
+  if(cycle==='monthly'){
+    mCard.style.borderColor='var(--horizon)';mCard.style.background='rgba(31,58,95,.04)';
+    mDot.style.background='var(--horizon)';mDot.style.borderColor='var(--horizon)';
+    mDot.nextElementSibling.textContent='Selected';mDot.nextElementSibling.style.color='var(--horizon)';
+    aCard.style.borderColor='var(--rule)';aCard.style.background='white';
+    aDot.style.background='white';aDot.style.borderColor='var(--rule)';
+    aDot.nextElementSibling.textContent='Select';aDot.nextElementSibling.style.color='var(--muted)';
+    document.getElementById('plan-day31-1loc').textContent='$199/mo';
+    document.getElementById('plan-extra-loc').textContent='+$149/mo';
+  } else {
+    aCard.style.borderColor='var(--horizon)';aCard.style.background='rgba(31,58,95,.04)';
+    aDot.style.background='var(--horizon)';aDot.style.borderColor='var(--horizon)';
+    aDot.nextElementSibling.textContent='Selected';aDot.nextElementSibling.style.color='var(--horizon)';
+    mCard.style.borderColor='var(--rule)';mCard.style.background='white';
+    mDot.style.background='white';mDot.style.borderColor='var(--rule)';
+    mDot.nextElementSibling.textContent='Select';mDot.nextElementSibling.style.color='var(--muted)';
+    document.getElementById('plan-day31-1loc').textContent='$1,990/yr';
+    document.getElementById('plan-extra-loc').textContent='+$1,490/yr';
+  }
+}
+function startFreeTrial(){
+  window._plan='paid';
+  authGo('crm-pick');
+}
+
 // ENTER APP
 function enterApp(){
   document.getElementById('auth-wrap').style.display='none';
@@ -4113,10 +4144,10 @@ function enterApp(){
   document.getElementById('sidebar').style.display='flex';
   document.getElementById('body-wrap').style.flex='1';
   var co=document.getElementById('inp-co');
-  document.getElementById('tb-co').textContent=co?co.value:'Smith Roofing LLC';
-  document.getElementById('sb-co').textContent=co?co.value:'Smith Roofing LLC';
-  var freeSel=document.querySelector('.plan-card.on .plan-name');
-  window._plan=(freeSel&&freeSel.textContent.trim().toLowerCase()==='free')?'free':'paid';
+  var coName=co?co.value:'Smith Roofing LLC';
+  document.getElementById('tb-co').textContent=coName;
+  document.getElementById('sb-co').textContent=coName;
+  window._plan='paid';
   applyPlan();
   buildGates();
   applyRoleUI();
@@ -4126,6 +4157,15 @@ function enterApp(){
   goApp(currentUser.roles[0]===ROLES.SALES_REP?'contacts':'dashboard');
   setTimeout(initCharts,300);
   setTimeout(checkPWABanner,5000);
+  // Show welcome email modal for new signups (not manager joins)
+  if(!window._isManagerJoin){
+    setTimeout(function(){
+      var nameEl=document.getElementById('welcome-name');
+      if(nameEl)nameEl.textContent='James';
+      openModal('welcome-email-modal');
+    },600);
+  }
+  window._isManagerJoin=false;
 }
 
 // NAV
@@ -4927,6 +4967,59 @@ function saveRules(){
   </div>
 </div>
 <!-- MOBILE MORE MODAL -->
+<!-- WELCOME EMAIL MODAL -->
+<div class="modal-back" id="modal-welcome-email-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <div><div class="modal-title">🎉 Welcome to The Hub!</div><div class="modal-sub">Your account is set up — here's what happens next</div></div>
+      <button class="modal-close" onclick="closeModal('welcome-email-modal')">×</button>
+    </div>
+    <div class="modal-body" style="padding:0">
+      <!-- Email preview wrapper -->
+      <div style="background:#F9FAFB;border-bottom:1px solid var(--rule);padding:16px 20px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">📧 Confirmation email sent to your inbox</div>
+        <div style="font-size:13px;color:var(--slate)"><strong>Subject:</strong> Your 30-day free trial has started — The Hub</div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="font-size:14.5px;color:var(--slate);margin-bottom:16px">Hi <strong id="welcome-name">James</strong>, welcome aboard!</p>
+        <p style="font-size:13.5px;color:var(--slate);margin-bottom:20px">Your free trial is now active. Here's a summary of your plan and what to expect:</p>
+
+        <!-- Trial timeline -->
+        <div style="border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:20px">
+          <div style="padding:10px 14px;background:var(--panel);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Your trial timeline</div>
+          <div style="padding:14px 16px">
+            <div style="display:flex;gap:12px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--rule)">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--pos-bg);color:var(--pos);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+              <div><div style="font-size:13.5px;font-weight:700">Today — Day 30: Free</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Full access, no charge. Connect your CRM to unlock all features.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--rule)">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(181,123,31,.1);color:var(--caut);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+              <div><div style="font-size:13.5px;font-weight:700">Day 25: Reminder email</div><div style="font-size:12px;color:var(--muted);margin-top:2px">We'll remind you 5 days before billing starts with your exact price based on detected locations.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding-top:14px">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(31,58,95,.08);color:var(--horizon);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+              <div><div style="font-size:13.5px;font-weight:700">Day 31: Billing begins</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Based on your CRM-detected locations. 1 location = <strong>$199/mo</strong>. Each additional = <strong>$149/mo</strong>.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing callout -->
+        <div style="background:rgba(31,58,95,.05);border:1.5px solid rgba(31,58,95,.12);border-radius:10px;padding:14px 16px;margin-bottom:20px">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--horizon);margin-bottom:8px">Your pricing (auto-set after CRM connects)</div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--slate)">Base — 1 location</span><span style="font-weight:700">$199/month</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--slate)">Each additional location</span><span style="font-weight:700">$149/month</span></div>
+          <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">You can switch to annual billing anytime from <strong>Settings → Subscription</strong> to save 2 months.</div>
+        </div>
+
+        <div style="font-size:13px;color:var(--slate)">Questions? Reply to this email or visit <span style="color:var(--cyan);font-weight:700">Help → Getting started</span> inside the app.</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" onclick="closeModal('welcome-email-modal')">Go to my dashboard →</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-back" id="modal-mob-menu-modal" onclick="closeModalBack(event)">
   <div class="modal">
     <div class="modal-head" style="padding:20px 20px 0"><div class="modal-title">More</div><button class="modal-close" onclick="closeModal('mob-menu-modal')">x</button></div>
