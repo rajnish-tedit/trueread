@@ -890,27 +890,29 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <!-- COMPANY SETUP -->
   <div class="auth-card scr" id="scr-company-setup" style="max-width:460px;">
     <div class="auth-h1">Company setup</div>
-    <div class="auth-sub" style="margin-bottom:22px">Tell us about your business. This configures your dashboard and branch structure.</div>
+    <div class="auth-sub" style="margin-bottom:22px">Tell us about your business so we can configure your dashboard.</div>
     <div class="inp-row"><label class="lbl">Company name</label><input class="inp" value="Smith Roofing LLC" id="inp-co"/></div>
-    <div class="inp-row" style="position:relative">
-      <label class="lbl">Business address</label>
-      <input class="inp" id="inp-address" value="123 Bloomfield Ave, Montclair, NJ 07042" placeholder="Start typing your business address..." autocomplete="off" oninput="addressAutocomplete(this)" onfocus="addressAutocomplete(this)"/>
-      <input type="hidden" id="inp-address-city" value="Montclair"/>
-      <input type="hidden" id="inp-address-state" value="New Jersey"/>
-      <div class="addr-suggest" id="addr-suggest"></div>
-      <div class="inp-hint">Start typing and select your address from the list — powered by Google</div>
+    <div class="inp-row"><label class="lbl">Street address</label><input class="inp" value="123 Bloomfield Ave" placeholder="123 Main St" id="inp-street"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+      <div><label class="lbl">City</label><input class="inp" value="Montclair" placeholder="City" id="inp-city"/></div>
+      <div><label class="lbl">State</label>
+        <select class="inp" id="inp-state">
+          <option value="">Select state</option>
+          <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+          <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+          <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+          <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+          <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+          <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option selected>NJ</option>
+          <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+          <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+          <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+          <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+        </select>
+      </div>
     </div>
+    <div class="inp-row"><label class="lbl">ZIP code</label><input class="inp" value="07042" placeholder="00000" id="inp-zip" maxlength="5" style="max-width:160px"/></div>
     <div class="inp-row"><label class="lbl">Business phone</label><input class="inp" value="+1 (973) 555-0100"/></div>
-    <div class="inp-row"><label class="lbl">Company type</label>
-      <select class="inp" id="ctype" onchange="checkMulti()">
-        <option>Independent — Single location</option>
-        <option selected>Multi-location — Same brand</option>
-        <option>Franchise — Multiple companies</option>
-      </select>
-    </div>
-    <div id="multi-note" style="background:rgba(31,58,95,.06);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--slate);margin-bottom:16px;border:1px solid rgba(31,58,95,.12)">
-      ℹ️ Your locations are detected automatically when your CRM connects — no need to enter them manually.
-    </div>
     <button class="btn btn-primary btn-full btn-lg" onclick="authGo('plan')">Continue →</button>
   </div>
 
