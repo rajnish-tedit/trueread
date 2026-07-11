@@ -5014,7 +5014,7 @@ function saveRules(){
 <!-- MOBILE MORE MODAL -->
 <!-- WELCOME EMAIL MODAL -->
 <div class="modal-back" id="modal-welcome-email-modal" onclick="closeModalBack(event)">
-  <div class="modal" style="max-width:500px;padding:0;overflow:hidden">
+  <div class="modal" style="max-width:500px;padding:0;overflow:hidden;display:flex;flex-direction:column;max-height:92vh">
 
     <!-- Hero header — free trial highlight -->
     <div style="background:linear-gradient(135deg,#1F3A5F 0%,#0F5866 100%);padding:24px 24px 20px;position:relative">
@@ -5039,7 +5039,7 @@ function saveRules(){
     </div>
 
     <!-- Body -->
-    <div style="padding:20px 24px">
+    <div style="padding:20px 24px;overflow-y:auto;flex:1">
 
       <!-- Compliance notice — no card = no auto charge -->
       <div style="background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:10px;padding:12px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start">
