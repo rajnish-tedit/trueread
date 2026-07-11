@@ -4195,9 +4195,19 @@ function enterApp(){
   // Show welcome email modal for new signups (not manager joins)
   if(!window._isManagerJoin){
     setTimeout(function(){
-      var nameEl=document.getElementById('welcome-name');
-      if(nameEl)nameEl.textContent='James';
+      var co=document.getElementById('inp-co');
+      var firstName='James';
       openModal('welcome-email-modal');
+      // Populate dynamic dates
+      var now=new Date();
+      var trialEnd=new Date(now);trialEnd.setDate(trialEnd.getDate()+29);
+      var billDate=new Date(now);billDate.setDate(billDate.getDate()+30);
+      var fmt=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});};
+      var els=['welcome-name'];
+      els.forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=firstName;});
+      var te=document.getElementById('welcome-trial-end');if(te)te.textContent=fmt(trialEnd);
+      var tef=document.getElementById('welcome-trial-end-foot');if(tef)tef.textContent=fmt(trialEnd);
+      var bd=document.getElementById('welcome-bill-date');if(bd)bd.textContent=fmt(billDate);
     },600);
   }
   window._isManagerJoin=false;
@@ -5004,53 +5014,89 @@ function saveRules(){
 <!-- MOBILE MORE MODAL -->
 <!-- WELCOME EMAIL MODAL -->
 <div class="modal-back" id="modal-welcome-email-modal" onclick="closeModalBack(event)">
-  <div class="modal" style="max-width:520px">
-    <div class="modal-head">
-      <div><div class="modal-title">🎉 Welcome to The Hub!</div><div class="modal-sub">Your account is set up — here's what happens next</div></div>
-      <button class="modal-close" onclick="closeModal('welcome-email-modal')">×</button>
-    </div>
-    <div class="modal-body" style="padding:0">
-      <!-- Email preview wrapper -->
-      <div style="background:#F9FAFB;border-bottom:1px solid var(--rule);padding:16px 20px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">📧 Confirmation email sent to your inbox</div>
-        <div style="font-size:13px;color:var(--slate)"><strong>Subject:</strong> Your 30-day free trial has started — The Hub</div>
-      </div>
-      <div style="padding:20px 24px">
-        <p style="font-size:14.5px;color:var(--slate);margin-bottom:16px">Hi <strong id="welcome-name">James</strong>, welcome aboard!</p>
-        <p style="font-size:13.5px;color:var(--slate);margin-bottom:20px">Your free trial is now active. Here's a summary of your plan and what to expect:</p>
+  <div class="modal" style="max-width:500px;padding:0;overflow:hidden">
 
-        <!-- Trial timeline -->
-        <div style="border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:20px">
-          <div style="padding:10px 14px;background:var(--panel);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Your trial timeline</div>
-          <div style="padding:14px 16px">
-            <div style="display:flex;gap:12px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--rule)">
-              <div style="width:28px;height:28px;border-radius:50%;background:var(--pos-bg);color:var(--pos);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-              <div><div style="font-size:13.5px;font-weight:700">Today — Day 30: Free</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Full access, no charge. Connect your CRM to unlock all features.</div></div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--rule)">
-              <div style="width:28px;height:28px;border-radius:50%;background:rgba(181,123,31,.1);color:var(--caut);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-              <div><div style="font-size:13.5px;font-weight:700">Day 25: Reminder email</div><div style="font-size:12px;color:var(--muted);margin-top:2px">We'll remind you 5 days before billing starts with your exact price based on detected locations.</div></div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start;padding-top:14px">
-              <div style="width:28px;height:28px;border-radius:50%;background:rgba(31,58,95,.08);color:var(--horizon);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
-              <div><div style="font-size:13.5px;font-weight:700">Day 31: Billing begins</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Based on your CRM-detected locations. 1 location = <strong>$199/mo</strong>. Each additional = <strong>$149/mo</strong>.</div></div>
-            </div>
+    <!-- Hero header — free trial highlight -->
+    <div style="background:linear-gradient(135deg,#1F3A5F 0%,#0F5866 100%);padding:24px 24px 20px;position:relative">
+      <button class="modal-close" onclick="closeModal('welcome-email-modal')" style="position:absolute;top:14px;right:14px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.1);border:none;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">×</button>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.5);margin-bottom:10px">🎉 Account confirmed</div>
+      <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-.02em;margin-bottom:4px">Welcome, <span id="welcome-name">James</span>!</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6)">A confirmation has been sent to your email.</div>
+
+      <!-- Free trial badge — the highlight -->
+      <div style="margin-top:18px;background:rgba(111,207,142,.12);border:1.5px solid rgba(111,207,142,.35);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6FCF8E;margin-bottom:3px">Your free trial</div>
+          <div style="font-size:20px;font-weight:800;color:white;letter-spacing:-.02em">30 days — $0.00</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:2px">Ends <strong style="color:rgba(255,255,255,.8)" id="welcome-trial-end">Aug 10, 2026</strong></div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.4);margin-bottom:3px">Next bill date</div>
+          <div style="font-size:15px;font-weight:800;color:white" id="welcome-bill-date">Aug 11, 2026</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:1px">if you choose to continue</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:20px 24px">
+
+      <!-- Compliance notice — no card = no auto charge -->
+      <div style="background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:10px;padding:12px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:16px;flex-shrink:0;margin-top:1px">⚠️</span>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;color:#92400E;margin-bottom:3px">No automatic charge — you are in control</div>
+          <div style="font-size:12px;color:#78350F;line-height:1.55">No payment method is on file. <strong>Your trial ends automatically on Day 31 — no charge occurs unless you explicitly add a payment method and confirm continuation.</strong> Per NJ consumer protection regulations, no billing action is taken without your written authorization.</div>
+        </div>
+      </div>
+
+      <!-- Timeline — 3 steps -->
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">What happens next</div>
+      <div style="border-radius:12px;overflow:hidden;border:1.5px solid var(--rule);margin-bottom:18px">
+
+        <!-- Step 1 -->
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#F0FDF4;border-bottom:1px solid #D1FAE5">
+          <div style="width:34px;height:34px;border-radius:10px;background:#D1FAE5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🎁</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:#065F46">Today – Day 30: Completely Free</div>
+            <div style="font-size:11.5px;color:#047857;margin-top:1px">Full platform access. Zero cost. No card on file.</div>
+          </div>
+          <div style="font-size:15px;font-weight:800;color:#065F46;flex-shrink:0">$0</div>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#FFFBEB;border-bottom:1px solid #FDE68A">
+          <div style="width:34px;height:34px;border-radius:10px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📬</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:#92400E">Day 25: Reminder + payment prompt</div>
+            <div style="font-size:11.5px;color:#B45309;margin-top:1px">We email your exact price (based on CRM locations) and a link to add a payment method if you'd like to continue.</div>
           </div>
         </div>
 
-        <!-- Pricing callout -->
-        <div style="background:rgba(31,58,95,.05);border:1.5px solid rgba(31,58,95,.12);border-radius:10px;padding:14px 16px;margin-bottom:20px">
-          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--horizon);margin-bottom:8px">Your pricing (auto-set after CRM connects)</div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--slate)">Base — 1 location</span><span style="font-weight:700">$199/month</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--slate)">Each additional location</span><span style="font-weight:700">$149/month</span></div>
-          <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">You can switch to annual billing anytime from <strong>Settings → Subscription</strong> to save 2 months.</div>
+        <!-- Step 3 -->
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:white">
+          <div style="width:34px;height:34px;border-radius:10px;background:rgba(31,58,95,.07);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Day 31: Trial ends — your choice</div>
+            <div style="font-size:11.5px;color:var(--muted);margin-top:1px">Add payment to continue at <strong id="welcome-price-line">$199/mo</strong> (based on detected locations). No action = account pauses, no charge.</div>
+          </div>
         </div>
-
-        <div style="font-size:13px;color:var(--slate)">Questions? Reply to this email or visit <span style="color:var(--cyan);font-weight:700">Help → Getting started</span> inside the app.</div>
       </div>
+
+      <!-- Pricing summary -->
+      <div style="background:rgba(31,58,95,.04);border:1.5px solid rgba(31,58,95,.1);border-radius:10px;padding:13px 16px;margin-bottom:16px">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--horizon);margin-bottom:10px">Estimated pricing after trial (CRM-detected)</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(200,194,182,.5)"><span style="color:var(--slate)">Base — 1 location</span><span style="font-weight:800">$199/month</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:5px 0"><span style="color:var(--slate)">Each additional location</span><span style="font-weight:800">+$149/month</span></div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(200,194,182,.5);font-size:11.5px;color:var(--muted)">Final price is calculated <strong>after your CRM connects</strong> and locations are confirmed. Switch to annual in <strong>Settings → Subscription</strong> to save 2 months.</div>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);text-align:center;line-height:1.6">Questions? Visit <strong style="color:var(--cyan)">Help → Getting started</strong> or email support@thehub.app<br><span style="font-size:11px">The Hub is a registered software service operating under NJ consumer protection guidelines.</span></div>
     </div>
-    <div class="modal-foot">
-      <button class="btn btn-primary" onclick="closeModal('welcome-email-modal')">Go to my dashboard →</button>
+
+    <div style="padding:16px 24px;border-top:1px solid var(--rule);display:flex;gap:10px;align-items:center;justify-content:space-between">
+      <div style="font-size:12px;color:var(--muted)">Trial ends: <strong id="welcome-trial-end-foot">Aug 10, 2026</strong></div>
+      <button class="btn btn-primary" onclick="closeModal('welcome-email-modal')" style="padding:12px 24px">Go to my dashboard →</button>
     </div>
   </div>
 </div>
