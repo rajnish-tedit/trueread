@@ -638,6 +638,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 .mgr-pill-pending{background:#FEF3C7;color:#92400E;}
 .mgr-pill-joined{background:#D1FAE5;color:#065F46;}
 .mgr-pill-none{background:#F3F4F6;color:#6B7280;}
+/* Users filter tabs */
+.usr-tab{padding:6px 14px;border-radius:6px;font-size:12.5px;font-weight:600;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:.15s;white-space:nowrap;}
+.usr-tab.on{background:white;color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08);}
 /* INVITE EMAIL SCREEN */
 #scr-invite-email{max-width:600px;padding:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;}
 .email-mock{background:white;border-radius:16px;box-shadow:0 4px 32px rgba(0,0,0,.12);overflow:hidden;width:100%;}
@@ -2494,29 +2497,157 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- ═══════════════════════════ USERS & SEATS ═══ -->
 <div class="app-scr" id="app-users">
-  <div class="pg-header fu"><div><div class="pg-title">Users & Seats</div><div class="pg-sub">Network-wide seat pool — one seat consumed per accepted invite</div></div><div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="openModal('invite-modal')">+ Invite user</button></div></div>
-  <div class="grid-2 fu1" style="margin-bottom:20px">
-    <div class="kpi pos"><div class="kpi-label">Active Users</div><div class="kpi-value">23</div><span class="kpi-delta up">of 30 seats</span></div>
-    <div class="kpi caut"><div class="kpi-label">Pending Invites</div><div class="kpi-value">2</div><span class="kpi-delta flat">seat reserved</span></div>
+  <!-- Header -->
+  <div class="pg-header fu">
+    <div><div class="pg-title">Users &amp; Seats</div><div class="pg-sub">All people from your CRM and The Hub — across every location</div></div>
+    <div class="pg-actions"><button class="btn btn-primary btn-sm" onclick="openAddUserModal()">+ Add User</button></div>
   </div>
-  <div class="card fu2"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Seat Usage by Branch</div></div></div>
-    <div style="padding:0 20px 18px;display:flex;flex-direction:column;gap:12px">
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">NJ — Montclair</span><span style="font-size:12px;color:var(--muted)">8 / 10 seats</span></div><div class="prog-track"><div class="prog-fill" style="--w:80%;width:80%"></div></div></div>
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">NY — Queens</span><span style="font-size:12px;color:var(--muted)">6 / 8 seats</span></div><div class="prog-track"><div class="prog-fill" style="--w:75%;width:75%"></div></div></div>
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">FL — Tampa</span><span style="font-size:12px;color:var(--muted)">5 / 7 seats</span></div><div class="prog-track"><div class="prog-fill" style="--w:71%;width:71%"></div></div></div>
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12.5px;font-weight:600">Miami</span><span style="font-size:12px;color:var(--muted);color:var(--caut)">5 / 5 seats</span></div><div class="prog-track"><div class="prog-fill caut" style="--w:100%;width:100%"></div></div></div>
+
+  <!-- Summary KPI strip -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px" class="fu1">
+    <div class="kpi pos"><div class="kpi-label">Hub Active</div><div class="kpi-value" id="usr-kpi-hub">4</div><span class="kpi-delta up">using The Hub</span></div>
+    <div class="kpi"><div class="kpi-label">CRM Only</div><div class="kpi-value" id="usr-kpi-crm">5</div><span class="kpi-delta flat">not on Hub yet</span></div>
+    <div class="kpi caut"><div class="kpi-label">Invite Pending</div><div class="kpi-value" id="usr-kpi-pending">2</div><span class="kpi-delta flat">awaiting response</span></div>
+    <div class="kpi"><div class="kpi-label">Seats Used</div><div class="kpi-value">6/30</div><span class="kpi-delta up">Hub seats</span></div>
+  </div>
+
+  <!-- Legend -->
+  <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:10px 14px;background:rgba(255,255,255,.6);border:1px solid var(--rule);border-radius:10px" class="fu2">
+    <span style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Legend:</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate)"><span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">HUB</span> Active on The Hub</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate)"><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span> Imported from CRM only</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate)"><span style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">INVITED</span> Invite sent, not joined yet</span>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="card fu3" style="overflow:visible">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 0;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;gap:0;background:var(--panel);border-radius:8px;padding:3px" id="usr-filter-tabs">
+        <button class="usr-tab on" onclick="filterUsers('all',this)">All Users</button>
+        <button class="usr-tab" onclick="filterUsers('hub',this)">🟢 Hub Active</button>
+        <button class="usr-tab" onclick="filterUsers('crm',this)">🔵 CRM Only</button>
+        <button class="usr-tab" onclick="filterUsers('pending',this)">🟡 Pending</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted)" id="usr-filter-count">Showing all 11 users</div>
     </div>
-  </div>
-  <div class="card fu3"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">All Users</div></div></div>
-    <table class="tbl" id="users-table"><thead><tr><th>Name</th><th>Role</th><th>Branch</th><th>Status</th><th></th></tr></thead>
-    <tbody>
-      <tr id="urow-john"><td style="font-weight:700">John Smith<div style="font-size:11.5px;color:var(--muted);font-weight:400">john@smithroofing.com</div></td><td><span class="pill pill-blue">Owner</span></td><td>All branches</td><td><span class="pill pill-pos">Active</span></td><td><button class="btn btn-outline btn-xs" onclick="openEditUser('john','John Smith','Owner','All branches','john@smithroofing.com')">Edit</button></td></tr>
-      <tr id="urow-marcus"><td style="font-weight:700">Marcus Webb<div style="font-size:11.5px;color:var(--muted);font-weight:400">marcus@smithroofing.com</div></td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NJ — Montclair</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('marcus','Marcus Webb','Sales Rep','NJ — Montclair','marcus@smithroofing.com')">Edit</button></div></td></tr>
-      <tr id="urow-lisa"><td style="font-weight:700">Lisa Chen<div style="font-size:11.5px;color:var(--muted);font-weight:400">lisa@smithroofing.com</div></td><td><span class="pill pill-neutral">Sales Rep</span></td><td>NY — Queens</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('lisa','Lisa Chen','Sales Rep','NY — Queens','lisa@smithroofing.com')">Edit</button></div></td></tr>
-      <tr id="urow-derek"><td style="font-weight:700">Derek Osei<div style="font-size:11.5px;color:var(--muted);font-weight:400">derek@smithroofing.com</div></td><td><span class="pill pill-neutral">Sales Rep</span></td><td>FL — Tampa</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('derek','Derek Osei','Sales Rep','FL — Tampa','derek@smithroofing.com')">Edit</button></div></td></tr>
-      <tr id="urow-priya"><td style="font-weight:700">Priya Patel<div style="font-size:11.5px;color:var(--muted);font-weight:400">priya@smithroofing.com</div></td><td><span class="pill pill-cyan">Branch Mgr</span></td><td>NJ — Montclair</td><td><span class="pill pill-pos">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="openEditUser('priya','Priya Patel','Branch Manager','NJ — Montclair','priya@smithroofing.com')">Edit</button></div></td></tr>
-      <tr id="urow-kim"><td style="font-weight:700">Kim Nguyen<div style="font-size:11.5px;color:var(--muted);font-weight:400">kim@smithroofing.com</div> <span style="font-size:11px;color:var(--muted)">(pending)</span></td><td><span class="pill pill-cyan">Branch Mgr</span></td><td>Miami</td><td><span class="pill pill-caut">Invited</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" onclick="resendUserInvite('kim','Kim Nguyen')">Re-invite</button><button class="btn btn-danger btn-xs" onclick="revokeUserInvite('kim','Kim Nguyen')">Revoke</button></div></td></tr>
-    </tbody></table>
+
+    <div style="overflow-x:auto">
+      <table class="tbl" id="users-table" style="min-width:680px">
+        <thead><tr>
+          <th>Name &amp; Email</th>
+          <th>Source</th>
+          <th>Role</th>
+          <th>Location</th>
+          <th>Hub Status</th>
+          <th></th>
+        </tr></thead>
+        <tbody>
+
+          <!-- HUB ACTIVE USERS -->
+          <tr id="urow-john" data-usersrc="hub" data-userstatus="active">
+            <td><div style="font-weight:700">John Smith</div><div style="font-size:11.5px;color:var(--muted)">john@smithroofing.com</div></td>
+            <td><span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">HUB</span></td>
+            <td><span class="pill pill-blue">Owner</span></td>
+            <td>All locations</td>
+            <td><span class="pill pill-pos">🟢 Hub Active</span></td>
+            <td><button class="btn btn-outline btn-xs" onclick="openEditUser('john','John Smith','Owner','All locations','john@smithroofing.com')">Edit</button></td>
+          </tr>
+
+          <tr id="urow-priya" data-usersrc="hub" data-userstatus="active">
+            <td><div style="font-weight:700">Priya Patel</div><div style="font-size:11.5px;color:var(--muted)">priya@smithroofing.com</div></td>
+            <td><span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">HUB</span></td>
+            <td><span class="pill pill-cyan">Branch Mgr</span></td>
+            <td>NJ — Montclair</td>
+            <td><span class="pill pill-pos">🟢 Hub Active</span></td>
+            <td><button class="btn btn-outline btn-xs" onclick="openEditUser('priya','Priya Patel','Branch Manager','NJ — Montclair','priya@smithroofing.com')">Edit</button></td>
+          </tr>
+
+          <tr id="urow-marcus" data-usersrc="crm-hub" data-userstatus="active">
+            <td><div style="font-weight:700">Marcus Webb</div><div style="font-size:11.5px;color:var(--muted)">marcus@smithroofing.com</div></td>
+            <td><span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">HUB</span> <span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span class="pill pill-neutral">Sales Rep</span></td>
+            <td>NY — Queens</td>
+            <td><span class="pill pill-pos">🟢 Hub Active</span></td>
+            <td><button class="btn btn-outline btn-xs" onclick="openEditUser('marcus','Marcus Webb','Sales Rep','NY — Queens','marcus@smithroofing.com')">Edit</button></td>
+          </tr>
+
+          <tr id="urow-lisa" data-usersrc="crm-hub" data-userstatus="active">
+            <td><div style="font-weight:700">Lisa Chen</div><div style="font-size:11.5px;color:var(--muted)">lisa@smithroofing.com</div></td>
+            <td><span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">HUB</span> <span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span class="pill pill-neutral">Sales Rep</span></td>
+            <td>NJ — Montclair</td>
+            <td><span class="pill pill-pos">🟢 Hub Active</span></td>
+            <td><button class="btn btn-outline btn-xs" onclick="openEditUser('lisa','Lisa Chen','Sales Rep','NJ — Montclair','lisa@smithroofing.com')">Edit</button></td>
+          </tr>
+
+          <!-- HUB INVITED (CRM user invited to Hub, not yet joined) -->
+          <tr id="urow-kim" data-usersrc="crm" data-userstatus="invited">
+            <td><div style="font-weight:700">Kim Nguyen</div><div style="font-size:11.5px;color:var(--muted)">kim@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span class="pill pill-cyan">Branch Mgr</span></td>
+            <td>Miami</td>
+            <td><span class="pill pill-caut">🟡 Invite Sent</span></td>
+            <td><div style="display:flex;gap:5px"><button class="btn btn-outline btn-xs" onclick="resendUserInvite('kim','Kim Nguyen')">Resend</button><button class="btn btn-danger btn-xs" onclick="revokeUserInvite('kim','Kim Nguyen')">Revoke</button></div></td>
+          </tr>
+
+          <tr id="urow-carlos" data-usersrc="crm" data-userstatus="invited">
+            <td><div style="font-weight:700">Carlos Rivera</div><div style="font-size:11.5px;color:var(--muted)">carlos@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span class="pill pill-neutral">Sales Rep</span></td>
+            <td>FL — Tampa</td>
+            <td><span class="pill pill-caut">🟡 Invite Sent</span></td>
+            <td><div style="display:flex;gap:5px"><button class="btn btn-outline btn-xs" onclick="resendUserInvite('carlos','Carlos Rivera')">Resend</button><button class="btn btn-danger btn-xs" onclick="revokeUserInvite('carlos','Carlos Rivera')">Revoke</button></div></td>
+          </tr>
+
+          <!-- CRM ONLY users — not yet on Hub -->
+          <tr id="urow-derek" data-usersrc="crm" data-userstatus="crm">
+            <td><div style="font-weight:700">Derek Osei</div><div style="font-size:11.5px;color:var(--muted)">derek@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span style="font-size:12px;color:var(--muted)">—</span></td>
+            <td>FL — Tampa</td>
+            <td><span style="background:#F3F4F6;color:#6B7280;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px">⚪ CRM Only</span></td>
+            <td><button class="btn btn-primary btn-xs" onclick="openInviteToHubModal('derek','Derek Osei','derek@smithroofing.com','FL — Tampa')">Invite to Hub →</button></td>
+          </tr>
+
+          <tr id="urow-sarah" data-usersrc="crm" data-userstatus="crm">
+            <td><div style="font-weight:700">Sarah Mitchell</div><div style="font-size:11.5px;color:var(--muted)">sarah@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span style="font-size:12px;color:var(--muted)">—</span></td>
+            <td>NJ — Montclair</td>
+            <td><span style="background:#F3F4F6;color:#6B7280;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px">⚪ CRM Only</span></td>
+            <td><button class="btn btn-primary btn-xs" onclick="openInviteToHubModal('sarah','Sarah Mitchell','sarah@smithroofing.com','NJ — Montclair')">Invite to Hub →</button></td>
+          </tr>
+
+          <tr id="urow-tony" data-usersrc="crm" data-userstatus="crm">
+            <td><div style="font-weight:700">Tony Russo</div><div style="font-size:11.5px;color:var(--muted)">tony@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span style="font-size:12px;color:var(--muted)">—</span></td>
+            <td>NY — Queens</td>
+            <td><span style="background:#F3F4F6;color:#6B7280;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px">⚪ CRM Only</span></td>
+            <td><button class="btn btn-primary btn-xs" onclick="openInviteToHubModal('tony','Tony Russo','tony@smithroofing.com','NY — Queens')">Invite to Hub →</button></td>
+          </tr>
+
+          <tr id="urow-anna" data-usersrc="crm" data-userstatus="crm">
+            <td><div style="font-weight:700">Anna Kowalski</div><div style="font-size:11.5px;color:var(--muted)">anna@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span style="font-size:12px;color:var(--muted)">—</span></td>
+            <td>Miami</td>
+            <td><span style="background:#F3F4F6;color:#6B7280;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px">⚪ CRM Only</span></td>
+            <td><button class="btn btn-primary btn-xs" onclick="openInviteToHubModal('anna','Anna Kowalski','anna@smithroofing.com','Miami')">Invite to Hub →</button></td>
+          </tr>
+
+          <tr id="urow-raj" data-usersrc="crm" data-userstatus="crm">
+            <td><div style="font-weight:700">Raj Patel</div><div style="font-size:11.5px;color:var(--muted)">raj@smithroofing.com</div></td>
+            <td><span style="background:#DBEAFE;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">CRM</span></td>
+            <td><span style="font-size:12px;color:var(--muted)">—</span></td>
+            <td>FL — Tampa</td>
+            <td><span style="background:#F3F4F6;color:#6B7280;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px">⚪ CRM Only</span></td>
+            <td><button class="btn btn-primary btn-xs" onclick="openInviteToHubModal('raj','Raj Patel','raj@smithroofing.com','FL — Tampa')">Invite to Hub →</button></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -3142,6 +3273,93 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 </div>
 
 <!-- EDIT USER MODAL -->
+<!-- INVITE CRM USER TO HUB MODAL -->
+<div class="modal-back" id="modal-invite-hub-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head">
+      <div><div class="modal-title">Invite to The Hub</div><div class="modal-sub" id="ihub-email-sub">user@company.com</div></div>
+      <button class="modal-close" onclick="closeModal('invite-hub-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- CRM user info banner -->
+      <div style="background:#DBEAFE;border:1.5px solid #BFDBFE;border-radius:10px;padding:12px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:center">
+        <span style="font-size:18px">🔵</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#1E40AF" id="ihub-name-banner">Derek Osei</div>
+          <div style="font-size:12px;color:#3B82F6">CRM user — currently has no Hub access</div>
+        </div>
+      </div>
+      <div class="inp-row"><label class="lbl">Email (from CRM)</label><input class="inp" id="ihub-email" readonly style="background:rgba(200,194,182,.2);color:var(--muted)"/></div>
+      <div class="inp-row">
+        <label class="lbl">Hub Role</label>
+        <select class="inp" id="ihub-role">
+          <option>Sales Rep</option>
+          <option>Branch Manager</option>
+          <option>Sales Manager</option>
+          <option>Marketing Manager</option>
+        </select>
+      </div>
+      <div class="inp-row">
+        <label class="lbl">Location</label>
+        <select class="inp" id="ihub-location">
+          <option>NJ — Montclair</option>
+          <option>NY — Queens</option>
+          <option>FL — Tampa</option>
+          <option>Miami</option>
+        </select>
+      </div>
+      <div style="font-size:12px;color:var(--muted);background:var(--panel);border-radius:8px;padding:10px 12px">
+        📧 An invite email will be sent with a temporary password. Once they sign in, their status updates to <strong>Hub Active</strong>.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('invite-hub-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendHubInvite()">Send Hub invite →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD NEW USER MODAL -->
+<div class="modal-back" id="modal-add-user-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head">
+      <div><div class="modal-title">Add new user</div><div class="modal-sub">Manually add someone not yet in your CRM</div></div>
+      <button class="modal-close" onclick="closeModal('add-user-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="inp-row"><label class="lbl">Full name</label><input class="inp" id="adduser-name" placeholder="Jane Smith"/></div>
+      <div class="inp-row"><label class="lbl">Email address</label><input class="inp" id="adduser-email" type="email" placeholder="jane@company.com"/></div>
+      <div class="inp-row">
+        <label class="lbl">Hub Role</label>
+        <select class="inp" id="adduser-role">
+          <option>Sales Rep</option>
+          <option>Branch Manager</option>
+          <option>Sales Manager</option>
+          <option>Marketing Manager</option>
+          <option>Owner</option>
+        </select>
+      </div>
+      <div class="inp-row">
+        <label class="lbl">Location</label>
+        <select class="inp" id="adduser-location">
+          <option>NJ — Montclair</option>
+          <option>NY — Queens</option>
+          <option>FL — Tampa</option>
+          <option>Miami</option>
+          <option>All locations</option>
+        </select>
+      </div>
+      <div style="font-size:12px;color:var(--muted);background:var(--panel);border-radius:8px;padding:10px 12px">
+        📧 An invite email will be sent. This user will appear as <strong>Hub Invited</strong> until they accept.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('add-user-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addNewUser()">Send invite →</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-back" id="modal-edit-user-modal" onclick="closeModalBack(event)">
   <div class="modal" style="max-width:440px">
     <div class="modal-head">
@@ -3678,6 +3896,85 @@ function applyRegionalRole(){
 
 // USERS & SEATS
 var _editingUserId = null;
+var _invitingHubId = null;
+
+function filterUsers(type, btn){
+  document.querySelectorAll('.usr-tab').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  var rows = document.querySelectorAll('#users-table tbody tr');
+  var shown = 0;
+  rows.forEach(function(row){
+    var src = row.getAttribute('data-usersrc')||'';
+    var status = row.getAttribute('data-userstatus')||'';
+    var visible = (
+      type==='all' ||
+      (type==='hub' && status==='active') ||
+      (type==='crm' && status==='crm') ||
+      (type==='pending' && status==='invited')
+    );
+    row.style.display = visible ? '' : 'none';
+    if(visible) shown++;
+  });
+  var labels = {all:'all',hub:'Hub Active',crm:'CRM Only',pending:'pending invite'};
+  var countEl = document.getElementById('usr-filter-count');
+  if(countEl) countEl.textContent = 'Showing '+shown+' '+(labels[type]||'')+' user'+(shown!==1?'s':'');
+}
+
+function openAddUserModal(){
+  document.getElementById('adduser-name').value='';
+  document.getElementById('adduser-email').value='';
+  openModal('add-user-modal');
+}
+
+function addNewUser(){
+  var name = document.getElementById('adduser-name').value.trim();
+  var email = document.getElementById('adduser-email').value.trim();
+  var role = document.getElementById('adduser-role').value;
+  var loc = document.getElementById('adduser-location').value;
+  if(!name||!email){showToast('Please fill in name and email');return;}
+  var rolePills = {'Owner':'pill-blue','Branch Manager':'pill-cyan','Sales Manager':'pill-cyan','Sales Rep':'pill-neutral','Marketing Manager':'pill-neutral'};
+  var tbody = document.querySelector('#users-table tbody');
+  var id = 'urow-new-'+Date.now();
+  var tr = document.createElement('tr');
+  tr.id = id; tr.setAttribute('data-usersrc','hub'); tr.setAttribute('data-userstatus','invited');
+  tr.innerHTML = '<td><div style="font-weight:700">'+name+'</div><div style="font-size:11.5px;color:var(--muted)">'+email+'</div></td>'
+    +'<td><span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px">HUB</span></td>'
+    +'<td><span class="pill '+(rolePills[role]||'pill-neutral')+'">'+role+'</span></td>'
+    +'<td>'+loc+'</td>'
+    +'<td><span class="pill pill-caut">🟡 Invite Sent</span></td>'
+    +'<td><div style="display:flex;gap:5px"><button class="btn btn-outline btn-xs" onclick="resendUserInvite(\''+id+'\',\''+name+'\')">Resend</button><button class="btn btn-danger btn-xs" onclick="revokeUserInvite(\''+id+'\',\''+name+'\')">Revoke</button></div></td>';
+  tbody.appendChild(tr);
+  closeModal('add-user-modal');
+  showToast('&#128231; Invite sent to '+name+' ('+email+')');
+}
+
+function openInviteToHubModal(id, name, email, location){
+  _invitingHubId = id;
+  document.getElementById('ihub-name-banner').textContent = name;
+  document.getElementById('ihub-email-sub').textContent = email;
+  document.getElementById('ihub-email').value = email;
+  var locSel = document.getElementById('ihub-location');
+  for(var i=0;i<locSel.options.length;i++){if(locSel.options[i].text===location){locSel.selectedIndex=i;break;}}
+  openModal('invite-hub-modal');
+}
+
+function sendHubInvite(){
+  var row = document.getElementById('urow-'+_invitingHubId);
+  var role = document.getElementById('ihub-role').value;
+  var loc = document.getElementById('ihub-location').value;
+  var name = document.getElementById('ihub-name-banner').textContent;
+  if(row){
+    row.setAttribute('data-userstatus','invited');
+    var rolePills = {'Owner':'pill-blue','Branch Manager':'pill-cyan','Sales Manager':'pill-cyan','Sales Rep':'pill-neutral','Marketing Manager':'pill-neutral'};
+    row.cells[2].innerHTML = '<span class="pill '+(rolePills[role]||'pill-neutral')+'">'+role+'</span>';
+    row.cells[3].textContent = loc;
+    row.cells[4].innerHTML = '<span class="pill pill-caut">🟡 Invite Sent</span>';
+    row.cells[5].innerHTML = '<div style="display:flex;gap:5px"><button class="btn btn-outline btn-xs" onclick="resendUserInvite(\''+_invitingHubId+'\',\''+name+'\')">Resend</button><button class="btn btn-danger btn-xs" onclick="revokeUserInvite(\''+_invitingHubId+'\',\''+name+'\')">Revoke</button></div>';
+  }
+  closeModal('invite-hub-modal');
+  showToast('&#128231; Hub invite sent to '+name+' as '+role);
+}
+
 function openEditUser(id, name, role, branch, email){
   _editingUserId = id;
   document.getElementById('edit-user-name').value = name;
@@ -3699,12 +3996,9 @@ function saveEditUser(){
   var row = document.getElementById('urow-'+_editingUserId);
   if(row){
     row.cells[0].childNodes[0].textContent = name;
-    var rolePills = {
-      'Owner':'pill-blue','Branch Manager':'pill-cyan','Sales Manager':'pill-cyan',
-      'Sales Rep':'pill-neutral','Marketing Manager':'pill-neutral'
-    };
-    row.cells[1].innerHTML = '<span class="pill '+(rolePills[role]||'pill-neutral')+'">'+role+'</span>';
-    row.cells[2].textContent = branch;
+    var rolePills = {'Owner':'pill-blue','Branch Manager':'pill-cyan','Sales Manager':'pill-cyan','Sales Rep':'pill-neutral','Marketing Manager':'pill-neutral'};
+    row.cells[2].innerHTML = '<span class="pill '+(rolePills[role]||'pill-neutral')+'">'+role+'</span>';
+    row.cells[3].textContent = branch;
   }
   closeModal('edit-user-modal');
   showToast('&#10003; '+name+' updated — '+role+', '+branch);
@@ -3713,21 +4007,20 @@ function removeUser(){
   var row = document.getElementById('urow-'+_editingUserId);
   if(row){
     var name = document.getElementById('edit-user-name').value;
-    row.style.transition='opacity .3s';
-    row.style.opacity='0';
+    row.style.transition='opacity .3s';row.style.opacity='0';
     setTimeout(function(){if(row.parentNode)row.parentNode.removeChild(row);},300);
     showToast('&#128465;&#65039; '+name+' removed — seat freed');
   }
   closeModal('edit-user-modal');
 }
-function resendUserInvite(id, name){
-  showToast('&#128231; Invite resent to '+name);
-}
+function resendUserInvite(id, name){ showToast('&#128231; Invite resent to '+name); }
 function revokeUserInvite(id, name){
-  var row = document.getElementById('urow-'+id);
+  var row = document.getElementById(id.indexOf('urow-')===0?id:'urow-'+id);
+  if(!row) row = document.getElementById('urow-'+id);
   if(row){
-    row.cells[3].innerHTML = '<span class="pill pill-neg">Revoked</span>';
-    row.cells[4].innerHTML = '<button class="btn btn-outline btn-xs" onclick="resendUserInvite(\''+id+'\',\''+name+'\')">Re-invite</button>';
+    row.setAttribute('data-userstatus','revoked');
+    row.cells[4].innerHTML = '<span style="background:#FEE2E2;color:#991B1B;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px">Revoked</span>';
+    row.cells[5].innerHTML = '<button class="btn btn-outline btn-xs" onclick="resendUserInvite(\''+id+'\',\''+name+'\')">Re-invite</button>';
   }
   showToast('&#10003; Invite revoked for '+name+' — seat freed');
 }
