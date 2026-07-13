@@ -1211,10 +1211,10 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <!-- FREE TRIAL BAR -->
 <div id="trial-bar">
   <span>Trial active</span>
-  <strong style="margin-left:4px">30 days remaining</strong>
+  <strong style="margin-left:4px" id="trial-bar-days">30 days remaining</strong>
   <span style="margin-left:auto;display:flex;align-items:center;gap:8px">
     <span class="free-pill">FREE PLAN</span>
-    <button class="btn btn-sm" onclick="openModal('upgrade-modal')" style="background:#B57B1F;color:white;border:none;padding:6px 12px">Upgrade Now</button>
+    <button class="btn btn-sm" onclick="openAddPaymentModal()" style="background:#B57B1F;color:white;border:none;padding:6px 12px">Add payment method</button>
   </span>
 </div>
 <!-- MOBILE BOTTOM NAV -->
@@ -2677,12 +2677,13 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
   <!-- CURRENT PLAN STATUS — changes based on preview mode -->
   <div id="billing-free-view" style="display:none">
+    <!-- Trial status card -->
     <div style="background:rgba(181,123,31,.08);border:1.5px solid rgba(181,123,31,.25);border-radius:14px;padding:22px 24px;margin-bottom:20px;" class="fu1">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
         <div>
           <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#B57B1F;margin-bottom:6px">Current Plan</div>
           <div style="font-size:22px;font-weight:800;color:#0E1B24;margin-bottom:4px">Free Trial</div>
-          <div style="font-size:13px;color:#6B7680">30 days remaining &nbsp;·&nbsp; 1 branch &nbsp;·&nbsp; Up to 3 reps</div>
+          <div style="font-size:13px;color:#6B7680" id="billing-trial-meta">30 days remaining &nbsp;·&nbsp; 1 location detected</div>
         </div>
         <div style="text-align:right">
           <div style="font-size:32px;font-weight:800;color:#0E1B24">$0<span style="font-size:14px;font-weight:400;color:#6B7680">/mo</span></div>
@@ -2699,7 +2700,50 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
           <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Action Items</div>
           <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7680"><span style="color:#9B3A2A;font-weight:700">✗</span> Weekly Audit tool</div>
         </div>
-        <button class="btn btn-primary" style="margin-top:16px;width:100%;font-size:15px;padding:14px" onclick="previewPlan('paid');openModal('upgrade-modal')">Upgrade now — from $199/mo &nbsp;→</button>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD SECTION — no card saved -->
+    <div id="billing-no-card" style="background:white;border:1.5px solid #E2E8EF;border-radius:14px;padding:22px 24px;margin-bottom:20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">
+        <div style="flex:1;min-width:220px">
+          <div style="font-size:14px;font-weight:700;color:#0E1B24;margin-bottom:6px">Continue after your trial</div>
+          <div style="font-size:13px;color:#6B7680;line-height:1.6">Add a payment method now to keep access after your trial ends. <strong>No charge until Day 31</strong> — your remaining free days are preserved.</div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <button class="btn btn-primary" style="padding:11px 22px;font-size:14px;font-weight:700" onclick="openAddPaymentModal()">+ Add payment method</button>
+            <span style="font-size:12px;color:#6B7680">No charge today &nbsp;·&nbsp; Cancel anytime</span>
+          </div>
+        </div>
+        <div style="background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.15);border-radius:10px;padding:14px 18px;min-width:200px;flex-shrink:0">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#0F5866;margin-bottom:8px">Your plan after trial</div>
+          <div style="font-size:13px;color:#0E1B24;margin-bottom:4px">Base: <strong>$199/mo</strong> (1 location)</div>
+          <div id="billing-extra-locs-line" style="font-size:13px;color:#0E1B24;margin-bottom:4px;display:none">+ <span id="billing-extra-locs-count">0</span> extra locations: <strong id="billing-extra-locs-price">$0/mo</strong></div>
+          <div style="border-top:1px solid rgba(15,88,102,.15);margin:10px 0;padding-top:10px">
+            <div style="font-size:15px;font-weight:800;color:#0E1B24">Total: <span id="billing-total-price">$199/mo</span></div>
+          </div>
+          <div style="font-size:11px;color:#6B7680">Locations auto-detected by CRM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD SECTION — card saved -->
+    <div id="billing-card-saved" style="display:none;background:white;border:1.5px solid #22C55E;border-radius:14px;padding:22px 24px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:18px">&#10003;</span>
+            <div style="font-size:14px;font-weight:700;color:#166534">Payment method saved</div>
+          </div>
+          <div style="font-size:13px;color:#6B7680">Card ending in <strong id="billing-card-last4">••••</strong> &nbsp;·&nbsp; Expires <span id="billing-card-expiry">--/--</span></div>
+          <div style="font-size:13px;color:#6B7680;margin-top:4px">First charge: <strong id="billing-first-charge-date">—</strong> &nbsp;·&nbsp; Amount: <strong id="billing-first-charge-amt">$199</strong></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-shrink:0">
+          <button class="btn btn-sm" style="color:#9B3A2A;border:1.5px solid #9B3A2A;background:white;font-weight:700" onclick="removePaymentMethod()">Remove card</button>
+          <button class="btn btn-sm btn-outline" onclick="openAddPaymentModal()">Update card</button>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:12px 16px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px">
+        <div style="font-size:12.5px;color:#166534;font-weight:600">&#128274; Your remaining free days are safe. You will not be charged until <span id="billing-card-trial-end">—</span>.</div>
       </div>
     </div>
   </div>
@@ -4242,6 +4286,156 @@ function upgradePlan(){
   showToast('Upgraded! All reports now unlocked.');
 }
 
+// ── PAYMENT METHOD FLOW ──────────────────────────────────────────────────────
+var _crmLocations=4; // demo: CRM detected 4 locations for pricing
+
+function _trialDaysRemaining(){
+  if(!window._signupDate) return 30;
+  var now=new Date();
+  var msLeft=(window._signupDate.getTime()+30*24*60*60*1000)-now.getTime();
+  return Math.max(0,Math.ceil(msLeft/(24*60*60*1000)));
+}
+
+function _trialEndDate(){
+  var base=window._signupDate?new Date(window._signupDate):new Date();
+  base.setDate(base.getDate()+30);
+  return base;
+}
+
+function _calcMonthlyPrice(locs){
+  return 199+(Math.max(0,locs-1)*149);
+}
+
+function _fmtDate(d){
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+function openAddPaymentModal(){
+  var locs=_crmLocations;
+  var monthly=_calcMonthlyPrice(locs);
+  var trialEnd=_trialEndDate();
+  var daysLeft=_trialDaysRemaining();
+
+  // Populate modal
+  var sub=document.getElementById('pay-modal-subline');
+  if(sub)sub.textContent=daysLeft>0?'Your '+daysLeft+' free days are preserved — no charge until your trial ends':'Your trial has ended — you can continue by adding a payment method';
+  var cd=document.getElementById('pay-modal-charge-date');
+  if(cd)cd.textContent=_fmtDate(trialEnd);
+  var amt=document.getElementById('pay-modal-amount');
+  if(amt)amt.textContent='$'+monthly;
+
+  var extraRow=document.getElementById('pay-modal-extra-row');
+  if(locs>1){
+    var extraLocs=locs-1;
+    var extraPrice=extraLocs*149;
+    if(extraRow)extraRow.style.display='flex';
+    var el=document.getElementById('pay-modal-extra-label');
+    if(el)el.textContent='+ '+extraLocs+' extra location'+(extraLocs>1?'s':'');
+    var ep=document.getElementById('pay-modal-extra-price');
+    if(ep)ep.textContent='$'+extraPrice+'/mo';
+  } else {
+    if(extraRow)extraRow.style.display='none';
+  }
+  var tot=document.getElementById('pay-modal-total');
+  if(tot)tot.textContent='$'+monthly+'/mo';
+
+  // Clear form
+  ['pay-card-number','pay-card-expiry','pay-card-cvc','pay-card-name'].forEach(function(id){
+    var el=document.getElementById(id); if(el)el.value='';
+  });
+
+  openModal('add-payment-modal');
+}
+
+function formatCardNumber(el){
+  var v=el.value.replace(/\D/g,'').substring(0,16);
+  el.value=v.replace(/(\d{4})(?=\d)/g,'$1 ');
+}
+
+function formatExpiry(el){
+  var v=el.value.replace(/\D/g,'').substring(0,4);
+  if(v.length>=2) v=v.substring(0,2)+'/'+v.substring(2);
+  el.value=v;
+}
+
+function savePaymentMethod(){
+  var num=document.getElementById('pay-card-number').value.replace(/\s/g,'');
+  var exp=document.getElementById('pay-card-expiry').value;
+  var cvc=document.getElementById('pay-card-cvc').value;
+  var name=document.getElementById('pay-card-name').value.trim();
+  if(num.length<15||exp.length<5||cvc.length<3||!name){
+    showToast('Please fill in all card details');return;
+  }
+  var last4=num.slice(-4);
+  var locs=_crmLocations;
+  var monthly=_calcMonthlyPrice(locs);
+  var trialEnd=_trialEndDate();
+
+  // Show saved state
+  var noCard=document.getElementById('billing-no-card');
+  var cardSaved=document.getElementById('billing-card-saved');
+  if(noCard)noCard.style.display='none';
+  if(cardSaved)cardSaved.style.display='block';
+  var l4=document.getElementById('billing-card-last4');if(l4)l4.textContent=last4;
+  var ce=document.getElementById('billing-card-expiry');if(ce)ce.textContent=exp;
+  var fcd=document.getElementById('billing-first-charge-date');if(fcd)fcd.textContent=_fmtDate(trialEnd);
+  var fca=document.getElementById('billing-first-charge-amt');if(fca)fca.textContent='$'+monthly;
+  var bte=document.getElementById('billing-card-trial-end');if(bte)bte.textContent=_fmtDate(trialEnd);
+
+  // Update trial bar
+  var tb=document.getElementById('trial-bar');
+  if(tb){
+    tb.style.background='rgba(34,197,94,.1)';
+    tb.style.borderBottom='1px solid rgba(34,197,94,.25)';
+    tb.style.color='#166534';
+    var days=_trialDaysRemaining();
+    var tbd=document.getElementById('trial-bar-days');
+    if(tbd)tbd.textContent=days+' days remaining — card saved ✓';
+    var upgBtn=tb.querySelector('button');
+    if(upgBtn){upgBtn.style.background='#166534';upgBtn.textContent='Payment method saved ✓';upgBtn.onclick=function(){};}
+  }
+
+  closeModal('add-payment-modal');
+  showToast('Payment method saved — no charge until '+_fmtDate(trialEnd));
+}
+
+function removePaymentMethod(){
+  var noCard=document.getElementById('billing-no-card');
+  var cardSaved=document.getElementById('billing-card-saved');
+  if(cardSaved)cardSaved.style.display='none';
+  if(noCard)noCard.style.display='block';
+  // Restore trial bar
+  var tb=document.getElementById('trial-bar');
+  if(tb){
+    tb.style.background='';tb.style.borderBottom='';tb.style.color='';
+    var tbd=document.getElementById('trial-bar-days');
+    if(tbd)tbd.textContent=_trialDaysRemaining()+' days remaining';
+    var upgBtn=tb.querySelector('button');
+    if(upgBtn){upgBtn.style.background='#B57B1F';upgBtn.textContent='Add payment method';upgBtn.onclick=openAddPaymentModal;}
+  }
+  showToast('Payment method removed');
+}
+
+function _refreshBillingTrialMeta(){
+  var days=_trialDaysRemaining();
+  var locs=_crmLocations;
+  var meta=document.getElementById('billing-trial-meta');
+  if(meta)meta.textContent=days+' day'+(days===1?'':'s')+' remaining · '+locs+' location'+(locs===1?'':'s')+' detected';
+  // Pricing sidebar
+  var monthly=_calcMonthlyPrice(locs);
+  var tot=document.getElementById('billing-total-price');if(tot)tot.textContent='$'+monthly+'/mo';
+  var extraLine=document.getElementById('billing-extra-locs-line');
+  if(locs>1){
+    if(extraLine)extraLine.style.display='block';
+    var ec=document.getElementById('billing-extra-locs-count');if(ec)ec.textContent=(locs-1);
+    var ep=document.getElementById('billing-extra-locs-price');if(ep)ep.textContent='$'+(locs-1)*149+'/mo';
+  } else {
+    if(extraLine)extraLine.style.display='none';
+  }
+  var tbd=document.getElementById('trial-bar-days');
+  if(tbd&&tbd.textContent.indexOf('card saved')===-1)tbd.textContent=days+' days remaining';
+}
+
 function previewPlan(plan){
   window._plan=plan;
   applyPlan();
@@ -4493,6 +4687,7 @@ function enterApp(){
       openModal('welcome-email-modal');
       // Populate dynamic dates
       var now=new Date();
+      window._signupDate=new Date(now);
       var trialEnd=new Date(now);trialEnd.setDate(trialEnd.getDate()+29);
       var billDate=new Date(now);billDate.setDate(billDate.getDate()+30);
       var fmt=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});};
@@ -4657,6 +4852,7 @@ function goApp(id){
   document.getElementById('main').scrollTop=0;
   if(id==='r1'&&!window._r1)setTimeout(initR1Charts,200);
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
+  if(id==='billing')_refreshBillingTrialMeta();
 }
 
 // Permission check for full-screen navigation — mirrors the sidebar's visibility
@@ -5399,6 +5595,81 @@ function saveRules(){
 }
 
 </script>
+
+<!-- ADD PAYMENT METHOD MODAL -->
+<div class="modal-back" id="modal-add-payment-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:520px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#0E1B24,#1F3A5F);padding:24px 24px 20px;flex-shrink:0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4)">Payment Method</div>
+        <button onclick="closeModal('add-payment-modal')" style="background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">&times;</button>
+      </div>
+      <div style="font-size:20px;font-weight:800;color:white;margin-bottom:4px">Add your payment method</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.55)" id="pay-modal-subline">Your free trial continues — no charge until your trial ends</div>
+      <!-- No-charge badge -->
+      <div style="margin-top:14px;display:flex;align-items:center;gap:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:10px 14px">
+        <span style="font-size:18px">&#128274;</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#86EFAC">No charge today</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5)">First charge on <strong style="color:rgba(255,255,255,.8)" id="pay-modal-charge-date">—</strong> if you continue</div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div style="font-size:18px;font-weight:800;color:white" id="pay-modal-amount">$199</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4)">/month</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:22px 24px;overflow-y:auto;flex:1">
+      <!-- Pricing breakdown -->
+      <div style="background:#F8FAFB;border:1px solid #E2E8EF;border-radius:10px;padding:14px 16px;margin-bottom:20px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B7680;margin-bottom:10px">Pricing breakdown</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#0E1B24;margin-bottom:6px">
+          <span>Base plan (1 location included)</span><strong>$199/mo</strong>
+        </div>
+        <div id="pay-modal-extra-row" style="display:none;justify-content:space-between;font-size:13px;color:#0E1B24;margin-bottom:6px">
+          <span id="pay-modal-extra-label">+ extra locations</span><strong id="pay-modal-extra-price">$0/mo</strong>
+        </div>
+        <div style="border-top:1px solid #E2E8EF;margin:10px 0 8px;padding-top:8px;display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:#0E1B24">
+          <span>Total</span><span id="pay-modal-total">$199/mo</span>
+        </div>
+        <div style="font-size:11.5px;color:#6B7680">Locations auto-detected by your CRM · Billed monthly · Cancel anytime</div>
+      </div>
+
+      <!-- Card form -->
+      <div style="margin-bottom:16px">
+        <label style="font-size:12.5px;font-weight:700;color:#0E1B24;display:block;margin-bottom:6px">Card number</label>
+        <input id="pay-card-number" type="text" maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)" style="width:100%;padding:11px 14px;border:1.5px solid #D1D9E0;border-radius:8px;font-size:14px;font-family:monospace;box-sizing:border-box" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div>
+          <label style="font-size:12.5px;font-weight:700;color:#0E1B24;display:block;margin-bottom:6px">Expiry (MM/YY)</label>
+          <input id="pay-card-expiry" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)" style="width:100%;padding:11px 14px;border:1.5px solid #D1D9E0;border-radius:8px;font-size:14px;box-sizing:border-box" />
+        </div>
+        <div>
+          <label style="font-size:12.5px;font-weight:700;color:#0E1B24;display:block;margin-bottom:6px">CVC</label>
+          <input id="pay-card-cvc" type="text" maxlength="4" placeholder="123" style="width:100%;padding:11px 14px;border:1.5px solid #D1D9E0;border-radius:8px;font-size:14px;box-sizing:border-box" />
+        </div>
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="font-size:12.5px;font-weight:700;color:#0E1B24;display:block;margin-bottom:6px">Name on card</label>
+        <input id="pay-card-name" type="text" placeholder="James Smith" style="width:100%;padding:11px 14px;border:1.5px solid #D1D9E0;border-radius:8px;font-size:14px;box-sizing:border-box" />
+      </div>
+      <!-- NJ compliance notice -->
+      <div style="background:rgba(181,123,31,.06);border:1px solid rgba(181,123,31,.2);border-radius:8px;padding:12px 14px;margin-bottom:20px;font-size:12px;color:#7A5B1A;line-height:1.6">
+        &#9888;&#65039; <strong>No automatic charge</strong> — your card is saved for when you choose to continue. Per NJ Consumer Fraud Act, no billing action is taken without your written authorization. You will receive a reminder on Day 25 before any charge occurs.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding:16px 24px;border-top:1px solid #F0F4F8;flex-shrink:0;display:flex;gap:12px">
+      <button class="btn btn-primary" style="flex:1;padding:13px;font-size:15px;font-weight:700" onclick="savePaymentMethod()">Save payment method</button>
+      <button class="btn btn-outline" style="padding:13px 20px" onclick="closeModal('add-payment-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- UPGRADE MODAL -->
 <div class="modal-back" id="modal-upgrade-modal" onclick="closeModalBack(event)">
