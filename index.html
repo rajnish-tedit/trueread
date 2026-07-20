@@ -3788,6 +3788,10 @@ function connectCRM(){
   var on=document.querySelector('#crm-grid-crm .crm-card.on');
   var name=on?on.querySelector('.crm-name').textContent:'your CRM';
   SYNC_CTX={type:'crm',name:name};
+  if(name==='JobNimbus'){
+    authGo('jn-realtime');
+    return;
+  }
   authGo('syncing');
 }
 
@@ -4030,7 +4034,7 @@ function jnEnableRealtime(){
               JN_SYNC_STATE.enabled=true;
               jnRenderSyncScope();
               showToast('⚡ Real-time sync enabled for JobNimbus');
-              authGo('marketing-pick');
+              authGo('syncing');
             },400);
           }
         },350);
@@ -4046,7 +4050,7 @@ function jnSkipRealtime(){
     e.lastEvent=null;
   }
   jnRenderSyncScope();
-  authGo('marketing-pick');
+  authGo('syncing');
 }
 jnRenderSyncScope();
 
@@ -4520,10 +4524,6 @@ function startSync(){
               var sdEl=document.getElementById('sync-done');
               var banner=document.getElementById('sync-banner');
               var btn=document.getElementById('sync-done-btn');
-              if(ctx.type==='crm'&&ctx.name==='JobNimbus'){
-                authGo('jn-realtime');
-                return;
-              }
               if(ctx.type==='crm'){
                 if(banner)banner.style.display='block';
                 if(btn){btn.textContent='Continue to marketing tools →';btn.onclick=function(){authGo('marketing-pick');};}
