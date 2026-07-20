@@ -765,9 +765,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div class="crm-icon" style="background:#F0FFF4">🟢</div>
         <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
       </div>
-      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
+      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','api','crm')">
         <div class="crm-icon" style="background:#FFF0F0">🔴</div>
-        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
+        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><div style="font-size:10.5px;color:var(--muted);margin-top:2px;">Syncs contacts, jobs, work orders, material orders, payments, activities &amp; appointments.</div><span class="crm-auth-badge api">API Key</span></div>
       </div>
     </div>
 
@@ -779,8 +779,35 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
       </div>
       <div id="creds-crm-api" style="display:none">
-        <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
+        <div id="crm-api-generic">
+          <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
+        </div>
+        <div id="crm-api-jn" style="display:none">
+          <div class="inp-row">
+            <label class="lbl">JobNimbus API Key</label>
+            <div style="position:relative">
+              <input class="inp" type="password" id="jn-apikey" placeholder="Paste your JobNimbus API key here" style="padding-right:40px" oninput="jnClearTestState()"/>
+              <span onclick="jnToggleEye()" id="jn-eye-icon" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--muted)">👁</span>
+            </div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:8px">Find this in JobNimbus → Settings → API → New API Key. Must be created by a JobNimbus admin.</div>
+          <div style="margin-bottom:12px">
+            <a onclick="toggleJnHow()" id="jn-how-link" style="font-size:11.5px;color:var(--cyan);font-weight:700;cursor:pointer">Show me how ▾</a>
+            <div id="jn-how-steps" style="display:none;margin-top:8px;font-size:11.5px;color:var(--ink);background:var(--panel);border-radius:8px;padding:10px 12px;line-height:1.6">
+              <div>1. Log in to JobNimbus as an admin.</div>
+              <div>2. Go to Settings → API.</div>
+              <div>3. Click New API Key and copy it here.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <button class="btn btn-outline btn-sm" id="jn-test-btn" onclick="testJnConnection()" type="button">Test connection</button>
+            <span id="jn-test-status" style="font-size:11.5px;color:var(--muted)"></span>
+          </div>
+          <div id="jn-test-banner-success" style="display:none;background:rgba(15,88,102,.08);border:1px solid rgba(15,88,102,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--cyan);margin-bottom:10px;font-weight:600">✓ Connected as Day 41 Thrive — 2,847 contacts found</div>
+          <div id="jn-test-banner-error" style="display:none;background:rgba(155,58,42,.08);border:1px solid rgba(155,58,42,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--crit);margin-bottom:10px">✗ Invalid API key — check it was copied fully and created by an admin user. <a onclick="showToast('📄 API key guide opened')" style="color:var(--crit);font-weight:700;text-decoration:underline;cursor:pointer">View API key guide</a></div>
+          <div id="jn-trust-line" style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:4px">Read-only data access — the only thing The Hub adds to your CRM are optional "HUB —" automations, which we ask permission for next.</div>
+        </div>
       </div>
       <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
         <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
@@ -888,6 +915,36 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⏳ <strong>Historical sync in progress</strong> — GHL rate-limits how much we can pull per request. Older contacts and full call/SMS history will continue syncing in the background and may take a few hours. We'll notify you when it's complete — no action needed, your dashboard already works with what's synced.</div>
       <button class="btn btn-primary btn-full" onclick="enterApp()">Go to your dashboard →</button>
     </div>
+  </div>
+
+  <!-- JOBNIMBUS REAL-TIME UPDATES -->
+  <div class="auth-card scr" id="scr-jn-realtime" style="max-width:480px;">
+    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
+    <div class="auth-h1">Enable real-time updates?</div>
+    <div class="auth-sub">Without this, your JobNimbus data refreshes once daily at 6:00 AM.</div>
+
+    <div style="background:var(--panel);border-radius:12px;padding:16px 18px;margin-bottom:16px">
+      <div style="font-size:13px;color:var(--ink);line-height:1.5;margin-bottom:12px">The Hub will add up to 14 automations to your JobNimbus account, all named "HUB — …". They push changes to The Hub the moment they happen. Nothing else in your JobNimbus is modified.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span class="pill pill-cyan">⚡ Contact</span>
+        <span class="pill pill-cyan">⚡ Job</span>
+        <span class="pill pill-cyan">⚡ Payment</span>
+        <span class="pill pill-cyan">⚡ Appointment</span>
+        <span class="pill pill-cyan">⚡ Activity</span>
+        <span class="pill pill-neutral">☾ Work Order</span>
+        <span class="pill pill-neutral">☾ Material Order</span>
+      </div>
+    </div>
+
+    <div id="jn-provision-wrap" style="display:none;margin-bottom:6px">
+      <div id="jn-provision-list"></div>
+    </div>
+
+    <button class="btn btn-primary btn-full btn-lg" id="jn-enable-btn" onclick="jnEnableRealtime()">Enable real-time updates ⚡</button>
+    <div style="text-align:center;margin-top:14px">
+      <a onclick="jnSkipRealtime()" id="jn-skip-link" style="font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer;text-decoration:underline">Skip for now — daily sync only</a>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Only General Managers and Admins can change this setting.</div>
   </div>
 
   <!-- COMPANY SETUP -->
@@ -1913,13 +1970,27 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="tabs fu1">
     <div class="tab on" onclick="switchTab(this,'dp-connectors')">Integrations</div>
     <div class="tab" onclick="switchTab(this,'dp-import')">Manual Import</div>
+    <div class="tab" id="dpt-sync-scope" onclick="switchTab(this,'dp-sync-scope')">Sync Scope</div>
   </div>
   <div class="tab-panel on" id="tab-dp-connectors">
     <div class="card fu"><div style="padding:2px 0">
       <div class="connector-item"><div class="conn-icon" style="background:#E8F5FF;font-size:20px">🔷</div><div style="flex:1"><div class="conn-name">GoHighLevel</div><div class="conn-detail">312 contacts · 64 pipeline stages · Synced 4 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
       <div class="connector-item"><div class="conn-icon" style="background:#FFF3E8;font-size:20px">🟠</div><div style="flex:1"><div class="conn-name">Leap CRM</div><div class="conn-detail">87 jobs · $1.2M pipeline · Synced 12 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
+      <div class="connector-item"><div class="conn-icon" style="background:#FFF0F0;font-size:20px">🔴</div><div style="flex:1"><div class="conn-name">JobNimbus</div><div class="conn-detail">2,847 contacts · 412 jobs · <span class="pill pill-cyan" id="jn-conn-aggregate-pill" onclick="jnGoSyncScope()" style="cursor:pointer">⚡ Real-time: 5/7</span> <a id="jn-conn-upgrade-link" onclick="jnGoSyncScope()" style="display:none;font-size:12px;color:var(--cyan);font-weight:700;cursor:pointer;margin-left:6px">Upgrade to real-time</a></div></div><button class="btn btn-outline btn-sm" onclick="jnGoSyncScope()">Settings</button></div>
       <div class="connector-item"><div class="conn-icon" style="background:#F5F0FF;font-size:20px">📞</div><div style="flex:1"><div class="conn-name">CallRail</div><div class="conn-detail">1,204 calls · Speed-to-lead = CallRail.first_call − GHL.created_at · Synced 8 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
       <div class="connector-item" style="border-bottom:none"><div class="conn-icon" style="background:#FFF0F0;font-size:20px">📊</div><div style="flex:1"><div class="conn-name">WhatConverts</div><div class="conn-detail" style="color:var(--crit)">⚠ Last sync failed 3 hrs ago — 0 records synced</div></div><span class="pill pill-crit" style="margin-right:8px">Failed</span><button class="btn btn-primary btn-sm" onclick="showToast('🔄 Reconnecting WhatConverts...')">Reconnect</button></div>
+    </div></div>
+  </div>
+  <div class="tab-panel" id="tab-dp-sync-scope">
+    <div class="card fu"><div style="padding:18px 20px">
+      <div class="sec-head">
+        <div class="sec-title">JobNimbus Sync Scope</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="pill pill-cyan" id="jn-scope-aggregate-pill">⚡ Real-time: 5/7</span>
+          <button class="btn btn-cyan btn-sm" id="jn-upgrade-all-btn" onclick="jnUpgradeAllRealtime()" style="display:none">⚡ Upgrade all to real-time</button>
+        </div>
+      </div>
+      <div id="jn-scope-rows"></div>
     </div></div>
   </div>
   <div class="tab-panel" id="tab-dp-import">
@@ -3583,9 +3654,78 @@ function pickCRM(card,name,authType,category){
   if(category==='crm'){
     document.getElementById('crm-required-hint-bottom').style.display='none';
     var btn=document.getElementById('crm-btn');
-    btn.style.opacity='1';
-    btn.style.pointerEvents='auto';
+    var isJN=(name==='JobNimbus');
+    var jnBlock=document.getElementById('crm-api-jn');
+    var genericBlock=document.getElementById('crm-api-generic');
+    if(jnBlock)jnBlock.style.display=isJN?'block':'none';
+    if(genericBlock)genericBlock.style.display=isJN?'none':'block';
+    if(isJN){
+      jnResetTestState();
+      btn.style.opacity='.4';
+      btn.style.pointerEvents='none';
+    } else {
+      btn.style.opacity='1';
+      btn.style.pointerEvents='auto';
+    }
   }
+}
+
+// JOBNIMBUS — API key test connection
+function jnResetTestState(){
+  var success=document.getElementById('jn-test-banner-success');
+  var error=document.getElementById('jn-test-banner-error');
+  if(success)success.style.display='none';
+  if(error)error.style.display='none';
+  var testBtn=document.getElementById('jn-test-btn');
+  if(testBtn){testBtn.disabled=false;testBtn.textContent='Test connection';}
+  var status=document.getElementById('jn-test-status');
+  if(status)status.textContent='';
+}
+function jnClearTestState(){
+  jnResetTestState();
+  var btn=document.getElementById('crm-btn');
+  if(btn){btn.style.opacity='.4';btn.style.pointerEvents='none';}
+}
+function jnToggleEye(){
+  var inp=document.getElementById('jn-apikey');
+  var icon=document.getElementById('jn-eye-icon');
+  if(!inp||!icon)return;
+  if(inp.type==='password'){inp.type='text';icon.textContent='🙈';}
+  else {inp.type='password';icon.textContent='👁';}
+}
+function toggleJnHow(){
+  var steps=document.getElementById('jn-how-steps');
+  var link=document.getElementById('jn-how-link');
+  if(!steps)return;
+  var isOpen=steps.style.display==='block';
+  steps.style.display=isOpen?'none':'block';
+  if(link)link.textContent=isOpen?'Show me how ▾':'Hide steps ▴';
+}
+function testJnConnection(){
+  var keyInp=document.getElementById('jn-apikey');
+  var key=keyInp?keyInp.value:'';
+  var btn=document.getElementById('jn-test-btn');
+  var status=document.getElementById('jn-test-status');
+  var successBanner=document.getElementById('jn-test-banner-success');
+  var errorBanner=document.getElementById('jn-test-banner-error');
+  successBanner.style.display='none';
+  errorBanner.style.display='none';
+  btn.disabled=true;
+  status.textContent='Testing…';
+  setTimeout(function(){
+    btn.disabled=false;
+    status.textContent='';
+    var connectBtn=document.getElementById('crm-btn');
+    if(!key||key.length<8){
+      errorBanner.style.display='block';
+      connectBtn.style.opacity='.4';
+      connectBtn.style.pointerEvents='none';
+    } else {
+      successBanner.style.display='block';
+      connectBtn.style.opacity='1';
+      connectBtn.style.pointerEvents='auto';
+    }
+  },1200);
 }
 function checkMulti(){
   var v=document.getElementById('ctype').value;
@@ -3648,6 +3788,10 @@ function connectCRM(){
   var on=document.querySelector('#crm-grid-crm .crm-card.on');
   var name=on?on.querySelector('.crm-name').textContent:'your CRM';
   SYNC_CTX={type:'crm',name:name};
+  if(name==='JobNimbus'){
+    authGo('jn-realtime');
+    return;
+  }
   authGo('syncing');
 }
 
@@ -3702,6 +3846,213 @@ function connectMarketing(){
 function skipMarketing(){
   enterApp();
 }
+
+// ═══ JOBNIMBUS SYNC SCOPE — single source of truth ═══
+var JN_ENTITY_ORDER=['contact','job','payment','task','activity','workorder','materialorder'];
+var JN_CORE_ENTITIES=['contact','job','payment','task','activity'];
+var JN_SYNC_STATE={
+  enabled:true,
+  entities:{
+    contact:{label:'Contact',records:2847,mode:'realtime',lastEvent:'4 min ago',powers:'Lead volume, lead source, speed-to-lead, pipeline stages (R1/R2/R3)',automations:[{name:'HUB — Contact Created',active:true},{name:'HUB — Contact Modified',active:true}]},
+    job:{label:'Job',records:412,mode:'realtime',lastEvent:'9 min ago',powers:'Job pipeline, win/loss, close rate (R3/R4)',automations:[{name:'HUB — Job Created',active:true},{name:'HUB — Job Modified',active:true}]},
+    payment:{label:'Payment',records:198,mode:'realtime',lastEvent:'22 min ago',powers:'Won revenue, revenue vs target (R4)',automations:[{name:'HUB — Payment Created',active:true},{name:'HUB — Payment Modified',active:true}]},
+    task:{label:'Appointment',records:356,mode:'realtime',lastEvent:'—',powers:'Appointment rate, no-show rate, follow-up % (R2/R3)',automations:[{name:'HUB — Task Created',active:true},{name:'HUB — Task Modified',active:false}]},
+    activity:{label:'Activity',records:5102,mode:'realtime',lastEvent:'2 min ago',powers:'Rep activity, ghost-rep detection, CRM compliance (R2)',automations:[{name:'HUB — Activity Created',active:true},{name:'HUB — Activity Modified',active:true}]},
+    workorder:{label:'Work Order',records:301,mode:'daily',lastEvent:null,powers:'Production timeline, delivery velocity',automations:[{name:'HUB — Work Order Created',active:true},{name:'HUB — Work Order Modified',active:true}]},
+    materialorder:{label:'Material Order',records:275,mode:'daily',lastEvent:null,powers:'Material costs → job margin (R4)',automations:[{name:'HUB — Material Order Created',active:true},{name:'HUB — Material Order Modified',active:true}]}
+  }
+};
+var jnExpandedRow=null;
+
+function jnEntityStatus(e){
+  if(e.mode==='daily')return 'daily';
+  var missing=false;
+  for(var i=0;i<e.automations.length;i++){if(!e.automations[i].active){missing=true;break;}}
+  return missing?'degraded':'healthy';
+}
+
+function jnAggregateInfo(){
+  var realtimeCount=0,total=JN_ENTITY_ORDER.length,hasDegraded=false;
+  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
+    var e=JN_SYNC_STATE.entities[JN_ENTITY_ORDER[i]];
+    if(e.mode==='realtime')realtimeCount++;
+    if(jnEntityStatus(e)==='degraded')hasDegraded=true;
+  }
+  return {realtimeCount:realtimeCount,total:total,hasDegraded:hasDegraded};
+}
+
+function jnRenderAggregate(){
+  var info=jnAggregateInfo();
+  var pillClass,pillText;
+  if(!JN_SYNC_STATE.enabled){
+    pillClass='pill-caut';
+    pillText='☾ Daily sync only';
+  } else if(info.hasDegraded){
+    pillClass='pill-crit';
+    pillText='✗ Webhooks silent 6h';
+  } else if(info.realtimeCount===info.total){
+    pillClass='pill-cyan';
+    pillText='⚡ Real-time: '+info.realtimeCount+'/'+info.total;
+  } else {
+    pillClass='pill-caut';
+    pillText='⚡ Real-time: '+info.realtimeCount+'/'+info.total;
+  }
+  var scopePill=document.getElementById('jn-scope-aggregate-pill');
+  if(scopePill){scopePill.className='pill '+pillClass;scopePill.textContent=pillText;}
+  var connPill=document.getElementById('jn-conn-aggregate-pill');
+  if(connPill){connPill.className='pill '+pillClass;connPill.textContent=pillText;}
+  var upgradeAllBtn=document.getElementById('jn-upgrade-all-btn');
+  if(upgradeAllBtn)upgradeAllBtn.style.display=(info.realtimeCount<info.total)?'inline-flex':'none';
+  var upgradeLink=document.getElementById('jn-conn-upgrade-link');
+  if(upgradeLink)upgradeLink.style.display=JN_SYNC_STATE.enabled?'none':'inline';
+}
+
+function jnGoSyncScope(){
+  var tab=document.getElementById('dpt-sync-scope');
+  if(tab)switchTab(tab,'dp-sync-scope');
+}
+
+function jnToggleRow(key){
+  jnExpandedRow=(jnExpandedRow===key)?null:key;
+  jnRenderSyncScope();
+}
+
+function jnToggleMode(key){
+  var e=JN_SYNC_STATE.entities[key];
+  e.mode=(e.mode==='realtime')?'daily':'realtime';
+  if(e.mode==='realtime'){e.lastEvent='Just now';JN_SYNC_STATE.enabled=true;}
+  else {e.lastEvent=null;}
+  jnRenderSyncScope();
+  showToast(e.mode==='realtime'?('⚡ '+e.label+' switched to real-time'):('☾ '+e.label+' switched to daily sync'));
+}
+
+function jnUpgradeAllRealtime(){
+  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
+    var e=JN_SYNC_STATE.entities[JN_ENTITY_ORDER[i]];
+    if(e.mode!=='realtime'){e.mode='realtime';e.lastEvent='Just now';}
+  }
+  JN_SYNC_STATE.enabled=true;
+  jnRenderSyncScope();
+  showToast('⚡ All entities upgraded to real-time sync');
+}
+
+function jnRepair(key){
+  var btn=document.getElementById('jn-repair-btn-'+key);
+  if(btn){btn.disabled=true;btn.textContent='Repairing…';}
+  setTimeout(function(){
+    var e=JN_SYNC_STATE.entities[key];
+    var repairedName='';
+    for(var i=0;i<e.automations.length;i++){
+      if(!e.automations[i].active){e.automations[i].active=true;repairedName=e.automations[i].name;}
+    }
+    jnRenderSyncScope();
+    showToast('✓ '+repairedName+' recreated in JobNimbus');
+  },1500);
+}
+
+function jnRenderSyncScope(){
+  var wrap=document.getElementById('jn-scope-rows');
+  if(!wrap){jnRenderAggregate();return;}
+  var html='';
+  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
+    var key=JN_ENTITY_ORDER[i];
+    var e=JN_SYNC_STATE.entities[key];
+    var status=jnEntityStatus(e);
+    var dotColor=status==='healthy'?'var(--cyan)':(status==='degraded'?'var(--crit)':'var(--caut)');
+    var modePillClass=e.mode==='realtime'?'pill-cyan':'pill-neutral';
+    var modeLabel=e.mode==='realtime'?'⚡ Real-time':'☾ Daily sync';
+    var lastLine=e.mode==='daily'?'Last pull: 6:00 AM':('Last event: '+(e.lastEvent||'—'));
+    var expanded=(jnExpandedRow===key);
+    html+='<div class="connector-item" style="cursor:pointer;align-items:flex-start" onclick="jnToggleRow(\''+key+'\')">';
+    html+='<span style="width:8px;height:8px;border-radius:50%;background:'+dotColor+';margin-top:6px;flex-shrink:0"></span>';
+    html+='<div style="flex:1">';
+    html+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="conn-name">'+e.label+'</span><span class="pill '+modePillClass+'">'+modeLabel+'</span><span class="conn-detail">'+e.records.toLocaleString()+' records</span></div>';
+    html+='<div class="conn-detail">'+lastLine+'</div>';
+    html+='</div><div style="font-size:16px;color:var(--muted)">'+(expanded?'▴':'▾')+'</div>';
+    html+='</div>';
+    if(expanded){
+      html+='<div style="padding:14px 18px 18px 40px;background:var(--panel);border-bottom:1px solid rgba(200,194,182,.35)" onclick="event.stopPropagation()">';
+      html+='<div style="font-size:11.5px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Feeds these metrics</div>';
+      html+='<div style="font-size:12.5px;color:var(--ink);margin-bottom:14px">'+e.powers+'</div>';
+      html+='<div style="font-size:11.5px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Automations</div>';
+      var hasMissing=false;
+      for(var j=0;j<e.automations.length;j++){
+        var a=e.automations[j];
+        if(!a.active)hasMissing=true;
+        html+='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px">';
+        html+='<span style="font-family:monospace;font-size:12px">'+a.name+'</span>';
+        html+=a.active?'<span class="pill pill-pos">✓ Active</span>':'<span class="pill pill-crit">✗ Missing</span>';
+        html+='</div>';
+      }
+      html+='<div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">';
+      if(hasMissing){
+        html+='<button class="btn btn-danger btn-sm" id="jn-repair-btn-'+key+'" onclick="jnRepair(\''+key+'\')">Repair</button>';
+      }
+      html+=e.mode==='realtime'
+        ?('<button class="btn btn-outline btn-sm" onclick="jnToggleMode(\''+key+'\')">Switch to daily</button>')
+        :('<button class="btn btn-outline btn-sm" onclick="jnToggleMode(\''+key+'\')">Switch to real-time</button>');
+      html+='</div>';
+      html+='</div>';
+    }
+  }
+  wrap.innerHTML=html;
+  jnRenderAggregate();
+}
+
+// FR-2 — Enable real-time updates screen
+function jnEnableRealtime(){
+  var btn=document.getElementById('jn-enable-btn');
+  var skipLink=document.getElementById('jn-skip-link');
+  btn.disabled=true;
+  btn.style.opacity='.6';
+  btn.textContent='Provisioning…';
+  if(skipLink)skipLink.style.pointerEvents='none';
+  var wrap=document.getElementById('jn-provision-wrap');
+  var list=document.getElementById('jn-provision-list');
+  wrap.style.display='block';
+  var html='';
+  for(var i=0;i<JN_CORE_ENTITIES.length;i++){
+    var key=JN_CORE_ENTITIES[i];
+    var label=JN_SYNC_STATE.entities[key].label;
+    html+='<div class="sync-step pending" id="jnp-'+key+'"><div class="sync-dot pending" id="jnp-'+key+'-dot">'+(i+1)+'</div><div><div class="sync-label">Creating HUB — '+label+' Created</div><div class="sync-sub">JobNimbus automation</div></div></div>';
+  }
+  list.innerHTML=html;
+  var stepDelay=450;
+  for(var j=0;j<JN_CORE_ENTITIES.length;j++){
+    (function(idx){
+      setTimeout(function(){
+        var key=JN_CORE_ENTITIES[idx];
+        var dot=document.getElementById('jnp-'+key+'-dot');
+        var step=document.getElementById('jnp-'+key);
+        if(dot){dot.className='sync-dot active';dot.innerHTML='...';}
+        if(step)step.className='sync-step active';
+        setTimeout(function(){
+          if(dot){dot.className='sync-dot done';dot.innerHTML='OK';}
+          if(step)step.className='sync-step done';
+          if(idx===JN_CORE_ENTITIES.length-1){
+            setTimeout(function(){
+              JN_SYNC_STATE.enabled=true;
+              jnRenderSyncScope();
+              showToast('⚡ Real-time sync enabled for JobNimbus');
+              authGo('syncing');
+            },400);
+          }
+        },350);
+      },stepDelay*(idx+1));
+    })(j);
+  }
+}
+function jnSkipRealtime(){
+  JN_SYNC_STATE.enabled=false;
+  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
+    var e=JN_SYNC_STATE.entities[JN_ENTITY_ORDER[i]];
+    e.mode='daily';
+    e.lastEvent=null;
+  }
+  jnRenderSyncScope();
+  authGo('syncing');
+}
+jnRenderSyncScope();
 
 // ZIP → city/timezone lookup (demo data)
 var ZIP_DATA={
@@ -4819,6 +5170,12 @@ function enterApp(){
   goApp(currentUser.roles[0]===ROLES.SALES_REP?'contacts':'dashboard');
   setTimeout(initCharts,300);
   setTimeout(checkPWABanner,5000);
+  setTimeout(function(){
+    var info=jnAggregateInfo();
+    if(info.hasDegraded){
+      showToast('⚠ JobNimbus: 1 sync automation missing — Appointments data may be stale. Open Sync Scope to repair.');
+    }
+  },4000);
   // Show welcome email modal for new signups (not manager joins)
   if(!window._isManagerJoin){
     setTimeout(function(){
