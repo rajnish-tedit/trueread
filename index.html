@@ -765,9 +765,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div class="crm-icon" style="background:#F0FFF4">🟢</div>
         <div><div class="crm-name">AccuLynx</div><div class="crm-desc">Roofing-native CRM</div><span class="crm-auth-badge api">API Key</span></div>
       </div>
-      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','api','crm')">
+      <div class="crm-card" onclick="pickCRM(this,'JobNimbus','pass','crm')">
         <div class="crm-icon" style="background:#FFF0F0">🔴</div>
-        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge api">API Key</span></div>
+        <div><div class="crm-name">JobNimbus</div><div class="crm-desc">Project management</div><span class="crm-auth-badge pass">Login</span></div>
       </div>
     </div>
 
@@ -779,35 +779,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div class="inp-row"><label class="lbl">Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
       </div>
       <div id="creds-crm-api" style="display:none">
-        <div id="crm-api-generic">
-          <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
-        </div>
-        <div id="crm-api-jn" style="display:none">
-          <div class="inp-row">
-            <label class="lbl">JobNimbus API Key</label>
-            <div style="position:relative">
-              <input class="inp" type="password" id="jn-apikey" placeholder="Paste your JobNimbus API key here" style="padding-right:40px" oninput="jnClearTestState()"/>
-              <span onclick="jnToggleEye()" id="jn-eye-icon" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--muted)">👁</span>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:8px">Find this in JobNimbus → Settings → API → New API Key. Must be created by a JobNimbus admin.</div>
-          <div style="margin-bottom:12px">
-            <a onclick="toggleJnHow()" id="jn-how-link" style="font-size:11.5px;color:var(--cyan);font-weight:700;cursor:pointer">Show me how ▾</a>
-            <div id="jn-how-steps" style="display:none;margin-top:8px;font-size:11.5px;color:var(--ink);background:var(--panel);border-radius:8px;padding:10px 12px;line-height:1.6">
-              <div>1. Log in to JobNimbus as an admin.</div>
-              <div>2. Go to Settings → API.</div>
-              <div>3. Click New API Key and copy it here.</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-            <button class="btn btn-outline btn-sm" id="jn-test-btn" onclick="testJnConnection()" type="button">Test connection</button>
-            <span id="jn-test-status" style="font-size:11.5px;color:var(--muted)"></span>
-          </div>
-          <div id="jn-test-banner-success" style="display:none;background:rgba(15,88,102,.08);border:1px solid rgba(15,88,102,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--cyan);margin-bottom:10px;font-weight:600">✓ Connected as Day 41 Thrive — 2,847 contacts found</div>
-          <div id="jn-test-banner-error" style="display:none;background:rgba(155,58,42,.08);border:1px solid rgba(155,58,42,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--crit);margin-bottom:10px">✗ Invalid API key — check it was copied fully and created by an admin user. <a onclick="showToast('📄 API key guide opened')" style="color:var(--crit);font-weight:700;text-decoration:underline;cursor:pointer">View API key guide</a></div>
-          <div id="jn-trust-line" style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:4px">Read-only data access — the only thing The Hub adds to your CRM are optional "HUB —" automations, which we ask permission for next.</div>
-        </div>
+        <div class="inp-row"><label class="lbl" id="crm-api-label-crm">API Key</label><input class="inp" id="crm-apikey-crm" placeholder="Paste your API key here"/></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:-6px;margin-bottom:12px" id="crm-api-hint-crm">Find this in your account settings → Integrations.</div>
       </div>
       <div style="background:rgba(15,88,102,.05);border:1px solid rgba(15,88,102,.12);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--ink);margin-bottom:4px;">
         <strong>⏱ About data sync</strong> — Initial import may take a few minutes. Large accounts sync in batches; your dashboard becomes available as data loads. Historical data beyond 12 months syncs in the background.
@@ -915,36 +888,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⏳ <strong>Historical sync in progress</strong> — GHL rate-limits how much we can pull per request. Older contacts and full call/SMS history will continue syncing in the background and may take a few hours. We'll notify you when it's complete — no action needed, your dashboard already works with what's synced.</div>
       <button class="btn btn-primary btn-full" onclick="enterApp()">Go to your dashboard →</button>
     </div>
-  </div>
-
-  <!-- JOBNIMBUS REAL-TIME UPDATES -->
-  <div class="auth-card scr" id="scr-jn-realtime" style="max-width:480px;">
-    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-    <div class="auth-h1">Enable real-time updates?</div>
-    <div class="auth-sub">Without this, your JobNimbus data refreshes once daily at 6:00 AM.</div>
-
-    <div style="background:var(--panel);border-radius:12px;padding:16px 18px;margin-bottom:16px">
-      <div style="font-size:13px;color:var(--ink);line-height:1.5;margin-bottom:12px">The Hub will add up to 14 automations to your JobNimbus account, all named "HUB — …". They push changes to The Hub the moment they happen. Nothing else in your JobNimbus is modified.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px">
-        <span class="pill pill-cyan">⚡ Contact</span>
-        <span class="pill pill-cyan">⚡ Job</span>
-        <span class="pill pill-cyan">⚡ Payment</span>
-        <span class="pill pill-cyan">⚡ Appointment</span>
-        <span class="pill pill-cyan">⚡ Activity</span>
-        <span class="pill pill-neutral">☾ Work Order</span>
-        <span class="pill pill-neutral">☾ Material Order</span>
-      </div>
-    </div>
-
-    <div id="jn-provision-wrap" style="display:none;margin-bottom:6px">
-      <div id="jn-provision-list"></div>
-    </div>
-
-    <button class="btn btn-primary btn-full btn-lg" id="jn-enable-btn" onclick="jnEnableRealtime()">Enable real-time updates ⚡</button>
-    <div style="text-align:center;margin-top:14px">
-      <a onclick="jnSkipRealtime()" id="jn-skip-link" style="font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer;text-decoration:underline">Skip for now — daily sync only</a>
-    </div>
-    <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Only General Managers and Admins can change this setting.</div>
   </div>
 
   <!-- COMPANY SETUP -->
@@ -3654,78 +3597,9 @@ function pickCRM(card,name,authType,category){
   if(category==='crm'){
     document.getElementById('crm-required-hint-bottom').style.display='none';
     var btn=document.getElementById('crm-btn');
-    var isJN=(name==='JobNimbus');
-    var jnBlock=document.getElementById('crm-api-jn');
-    var genericBlock=document.getElementById('crm-api-generic');
-    if(jnBlock)jnBlock.style.display=isJN?'block':'none';
-    if(genericBlock)genericBlock.style.display=isJN?'none':'block';
-    if(isJN){
-      jnResetTestState();
-      btn.style.opacity='.4';
-      btn.style.pointerEvents='none';
-    } else {
-      btn.style.opacity='1';
-      btn.style.pointerEvents='auto';
-    }
+    btn.style.opacity='1';
+    btn.style.pointerEvents='auto';
   }
-}
-
-// JOBNIMBUS — API key test connection
-function jnResetTestState(){
-  var success=document.getElementById('jn-test-banner-success');
-  var error=document.getElementById('jn-test-banner-error');
-  if(success)success.style.display='none';
-  if(error)error.style.display='none';
-  var testBtn=document.getElementById('jn-test-btn');
-  if(testBtn){testBtn.disabled=false;testBtn.textContent='Test connection';}
-  var status=document.getElementById('jn-test-status');
-  if(status)status.textContent='';
-}
-function jnClearTestState(){
-  jnResetTestState();
-  var btn=document.getElementById('crm-btn');
-  if(btn){btn.style.opacity='.4';btn.style.pointerEvents='none';}
-}
-function jnToggleEye(){
-  var inp=document.getElementById('jn-apikey');
-  var icon=document.getElementById('jn-eye-icon');
-  if(!inp||!icon)return;
-  if(inp.type==='password'){inp.type='text';icon.textContent='🙈';}
-  else {inp.type='password';icon.textContent='👁';}
-}
-function toggleJnHow(){
-  var steps=document.getElementById('jn-how-steps');
-  var link=document.getElementById('jn-how-link');
-  if(!steps)return;
-  var isOpen=steps.style.display==='block';
-  steps.style.display=isOpen?'none':'block';
-  if(link)link.textContent=isOpen?'Show me how ▾':'Hide steps ▴';
-}
-function testJnConnection(){
-  var keyInp=document.getElementById('jn-apikey');
-  var key=keyInp?keyInp.value:'';
-  var btn=document.getElementById('jn-test-btn');
-  var status=document.getElementById('jn-test-status');
-  var successBanner=document.getElementById('jn-test-banner-success');
-  var errorBanner=document.getElementById('jn-test-banner-error');
-  successBanner.style.display='none';
-  errorBanner.style.display='none';
-  btn.disabled=true;
-  status.textContent='Testing…';
-  setTimeout(function(){
-    btn.disabled=false;
-    status.textContent='';
-    var connectBtn=document.getElementById('crm-btn');
-    if(!key||key.length<8){
-      errorBanner.style.display='block';
-      connectBtn.style.opacity='.4';
-      connectBtn.style.pointerEvents='none';
-    } else {
-      successBanner.style.display='block';
-      connectBtn.style.opacity='1';
-      connectBtn.style.pointerEvents='auto';
-    }
-  },1200);
 }
 function checkMulti(){
   var v=document.getElementById('ctype').value;
@@ -3788,10 +3662,6 @@ function connectCRM(){
   var on=document.querySelector('#crm-grid-crm .crm-card.on');
   var name=on?on.querySelector('.crm-name').textContent:'your CRM';
   SYNC_CTX={type:'crm',name:name};
-  if(name==='JobNimbus'){
-    authGo('jn-realtime');
-    return;
-  }
   authGo('syncing');
 }
 
@@ -3849,7 +3719,6 @@ function skipMarketing(){
 
 // ═══ JOBNIMBUS SYNC SCOPE — single source of truth ═══
 var JN_ENTITY_ORDER=['contact','job','payment','task','activity','workorder','materialorder'];
-var JN_CORE_ENTITIES=['contact','job','payment','task','activity'];
 var JN_SYNC_STATE={
   enabled:true,
   entities:{
@@ -3999,59 +3868,6 @@ function jnRenderSyncScope(){
   jnRenderAggregate();
 }
 
-// FR-2 — Enable real-time updates screen
-function jnEnableRealtime(){
-  var btn=document.getElementById('jn-enable-btn');
-  var skipLink=document.getElementById('jn-skip-link');
-  btn.disabled=true;
-  btn.style.opacity='.6';
-  btn.textContent='Provisioning…';
-  if(skipLink)skipLink.style.pointerEvents='none';
-  var wrap=document.getElementById('jn-provision-wrap');
-  var list=document.getElementById('jn-provision-list');
-  wrap.style.display='block';
-  var html='';
-  for(var i=0;i<JN_CORE_ENTITIES.length;i++){
-    var key=JN_CORE_ENTITIES[i];
-    var label=JN_SYNC_STATE.entities[key].label;
-    html+='<div class="sync-step pending" id="jnp-'+key+'"><div class="sync-dot pending" id="jnp-'+key+'-dot">'+(i+1)+'</div><div><div class="sync-label">Creating HUB — '+label+' Created</div><div class="sync-sub">JobNimbus automation</div></div></div>';
-  }
-  list.innerHTML=html;
-  var stepDelay=450;
-  for(var j=0;j<JN_CORE_ENTITIES.length;j++){
-    (function(idx){
-      setTimeout(function(){
-        var key=JN_CORE_ENTITIES[idx];
-        var dot=document.getElementById('jnp-'+key+'-dot');
-        var step=document.getElementById('jnp-'+key);
-        if(dot){dot.className='sync-dot active';dot.innerHTML='...';}
-        if(step)step.className='sync-step active';
-        setTimeout(function(){
-          if(dot){dot.className='sync-dot done';dot.innerHTML='OK';}
-          if(step)step.className='sync-step done';
-          if(idx===JN_CORE_ENTITIES.length-1){
-            setTimeout(function(){
-              JN_SYNC_STATE.enabled=true;
-              jnRenderSyncScope();
-              showToast('⚡ Real-time sync enabled for JobNimbus');
-              authGo('syncing');
-            },400);
-          }
-        },350);
-      },stepDelay*(idx+1));
-    })(j);
-  }
-}
-function jnSkipRealtime(){
-  JN_SYNC_STATE.enabled=false;
-  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
-    var e=JN_SYNC_STATE.entities[JN_ENTITY_ORDER[i]];
-    e.mode='daily';
-    e.lastEvent=null;
-  }
-  jnRenderSyncScope();
-  authGo('syncing');
-}
 jnRenderSyncScope();
 
 // ZIP → city/timezone lookup (demo data)
