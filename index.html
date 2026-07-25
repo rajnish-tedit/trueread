@@ -1372,6 +1372,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<div id="jn-status-banner" style="display:none;align-items:center;gap:12px;padding:10px 20px;font-size:12.5px;font-weight:600;"></div>
+
 <div id="body-wrap">
 <aside id="sidebar">
   <div class="sb-logo">
@@ -3339,6 +3341,30 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 </div><!-- /body-wrap -->
 </div><!-- /shell -->
 
+<!-- JOBNIMBUS MANDATORY REAL-TIME SETUP GATE (FR-7) — GM/Admin only, JobNimbus tenants only -->
+<div id="jn-mandatory-gate" style="display:none;position:fixed;inset:0;z-index:400;background:var(--horizon);overflow-y:auto;">
+  <div style="max-width:640px;margin:40px auto;padding:0 20px 40px;">
+    <div class="card" style="padding:36px;">
+      <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
+      <div class="auth-h1">Finish connecting JobNimbus to unlock The Hub</div>
+      <div class="auth-sub">Your subscription depends on this — without it, The Hub can't receive new or updated data from JobNimbus after today.</div>
+
+      <div style="margin:18px 0">
+        <div style="font-size:12.5px;font-weight:700;color:var(--slate)" id="jn-gate-progress-text">0 of 10 required automations confirmed</div>
+        <div class="prog-track" style="margin-top:6px"><div class="prog-fill" id="jn-gate-progress-bar" style="width:0%"></div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;"><div id="jn-checklist-core-gate"></div></div>
+
+      <button class="btn btn-outline btn-full" onclick="jnOpenDelegateModal()" style="margin-bottom:14px">Send setup steps to your JobNimbus admin →</button>
+      <div style="text-align:center">
+        <a onclick="jnToggleWhyRequired()" id="jn-why-link" style="font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline">Why is this required?</a>
+        <div id="jn-why-explain" style="display:none;font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5">JobNimbus's API only supports a one-time bulk export — there's no way to pull new or updated records afterward. Without these automations pushing changes in real time, your dashboard would stay frozen at today's numbers.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════════════════════════════════════════ MODALS ═══ -->
 <div class="modal-back" id="modal-draft-modal" onclick="closeModalBack(event)">
   <div class="modal">
@@ -3579,6 +3605,18 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- JOBNIMBUS DELEGATE SETUP MODAL (FR-5) -->
+<div class="modal-back" id="modal-jn-delegate-modal" onclick="closeModalBack(event)">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Send setup steps to your JobNimbus admin</div><div class="modal-sub">They'll get the same webhook URLs and instructions shown on this screen</div></div><button class="modal-close" onclick="closeModal('jn-delegate-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="inp-row"><label class="lbl">Recipient email(s)</label><input class="inp" id="jn-delegate-email" placeholder="admin@jobnimbus-account.com"/></div>
+      <div class="inp-row"><label class="lbl">Message</label><textarea class="inp" id="jn-delegate-message" rows="9" style="resize:vertical;font-size:12.5px;line-height:1.6;font-family:'Inter',sans-serif"></textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('jn-delegate-modal')">Cancel</button><button class="btn btn-primary" onclick="jnSendDelegateEmail()">Send</button></div>
+  </div>
+</div>
+
 <!-- INVITE BRANCH MANAGER MODAL -->
 <div class="modal-back" id="modal-invite-branch-mgr-modal" onclick="closeModalBack(event)">
   <div class="modal" style="max-width:440px">
@@ -3804,6 +3842,7 @@ function connectCRM(){
   var on=document.querySelector('#crm-grid-crm .crm-card.on');
   var name=on?on.querySelector('.crm-name').textContent:'your CRM';
   SYNC_CTX={type:'crm',name:name};
+  CONNECTED_CRM=name.toLowerCase().replace(/\s*crm\s*$/,'').trim();
   authGo('syncing');
 }
 
@@ -3882,8 +3921,10 @@ function jnEventLabel(event){
   return event==='created'?'Created':'Modified';
 }
 // automation.status: 'not_started' | 'waiting' | 'active' | 'degraded'
+var CONNECTED_CRM='jobnimbus';
 var JN_SYNC_STATE={
   jnRealtime:'in_progress',
+  coreUnlockedOnce:true,
   contact:{automations:[
     {event:'created',status:'active',webhookUrl:jnWebhookUrl('contact','created'),lastEvent:'4 min ago'},
     {event:'modified',status:'active',webhookUrl:jnWebhookUrl('contact','modified'),lastEvent:'4 min ago'}
@@ -4190,6 +4231,7 @@ function jnRenderAll(){
   jnRenderChecklist('onboard');
   jnRenderChecklist('modal');
   jnRenderSyncScope();
+  jnUpdateGate();
 }
 
 function jnResetAllAutomations(){
@@ -4197,6 +4239,7 @@ function jnResetAllAutomations(){
     var autos=JN_SYNC_STATE[JN_ENTITY_ORDER[i]].automations;
     for(var e=0;e<autos.length;e++){autos[e].status='not_started';autos[e].lastEvent=null;}
   }
+  JN_SYNC_STATE.coreUnlockedOnce=false;
 }
 
 function jnStartSetup(){
@@ -4218,20 +4261,151 @@ function jnFinishSetupLater(){
   authGo('marketing-pick');
 }
 
+function jnHasDegradedAny(){
+  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
+    var autos=JN_SYNC_STATE[JN_ENTITY_ORDER[i]].automations;
+    for(var e=0;e<autos.length;e++){if(autos[e].status==='degraded')return true;}
+  }
+  return false;
+}
+function jnFirstDegradedName(){
+  for(var i=0;i<JN_ENTITY_ORDER.length;i++){
+    var key=JN_ENTITY_ORDER[i];
+    var autos=JN_SYNC_STATE[key].automations;
+    for(var e=0;e<autos.length;e++){
+      if(autos[e].status==='degraded')return 'HUB — '+JN_ENTITY_META[key].label+' '+jnEventLabel(autos[e].event);
+    }
+  }
+  return '';
+}
 function jnCheckSilenceAlert(){
   if(jnAlertShown)return;
+  if(CONNECTED_CRM!=='jobnimbus')return;
+  if(!currentUser.isAdmin)return;
+  if(!JN_SYNC_STATE.coreUnlockedOnce)return;
   for(var i=0;i<JN_ENTITY_ORDER.length;i++){
     var key=JN_ENTITY_ORDER[i];
     var autos=JN_SYNC_STATE[key].automations;
     for(var e=0;e<autos.length;e++){
       if(autos[e].status==='degraded'){
         var name='HUB — '+JN_ENTITY_META[key].label+' '+jnEventLabel(autos[e].event);
-        showToast('⚠ JobNimbus: "'+name+'" hasn\'t sent an update in 6h+ — it may have been turned off. Open Sync Scope to check.');
+        showToast('⚠ JobNimbus: "'+name+'" stopped sending updates — data may be going stale again.');
         jnAlertShown=true;
+        jnRenderStatusBanner();
         return;
       }
     }
   }
+}
+
+// ═══ FR-7 — mandatory Core setup gate (GM/Admin, JobNimbus only) ═══
+function jnCoreActiveCount(){
+  var count=0;
+  for(var i=0;i<JN_CORE_ORDER.length;i++){
+    var autos=JN_SYNC_STATE[JN_CORE_ORDER[i]].automations;
+    for(var e=0;e<autos.length;e++){if(autos[e].status==='active')count++;}
+  }
+  return count;
+}
+function jnIsGateActive(){
+  if(typeof currentUser==='undefined')return false;
+  return CONNECTED_CRM==='jobnimbus'&&!!currentUser.isAdmin&&!JN_SYNC_STATE.coreUnlockedOnce;
+}
+var _jnWasGated=null;
+function jnUpdateGate(){
+  if(!JN_SYNC_STATE.coreUnlockedOnce&&jnCoreActiveCount()===10){
+    JN_SYNC_STATE.coreUnlockedOnce=true;
+  }
+  var authWrap=document.getElementById('auth-wrap');
+  var loggedIn=!!authWrap&&authWrap.style.display==='none';
+  var gated=loggedIn&&jnIsGateActive();
+  var gateEl=document.getElementById('jn-mandatory-gate');
+  if(gateEl)gateEl.style.display=gated?'block':'none';
+  if(_jnWasGated===true&&gated===false&&loggedIn){
+    showToast('✓ Real-time sync fully connected. Your Hub is now live.');
+  }
+  _jnWasGated=gated;
+  if(gated){
+    jnRenderChecklist('gate');
+    var count=jnCoreActiveCount();
+    var progText=document.getElementById('jn-gate-progress-text');
+    var progBar=document.getElementById('jn-gate-progress-bar');
+    if(progText)progText.textContent=count+' of 10 required automations confirmed';
+    if(progBar)progBar.style.width=(count*10)+'%';
+  }
+  jnRenderStatusBanner();
+}
+function jnToggleWhyRequired(){
+  var el=document.getElementById('jn-why-explain');
+  var link=document.getElementById('jn-why-link');
+  if(!el)return;
+  var isOpen=el.style.display==='block';
+  el.style.display=isOpen?'none':'block';
+  if(link)link.textContent=isOpen?'Why is this required?':'Hide explanation ▴';
+}
+
+// ═══ FR-8/FR-10 — status banner (non-admin info banner / admin degraded alert) ═══
+var jnNonAdminBannerDismissed=false;
+var jnDegradedBannerDismissed=false;
+function jnRenderStatusBanner(){
+  if(typeof currentUser==='undefined')return;
+  var el=document.getElementById('jn-status-banner');
+  if(!el)return;
+  if(CONNECTED_CRM!=='jobnimbus'){el.style.display='none';return;}
+  if(!currentUser.isAdmin){
+    if(!JN_SYNC_STATE.coreUnlockedOnce&&!jnNonAdminBannerDismissed){
+      el.style.display='flex';
+      el.style.background='rgba(181,123,31,.1)';
+      el.style.borderBottom='1px solid rgba(181,123,31,.25)';
+      el.style.color='#78350F';
+      el.innerHTML='<span style="flex:1">Data may not be fully up to date — your account admin needs to finish CRM setup.</span><button onclick="jnDismissBanner(\'nonadmin\')" style="background:none;border:none;font-size:16px;cursor:pointer;color:inherit;padding:0 4px" type="button">×</button>';
+    } else {
+      el.style.display='none';
+    }
+    return;
+  }
+  if(JN_SYNC_STATE.coreUnlockedOnce&&jnHasDegradedAny()&&!jnDegradedBannerDismissed){
+    var name=jnFirstDegradedName();
+    el.style.display='flex';
+    el.style.background='rgba(155,58,42,.08)';
+    el.style.borderBottom='1px solid rgba(155,58,42,.25)';
+    el.style.color='var(--crit)';
+    el.innerHTML='<span style="flex:1">⚠ JobNimbus: "'+name+'" stopped sending updates — data may be going stale again.</span><button onclick="jnDismissBanner(\'degraded\')" style="background:none;border:none;font-size:16px;cursor:pointer;color:inherit;padding:0 4px" type="button">×</button>';
+  } else {
+    el.style.display='none';
+  }
+}
+function jnDismissBanner(which){
+  if(which==='nonadmin')jnNonAdminBannerDismissed=true;
+  if(which==='degraded')jnDegradedBannerDismissed=true;
+  jnRenderStatusBanner();
+}
+
+// ═══ FR-5 — delegate setup to a JobNimbus admin ═══
+function jnOpenDelegateModal(){
+  var lines=[];
+  for(var i=0;i<JN_CORE_ORDER.length;i++){
+    var key=JN_CORE_ORDER[i];
+    var meta=JN_ENTITY_META[key];
+    var autos=JN_SYNC_STATE[key].automations;
+    for(var e=0;e<autos.length;e++){
+      if(autos[e].status!=='active'){
+        lines.push('- HUB — '+meta.label+' '+jnEventLabel(autos[e].event)+': '+autos[e].webhookUrl);
+      }
+    }
+  }
+  var body='Hi,\n\nThe Hub needs a few automations added in JobNimbus to keep Smith Roofing LLC\'s dashboard receiving live updates. Could you add these in JobNimbus (Settings → Automation)?\n\n'+lines.join('\n')+'\n\nFor each: Trigger type = Event based, matching the entity/event named above, then add a webhook action pointed at the URL shown. Save once done — we will detect it automatically.\n\nThanks!';
+  var msgEl=document.getElementById('jn-delegate-message');
+  if(msgEl)msgEl.value=body;
+  var emailEl=document.getElementById('jn-delegate-email');
+  if(emailEl)emailEl.value='';
+  openModal('jn-delegate-modal');
+}
+function jnSendDelegateEmail(){
+  var emailEl=document.getElementById('jn-delegate-email');
+  var email=emailEl?emailEl.value:'';
+  closeModal('jn-delegate-modal');
+  showToast('✉️ Setup steps sent to '+(email||'your JobNimbus admin'));
 }
 
 jnRenderAll();
@@ -5273,6 +5447,7 @@ function applyRoleUI(){
   });
 
   applyContactsScope(perms);
+  jnUpdateGate();
 }
 
 function applyContactsScope(perms){
