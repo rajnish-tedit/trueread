@@ -3357,7 +3357,17 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <div class="card" style="margin-bottom:16px;"><div id="jn-checklist-core-gate"></div></div>
 
       <button class="btn btn-outline btn-full" onclick="jnOpenDelegateModal()" style="margin-bottom:14px">Send setup steps to your JobNimbus admin →</button>
-      <div style="text-align:center">
+
+      <div style="border-top:1px solid var(--rule);padding-top:14px;text-align:center;margin-bottom:4px">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Can't finish this right now?</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="jnSnoozeGate(1,'1 hour')" type="button">Remind me in 1 hour</button>
+          <button class="btn btn-outline btn-sm" onclick="jnSnoozeGate(24,'1 day')" type="button">Remind me in 1 day</button>
+          <button class="btn btn-outline btn-sm" onclick="jnSnoozeGate(168,'1 week')" type="button">Remind me in 1 week</button>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:14px">
         <a onclick="jnToggleWhyRequired()" id="jn-why-link" style="font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline">Why is this required?</a>
         <div id="jn-why-explain" style="display:none;font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5">JobNimbus's API only supports a one-time bulk export — there's no way to pull new or updated records afterward. Without these automations pushing changes in real time, your dashboard would stay frozen at today's numbers.</div>
       </div>
@@ -4309,7 +4319,26 @@ function jnCoreActiveCount(){
 }
 function jnIsGateActive(){
   if(typeof currentUser==='undefined')return false;
+  if(JN_SYNC_STATE.gateSnoozedUntil&&Date.now()<JN_SYNC_STATE.gateSnoozedUntil)return false;
   return CONNECTED_CRM==='jobnimbus'&&!!currentUser.isAdmin&&!JN_SYNC_STATE.coreUnlockedOnce;
+}
+function jnFormatRemaining(ms){
+  if(ms<=0)return '0m';
+  var mins=Math.ceil(ms/60000);
+  if(mins<60)return mins+'m';
+  var hrs=Math.ceil(mins/60);
+  if(hrs<24)return hrs+'h';
+  var days=Math.ceil(hrs/24);
+  return days+'d';
+}
+function jnSnoozeGate(hours,label){
+  JN_SYNC_STATE.gateSnoozedUntil=Date.now()+hours*60*60*1000;
+  jnRenderAll();
+  showToast('⏰ Reminder set — we\'ll check back in '+label+'.');
+}
+function jnResumeGateNow(){
+  JN_SYNC_STATE.gateSnoozedUntil=null;
+  jnRenderAll();
 }
 var _jnWasGated=null;
 function jnUpdateGate(){
@@ -4321,7 +4350,7 @@ function jnUpdateGate(){
   var gated=loggedIn&&jnIsGateActive();
   var gateEl=document.getElementById('jn-mandatory-gate');
   if(gateEl)gateEl.style.display=gated?'block':'none';
-  if(_jnWasGated===true&&gated===false&&loggedIn){
+  if(_jnWasGated===true&&gated===false&&loggedIn&&JN_SYNC_STATE.coreUnlockedOnce){
     showToast('✓ Real-time sync fully connected. Your Hub is now live.');
   }
   _jnWasGated=gated;
@@ -4362,6 +4391,15 @@ function jnRenderStatusBanner(){
     } else {
       el.style.display='none';
     }
+    return;
+  }
+  if(!JN_SYNC_STATE.coreUnlockedOnce&&JN_SYNC_STATE.gateSnoozedUntil&&Date.now()<JN_SYNC_STATE.gateSnoozedUntil){
+    var remaining=jnFormatRemaining(JN_SYNC_STATE.gateSnoozedUntil-Date.now());
+    el.style.display='flex';
+    el.style.background='rgba(181,123,31,.1)';
+    el.style.borderBottom='1px solid rgba(181,123,31,.25)';
+    el.style.color='#78350F';
+    el.innerHTML='<span style="flex:1">Real-time setup still incomplete — you\'ll be reminded again in '+remaining+'.</span><button onclick="jnResumeGateNow()" style="background:none;border:none;font-size:12.5px;font-weight:700;cursor:pointer;color:inherit;text-decoration:underline;padding:0 4px" type="button">Finish now →</button>';
     return;
   }
   if(JN_SYNC_STATE.coreUnlockedOnce&&jnHasDegradedAny()&&!jnDegradedBannerDismissed){
@@ -4409,6 +4447,7 @@ function jnSendDelegateEmail(){
 }
 
 jnRenderAll();
+setInterval(jnUpdateGate,30000);
 
 // ZIP → city/timezone lookup (demo data)
 var ZIP_DATA={
