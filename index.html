@@ -1976,13 +1976,25 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="tab" id="dpt-sync-scope" onclick="switchTab(this,'dp-sync-scope')">Sync Scope</div>
   </div>
   <div class="tab-panel on" id="tab-dp-connectors">
-    <div class="card fu"><div style="padding:2px 0">
-      <div class="connector-item"><div class="conn-icon" style="background:#E8F5FF;font-size:20px">🔷</div><div style="flex:1"><div class="conn-name">GoHighLevel</div><div class="conn-detail">312 contacts · 64 pipeline stages · Synced 4 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
-      <div class="connector-item"><div class="conn-icon" style="background:#FFF3E8;font-size:20px">🟠</div><div style="flex:1"><div class="conn-name">Leap CRM</div><div class="conn-detail">87 jobs · $1.2M pipeline · Synced 12 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
-      <div class="connector-item"><div class="conn-icon" style="background:#FFF0F0;font-size:20px">🔴</div><div style="flex:1"><div class="conn-name">JobNimbus</div><div class="conn-detail">2,847 contacts · 412 jobs · <span class="pill pill-cyan" id="jn-conn-aggregate-pill" onclick="jnGoSyncScope()" style="cursor:pointer">⚡ Real-time: 5/7</span> <a id="jn-conn-upgrade-link" onclick="jnGoSyncScope()" style="display:none;font-size:12px;color:var(--cyan);font-weight:700;cursor:pointer;margin-left:6px">Continue setup →</a></div></div><button class="btn btn-outline btn-sm" onclick="jnGoSyncScope()">Settings</button></div>
-      <div class="connector-item"><div class="conn-icon" style="background:#F5F0FF;font-size:20px">📞</div><div style="flex:1"><div class="conn-name">CallRail</div><div class="conn-detail">1,204 calls · Speed-to-lead = CallRail.first_call − GHL.created_at · Synced 8 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
-      <div class="connector-item" style="border-bottom:none"><div class="conn-icon" style="background:#FFF0F0;font-size:20px">📊</div><div style="flex:1"><div class="conn-name">WhatConverts</div><div class="conn-detail" style="color:var(--crit)">⚠ Last sync failed 3 hrs ago — 0 records synced</div></div><span class="pill pill-crit" style="margin-right:8px">Failed</span><button class="btn btn-primary btn-sm" onclick="showToast('🔄 Reconnecting WhatConverts...')">Reconnect</button></div>
-    </div></div>
+    <div class="card fu" style="margin-bottom:16px">
+      <div style="padding:18px 20px 0">
+        <div class="sec-head" style="margin-bottom:10px"><div class="sec-title">CRM — connect one</div></div>
+        <div id="crm-empty-state" style="display:none;padding:10px 14px;background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:8px;font-size:12.5px;color:#78350F;margin-bottom:14px">
+          &#9888;&#65039; Connect a CRM to start syncing your pipeline data — required for core metrics.
+        </div>
+      </div>
+      <div id="crm-connector-list"></div>
+    </div>
+    <div class="card fu1">
+      <div style="padding:18px 20px 0">
+        <div class="sec-head" style="margin-bottom:10px"><div class="sec-title">Marketing &amp; attribution — connect any</div></div>
+      </div>
+      <div style="padding-bottom:2px">
+        <div class="connector-item"><div class="conn-icon" style="background:#E8F5FF;font-size:20px">🔷</div><div style="flex:1"><div class="conn-name">GoHighLevel</div><div class="conn-detail">312 contacts · 64 pipeline stages · Synced 4 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
+        <div class="connector-item"><div class="conn-icon" style="background:#F5F0FF;font-size:20px">📞</div><div style="flex:1"><div class="conn-name">CallRail</div><div class="conn-detail">1,204 calls · Speed-to-lead = CallRail.first_call − GHL.created_at · Synced 8 min ago</div></div><span class="pill pill-pos" style="margin-right:8px">Healthy</span><button class="btn btn-outline btn-sm">Settings</button></div>
+        <div class="connector-item" style="border-bottom:none"><div class="conn-icon" style="background:#FFF0F0;font-size:20px">📊</div><div style="flex:1"><div class="conn-name">WhatConverts</div><div class="conn-detail" style="color:var(--crit)">⚠ Last sync failed 3 hrs ago — 0 records synced</div></div><span class="pill pill-crit" style="margin-right:8px">Failed</span><button class="btn btn-primary btn-sm" onclick="showToast('🔄 Reconnecting WhatConverts...')">Reconnect</button></div>
+      </div>
+    </div>
   </div>
   <div class="tab-panel" id="tab-dp-sync-scope">
     <div class="card fu"><div style="padding:18px 20px">
@@ -3584,6 +3596,22 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- CRM DISCONNECT CONFIRM MODAL (FR-4) -->
+<div class="modal-back" id="modal-crm-disconnect-modal" onclick="closeModalBack(event)">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head"><div><div class="modal-title">Disconnect <span id="crm-disconnect-name">CRM</span>?</div></div><button class="modal-close" onclick="closeModal('crm-disconnect-modal')">&#215;</button></div>
+    <div style="padding:20px">
+      <div style="background:rgba(155,58,42,.08);border:1.5px solid rgba(155,58,42,.2);border-radius:10px;padding:14px;font-size:13px;color:var(--crit)" id="crm-disconnect-body">
+        This stops all data sync from this CRM, including real-time automations you've set up. You can reconnect it later, but automation setup will need to be redone.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('crm-disconnect-modal')">Cancel</button>
+      <button class="btn btn-danger" onclick="dpConfirmCrmDisconnect()">Disconnect</button>
+    </div>
+  </div>
+</div>
+
 <!-- PLAN LIMIT MODAL -->
 <div class="modal-back" id="modal-plan-limit-modal" onclick="closeModalBack(event)">
   <div class="modal" style="max-width:420px">
@@ -4446,7 +4474,93 @@ function jnSendDelegateEmail(){
   showToast('✉️ Setup steps sent to '+(email||'your JobNimbus admin'));
 }
 
+// ═══ DATA INTEGRATIONS — CRM exclusivity (CONNECTED_CRM is the single source of truth) ═══
+var CRM_ORDER=['leap','acculynx','jobnimbus','roofr'];
+var CRM_META={
+  leap:{name:'Leap CRM',icon:'🟠',bg:'#FFF3E8',detail:'87 jobs · $1.2M pipeline · Synced 12 min ago'},
+  acculynx:{name:'AccuLynx',icon:'🟢',bg:'#F0FFF4',detail:'214 jobs · $3.4M pipeline · Synced 6 min ago'},
+  jobnimbus:{name:'JobNimbus',icon:'🔴',bg:'#FFF0F0',detail:'2,847 contacts · 412 jobs'},
+  roofr:{name:'Roofr',icon:'🔵',bg:'#EAF1FF',detail:'163 jobs · $1.8M pipeline · Synced 20 min ago'}
+};
+function dpRenderCrmConnectors(){
+  var emptyEl=document.getElementById('crm-empty-state');
+  if(emptyEl)emptyEl.style.display=CONNECTED_CRM?'none':'block';
+  var list=document.getElementById('crm-connector-list');
+  if(!list)return;
+  var html='';
+  for(var i=0;i<CRM_ORDER.length;i++){
+    var key=CRM_ORDER[i];
+    var meta=CRM_META[key];
+    var isActive=CONNECTED_CRM===key;
+    var isLocked=!!CONNECTED_CRM&&!isActive;
+    var lastRow=(i===CRM_ORDER.length-1)?';border-bottom:none':'';
+    html+='<div class="connector-item" style="'+lastRow+'">';
+    html+='<div class="conn-icon" style="background:'+meta.bg+';font-size:20px'+(isLocked?';opacity:.4':'')+'">'+meta.icon+'</div>';
+    html+='<div style="flex:1'+(isLocked?';opacity:.4':'')+'">';
+    html+='<div class="conn-name">'+meta.name+'</div>';
+    if(isActive&&key==='jobnimbus'){
+      html+='<div class="conn-detail">'+meta.detail+' · <span class="pill pill-cyan" id="jn-conn-aggregate-pill" onclick="jnGoSyncScope()" style="cursor:pointer">⚡ Real-time: 5/7</span> <a id="jn-conn-upgrade-link" onclick="jnGoSyncScope()" style="display:none;font-size:12px;color:var(--cyan);font-weight:700;cursor:pointer;margin-left:6px">Continue setup →</a></div>';
+    } else if(isActive){
+      html+='<div class="conn-detail">'+meta.detail+'</div>';
+    } else if(isLocked){
+      html+='<div class="conn-detail">Disconnect '+CRM_META[CONNECTED_CRM].name+' to switch to this CRM.</div>';
+    } else {
+      html+='<div class="conn-detail">Not connected</div>';
+    }
+    html+='</div>';
+    if(isActive){
+      html+='<span class="pill pill-pos" style="margin-right:8px">Connected</span>';
+      if(key==='jobnimbus'){
+        html+='<button class="btn btn-outline btn-sm" onclick="jnGoSyncScope()" style="margin-right:8px">Settings</button>';
+      } else {
+        html+='<button class="btn btn-outline btn-sm" style="margin-right:8px" onclick="showToast(\'⚙️ '+meta.name+' settings\')">Settings</button>';
+      }
+      html+='<button class="btn btn-danger btn-sm" onclick="dpOpenCrmDisconnectModal()">Disconnect</button>';
+    } else if(isLocked){
+      html+='<button class="btn btn-outline btn-sm" disabled style="opacity:.5;cursor:not-allowed">Locked</button>';
+    } else {
+      html+='<button class="btn btn-primary btn-sm" onclick="dpConnectCrm(\''+key+'\')">Connect</button>';
+    }
+    html+='</div>';
+  }
+  list.innerHTML=html;
+  if(CONNECTED_CRM==='jobnimbus')jnRenderAggregate();
+}
+function dpConnectCrm(key){
+  if(CONNECTED_CRM)return;
+  CONNECTED_CRM=key;
+  if(key==='jobnimbus'){
+    jnResetAllAutomations();
+    JN_SYNC_STATE.jnRealtime='in_progress';
+    jnRenderAll();
+  }
+  dpRenderCrmConnectors();
+  showToast('✅ '+CRM_META[key].name+' connected — syncing your pipeline data');
+}
+function dpOpenCrmDisconnectModal(){
+  var meta=CRM_META[CONNECTED_CRM];
+  if(!meta)return;
+  var nameEl=document.getElementById('crm-disconnect-name');
+  var bodyEl=document.getElementById('crm-disconnect-body');
+  if(nameEl)nameEl.textContent=meta.name;
+  if(bodyEl)bodyEl.textContent='This stops all data sync from '+meta.name+', including real-time automations you\'ve set up. You can reconnect it later, but automation setup will need to be redone.';
+  openModal('crm-disconnect-modal');
+}
+function dpConfirmCrmDisconnect(){
+  var wasJobNimbus=CONNECTED_CRM==='jobnimbus';
+  CONNECTED_CRM=null;
+  closeModal('crm-disconnect-modal');
+  dpRenderCrmConnectors();
+  if(wasJobNimbus){
+    jnResetAllAutomations();
+    JN_SYNC_STATE.gateSnoozedUntil=null;
+    jnRenderAll();
+  }
+  showToast('CRM disconnected');
+}
+
 jnRenderAll();
+dpRenderCrmConnectors();
 setInterval(jnUpdateGate,30000);
 
 // ZIP → city/timezone lookup (demo data)
