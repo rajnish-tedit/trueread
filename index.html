@@ -191,6 +191,12 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .kpi-delta.flat{background:var(--caut-bg);color:var(--caut);}
 .kpi-context{font-size:11.5px;color:var(--muted);margin-top:6px;font-family:'Inter',sans-serif;}
 
+/* ── SKELETON / SHIMMER LOADING (FR-11) ─────────────── */
+.skel-active{position:relative;color:transparent!important;}
+.skel-active *{color:transparent!important;}
+.skel-active::after{content:'';position:absolute;inset:1px;border-radius:6px;background:linear-gradient(90deg,rgba(30,50,70,.08) 25%,rgba(30,50,70,.16) 37%,rgba(30,50,70,.08) 63%);background-size:400% 100%;animation:skelShimmer 1.4s ease-in-out infinite;}
+@keyframes skelShimmer{0%{background-position:100% 50%}100%{background-position:0% 50%}}
+
 /* ── SECTION HEADS ────────────────────────────────── */
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .sec-title{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);}
@@ -902,6 +908,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">REPS</span>Close rate, CRM compliance</div>
         <div style="background:var(--panel);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600"><span style="display:block;font-size:10px;color:var(--muted);margin-bottom:3px">REVENUE</span>Won revenue, pipeline value</div>
       </div>
+      <div id="sync-jn-note" style="display:none;background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.18);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--ink);margin-bottom:14px;line-height:1.5">JobNimbus only gives us a one-time snapshot — once you're in, we'll guide you through connecting a few automations (~10 min) to keep new and updated records flowing in.</div>
       <div id="sync-banner" style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⚠ Connect marketing tools next to unlock attribution & speed-to-lead.</div>
       <button class="btn btn-primary btn-full" id="sync-done-btn" onclick="authGo('marketing-pick')">Continue to marketing tools →</button>
     </div>
@@ -914,37 +921,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
       <div style="background:rgba(181,123,31,.08);border:1px solid rgba(181,123,31,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:#78350F;margin-bottom:20px">⏳ <strong>Historical sync in progress</strong> — GHL rate-limits how much we can pull per request. Older contacts and full call/SMS history will continue syncing in the background and may take a few hours. We'll notify you when it's complete — no action needed, your dashboard already works with what's synced.</div>
       <button class="btn btn-primary btn-full" onclick="enterApp()">Go to your dashboard →</button>
-    </div>
-  </div>
-
-  <!-- JOBNIMBUS REAL-TIME SETUP — DECISION SCREEN (FR-3) -->
-  <div class="auth-card scr" id="scr-jn-realtime-intro" style="max-width:480px;">
-    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-    <div class="auth-h1">Set up real-time updates?</div>
-    <div class="auth-sub">Optional — about 10 minutes.</div>
-
-    <div style="background:var(--panel);border-radius:12px;padding:16px 18px;margin-bottom:20px">
-      <div style="font-size:13px;color:var(--ink);line-height:1.5">JobNimbus doesn't let apps create automations automatically. You'll add a few automations yourself in JobNimbus, following our instructions. Without this, your data refreshes once daily at 6:00 AM.</div>
-    </div>
-
-    <div style="display:flex;gap:10px;margin-bottom:14px">
-      <button class="btn btn-primary btn-full" onclick="jnStartSetup()">Set up now →</button>
-      <button class="btn btn-outline btn-full" onclick="jnSkipSetup()">Skip — use daily sync</button>
-    </div>
-    <div style="font-size:11px;color:var(--muted);text-align:center">Only General Managers and Admins can complete this setup.</div>
-  </div>
-
-  <!-- JOBNIMBUS GUIDED SETUP CHECKLIST (FR-4) -->
-  <div class="auth-card scr" id="scr-jn-setup-checklist" style="max-width:560px;">
-    <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-    <div class="auth-h1">Set up real-time updates</div>
-    <div class="auth-sub" style="margin-bottom:14px">Add these automations in JobNimbus — we'll detect each one automatically once it's live. No need to finish in one sitting.</div>
-    <div style="font-size:12.5px;font-weight:700;color:var(--slate);margin-bottom:12px" id="jn-checklist-progress-onboard">0 of 10 core automations confirmed</div>
-    <div class="card" style="margin-bottom:12px"><div id="jn-checklist-core-onboard"></div></div>
-    <a onclick="jnToggleExtended('onboard')" id="jn-extended-toggle-onboard" style="font-size:12.5px;color:var(--cyan);font-weight:700;cursor:pointer;display:block;margin-bottom:12px">Show extended entities (4 automations) ▾</a>
-    <div class="card" style="margin-bottom:16px;display:none" id="jn-checklist-extended-wrap-onboard"><div id="jn-checklist-extended-onboard"></div></div>
-    <div style="text-align:center">
-      <a onclick="jnFinishSetupLater()" style="font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer;text-decoration:underline">Finish later</a>
     </div>
   </div>
 
@@ -1372,8 +1348,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 </div>
 
-<div id="jn-status-banner" style="display:none;align-items:center;gap:12px;padding:10px 20px;font-size:12.5px;font-weight:600;"></div>
-
 <div id="body-wrap">
 <aside id="sidebar">
   <div class="sb-logo">
@@ -1415,6 +1389,15 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <div id="main">
 <!-- ═══════════════════════════ DASHBOARD ═══ -->
 <div class="app-scr on" id="app-dashboard">
+  <div class="pg-header fu" style="margin-bottom:16px">
+    <div>
+      <div class="pg-title">Overview</div>
+      <div class="pg-sub" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span>Your business at a glance</span>
+        <span id="jn-staleness-badge" onclick="jnBadgeClick()" style="display:none;background:rgba(181,123,31,.1);color:#78350F;border:1px solid rgba(181,123,31,.22);border-radius:99px;padding:3px 11px;font-size:11px;font-weight:700;white-space:nowrap">Data as of last sync — not live ·&nbsp;<span id="jn-badge-count">0/10</span>&nbsp;automations set up</span>
+      </div>
+    </div>
+  </div>
   <div class="alert-banner crit fu rbac-sales-only" id="dash-alert-banner">
     <div class="alert-icon" style="background:var(--crit-bg)">⚠️</div>
     <div style="flex:1"><div class="alert-text-title" style="color:var(--crit)">Revenue gap: $34,200 behind June target on day 20</div><div class="alert-text-body">Top 2 closers (Marcus Webb, Lisa Chen) have been identified. Draft message ready — <a onclick="goApp('comms')" style="color:var(--cyan);font-weight:700;cursor:pointer;">review in Action Items →</a></div></div>
@@ -3353,37 +3336,24 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 </div><!-- /body-wrap -->
 </div><!-- /shell -->
 
-<!-- JOBNIMBUS MANDATORY REAL-TIME SETUP GATE (FR-7) — GM/Admin only, JobNimbus tenants only -->
-<div id="jn-mandatory-gate" style="display:none;position:fixed;inset:0;z-index:400;background:var(--horizon);overflow-y:auto;">
-  <div style="max-width:640px;margin:40px auto;padding:0 20px 40px;">
-    <div class="card" style="padding:36px;">
-      <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-      <div class="auth-h1">Finish connecting JobNimbus to unlock The Hub</div>
-      <div class="auth-sub">Your subscription depends on this — without it, The Hub can't receive new or updated data from JobNimbus after today.</div>
-
-      <div style="margin:18px 0">
-        <div style="font-size:12.5px;font-weight:700;color:var(--slate)" id="jn-gate-progress-text">0 of 10 required automations confirmed</div>
-        <div class="prog-track" style="margin-top:6px"><div class="prog-fill" id="jn-gate-progress-bar" style="width:0%"></div></div>
-      </div>
-
-      <div class="card" style="margin-bottom:16px;"><div id="jn-checklist-core-gate"></div></div>
-
-      <button class="btn btn-outline btn-full" onclick="jnOpenDelegateModal()" style="margin-bottom:14px">Send setup steps to your JobNimbus admin →</button>
-
-      <div style="border-top:1px solid var(--rule);padding-top:14px;text-align:center;margin-bottom:4px">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Can't finish this right now?</div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-outline btn-sm" onclick="jnSnoozeGate(1,'1 hour')" type="button">Remind me in 1 hour</button>
-          <button class="btn btn-outline btn-sm" onclick="jnSnoozeGate(24,'1 day')" type="button">Remind me in 1 day</button>
-          <button class="btn btn-outline btn-sm" onclick="jnSnoozeGate(168,'1 week')" type="button">Remind me in 1 week</button>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:14px">
-        <a onclick="jnToggleWhyRequired()" id="jn-why-link" style="font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline">Why is this required?</a>
-        <div id="jn-why-explain" style="display:none;font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5">JobNimbus's API only supports a one-time bulk export — there's no way to pull new or updated records afterward. Without these automations pushing changes in real time, your dashboard would stay frozen at today's numbers.</div>
-      </div>
+<!-- JOBNIMBUS SETUP POPUP (FR-12) — dismissible, recurring, never blocks the page beneath it -->
+<div id="jn-setup-popup" style="display:none;position:fixed;bottom:88px;right:20px;width:400px;max-width:calc(100vw - 32px);max-height:calc(100vh - 120px);overflow-y:auto;background:white;border-radius:16px;border:1px solid var(--rule);box-shadow:0 20px 56px rgba(14,27,36,.28);z-index:480;">
+  <div style="padding:18px 20px 14px;border-bottom:1px solid var(--rule)">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px">
+      <div style="font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Set up real-time updates</div>
+      <button onclick="jnDismissPopup()" style="background:none;border:none;font-size:18px;line-height:1;cursor:pointer;color:var(--muted);padding:0;flex-shrink:0" type="button" aria-label="Close">×</button>
     </div>
+    <div style="font-size:12.5px;color:var(--muted);line-height:1.5">JobNimbus only gives us a one-time snapshot of your data. Adding a few automations keeps new and updated records flowing in — no rush, your dashboard already works with what's synced.</div>
+  </div>
+  <div style="padding:16px 20px">
+    <div style="font-size:12.5px;font-weight:700;color:var(--slate);margin-bottom:6px" id="jn-popup-progress-text">0 of 10 confirmed</div>
+    <div class="prog-track" style="margin-bottom:14px"><div class="prog-fill" id="jn-popup-progress-bar" style="width:0%"></div></div>
+    <div class="card" style="margin-bottom:12px;max-height:230px;overflow-y:auto"><div id="jn-checklist-core-popup"></div></div>
+    <a onclick="jnOpenDelegateModal()" style="font-size:11.5px;color:var(--cyan);font-weight:700;cursor:pointer;display:block;text-align:center">Send setup steps to your JobNimbus admin →</a>
+  </div>
+  <div style="padding:12px 20px 18px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <a onclick="jnDismissPopup()" style="font-size:12px;color:var(--muted);font-weight:600;cursor:pointer;text-decoration:underline;white-space:nowrap">Remind me later</a>
+    <button class="btn btn-primary btn-sm" onclick="jnOpenFullSetupGuide()" style="white-space:nowrap">Open full setup guide →</button>
   </div>
 </div>
 
@@ -3961,8 +3931,8 @@ function jnEventLabel(event){
 // automation.status: 'not_started' | 'waiting' | 'active' | 'degraded'
 var CONNECTED_CRM='jobnimbus';
 var JN_SYNC_STATE={
-  jnRealtime:'in_progress',
-  coreUnlockedOnce:true,
+  coreUnlockedOnce:false,
+  popupDismissedThisSession:false,
   contact:{automations:[
     {event:'created',status:'active',webhookUrl:jnWebhookUrl('contact','created'),lastEvent:'4 min ago'},
     {event:'modified',status:'active',webhookUrl:jnWebhookUrl('contact','modified'),lastEvent:'4 min ago'}
@@ -4017,7 +3987,6 @@ function jnEntityDotColor(key){
     if(autos[i].status!=='active')allActive=false;
   }
   if(hasDegraded)return 'var(--crit)';
-  if(JN_SYNC_STATE.jnRealtime==='skipped')return 'var(--caut)';
   if(allActive)return 'var(--cyan)';
   return 'var(--caut)';
 }
@@ -4028,12 +3997,10 @@ function jnEntityModeLabel(key){
     if(autos[i].status==='degraded')hasDegraded=true;
     if(autos[i].status!=='active')allActive=false;
   }
-  if(JN_SYNC_STATE.jnRealtime==='skipped')return {text:'☾ Daily sync',cls:'pill-neutral'};
   if(allActive||hasDegraded)return {text:'⚡ Real-time',cls:'pill-cyan'};
   return {text:'◐ Setup incomplete',cls:'pill-caut'};
 }
 function jnEntityLastLine(key){
-  if(JN_SYNC_STATE.jnRealtime==='skipped')return 'Last pull: 6:00 AM';
   var autos=JN_SYNC_STATE[key].automations;
   var mostRecent=null;
   for(var i=0;i<autos.length;i++){if(autos[i].lastEvent)mostRecent=autos[i].lastEvent;}
@@ -4072,11 +4039,8 @@ function jnAggregateInfo(){
 function jnRenderAggregate(){
   var info=jnAggregateInfo();
   var pillClass,pillText;
-  var incomplete=(JN_SYNC_STATE.jnRealtime==='skipped')||(info.doneCount<info.total);
-  if(JN_SYNC_STATE.jnRealtime==='skipped'){
-    pillClass='pill-caut';
-    pillText='☾ Daily sync only';
-  } else if(info.hasDegraded){
+  var incomplete=(info.doneCount<info.total);
+  if(info.hasDegraded){
     pillClass='pill-crit';
     pillText='✗ Webhooks silent 6h';
   } else if(info.doneCount===info.total){
@@ -4266,10 +4230,10 @@ function jnRenderSyncScope(){
 }
 
 function jnRenderAll(){
-  jnRenderChecklist('onboard');
+  jnRenderChecklist('popup');
   jnRenderChecklist('modal');
   jnRenderSyncScope();
-  jnUpdateGate();
+  jnRefreshDashboardStatus();
 }
 
 function jnResetAllAutomations(){
@@ -4278,25 +4242,7 @@ function jnResetAllAutomations(){
     for(var e=0;e<autos.length;e++){autos[e].status='not_started';autos[e].lastEvent=null;}
   }
   JN_SYNC_STATE.coreUnlockedOnce=false;
-}
-
-function jnStartSetup(){
-  jnResetAllAutomations();
-  JN_SYNC_STATE.jnRealtime='in_progress';
-  jnChecklistExpanded=null;
-  jnRenderAll();
-  authGo('jn-setup-checklist');
-}
-
-function jnSkipSetup(){
-  jnResetAllAutomations();
-  JN_SYNC_STATE.jnRealtime='skipped';
-  jnRenderAll();
-  authGo('marketing-pick');
-}
-
-function jnFinishSetupLater(){
-  authGo('marketing-pick');
+  JN_SYNC_STATE.popupDismissedThisSession=false;
 }
 
 function jnHasDegradedAny(){
@@ -4329,14 +4275,13 @@ function jnCheckSilenceAlert(){
         var name='HUB — '+JN_ENTITY_META[key].label+' '+jnEventLabel(autos[e].event);
         showToast('⚠ JobNimbus: "'+name+'" stopped sending updates — data may be going stale again.');
         jnAlertShown=true;
-        jnRenderStatusBanner();
         return;
       }
     }
   }
 }
 
-// ═══ FR-7 — mandatory Core setup gate (GM/Admin, JobNimbus only) ═══
+// ═══ FR-12/FR-13 — dismissible setup popup + persistent staleness badge (GM/Admin, JobNimbus only) ═══
 function jnCoreActiveCount(){
   var count=0;
   for(var i=0;i<JN_CORE_ORDER.length;i++){
@@ -4345,106 +4290,78 @@ function jnCoreActiveCount(){
   }
   return count;
 }
-function jnIsGateActive(){
-  if(typeof currentUser==='undefined')return false;
-  if(JN_SYNC_STATE.gateSnoozedUntil&&Date.now()<JN_SYNC_STATE.gateSnoozedUntil)return false;
-  return CONNECTED_CRM==='jobnimbus'&&!!currentUser.isAdmin&&!JN_SYNC_STATE.coreUnlockedOnce;
+function jnDashboardActive(){
+  var el=document.getElementById('app-dashboard');
+  return !!el&&el.classList.contains('on');
 }
-function jnFormatRemaining(ms){
-  if(ms<=0)return '0m';
-  var mins=Math.ceil(ms/60000);
-  if(mins<60)return mins+'m';
-  var hrs=Math.ceil(mins/60);
-  if(hrs<24)return hrs+'h';
-  var days=Math.ceil(hrs/24);
-  return days+'d';
+function jnRenderBadge(){
+  var badge=document.getElementById('jn-staleness-badge');
+  if(!badge)return;
+  if(typeof currentUser==='undefined'||CONNECTED_CRM!=='jobnimbus'||JN_SYNC_STATE.coreUnlockedOnce){
+    badge.style.display='none';
+    return;
+  }
+  var count=jnCoreActiveCount();
+  var countEl=document.getElementById('jn-badge-count');
+  if(countEl)countEl.textContent=count+'/10';
+  badge.style.display='inline-flex';
+  var isAdmin=!!currentUser.isAdmin;
+  badge.style.cursor=isAdmin?'pointer':'default';
+  badge.title=isAdmin?'Click to resume setup':'';
 }
-function jnSnoozeGate(hours,label){
-  JN_SYNC_STATE.gateSnoozedUntil=Date.now()+hours*60*60*1000;
-  jnRenderAll();
-  showToast('⏰ Reminder set — we\'ll check back in '+label+'.');
+function jnBadgeClick(){
+  if(typeof currentUser==='undefined'||!currentUser.isAdmin)return;
+  JN_SYNC_STATE.popupDismissedThisSession=false;
+  jnRefreshDashboardStatus();
 }
-function jnResumeGateNow(){
-  JN_SYNC_STATE.gateSnoozedUntil=null;
-  jnRenderAll();
+function jnOpenSetupPopup(){
+  jnRenderChecklist('popup');
+  var count=jnCoreActiveCount();
+  var progText=document.getElementById('jn-popup-progress-text');
+  var progBar=document.getElementById('jn-popup-progress-bar');
+  if(progText)progText.textContent=count+' of 10 confirmed';
+  if(progBar)progBar.style.width=(count*10)+'%';
+  var popupEl=document.getElementById('jn-setup-popup');
+  if(popupEl)popupEl.style.display='block';
 }
-var _jnWasGated=null;
-function jnUpdateGate(){
-  if(!JN_SYNC_STATE.coreUnlockedOnce&&jnCoreActiveCount()===10){
+function jnDismissPopup(){
+  JN_SYNC_STATE.popupDismissedThisSession=true;
+  var popupEl=document.getElementById('jn-setup-popup');
+  if(popupEl)popupEl.style.display='none';
+}
+function jnOpenFullSetupGuide(){
+  jnDismissPopup();
+  goApp('pipeline');
+  mnActive('pipeline');
+  setTimeout(function(){
+    var tab=document.getElementById('dpt-sync-scope');
+    if(tab)switchTab(tab,'dp-sync-scope');
+  },100);
+}
+var _jnWasComplete=null;
+function jnRefreshDashboardStatus(){
+  if(typeof currentUser==='undefined')return;
+  if(!JN_SYNC_STATE.coreUnlockedOnce&&CONNECTED_CRM==='jobnimbus'&&jnCoreActiveCount()>=10){
     JN_SYNC_STATE.coreUnlockedOnce=true;
   }
-  var authWrap=document.getElementById('auth-wrap');
-  var loggedIn=!!authWrap&&authWrap.style.display==='none';
-  var gated=loggedIn&&jnIsGateActive();
-  var gateEl=document.getElementById('jn-mandatory-gate');
-  if(gateEl)gateEl.style.display=gated?'block':'none';
-  if(_jnWasGated===true&&gated===false&&loggedIn&&JN_SYNC_STATE.coreUnlockedOnce){
-    showToast('✓ Real-time sync fully connected. Your Hub is now live.');
-  }
-  _jnWasGated=gated;
-  if(gated){
-    jnRenderChecklist('gate');
-    var count=jnCoreActiveCount();
-    var progText=document.getElementById('jn-gate-progress-text');
-    var progBar=document.getElementById('jn-gate-progress-bar');
-    if(progText)progText.textContent=count+' of 10 required automations confirmed';
-    if(progBar)progBar.style.width=(count*10)+'%';
-  }
-  jnRenderStatusBanner();
-}
-function jnToggleWhyRequired(){
-  var el=document.getElementById('jn-why-explain');
-  var link=document.getElementById('jn-why-link');
-  if(!el)return;
-  var isOpen=el.style.display==='block';
-  el.style.display=isOpen?'none':'block';
-  if(link)link.textContent=isOpen?'Why is this required?':'Hide explanation ▴';
-}
-
-// ═══ FR-8/FR-10 — status banner (non-admin info banner / admin degraded alert) ═══
-var jnNonAdminBannerDismissed=false;
-var jnDegradedBannerDismissed=false;
-function jnRenderStatusBanner(){
-  if(typeof currentUser==='undefined')return;
-  var el=document.getElementById('jn-status-banner');
-  if(!el)return;
-  if(CONNECTED_CRM!=='jobnimbus'){el.style.display='none';return;}
-  if(!currentUser.isAdmin){
-    if(!JN_SYNC_STATE.coreUnlockedOnce&&!jnNonAdminBannerDismissed){
-      el.style.display='flex';
-      el.style.background='rgba(181,123,31,.1)';
-      el.style.borderBottom='1px solid rgba(181,123,31,.25)';
-      el.style.color='#78350F';
-      el.innerHTML='<span style="flex:1">Data may not be fully up to date — your account admin needs to finish CRM setup.</span><button onclick="jnDismissBanner(\'nonadmin\')" style="background:none;border:none;font-size:16px;cursor:pointer;color:inherit;padding:0 4px" type="button">×</button>';
-    } else {
-      el.style.display='none';
+  jnRenderBadge();
+  var popupEl=document.getElementById('jn-setup-popup');
+  var complete=CONNECTED_CRM!=='jobnimbus'||JN_SYNC_STATE.coreUnlockedOnce;
+  if(complete){
+    if(popupEl)popupEl.style.display='none';
+    if(_jnWasComplete===false&&CONNECTED_CRM==='jobnimbus'){
+      showToast('✓ All 10 JobNimbus automations confirmed — The Hub is now fully real-time.');
     }
+    _jnWasComplete=true;
     return;
   }
-  if(!JN_SYNC_STATE.coreUnlockedOnce&&JN_SYNC_STATE.gateSnoozedUntil&&Date.now()<JN_SYNC_STATE.gateSnoozedUntil){
-    var remaining=jnFormatRemaining(JN_SYNC_STATE.gateSnoozedUntil-Date.now());
-    el.style.display='flex';
-    el.style.background='rgba(181,123,31,.1)';
-    el.style.borderBottom='1px solid rgba(181,123,31,.25)';
-    el.style.color='#78350F';
-    el.innerHTML='<span style="flex:1">Real-time setup still incomplete — you\'ll be reminded again in '+remaining+'.</span><button onclick="jnResumeGateNow()" style="background:none;border:none;font-size:12.5px;font-weight:700;cursor:pointer;color:inherit;text-decoration:underline;padding:0 4px" type="button">Finish now →</button>';
-    return;
+  _jnWasComplete=false;
+  var shouldShow=!!currentUser.isAdmin&&!JN_SYNC_STATE.popupDismissedThisSession&&jnDashboardActive();
+  if(shouldShow){
+    jnOpenSetupPopup();
+  } else if(popupEl){
+    popupEl.style.display='none';
   }
-  if(JN_SYNC_STATE.coreUnlockedOnce&&jnHasDegradedAny()&&!jnDegradedBannerDismissed){
-    var name=jnFirstDegradedName();
-    el.style.display='flex';
-    el.style.background='rgba(155,58,42,.08)';
-    el.style.borderBottom='1px solid rgba(155,58,42,.25)';
-    el.style.color='var(--crit)';
-    el.innerHTML='<span style="flex:1">⚠ JobNimbus: "'+name+'" stopped sending updates — data may be going stale again.</span><button onclick="jnDismissBanner(\'degraded\')" style="background:none;border:none;font-size:16px;cursor:pointer;color:inherit;padding:0 4px" type="button">×</button>';
-  } else {
-    el.style.display='none';
-  }
-}
-function jnDismissBanner(which){
-  if(which==='nonadmin')jnNonAdminBannerDismissed=true;
-  if(which==='degraded')jnDegradedBannerDismissed=true;
-  jnRenderStatusBanner();
 }
 
 // ═══ FR-5 — delegate setup to a JobNimbus admin ═══
@@ -4531,7 +4448,6 @@ function dpConnectCrm(key){
   CONNECTED_CRM=key;
   if(key==='jobnimbus'){
     jnResetAllAutomations();
-    JN_SYNC_STATE.jnRealtime='in_progress';
     jnRenderAll();
   }
   dpRenderCrmConnectors();
@@ -4553,7 +4469,6 @@ function dpConfirmCrmDisconnect(){
   dpRenderCrmConnectors();
   if(wasJobNimbus){
     jnResetAllAutomations();
-    JN_SYNC_STATE.gateSnoozedUntil=null;
     jnRenderAll();
   }
   showToast('CRM disconnected');
@@ -4561,7 +4476,6 @@ function dpConfirmCrmDisconnect(){
 
 jnRenderAll();
 dpRenderCrmConnectors();
-setInterval(jnUpdateGate,30000);
 
 // ZIP → city/timezone lookup (demo data)
 var ZIP_DATA={
@@ -5030,13 +4944,11 @@ function startSync(){
                 if(sp)sp.style.display='block';
                 return;
               }
-              if(ctx.type==='crm'&&ctx.name==='JobNimbus'){
-                authGo('jn-realtime-intro');
-                return;
-              }
               var sdEl=document.getElementById('sync-done');
               var banner=document.getElementById('sync-banner');
               var btn=document.getElementById('sync-done-btn');
+              var jnNote=document.getElementById('sync-jn-note');
+              if(jnNote)jnNote.style.display=(ctx.type==='crm'&&ctx.name==='JobNimbus')?'block':'none';
               if(ctx.type==='crm'){
                 if(banner)banner.style.display='block';
                 if(btn){btn.textContent='Continue to marketing tools →';btn.onclick=function(){authGo('marketing-pick');};}
@@ -5600,7 +5512,7 @@ function applyRoleUI(){
   });
 
   applyContactsScope(perms);
-  jnUpdateGate();
+  jnRefreshDashboardStatus();
 }
 
 function applyContactsScope(perms){
@@ -5840,6 +5752,18 @@ function syncNotifyMe(){
 }
 
 // NAV
+// FR-11 — one-time skeleton/shimmer on first dashboard load per session
+var dashSkeletonShown=false;
+function dashMaybeSkeleton(){
+  if(dashSkeletonShown)return;
+  dashSkeletonShown=true;
+  var els=document.querySelectorAll('#app-dashboard .kpi-value, #app-dashboard .kpi-delta, #dash-branch-table-card td.tbl-num');
+  els.forEach(function(el){el.classList.add('skel-active');});
+  setTimeout(function(){
+    els.forEach(function(el){el.classList.remove('skel-active');});
+  },1500);
+}
+
 function goApp(id){
   if(window._plan==='free'&&(id==='comms'||id==='audit')){
     openUpgradeModal();
@@ -5861,6 +5785,8 @@ function goApp(id){
   if(id==='r1'&&!window._r1)setTimeout(initR1Charts,200);
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
   if(id==='billing')_refreshBillingTrialMeta();
+  if(id==='dashboard')dashMaybeSkeleton();
+  jnRefreshDashboardStatus();
 }
 
 // Permission check for full-screen navigation — mirrors the sidebar's visibility
@@ -6589,6 +6515,8 @@ function signOut(){
   for(var i=0; i<all.length; i++){ all[i].style.display='none'; }
   document.getElementById('scr-signin').style.display='block';
   showToast('You have been signed out');
+  dashSkeletonShown=false;
+  JN_SYNC_STATE.popupDismissedThisSession=false;
 }
 
 // ── ACCOUNTABILITY RULES ─────────────────────────
