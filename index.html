@@ -1391,6 +1391,18 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <div id="main">
 <!-- ═══════════════════════════ DASHBOARD ═══ -->
 <div class="app-scr on" id="app-dashboard">
+  <!-- WEBHOOK CONFIG BANNER — shown until all JN automations active -->
+  <div id="jn-config-banner" style="display:none;align-items:center;gap:12px;background:rgba(181,123,31,.09);border:1.5px solid rgba(181,123,31,.28);border-radius:10px;padding:11px 16px;margin-bottom:16px;flex-wrap:wrap">
+    <span style="font-size:17px;flex-shrink:0">⚡</span>
+    <div style="flex:1;min-width:200px">
+      <div style="font-size:13.5px;font-weight:700;color:#78350F">Set up automated events in JobNimbus to keep your dashboard live</div>
+      <div style="font-size:12px;color:#92400E;margin-top:2px">Your dashboard shows the initial sync snapshot. Real-time updates need webhook automations configured. <span id="jn-banner-progress" style="font-weight:700"></span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <button onclick="goConfigureAutomations()" style="background:#B57B1F;color:white;border:none;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer">Configure now →</button>
+      <button onclick="dismissJnBanner()" style="background:transparent;border:1.5px solid rgba(181,123,31,.35);color:#92400E;border-radius:7px;padding:8px 10px;font-size:13px;font-weight:700;cursor:pointer;line-height:1" title="Dismiss for this session">✕</button>
+    </div>
+  </div>
   <!-- FR-13: persistent staleness badge — survives popup dismissal, only clears at 10/10 -->
   <div id="jn-stale-badge-row" style="display:none;margin-bottom:14px">
     <span id="jn-stale-badge" onclick="jnBadgeClick()" style="display:inline-flex;align-items:center;gap:7px;background:rgba(181,123,31,.1);border:1px solid rgba(181,123,31,.25);color:#78350F;border-radius:99px;padding:5px 12px;font-size:11.5px;font-weight:700;">
@@ -4059,6 +4071,49 @@ function jnGoSyncScope(){
   if(tab)switchTab(tab,'dp-sync-scope');
 }
 
+// ── WEBHOOK CONFIG BANNER ────────────────────────────────────────────────────
+var _jnBannerDismissed=false; // session-only dismiss
+
+function _jnActiveCount(){
+  var total=0,active=0;
+  for(var key in JN_SYNC_STATE){
+    var autos=JN_SYNC_STATE[key].automations;
+    for(var i=0;i<autos.length;i++){
+      total++;
+      if(autos[i].status==='active')active++;
+    }
+  }
+  return{active:active,total:total};
+}
+
+function refreshJnBanner(){
+  var banner=document.getElementById('jn-config-banner');
+  if(!banner)return;
+  var c=_jnActiveCount();
+  var allDone=c.active===c.total;
+  if(allDone||_jnBannerDismissed){
+    banner.style.display='none';
+  } else {
+    banner.style.display='flex';
+    var prog=document.getElementById('jn-banner-progress');
+    if(prog)prog.textContent=c.active+' of '+c.total+' automations active';
+  }
+}
+
+function dismissJnBanner(){
+  _jnBannerDismissed=true;
+  var banner=document.getElementById('jn-config-banner');
+  if(banner)banner.style.display='none';
+}
+
+function goConfigureAutomations(){
+  goApp('pipeline');
+  setTimeout(function(){
+    var tab=document.getElementById('dpt-sync-scope');
+    if(tab)switchTab(tab,'dp-sync-scope');
+  },80);
+}
+
 function jnOpenChecklistModal(){
   jnRenderChecklist('modal');
   openModal('jn-setup-checklist');
@@ -4101,6 +4156,10 @@ function jnSimulateEvent(key,eventIdx){
   auto.lastEvent='Just now';
   jnRenderAll();
   showToast('✓ HUB — '+JN_ENTITY_META[key].label+' '+jnEventLabel(auto.event)+' detected — now Active');
+  // refresh banner — will auto-hide if all done
+  refreshJnBanner();
+  var c=_jnActiveCount();
+  if(c.active===c.total)showToast('🎉 All automations active — dashboard is now live!');
 }
 
 function jnAutomationDetailHtml(key,eventIdx){
@@ -5821,6 +5880,7 @@ function goApp(id){
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
   if(id==='billing')_refreshBillingTrialMeta();
   if(id==='dashboard'){
+    refreshJnBanner();
     jnRenderStaleBadge();
     jnMaybeShowSetupPopup();
   }
