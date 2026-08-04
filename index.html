@@ -4444,10 +4444,15 @@ function jnRenderStatusBanner(){
   if(JN_SYNC_STATE.coreUnlockedOnce&&jnHasDegradedAny()&&!jnDegradedBannerDismissed){
     var name=jnFirstDegradedName();
     el.style.display='flex';
-    el.style.background='rgba(155,58,42,.08)';
-    el.style.borderBottom='1px solid rgba(155,58,42,.25)';
-    el.style.color='var(--crit)';
-    el.innerHTML='<span style="flex:1">⚠ JobNimbus: "'+name+'" stopped sending updates — data may be going stale again.</span><button onclick="jnDismissBanner(\'degraded\')" style="background:none;border:none;font-size:16px;cursor:pointer;color:inherit;padding:0 4px" type="button">×</button>';
+    el.style.background='#9B3A2A';
+    el.style.borderBottom='2px solid #7A2D1F';
+    el.style.color='#fff';
+    el.style.padding='10px 20px';
+    el.style.alignItems='center';
+    el.style.gap='10px';
+    el.style.fontSize='13.5px';
+    el.style.fontWeight='600';
+    el.innerHTML='<span style="font-size:18px;flex-shrink:0">⚠️</span><span style="flex:1"><strong>Action needed:</strong> JobNimbus automation "'+name+'" stopped sending updates — your dashboard data may be going stale.</span><button onclick="goConfigureAutomations()" style="background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:6px;padding:5px 12px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap" type="button">Fix now →</button><button onclick="jnDismissBanner(\'degraded\')" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" type="button">×</button>';
   } else {
     el.style.display='none';
   }
