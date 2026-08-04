@@ -4444,15 +4444,14 @@ function jnRenderStatusBanner(){
   if(JN_SYNC_STATE.coreUnlockedOnce&&jnHasDegradedAny()&&!jnDegradedBannerDismissed){
     var name=jnFirstDegradedName();
     el.style.display='flex';
-    el.style.background='#9B3A2A';
-    el.style.borderBottom='2px solid #7A2D1F';
+    el.style.background='linear-gradient(135deg,#9B3A2A 0%,#7A2D1F 100%)';
+    el.style.borderBottom='3px solid #5C1F12';
     el.style.color='#fff';
-    el.style.padding='10px 20px';
+    el.style.padding='18px 24px';
     el.style.alignItems='center';
-    el.style.gap='10px';
-    el.style.fontSize='13.5px';
-    el.style.fontWeight='600';
-    el.innerHTML='<span style="font-size:18px;flex-shrink:0">⚠️</span><span style="flex:1"><strong>Action needed:</strong> JobNimbus automation "'+name+'" stopped sending updates — your dashboard data may be going stale.</span><button onclick="goConfigureAutomations()" style="background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:6px;padding:5px 12px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap" type="button">Fix now →</button><button onclick="jnDismissBanner(\'degraded\')" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" type="button">×</button>';
+    el.style.gap='16px';
+    el.style.minHeight='72px';
+    el.innerHTML='<div style="background:rgba(255,255,255,.15);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px">⚠️</div><div style="flex:1"><div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:3px">JobNimbus automation stopped sending updates</div><div style="font-size:13px;color:rgba(255,255,255,.75);font-weight:500">"'+name+'" is no longer active — your dashboard data may be going stale. Fix this now to restore real-time updates.</div></div><button onclick="goConfigureAutomations()" style="background:white;border:none;color:#9B3A2A;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0" type="button">Fix now →</button><button onclick="jnDismissBanner(\'degraded\')" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:7px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" type="button">×</button>';
   } else {
     el.style.display='none';
   }
