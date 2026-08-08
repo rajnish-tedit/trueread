@@ -3991,23 +3991,26 @@ function jnEntityDotColor(key){
   if(allActive)return 'var(--cyan)';
   return 'var(--caut)';
 }
+var JN_EXTENDED_KEYS=['workorder','materialorder']; // daily-sync entities
+function jnIsExtended(key){ return JN_EXTENDED_KEYS.indexOf(key)!==-1; }
+
 function jnEntityModeLabel(key){
-  var autos=JN_SYNC_STATE[key].automations;
-  var hasDegraded=false,allActive=true;
-  for(var i=0;i<autos.length;i++){
-    if(autos[i].status==='degraded')hasDegraded=true;
-    if(autos[i].status!=='active')allActive=false;
-  }
-  if(JN_SYNC_STATE.jnRealtime==='skipped')return {text:'☾ Daily sync',cls:'pill-neutral'};
-  if(allActive||hasDegraded)return {text:'⚡ Real-time',cls:'pill-cyan'};
-  return {text:'◐ Setup incomplete',cls:'pill-caut'};
+  // Extended entities keep their Daily sync pill; Core entities show no pill (dot+timestamp only)
+  if(JN_SYNC_STATE.jnRealtime==='skipped'||jnIsExtended(key))return {text:'☾ Daily sync',cls:'pill-neutral'};
+  return null; // Core: no pill — status communicated by dot color + timestamp
 }
 function jnEntityLastLine(key){
-  if(JN_SYNC_STATE.jnRealtime==='skipped')return 'Last pull: 6:00 AM';
+  if(JN_SYNC_STATE.jnRealtime==='skipped'||jnIsExtended(key))return '<span>Last pull: 6:00 AM</span>';
   var autos=JN_SYNC_STATE[key].automations;
-  var mostRecent=null;
-  for(var i=0;i<autos.length;i++){if(autos[i].lastEvent)mostRecent=autos[i].lastEvent;}
-  return mostRecent?('Last event: '+mostRecent):'Last pull: 6:00 AM';
+  var mostRecent=null,hasDegraded=false;
+  for(var i=0;i<autos.length;i++){
+    if(autos[i].lastEvent)mostRecent=autos[i].lastEvent;
+    if(autos[i].status==='degraded')hasDegraded=true;
+  }
+  if(!mostRecent)return '<span style="color:var(--muted)">No events received yet</span>';
+  // Stale timestamp styled red on degraded entities (Amendment §6)
+  var style=hasDegraded?'color:var(--crit);font-weight:600':'';
+  return '<span style="'+style+'">Last event: '+mostRecent+(hasDegraded?' — stale':'')+'</span>';
 }
 function jnEntityAction(key){
   var autos=JN_SYNC_STATE[key].automations;
@@ -4051,10 +4054,10 @@ function jnRenderAggregate(){
     pillText='✗ Webhooks silent 6h';
   } else if(info.doneCount===info.total){
     pillClass='pill-cyan';
-    pillText='⚡ Real-time: '+info.doneCount+'/'+info.total;
+    pillText='✓ Live: '+info.doneCount+'/'+info.total+' active';
   } else {
     pillClass='pill-caut';
-    pillText='⚡ Real-time: '+info.doneCount+'/'+info.total;
+    pillText='⚙ '+info.doneCount+'/'+info.total+' active';
   }
   var scopePill=document.getElementById('jn-scope-aggregate-pill');
   if(scopePill){scopePill.className='pill '+pillClass;scopePill.textContent=pillText;}
@@ -4256,7 +4259,8 @@ function jnRenderSyncScope(){
     html+='<div class="connector-item" style="cursor:pointer;align-items:flex-start" onclick="jnToggleRow(\''+key+'\')">';
     html+='<span style="width:8px;height:8px;border-radius:50%;background:'+dotColor+';margin-top:6px;flex-shrink:0"></span>';
     html+='<div style="flex:1">';
-    html+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="conn-name">'+meta.label+'</span><span class="pill '+modeInfo.cls+'">'+modeInfo.text+'</span><span class="conn-detail">'+meta.records.toLocaleString()+' records</span></div>';
+    var pillHtml=modeInfo?('<span class="pill '+modeInfo.cls+'">'+modeInfo.text+'</span>'):'';
+    html+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="conn-name">'+meta.label+'</span>'+pillHtml+'<span class="conn-detail">'+meta.records.toLocaleString()+' records</span></div>';
     html+='<div class="conn-detail">'+lastLine+'</div>';
     html+='</div>';
     if(action==='repair'){
@@ -5884,6 +5888,8 @@ function goApp(id){
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
   if(id==='billing')_refreshBillingTrialMeta();
   if(id==='dashboard'){
+    // FR-12: reset dismiss flag on every dashboard arrival so popup recurs per visit
+    jnPopupDismissedThisVisit=false;
     refreshJnBanner();
     jnRenderStaleBadge();
     jnMaybeShowSetupPopup();
