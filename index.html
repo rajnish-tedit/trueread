@@ -755,19 +755,11 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <!-- CRM PICKER -->
   <div class="auth-card scr" id="scr-crm-pick" style="max-width:480px;">
     <div class="auth-logo"><div class="auth-logo-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="auth-logo-text">The Hub</div><span class="auth-logo-sub">by TrueRead</span></div></div>
-    <!-- Account created checkpoint -->
-    <div style="background:rgba(34,197,94,.08);border:1.5px solid rgba(34,197,94,.25);border-radius:10px;padding:11px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-      <span style="font-size:18px">✅</span>
-      <div>
-        <div style="font-size:13px;font-weight:800;color:#166534">Account created — trial started</div>
-        <div style="font-size:12px;color:#6B7680">Your 30-day free trial is active. Connect your CRM to populate the dashboard.</div>
-      </div>
-    </div>
     <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--cyan);margin-bottom:6px;">STEP 1 OF 2</div>
     <div class="auth-h1">Connect your CRM</div>
-    <div class="auth-sub">The Hub reads your pipeline data to compute core metrics. You can also do this later from Settings.</div>
+    <div class="auth-sub">The Hub reads your pipeline data to compute core metrics. This step is required.</div>
 
-    <div class="crm-section-label" style="margin-top:0;">CRM <span style="color:var(--crit);font-weight:800;">— Required for data</span></div>
+    <div class="crm-section-label" style="margin-top:0;">CRM <span style="color:var(--crit);font-weight:800;">— Required</span></div>
     <div class="crm-grid" id="crm-grid-crm">
       <div class="crm-card" onclick="pickCRM(this,'Leap','api','crm')">
         <div class="crm-icon" style="background:#FFF3E8">🟠</div>
@@ -827,9 +819,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div>
     <div id="crm-required-hint-bottom" style="font-size:12px;color:var(--crit);margin-top:14px;">Select a CRM to continue.</div>
     <button class="btn btn-primary btn-full btn-lg" id="crm-btn" style="margin-top:14px;opacity:.4;pointer-events:none;" onclick="connectCRM()">Connect & sync →</button>
-    <div style="text-align:center;margin-top:12px">
-      <a onclick="skipCRM()" style="font-size:12.5px;color:var(--muted);cursor:pointer;font-weight:600">Skip for now — I'll connect my CRM later in Settings →</a>
-    </div>
   </div>
 
   <!-- MARKETING TOOLS PICKER (STEP 2 OF 2) -->
@@ -1402,32 +1391,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <div id="main">
 <!-- ═══════════════════════════ DASHBOARD ═══ -->
 <div class="app-scr on" id="app-dashboard">
-  <!-- NO-CRM BANNER — shown when user skipped CRM connection -->
-  <div id="no-crm-banner" style="display:none;border-radius:14px;overflow:hidden;margin-bottom:20px">
-    <div style="background:linear-gradient(135deg,#1F3A5F,#0F5866);padding:28px 28px 24px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-        <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px">Dashboard · No data yet</div>
-          <div style="font-size:20px;font-weight:800;color:white;margin-bottom:6px">📊 Your dashboard is waiting for data</div>
-          <div style="font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.6;max-width:460px">Connect your CRM to populate KPIs, pipeline, rep performance, and all reports. Takes about 2 minutes.</div>
-        </div>
-        <button onclick="dismissNoCrmBanner()" style="background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;flex-shrink:0">×</button>
-      </div>
-      <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
-        <button onclick="goConnectCRM()" style="background:white;border:none;color:#1F3A5F;border-radius:8px;padding:11px 22px;font-size:14px;font-weight:800;cursor:pointer">Connect CRM now →</button>
-        <button onclick="dismissNoCrmBanner()" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:white;border-radius:8px;padding:11px 18px;font-size:13px;font-weight:600;cursor:pointer">Remind me later</button>
-      </div>
-    </div>
-    <!-- What you'll unlock strip -->
-    <div style="background:rgba(15,27,36,.6);padding:14px 28px;display:flex;gap:24px;flex-wrap:wrap">
-      <div style="font-size:12px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-right:4px;align-self:center">Unlocks:</div>
-      <div style="font-size:12.5px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px"><span style="color:#6FCF8E">✓</span> KPI dashboard</div>
-      <div style="font-size:12.5px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px"><span style="color:#6FCF8E">✓</span> Rep performance</div>
-      <div style="font-size:12.5px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px"><span style="color:#6FCF8E">✓</span> Pipeline & funnel</div>
-      <div style="font-size:12.5px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px"><span style="color:#6FCF8E">✓</span> Revenue tracking</div>
-    </div>
-  </div>
-
   <!-- WEBHOOK CONFIG BANNER — shown until all JN automations active -->
   <div id="jn-config-banner" style="display:none;align-items:center;gap:12px;background:rgba(181,123,31,.09);border:1.5px solid rgba(181,123,31,.28);border-radius:10px;padding:11px 16px;margin-bottom:16px;flex-wrap:wrap">
     <span style="font-size:17px;flex-shrink:0">⚡</span>
@@ -3888,7 +3851,6 @@ function connectCRM(){
   var name=on?on.querySelector('.crm-name').textContent:'your CRM';
   SYNC_CTX={type:'crm',name:name};
   CONNECTED_CRM=name.toLowerCase().replace(/\s*crm\s*$/,'').trim();
-  window._crmConnected=true;
   authGo('syncing');
 }
 
@@ -3942,36 +3904,6 @@ function connectMarketing(){
 
 function skipMarketing(){
   enterApp();
-}
-
-function skipCRM(){
-  window._crmConnected=false;
-  enterApp();
-}
-
-function goConnectCRM(){
-  // Navigate to Settings or back to auth CRM screen depending on state
-  dismissNoCrmBanner();
-  goApp('settings');
-  // Switch to the integrations/pipeline section
-  setTimeout(function(){ goApp('pipeline'); },80);
-}
-
-var _noCrmBannerDismissed=false;
-function dismissNoCrmBanner(){
-  _noCrmBannerDismissed=true;
-  var b=document.getElementById('no-crm-banner');
-  if(b)b.style.display='none';
-}
-
-function refreshNoCrmBanner(){
-  var b=document.getElementById('no-crm-banner');
-  if(!b)return;
-  if(window._crmConnected===false&&!_noCrmBannerDismissed){
-    b.style.display='block';
-  } else {
-    b.style.display='none';
-  }
 }
 
 // ═══ JOBNIMBUS SYNC SCOPE — single source of truth ═══
@@ -4059,26 +3991,23 @@ function jnEntityDotColor(key){
   if(allActive)return 'var(--cyan)';
   return 'var(--caut)';
 }
-var JN_EXTENDED_KEYS=['workorder','materialorder']; // daily-sync entities
-function jnIsExtended(key){ return JN_EXTENDED_KEYS.indexOf(key)!==-1; }
-
 function jnEntityModeLabel(key){
-  // Extended entities keep their Daily sync pill; Core entities show no pill (dot+timestamp only)
-  if(JN_SYNC_STATE.jnRealtime==='skipped'||jnIsExtended(key))return {text:'☾ Daily sync',cls:'pill-neutral'};
-  return null; // Core: no pill — status communicated by dot color + timestamp
+  var autos=JN_SYNC_STATE[key].automations;
+  var hasDegraded=false,allActive=true;
+  for(var i=0;i<autos.length;i++){
+    if(autos[i].status==='degraded')hasDegraded=true;
+    if(autos[i].status!=='active')allActive=false;
+  }
+  if(JN_SYNC_STATE.jnRealtime==='skipped')return {text:'☾ Daily sync',cls:'pill-neutral'};
+  if(allActive||hasDegraded)return {text:'⚡ Real-time',cls:'pill-cyan'};
+  return {text:'◐ Setup incomplete',cls:'pill-caut'};
 }
 function jnEntityLastLine(key){
-  if(JN_SYNC_STATE.jnRealtime==='skipped'||jnIsExtended(key))return '<span>Last pull: 6:00 AM</span>';
+  if(JN_SYNC_STATE.jnRealtime==='skipped')return 'Last pull: 6:00 AM';
   var autos=JN_SYNC_STATE[key].automations;
-  var mostRecent=null,hasDegraded=false;
-  for(var i=0;i<autos.length;i++){
-    if(autos[i].lastEvent)mostRecent=autos[i].lastEvent;
-    if(autos[i].status==='degraded')hasDegraded=true;
-  }
-  if(!mostRecent)return '<span style="color:var(--muted)">No events received yet</span>';
-  // Stale timestamp styled red on degraded entities (Amendment §6)
-  var style=hasDegraded?'color:var(--crit);font-weight:600':'';
-  return '<span style="'+style+'">Last event: '+mostRecent+(hasDegraded?' — stale':'')+'</span>';
+  var mostRecent=null;
+  for(var i=0;i<autos.length;i++){if(autos[i].lastEvent)mostRecent=autos[i].lastEvent;}
+  return mostRecent?('Last event: '+mostRecent):'Last pull: 6:00 AM';
 }
 function jnEntityAction(key){
   var autos=JN_SYNC_STATE[key].automations;
@@ -4122,10 +4051,10 @@ function jnRenderAggregate(){
     pillText='✗ Webhooks silent 6h';
   } else if(info.doneCount===info.total){
     pillClass='pill-cyan';
-    pillText='✓ Live: '+info.doneCount+'/'+info.total+' active';
+    pillText='⚡ Real-time: '+info.doneCount+'/'+info.total;
   } else {
     pillClass='pill-caut';
-    pillText='⚙ '+info.doneCount+'/'+info.total+' active';
+    pillText='⚡ Real-time: '+info.doneCount+'/'+info.total;
   }
   var scopePill=document.getElementById('jn-scope-aggregate-pill');
   if(scopePill){scopePill.className='pill '+pillClass;scopePill.textContent=pillText;}
@@ -4327,8 +4256,7 @@ function jnRenderSyncScope(){
     html+='<div class="connector-item" style="cursor:pointer;align-items:flex-start" onclick="jnToggleRow(\''+key+'\')">';
     html+='<span style="width:8px;height:8px;border-radius:50%;background:'+dotColor+';margin-top:6px;flex-shrink:0"></span>';
     html+='<div style="flex:1">';
-    var pillHtml=modeInfo?('<span class="pill '+modeInfo.cls+'">'+modeInfo.text+'</span>'):'';
-    html+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="conn-name">'+meta.label+'</span>'+pillHtml+'<span class="conn-detail">'+meta.records.toLocaleString()+' records</span></div>';
+    html+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="conn-name">'+meta.label+'</span><span class="pill '+modeInfo.cls+'">'+modeInfo.text+'</span><span class="conn-detail">'+meta.records.toLocaleString()+' records</span></div>';
     html+='<div class="conn-detail">'+lastLine+'</div>';
     html+='</div>';
     if(action==='repair'){
@@ -5746,19 +5674,6 @@ function selectBillingCycle(cycle){
 }
 function startFreeTrial(){
   window._plan='paid';
-  window._crmConnected=false;
-  // Fire welcome email modal NOW (account is created at plan step)
-  setTimeout(function(){
-    var now=new Date();
-    window._signupDate=new Date(now);
-    var trialEnd=new Date(now);trialEnd.setDate(trialEnd.getDate()+29);
-    var billDate=new Date(now);billDate.setDate(billDate.getDate()+30);
-    var fmt=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});};
-    var te=document.getElementById('welcome-trial-end');if(te)te.textContent=fmt(trialEnd);
-    var tef=document.getElementById('welcome-trial-end-foot');if(tef)tef.textContent=fmt(trialEnd);
-    var bd=document.getElementById('welcome-bill-date');if(bd)bd.textContent=fmt(billDate);
-    openModal('welcome-email-modal');
-  },200);
   authGo('crm-pick');
 }
 
@@ -5794,8 +5709,25 @@ function enterApp(){
     _jnSuppressPopupOnEnter=false;
     jnMaybeShowSetupPopup();
   },window._isManagerJoin?1900:2600);
-  // Welcome email modal now fires at plan step (startFreeTrial), not here.
-  // Manager joins never see it — no change needed for that path.
+  // Show welcome email modal for new signups (not manager joins)
+  if(!window._isManagerJoin){
+    setTimeout(function(){
+      var co=document.getElementById('inp-co');
+      var firstName='James';
+      openModal('welcome-email-modal');
+      // Populate dynamic dates
+      var now=new Date();
+      window._signupDate=new Date(now);
+      var trialEnd=new Date(now);trialEnd.setDate(trialEnd.getDate()+29);
+      var billDate=new Date(now);billDate.setDate(billDate.getDate()+30);
+      var fmt=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});};
+      var els=['welcome-name'];
+      els.forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=firstName;});
+      var te=document.getElementById('welcome-trial-end');if(te)te.textContent=fmt(trialEnd);
+      var tef=document.getElementById('welcome-trial-end-foot');if(tef)tef.textContent=fmt(trialEnd);
+      var bd=document.getElementById('welcome-bill-date');if(bd)bd.textContent=fmt(billDate);
+    },600);
+  }
   window._isManagerJoin=false;
 }
 
@@ -5952,10 +5884,6 @@ function goApp(id){
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
   if(id==='billing')_refreshBillingTrialMeta();
   if(id==='dashboard'){
-    // FR-12: reset dismiss flag on every dashboard arrival so popup recurs per visit
-    jnPopupDismissedThisVisit=false;
-    _noCrmBannerDismissed=false;
-    refreshNoCrmBanner();
     refreshJnBanner();
     jnRenderStaleBadge();
     jnMaybeShowSetupPopup();
