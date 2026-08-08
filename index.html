@@ -4078,6 +4078,7 @@ function _jnActiveCount(){
   var total=0,active=0;
   for(var key in JN_SYNC_STATE){
     var autos=JN_SYNC_STATE[key].automations;
+    if(!autos)continue;
     for(var i=0;i<autos.length;i++){
       total++;
       if(autos[i].status==='active')active++;
