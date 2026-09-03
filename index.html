@@ -2066,10 +2066,10 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
   <div class="tabs fu1" id="rules-tabs">
-    <div class="tab on" id="rtab-pipeline" onclick="switchTab(this,'rules-pipeline')">CRM Stage Rules</div>
-    <div class="tab" id="rtab-activity" onclick="switchTab(this,'rules-activity')">Rep Activity Rules</div>
-    <div class="tab" id="rtab-routing" onclick="switchTab(this,'rules-routing')">Notification Routing</div>
-    <div class="tab" id="rtab-matrix" onclick="switchTab(this,'rules-matrix')">Compliance Matrix</div>
+    <div class="tab on" id="rtab-pipeline" onclick="rulesSwitchTab(this,'rules-pipeline')">CRM Stage Rules</div>
+    <div class="tab" id="rtab-activity" onclick="rulesSwitchTab(this,'rules-activity')">Rep Activity Rules</div>
+    <div class="tab" id="rtab-routing" onclick="rulesSwitchTab(this,'rules-routing')">Notification Routing</div>
+    <div class="tab" id="rtab-matrix" onclick="rulesSwitchTab(this,'rules-matrix')">Compliance Matrix</div>
   </div>
 
   <!-- ── TAB 1: CRM STAGE RULES (5 rules from doc) ── -->
@@ -2496,12 +2496,31 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <span>🔴 3+ flagged (configurable above)</span>
     </div>
 
+    <!-- Search + page size (FR: find a specific rep when the roster is long) -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="position:relative;flex:1;min-width:220px;max-width:340px">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none">&#128269;</span>
+        <input class="inp" id="cm-search" oninput="cmOnSearch()" placeholder="Search rep by name or email" style="padding:9px 32px 9px 34px;font-size:13px"/>
+        <span id="cm-search-clear" onclick="cmClearSearch()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--muted)">&#215;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)">
+        <span>Rows</span>
+        <select class="inp" id="cm-page-size" onchange="cmOnPageSize()" style="padding:8px 26px 8px 10px;font-size:12.5px;width:auto;min-width:62px">
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
+      </div>
+      <div style="flex:1"></div>
+      <div id="cm-count" style="font-size:12px;color:var(--muted)"></div>
+    </div>
+
     <!-- Compliance matrix grid -->
     <div class="card fu2" style="overflow-x:auto">
       <table class="tbl" style="min-width:700px">
         <thead>
           <tr>
-            <th style="min-width:140px">Rep</th>
+            <th style="min-width:180px">Rep</th>
             <th style="text-align:center">Lead<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 1</span></th>
             <th style="text-align:center">Appt Scheduled<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 2</span></th>
             <th style="text-align:center">Estimate<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 3</span></th>
@@ -2510,68 +2529,24 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
             <th style="text-align:center">Compliance %</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><div style="font-weight:700">Jim Smith</div><div style="font-size:11px;color:var(--muted)">NJ — Montclair</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Jim Smith — Lead: 2 flagged leads. Hendersons (3h no appt), Jacobs (5h no appt)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">2</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Jim Smith — Appt Scheduled: 1 flagged. Green Valley (28 hrs, no disposition)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Jim Smith — Estimate: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Jim Smith — Presentation: 3 leads past SLA. Rivera (9d), Patel (8d), Moore (8d)')"><span style="font-size:16px">🔴</span><div style="font-size:11px;font-weight:700;color:var(--crit)">3</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Jim Smith — Follow-up: 1 flagged. Turner (15d — handoff overdue)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center"><span class="pill pill-caut" style="font-size:12px;font-weight:800">82%</span></td>
-          </tr>
-          <tr>
-            <td><div style="font-weight:700">Maria Lopez</div><div style="font-size:11px;color:var(--muted)">NY — Queens</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Maria Lopez — Lead: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Maria Lopez — Appt Scheduled: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Maria Lopez — Estimate: 1 flagged. Nguyen (8 biz days, presentation not set)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Maria Lopez — Presentation: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Maria Lopez — Follow-up: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center"><span class="pill pill-pos" style="font-size:12px;font-weight:800">96%</span></td>
-          </tr>
-          <tr style="background:rgba(155,58,42,.03)">
-            <td><div style="font-weight:700">Dave Chen</div><div style="font-size:11px;color:var(--muted)">NJ — Montclair</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Dave Chen — Lead: 4 flagged. Multiple unscheduled leads past 4-hour threshold.')"><span style="font-size:16px">🔴</span><div style="font-size:11px;font-weight:700;color:var(--crit)">4</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Dave Chen — Appt Scheduled: 2 flagged. Chen (32 hrs), Walsh (26 hrs) — no disposition')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">2</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Dave Chen — Estimate: 2 flagged. Henderson (11 days ⬆ ESCALATED), Green Valley (10 days ⬆ ESCALATED)')"><span style="font-size:16px">🔴</span><div style="font-size:11px;font-weight:700;color:var(--crit)">2 ⬆</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Dave Chen — Presentation: 1 flagged. Kim (8 days, no outcome)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Dave Chen — Follow-up: 2 flagged. Both past 14-day handoff threshold.')"><span style="font-size:16px">🔴</span><div style="font-size:11px;font-weight:700;color:var(--crit)">2</div></td>
-            <td style="text-align:center"><span class="pill pill-crit" style="font-size:12px;font-weight:800">67%</span></td>
-          </tr>
-          <tr style="background:rgba(181,123,31,.03)">
-            <td><div style="font-weight:700">Tom Bradley</div><div style="font-size:11px;color:var(--muted)">NJ — Montclair</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Tom Bradley — Lead: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Tom Bradley — Appt Scheduled: 1 flagged. Santos (25 hrs)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Tom Bradley — Estimate: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Tom Bradley — Presentation: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Tom Bradley — Follow-up: 4 flagged (PILE-UP ALERT). Williams (14d), Garcia (12d), Park (11d), Chen (10d)')"><span style="font-size:16px">🔴</span><div style="font-size:11px;font-weight:700;color:var(--crit)">4 📊</div></td>
-            <td style="text-align:center"><span class="pill pill-caut" style="font-size:12px;font-weight:800">78%</span></td>
-          </tr>
-          <tr>
-            <td><div style="font-weight:700">Nina Vega</div><div style="font-size:11px;color:var(--muted)">NY — Queens</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Nina Vega — Lead: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Nina Vega — Appt Scheduled: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Nina Vega — Estimate: 1 flagged. Okafor (9 biz days)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Nina Vega — Presentation: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Nina Vega — Follow-up: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center"><span class="pill pill-pos" style="font-size:12px;font-weight:800">93%</span></td>
-          </tr>
-          <tr style="background:rgba(155,58,42,.03)">
-            <td><div style="font-weight:700">Mike Ortiz</div><div style="font-size:11px;color:var(--muted)">FL — Tampa</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Mike Ortiz — Lead: 2 flagged. 2 unscheduled leads past 4-hour threshold.')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">2</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Mike Ortiz — Appt Scheduled: 1 flagged. Davis (30 hrs no disposition)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">1</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Mike Ortiz — Estimate: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Mike Ortiz — Presentation: 2 flagged. Martinez (9d), Brown (8d)')"><span style="font-size:16px">⚠️</span><div style="font-size:11px;font-weight:700;color:var(--caut)">2</div></td>
-            <td style="text-align:center;cursor:pointer" onclick="showToast('Mike Ortiz — Follow-up: no flagged leads')"><span style="font-size:16px">✅</span><div style="font-size:11px;font-weight:700;color:var(--pos)">0</div></td>
-            <td style="text-align:center"><span class="pill pill-crit" style="font-size:12px;font-weight:800">64% ⚠</span></td>
-          </tr>
-        </tbody>
+        <tbody id="cm-tbody"></tbody>
       </table>
     </div>
+
+    <!-- Pagination -->
+    <div id="cm-pager" style="display:none;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap">
+      <div id="cm-range" style="font-size:12px;color:var(--muted)"></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="btn btn-outline btn-sm" id="cm-prev" onclick="cmGoPage(cmState.page-1)" type="button">&#8592; Prev</button>
+        <div id="cm-pages" style="display:flex;align-items:center;gap:4px"></div>
+        <button class="btn btn-outline btn-sm" id="cm-next" onclick="cmGoPage(cmState.page+1)" type="button">Next &#8594;</button>
+      </div>
+    </div>
+
     <div style="font-size:11.5px;color:var(--muted);margin-top:10px">⬆ = past manager escalation threshold &nbsp;·&nbsp; 📊 = stage pile-up alert active &nbsp;·&nbsp; ⚠ = compliance floor breached &nbsp;·&nbsp; Click any cell to see lead details</div>
   </div>
 
-  <div style="margin-top:8px;display:flex;gap:10px">
+  <div id="rules-actions" style="margin-top:8px;display:flex;gap:10px">
     <button class="btn btn-primary" onclick="saveRules()">Save Accountability Rules</button>
     <button class="btn btn-outline" onclick="showToast('Changes discarded')">Cancel</button>
   </div>
@@ -6661,6 +6636,174 @@ function toggleRule(el){
 }
 function saveRules(){
   showToast('Accountability rules saved successfully');
+}
+
+// ═══ COMPLIANCE MATRIX — data, search, pagination ═══
+// Read-only view of live rule violations per rep. Cell = count of that rep's
+// leads currently breaching that stage rule.
+var CM_REPS=[
+  {name:'Jim Smith',email:'jim@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'82%',pctCls:'pill-caut',rowBg:'',
+   cells:[
+     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Jim Smith \u2014 Lead: 2 flagged leads. Hendersons (3h no appt), Jacobs (5h no appt)'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Jim Smith \u2014 Appt Scheduled: 1 flagged. Green Valley (28 hrs, no disposition)'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Jim Smith \u2014 Estimate: no flagged leads'},
+     {icon:'\uD83D\uDD34',n:'3',cls:'crit',toast:'Jim Smith \u2014 Presentation: 3 leads past SLA. Rivera (9d), Patel (8d), Moore (8d)'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Jim Smith \u2014 Follow-up: 1 flagged. Turner (15d \u2014 handoff overdue)'}
+   ]},
+  {name:'Maria Lopez',email:'maria@smithroofing.com',branch:'NY \u2014 Queens',pct:'96%',pctCls:'pill-pos',rowBg:'',
+   cells:[
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Lead: no flagged leads'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Appt Scheduled: no flagged leads'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Maria Lopez \u2014 Estimate: 1 flagged. Nguyen (8 biz days, presentation not set)'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Presentation: no flagged leads'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Follow-up: no flagged leads'}
+   ]},
+  {name:'Dave Chen',email:'dave@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'67%',pctCls:'pill-crit',rowBg:'rgba(155,58,42,.03)',
+   cells:[
+     {icon:'\uD83D\uDD34',n:'4',cls:'crit',toast:'Dave Chen \u2014 Lead: 4 flagged. Multiple unscheduled leads past 4-hour threshold.'},
+     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Dave Chen \u2014 Appt Scheduled: 2 flagged. Chen (32 hrs), Walsh (26 hrs) \u2014 no disposition'},
+     {icon:'\uD83D\uDD34',n:'2 \u2B06',cls:'crit',toast:'Dave Chen \u2014 Estimate: 2 flagged. Henderson (11 days \u2B06 ESCALATED), Green Valley (10 days \u2B06 ESCALATED)'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Dave Chen \u2014 Presentation: 1 flagged. Kim (8 days, no outcome)'},
+     {icon:'\uD83D\uDD34',n:'2',cls:'crit',toast:'Dave Chen \u2014 Follow-up: 2 flagged. Both past 14-day handoff threshold.'}
+   ]},
+  {name:'Tom Bradley',email:'tom@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'78%',pctCls:'pill-caut',rowBg:'rgba(181,123,31,.03)',
+   cells:[
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Tom Bradley \u2014 Lead: no flagged leads'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Tom Bradley \u2014 Appt Scheduled: 1 flagged. Santos (25 hrs)'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Tom Bradley \u2014 Estimate: no flagged leads'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Tom Bradley \u2014 Presentation: no flagged leads'},
+     {icon:'\uD83D\uDD34',n:'4 \uD83D\uDCCA',cls:'crit',toast:'Tom Bradley \u2014 Follow-up: 4 flagged (PILE-UP ALERT). Williams (14d), Garcia (12d), Park (11d), Chen (10d)'}
+   ]},
+  {name:'Nina Vega',email:'nina@smithroofing.com',branch:'NY \u2014 Queens',pct:'93%',pctCls:'pill-pos',rowBg:'',
+   cells:[
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Lead: no flagged leads'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Appt Scheduled: no flagged leads'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Nina Vega \u2014 Estimate: 1 flagged. Okafor (9 biz days)'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Presentation: no flagged leads'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Follow-up: no flagged leads'}
+   ]},
+  {name:'Mike Ortiz',email:'mike@smithroofing.com',branch:'FL \u2014 Tampa',pct:'64% \u26A0',pctCls:'pill-crit',rowBg:'rgba(155,58,42,.03)',
+   cells:[
+     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Mike Ortiz \u2014 Lead: 2 flagged. 2 unscheduled leads past 4-hour threshold.'},
+     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Mike Ortiz \u2014 Appt Scheduled: 1 flagged. Davis (30 hrs no disposition)'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Mike Ortiz \u2014 Estimate: no flagged leads'},
+     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Mike Ortiz \u2014 Presentation: 2 flagged. Martinez (9d), Brown (8d)'},
+     {icon:'\u2705',n:'0',cls:'pos',toast:'Mike Ortiz \u2014 Follow-up: no flagged leads'}
+   ]}
+];
+var cmState={q:'',page:1,pageSize:5};
+
+function cmFiltered(){
+  var q=cmState.q.trim().toLowerCase();
+  if(!q)return CM_REPS;
+  var out=[];
+  for(var i=0;i<CM_REPS.length;i++){
+    var r=CM_REPS[i];
+    if((r.name+' '+r.email+' '+r.branch).toLowerCase().indexOf(q)!==-1)out.push(r);
+  }
+  return out;
+}
+function cmOnSearch(){
+  var inp=document.getElementById('cm-search');
+  cmState.q=inp?inp.value:'';
+  cmState.page=1;
+  var clear=document.getElementById('cm-search-clear');
+  if(clear)clear.style.display=cmState.q?'block':'none';
+  cmRender();
+}
+function cmClearSearch(){
+  var inp=document.getElementById('cm-search');
+  if(inp)inp.value='';
+  cmState.q='';
+  cmState.page=1;
+  var clear=document.getElementById('cm-search-clear');
+  if(clear)clear.style.display='none';
+  cmRender();
+}
+function cmOnPageSize(){
+  var sel=document.getElementById('cm-page-size');
+  cmState.pageSize=sel?parseInt(sel.value,10):10;
+  cmState.page=1;
+  cmRender();
+}
+function cmGoPage(p){
+  var rows=cmFiltered();
+  var total=Math.max(1,Math.ceil(rows.length/cmState.pageSize));
+  if(p<1)p=1;
+  if(p>total)p=total;
+  cmState.page=p;
+  cmRender();
+}
+function cmRender(){
+  var body=document.getElementById('cm-tbody');
+  if(!body)return;
+  var rows=cmFiltered();
+  var pageCount=Math.max(1,Math.ceil(rows.length/cmState.pageSize));
+  if(cmState.page>pageCount)cmState.page=pageCount;
+  var startIdx=(cmState.page-1)*cmState.pageSize;
+  var slice=rows.slice(startIdx,startIdx+cmState.pageSize);
+  var html='';
+  if(!slice.length){
+    html='<tr><td colspan="7" style="text-align:center;padding:26px 12px;color:var(--muted);font-size:13px">No reps match \u201C'+cmEscape(cmState.q)+'\u201D</td></tr>';
+  }
+  for(var i=0;i<slice.length;i++){
+    var r=slice[i];
+    html+='<tr'+(r.rowBg?' style="background:'+r.rowBg+'"':'')+'>';
+    html+='<td><div style="font-weight:700">'+r.name+'</div><div style="font-size:11px;color:var(--muted)">'+r.email+' \u00B7 '+r.branch+'</div></td>';
+    for(var c=0;c<r.cells.length;c++){
+      var cell=r.cells[c];
+      html+='<td style="text-align:center;cursor:pointer" onclick="cmCellToast('+i+','+c+')"><span style="font-size:16px">'+cell.icon+'</span><div style="font-size:11px;font-weight:700;color:var(--'+cell.cls+')">'+cell.n+'</div></td>';
+    }
+    html+='<td style="text-align:center"><span class="pill '+r.pctCls+'" style="font-size:12px;font-weight:800">'+r.pct+'</span></td>';
+    html+='</tr>';
+  }
+  body.innerHTML=html;
+  cmState._slice=slice;
+
+  var countEl=document.getElementById('cm-count');
+  if(countEl){
+    countEl.textContent=rows.length===CM_REPS.length
+      ? CM_REPS.length+' reps'
+      : rows.length+' of '+CM_REPS.length+' reps';
+  }
+  var pager=document.getElementById('cm-pager');
+  if(pager)pager.style.display=(rows.length>cmState.pageSize)?'flex':'none';
+  var range=document.getElementById('cm-range');
+  if(range&&rows.length){
+    range.textContent='Showing '+(startIdx+1)+'\u2013'+Math.min(startIdx+cmState.pageSize,rows.length)+' of '+rows.length;
+  }
+  var prev=document.getElementById('cm-prev');
+  var next=document.getElementById('cm-next');
+  if(prev){prev.disabled=(cmState.page<=1);prev.style.opacity=cmState.page<=1?'.45':'1';}
+  if(next){next.disabled=(cmState.page>=pageCount);next.style.opacity=cmState.page>=pageCount?'.45':'1';}
+  var pages=document.getElementById('cm-pages');
+  if(pages){
+    var ph='';
+    for(var p=1;p<=pageCount;p++){
+      var on=(p===cmState.page);
+      ph+='<button class="btn '+(on?'btn-primary':'btn-outline')+' btn-sm" style="min-width:32px;padding:6px 9px" onclick="cmGoPage('+p+')" type="button">'+p+'</button>';
+    }
+    pages.innerHTML=ph;
+  }
+}
+function cmCellToast(rowIdx,cellIdx){
+  var slice=cmState._slice||[];
+  var r=slice[rowIdx];
+  if(!r)return;
+  showToast(r.cells[cellIdx].toast);
+}
+function cmEscape(t){
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+cmRender();
+
+// Save/Cancel belong to the rule-authoring tabs only \u2014 the Compliance Matrix
+// is a read-only data view, so the action bar is hidden there.
+function rulesSwitchTab(el,panelId){
+  switchTab(el,panelId);
+  var bar=document.getElementById('rules-actions');
+  if(bar)bar.style.display=(panelId==='rules-matrix')?'none':'flex';
+  if(panelId==='rules-matrix')cmRender();
 }
 
 </script>
