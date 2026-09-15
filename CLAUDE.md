@@ -37,7 +37,11 @@ After `enterApp()`:
 
 ### App Screens
 - `app-dashboard` — KPIs, branch comparison table, branch filter strip
-- `app-contacts`, `app-r1`–`app-r5` — Reports
+- `app-contacts` — Contacts & Leads. Lead-source overview strip on top (`.src-strip`): total unique
+  leads after dedupe + per-source tiles (GHL / Leap / WhatConverts / CallRail). Source counts are
+  post-dedupe and always sum to the total; each tile's sub-line shows raw synced vs merged.
+  Tiles act as filters (`setContactSource`), counts are role-scoped (`CONTACT_SRC_STATS`).
+- `app-r1`–`app-r5` — Reports
 - `app-users` — Users & Seats table with functional Edit/Re-invite/Revoke buttons
 - `app-billing` — Subscription & Billing
 - `app-settings` — Settings with Branches & Managers tab
