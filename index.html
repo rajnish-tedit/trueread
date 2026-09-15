@@ -218,6 +218,24 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .pill-blue{background:rgba(31,58,95,.1);color:var(--horizon);}
 .pill-cyan{background:rgba(15,88,102,.1);color:var(--cyan);}
 
+/* ── SOURCE OVERVIEW STRIP (Contacts & Leads) ─────── */
+.src-strip{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:10px;margin-bottom:10px;}
+.src-tile{background:white;border:1px solid var(--rule);border-radius:12px;padding:13px 15px;text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;box-shadow:0 2px 8px rgba(30,50,70,.04);}
+.src-tile:hover{border-color:var(--horizon);transform:translateY(-1px);box-shadow:0 6px 16px rgba(30,50,70,.08);}
+.src-tile.on{border-color:var(--horizon);box-shadow:0 0 0 2px rgba(31,58,95,.14);}
+.src-tile.total{background:rgba(31,58,95,.04);}
+.src-tile.muted-src{opacity:.55;}
+.src-tile-head{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;white-space:nowrap;}
+.src-tile-ic{font-size:13px;line-height:1;}
+.src-tile-val{font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1;}
+.src-tile-sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.src-tile-sub.warn{color:var(--crit);font-weight:600;}
+.src-caption{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:11.5px;color:var(--muted);margin-bottom:16px;}
+.src-caption a{color:var(--cyan);font-weight:700;cursor:pointer;}
+.src-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:700;background:var(--panel);color:var(--slate);}
+.src-utm{font-size:11.5px;color:var(--muted);margin-top:3px;}
+.src-merged{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700;background:var(--caut-bg);color:var(--caut);cursor:help;}
+
 /* ── PROGRESS BARS ───────────────────────────────── */
 .prog-track{height:6px;background:var(--panel);border-radius:4px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:4px;background:var(--horizon);animation:barGrow .8s cubic-bezier(.22,1,.36,1) both;}
@@ -1519,7 +1537,19 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 <!-- ═══════════════════════════ CONTACTS / LEADS ═══ -->
 <div class="app-scr" id="app-contacts">
   <div class="pg-header fu"><div><div class="pg-title" id="contacts-title">Contacts &amp; Leads</div><div class="pg-sub" id="contacts-sub">Every lead synced from your connected tools</div></div><div class="pg-actions"><button class="btn btn-outline btn-sm rbac-export" data-report="contacts" id="contacts-export-btn">⬇ Export</button></div></div>
-  <div class="card">
+  <!-- Lead source overview — deduped totals, each tile filters the table below -->
+  <div class="src-strip fu1" id="contacts-src-strip">
+        <button class="src-tile total on" id="src-tile-all" onclick="setContactSource('all')" title="All connected sources, duplicates merged"><div class="src-tile-head"><span class="src-tile-ic">🗂️</span>Total leads — all sources</div><div class="src-tile-val" id="src-val-all">—</div><div class="src-tile-sub" id="src-sub-all">unique leads after dedupe</div></button>
+        <button class="src-tile" id="src-tile-ghl" onclick="setContactSource('ghl')"><div class="src-tile-head"><span class="src-tile-ic">🔷</span>GoHighLevel</div><div class="src-tile-val" id="src-val-ghl">—</div><div class="src-tile-sub" id="src-sub-ghl"></div></button>
+        <button class="src-tile" id="src-tile-leap" onclick="setContactSource('leap')"><div class="src-tile-head"><span class="src-tile-ic">🟠</span>Leap CRM</div><div class="src-tile-val" id="src-val-leap">—</div><div class="src-tile-sub" id="src-sub-leap"></div></button>
+        <button class="src-tile" id="src-tile-whatconverts" onclick="setContactSource('whatconverts')"><div class="src-tile-head"><span class="src-tile-ic">📊</span>WhatConverts</div><div class="src-tile-val" id="src-val-whatconverts">—</div><div class="src-tile-sub" id="src-sub-whatconverts"></div></button>
+        <button class="src-tile" id="src-tile-callrail" onclick="setContactSource('callrail')"><div class="src-tile-head"><span class="src-tile-ic">📞</span>CallRail</div><div class="src-tile-val" id="src-val-callrail">—</div><div class="src-tile-sub" id="src-sub-callrail"></div></button>
+  </div>
+  <div class="src-caption fu1" id="contacts-src-caption">
+    <span id="contacts-src-caption-text"></span>
+    <a onclick="goApp('pipeline')">Review duplicates →</a>
+  </div>
+  <div class="card fu2">
     <table class="tbl">
       <thead>
         <tr>
@@ -1532,11 +1562,22 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </tr>
       </thead>
       <tbody id="contacts-tbody">
-        <tr data-branch="nj" data-rep="Marcus Webb"><td style="font-weight:700">Tom Reilly</td><td>Google Ads — utm_campaign=roof-repair</td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$12.4K</td><td><span class="pill pill-pos">Estimate Sent</span></td></tr>
-        <tr data-branch="ny" data-rep="Lisa Chen"><td style="font-weight:700">Priya Nair</td><td>Facebook Ads — utm_campaign=spring-promo</td><td class="col-branch">NY</td><td class="col-rep">Lisa Chen</td><td class="col-rep tbl-num">$8.9K</td><td><span class="pill pill-caut">Appointment Set</span></td></tr>
-        <tr data-branch="fl" data-rep="Derek Osei"><td style="font-weight:700">Carlos Mendez</td><td>Canvassing — door knock</td><td class="col-branch">FL</td><td class="col-rep">Derek Osei</td><td class="col-rep tbl-num">$15.1K</td><td><span class="pill pill-pos">Won</span></td></tr>
-        <tr data-branch="mi" data-rep="Nina Vega"><td style="font-weight:700">Allison Brooks</td><td>Angi — referral</td><td class="col-branch">Miami</td><td class="col-rep">Nina Vega</td><td class="col-rep tbl-num">$6.2K</td><td><span class="pill pill-caut">Contacted</span></td></tr>
-        <tr data-branch="nj" data-rep="Marcus Webb"><td style="font-weight:700">Sandra Kim</td><td>Inbound Call — CallRail</td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$9.8K</td><td><span class="pill pill-crit">Stuck &gt;7d</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb" data-source="ghl"><td style="font-weight:700">Tom Reilly</td><td><span class="src-chip"><span class="src-tile-ic">🔷</span>GoHighLevel</span><div class="src-utm">Google Ads — utm_campaign=roof-repair</div></td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$12.4K</td><td><span class="pill pill-pos">Estimate Sent</span></td></tr>
+        <tr data-branch="ny" data-rep="Lisa Chen" data-source="ghl"><td style="font-weight:700">Priya Nair</td><td><span class="src-chip"><span class="src-tile-ic">🔷</span>GoHighLevel</span><div class="src-utm">Facebook Ads — utm_campaign=spring-promo</div></td><td class="col-branch">NY</td><td class="col-rep">Lisa Chen</td><td class="col-rep tbl-num">$8.9K</td><td><span class="pill pill-caut">Appointment Set</span></td></tr>
+        <tr data-branch="fl" data-rep="Derek Osei" data-source="leap"><td style="font-weight:700">Carlos Mendez</td><td><span class="src-chip"><span class="src-tile-ic">🟠</span>Leap CRM</span><div class="src-utm">Canvassing — door knock</div></td><td class="col-branch">FL</td><td class="col-rep">Derek Osei</td><td class="col-rep tbl-num">$15.1K</td><td><span class="pill pill-pos">Won</span></td></tr>
+        <tr data-branch="mi" data-rep="Nina Vega" data-source="whatconverts"><td style="font-weight:700">Allison Brooks</td><td><span class="src-chip"><span class="src-tile-ic">📊</span>WhatConverts</span><div class="src-utm">Angi — referral form</div></td><td class="col-branch">Miami</td><td class="col-rep">Nina Vega</td><td class="col-rep tbl-num">$6.2K</td><td><span class="pill pill-caut">Contacted</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb" data-source="callrail"><td style="font-weight:700">Sandra Kim</td><td><span class="src-chip"><span class="src-tile-ic">📞</span>CallRail</span><div class="src-utm">Inbound call — Google LSA</div></td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$9.8K</td><td><span class="pill pill-crit">Stuck &gt;7d</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb" data-source="ghl"><td style="font-weight:700">Robert Hanson</td><td><span class="src-chip"><span class="src-tile-ic">🔷</span>GoHighLevel</span><span class="src-merged" title="Duplicate record from WhatConverts was merged into this lead — counted once in the totals above">⇄ merged</span><div class="src-utm">Web form — utm_source=google</div></td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$11.2K</td><td><span class="pill pill-pos">Estimate Sent</span></td></tr>
+        <tr data-branch="ny" data-rep="Lisa Chen" data-source="ghl"><td style="font-weight:700">Amy Kowalski</td><td><span class="src-chip"><span class="src-tile-ic">🔷</span>GoHighLevel</span><span class="src-merged" title="Duplicate record from Leap CRM was merged into this lead — counted once in the totals above">⇄ merged</span><div class="src-utm">Referral — past customer</div></td><td class="col-branch">NY</td><td class="col-rep">Lisa Chen</td><td class="col-rep tbl-num">$7.4K</td><td><span class="pill pill-caut">Appointment Set</span></td></tr>
+        <tr data-branch="nj" data-rep="Tom Bradley" data-source="callrail"><td style="font-weight:700">Danielle Fox</td><td><span class="src-chip"><span class="src-tile-ic">📞</span>CallRail</span><div class="src-utm">Inbound call — yard sign</div></td><td class="col-branch">NJ</td><td class="col-rep">Tom Bradley</td><td class="col-rep tbl-num">$5.6K</td><td><span class="pill pill-caut">Contacted</span></td></tr>
+        <tr data-branch="fl" data-rep="Derek Osei" data-source="leap"><td style="font-weight:700">Miguel Santos</td><td><span class="src-chip"><span class="src-tile-ic">🟠</span>Leap CRM</span><div class="src-utm">Repair job — production handoff</div></td><td class="col-branch">FL</td><td class="col-rep">Derek Osei</td><td class="col-rep tbl-num">$4.1K</td><td><span class="pill pill-pos">Won</span></td></tr>
+        <tr data-branch="ny" data-rep="Lisa Chen" data-source="whatconverts"><td style="font-weight:700">Karen Whitfield</td><td><span class="src-chip"><span class="src-tile-ic">📊</span>WhatConverts</span><div class="src-utm">Chat lead — website</div></td><td class="col-branch">NY</td><td class="col-rep">Lisa Chen</td><td class="col-rep tbl-num">$3.8K</td><td><span class="pill pill-neutral">New Lead</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb" data-source="ghl"><td style="font-weight:700">Jerome Baptiste</td><td><span class="src-chip"><span class="src-tile-ic">🔷</span>GoHighLevel</span><div class="src-utm">SMS campaign — utm_campaign=storm-jun</div></td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$13.9K</td><td><span class="pill pill-caut">Appointment Set</span></td></tr>
+        <tr data-branch="mi" data-rep="Nina Vega" data-source="callrail"><td style="font-weight:700">Elaine Porter</td><td><span class="src-chip"><span class="src-tile-ic">📞</span>CallRail</span><div class="src-utm">Inbound call — direct mail</div></td><td class="col-branch">Miami</td><td class="col-rep">Nina Vega</td><td class="col-rep tbl-num">$8.2K</td><td><span class="pill pill-caut">Contacted</span></td></tr>
+        <tr data-branch="nj" data-rep="Tom Bradley" data-source="leap"><td style="font-weight:700">Victor Ruiz</td><td><span class="src-chip"><span class="src-tile-ic">🟠</span>Leap CRM</span><div class="src-utm">Insurance claim — adjuster</div></td><td class="col-branch">NJ</td><td class="col-rep">Tom Bradley</td><td class="col-rep tbl-num">$21.5K</td><td><span class="pill pill-pos">Estimate Sent</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb" data-source="leap"><td style="font-weight:700">Gary Nolan</td><td><span class="src-chip"><span class="src-tile-ic">🟠</span>Leap CRM</span><div class="src-utm">Repair — prior customer</div></td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$4.7K</td><td><span class="pill pill-pos">Won</span></td></tr>
+        <tr data-branch="nj" data-rep="Marcus Webb" data-source="whatconverts"><td style="font-weight:700">Tanya Brooks</td><td><span class="src-chip"><span class="src-tile-ic">📊</span>WhatConverts</span><div class="src-utm">Form — roof inspection</div></td><td class="col-branch">NJ</td><td class="col-rep">Marcus Webb</td><td class="col-rep tbl-num">$5.3K</td><td><span class="pill pill-caut">Contacted</span></td></tr>
+        <tr data-branch="fl" data-rep="Derek Osei" data-source="ghl"><td style="font-weight:700">Hannah Wu</td><td><span class="src-chip"><span class="src-tile-ic">🔷</span>GoHighLevel</span><div class="src-utm">Google Ads — utm_campaign=gutter</div></td><td class="col-branch">FL</td><td class="col-rep">Derek Osei</td><td class="col-rep tbl-num">$6.9K</td><td><span class="pill pill-neutral">New Lead</span></td></tr>
       </tbody>
     </table>
     <div id="contacts-empty" style="display:none;padding:30px;text-align:center;color:var(--muted);font-size:13px;">No contacts assigned to you yet.</div>
@@ -5592,7 +5633,89 @@ function applyRoleUI(){
   jnUpdateGate();
 }
 
+// ═══ CONTACTS — LEAD SOURCE OVERVIEW ═══
+// Tiles show UNIQUE leads after dedupe, so the four source counts always add up to
+// the total. `raw` is what the connector actually delivered; the gap is what the
+// dedupe engine merged away (see Data Integrations › Duplicate Groups).
+var CONTACT_SRC_ORDER=['ghl','leap','whatconverts','callrail'];
+var CONTACT_SRC_META={
+  ghl:{name:'GoHighLevel'},
+  leap:{name:'Leap CRM'},
+  whatconverts:{name:'WhatConverts',warn:'\u26A0 sync failed 3h ago'},
+  callrail:{name:'CallRail'}
+};
+// Counts are scoped the same way the table is — a Sales Manager sees their branch,
+// a Sales Rep sees only what is assigned to them.
+var CONTACT_SRC_STATS={
+  all:{ghl:{u:178,r:180},leap:{u:62,r:63},whatconverts:{u:14,r:16},callrail:{u:58,r:60}},
+  branch:{ghl:{u:54,r:55},leap:{u:19,r:19},whatconverts:{u:4,r:4},callrail:{u:17,r:18}},
+  own_assigned:{ghl:{u:21,r:22},leap:{u:6,r:6},whatconverts:{u:1,r:1},callrail:{u:8,r:8}}
+};
+var _contactSource='all';
+var _contactsPerms=null;
+
+function contactSrcScopeKey(perms){
+  if(!perms)return 'all';
+  if(perms.contactsScope==='branch')return 'branch';
+  if(perms.contactsScope==='own_assigned')return 'own_assigned';
+  return 'all'; // 'all' and 'lead_source_only' both see every branch
+}
+
+function setContactSource(key){
+  _contactSource=key;
+  if(_contactsPerms)applyContactsScope(_contactsPerms);
+}
+
+function renderContactsOverview(perms){
+  var stats=CONTACT_SRC_STATS[contactSrcScopeKey(perms)];
+  if(!stats)return;
+  var totalU=0,totalR=0;
+  for(var i=0;i<CONTACT_SRC_ORDER.length;i++){
+    var key=CONTACT_SRC_ORDER[i],st=stats[key],meta=CONTACT_SRC_META[key];
+    totalU+=st.u;totalR+=st.r;
+    var valEl=document.getElementById('src-val-'+key);
+    var subEl=document.getElementById('src-sub-'+key);
+    var tileEl=document.getElementById('src-tile-'+key);
+    if(valEl)valEl.textContent=st.u.toLocaleString();
+    if(subEl){
+      var merged=st.r-st.u;
+      if(meta.warn){subEl.textContent=meta.warn;subEl.className='src-tile-sub warn';}
+      else{subEl.textContent=merged?(st.r+' synced \u00B7 '+merged+' merged'):(st.r+' synced \u00B7 no duplicates');subEl.className='src-tile-sub';}
+    }
+    if(tileEl){
+      tileEl.classList.toggle('on',_contactSource===key);
+      tileEl.classList.toggle('muted-src',_contactSource!=='all'&&_contactSource!==key);
+      tileEl.title=meta.name+' \u2014 '+st.u+' unique leads of '+st.r+' records synced. Click to filter the table.';
+    }
+  }
+  var allTile=document.getElementById('src-tile-all');
+  if(allTile)allTile.classList.toggle('on',_contactSource==='all');
+  var allVal=document.getElementById('src-val-all');
+  if(allVal)allVal.textContent=totalU.toLocaleString();
+  var allSub=document.getElementById('src-sub-all');
+  if(allSub)allSub.textContent=_contactSource==='all'?'unique leads after dedupe':'click to clear the '+CONTACT_SRC_META[_contactSource].name+' filter';
+  var cap=document.getElementById('contacts-src-caption-text');
+  if(cap){
+    var scopeLabel=(contactSrcScopeKey(perms)==='branch')?'NJ branch':(contactSrcScopeKey(perms)==='own_assigned'?'assigned to you':'all branches');
+    var dupes=totalR-totalU;
+    cap.textContent=totalR.toLocaleString()+' records synced from '+CONTACT_SRC_ORDER.length+' connected sources \u00B7 '+
+      dupes+(dupes===1?' duplicate merged \u00B7 ':' duplicates merged \u00B7 ')+totalU.toLocaleString()+' unique leads \u00B7 '+
+      contactsRangeLabel()+' \u00B7 '+scopeLabel;
+  }
+}
+
+function contactsRangeLabel(){
+  var on=document.querySelector('#topbar .df-opt.on');
+  var t=on?on.textContent.trim():'30d';
+  if(t==='30d')return 'last 30 days';
+  if(t==='7d')return 'last 7 days';
+  if(t==='MTD')return 'month to date';
+  if(t==='QTD')return 'quarter to date';
+  return t;
+}
+
 function applyContactsScope(perms){
+  _contactsPerms=perms;
   var rows=document.querySelectorAll('#contacts-tbody tr');
   var anyVisible=false;
   rows.forEach(function(row){
@@ -5601,10 +5724,15 @@ function applyContactsScope(perms){
     var visible=true;
     if(perms.contactsScope==='branch')visible=(branch===SELF_BRANCH);
     else if(perms.contactsScope==='own_assigned')visible=(rep===SELF_REP);
+    if(visible&&_contactSource!=='all')visible=(row.getAttribute('data-source')===_contactSource);
     row.style.display=visible?'':'none';
     if(visible)anyVisible=true;
   });
-  document.getElementById('contacts-empty').style.display=anyVisible?'none':'block';
+  var emptyEl=document.getElementById('contacts-empty');
+  emptyEl.style.display=anyVisible?'none':'block';
+  emptyEl.textContent=(_contactSource==='all')
+    ?'No contacts assigned to you yet.'
+    :'No '+CONTACT_SRC_META[_contactSource].name+' leads in this view.';
   // Marketing Manager only sees lead-source/UTM data — no rep assignment, no deal value
   document.querySelectorAll('#app-contacts .col-rep').forEach(function(el){
     el.style.display=(perms.contactsScope==='lead_source_only')?'none':'';
@@ -5616,6 +5744,7 @@ function applyContactsScope(perms){
     else if(perms.contactsScope==='lead_source_only')sub.textContent='Lead source & attribution data — no rep assignment or deal value shown';
     else if(perms.contactsScope==='own_assigned')sub.textContent='Leads assigned to you';
   }
+  renderContactsOverview(perms);
 }
 
 // PLAN SCREEN — billing cycle selection
@@ -5965,7 +6094,7 @@ function setDF(el){
   var all=document.querySelectorAll('#topbar .df-opt');
   for(var i=0;i<all.length;i++){all[i].classList.remove('on');all[i].style.color='rgba(255,255,255,.5)';}
   el.classList.add('on');
-  el.style.color='rgba(255,255,255,.85)';
+  el.style.color='rgba(255,255,255,.85)';  if(_contactsPerms)renderContactsOverview(_contactsPerms);
 }
 
 // TABS
