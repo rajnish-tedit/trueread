@@ -42,6 +42,10 @@ After `enterApp()`:
 - `app-billing` — Subscription & Billing
 - `app-settings` — Settings with Branches & Managers tab
 - `app-comms`, `app-audit`, `app-help`
+- `app-pipeline` (Data Integrations) → Manual Import tab — lead import flow:
+  - Explains auto-synced sources (Leap, AccuLynx, JobNimbus, WhatConverts, CallRail via webhooks — no import needed) vs manual import (other CRMs / marketing tools)
+  - Source + branch pickers, upload zone → `liStartImport()` runs 4 steps: Imported (186) → Auto-removed (14, runs before matching) → Unique records (168, added) → Duplicates identified (4, held for review)
+  - Result: split bar, removal/match breakdown, `liUndo()`, `liGoDedup()` → new rows added to Duplicate Review (Merge / Keep both)
 
 ## Key Modals
 - `modal-welcome-email-modal` — Shows after signup. Dark hero header with "30 days — $0.00" badge, dynamic trial end date, next bill date, NJ compliance notice (no auto-charge), colour-coded timeline.

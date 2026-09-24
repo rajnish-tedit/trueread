@@ -463,6 +463,53 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .upload-zone{border:2px dashed var(--rule);border-radius:12px;padding:40px;text-align:center;cursor:pointer;transition:.2s;background:white;}
 .upload-zone:hover{border-color:var(--cyan);background:rgba(15,88,102,.03);}
 .upload-icon{font-size:32px;margin-bottom:12px;}
+/* ── LEAD IMPORT ─────────────────────────────────── */
+.li-lanes{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.li-lane{border-radius:12px;padding:16px;border:1px solid var(--rule);}
+.li-lane.auto{background:var(--pos-bg);border-color:rgba(63,110,74,.25);}
+.li-lane.manual{background:rgba(31,58,95,.05);border-color:rgba(31,58,95,.18);}
+.li-lane-k{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.li-lane-t{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.li-lane-d{font-size:12.5px;color:var(--slate);line-height:1.55;}
+.li-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.li-chip{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:99px;background:white;border:1px solid var(--rule);color:var(--slate);}
+.li-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pos);margin-right:6px;animation:dotPulse 1.6s infinite;}
+.li-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.li-form label{display:block;font-size:12px;font-weight:700;color:var(--slate);margin-bottom:5px;}
+.li-form .inp{padding:10px 12px;font-size:14px;}
+.li-req{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:12px;}
+.li-req b{color:var(--slate);font-weight:600;}
+.li-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;position:relative;}
+.li-step{border:1px solid var(--rule);border-radius:12px;padding:14px;background:white;transition:.3s;opacity:.45;}
+.li-step.run,.li-step.done{opacity:1;}
+.li-step.run{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(15,88,102,.1);}
+.li-step-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.li-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;background:var(--panel);color:var(--muted);flex-shrink:0;}
+.li-step.run .li-dot{background:transparent;border:2.5px solid rgba(15,88,102,.2);border-top-color:var(--cyan);animation:spin .8s linear infinite;color:transparent;}
+.li-step.done .li-dot{color:white;}
+.li-step[data-k="imp"].done .li-dot{background:var(--horizon);}
+.li-step[data-k="rem"].done .li-dot{background:var(--muted);}
+.li-step[data-k="uni"].done .li-dot{background:var(--pos);}
+.li-step[data-k="dup"].done .li-dot{background:var(--caut);}
+.li-step-n{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
+.li-step-v{font-size:26px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1;}
+.li-step-t{font-size:13px;font-weight:700;color:var(--ink);margin-top:2px;}
+.li-step-d{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:4px;}
+.li-bar{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--panel);margin:18px 0 8px;}
+.li-bar span{height:100%;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1);}
+.li-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--slate);}
+.li-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:0;}
+.li-detail{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+.li-box{border-radius:12px;padding:14px 16px;background:var(--panel);font-size:12.5px;color:var(--slate);}
+.li-box-h{display:flex;align-items:center;justify-content:space-between;font-weight:700;color:var(--ink);font-size:13.5px;margin-bottom:8px;}
+.li-row{display:flex;justify-content:space-between;padding:4px 0;border-top:1px dashed rgba(200,194,182,.8);}
+.li-row:first-of-type{border-top:none;}
+.li-row b{font-variant-numeric:tabular-nums;}
+.li-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule);}
+.li-note{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--slate);background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.15);border-radius:10px;padding:10px 14px;margin-bottom:14px;}
+.li-new td{animation:fadeIn .6s ease;background:rgba(181,123,31,.05);}
+@media(max-width:900px){.li-steps{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.li-lanes,.li-form,.li-detail{grid-template-columns:1fr;}.li-tbl-wrap{overflow-x:auto;}}
 .upload-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
 .upload-sub{font-size:12.5px;color:var(--muted);font-family:'Inter',sans-serif;}
 
@@ -2007,41 +2054,113 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="tab-panel" id="tab-dp-import">
     <div class="tabs fu" style="margin-bottom:16px">
       <div class="tab on" onclick="switchSubTab(this,'dpi-upload')">Upload</div>
-      <div class="tab" onclick="switchSubTab(this,'dpi-dedup')">Duplicate Review</div>
+      <div class="tab" id="dpi-tab-dedup" onclick="switchSubTab(this,'dpi-dedup')">Duplicate Review</div>
       <div class="tab" onclick="switchSubTab(this,'dpi-log')">Sync Log</div>
     </div>
     <div class="subtab-panel on" id="subtab-dpi-upload">
-    <div class="upload-zone fu" onclick="showToast('📂 File picker opened')">
-      <div class="upload-icon">📄</div>
-      <div class="upload-title">Drop a file here or click to browse</div>
-      <div class="upload-sub">Supports .xlsx, .csv, .pdf, .docx — AI parses and maps columns automatically</div>
-    </div>
-    <div class="card fu1" style="margin-top:16px"><div style="padding:18px 20px">
-      <div class="sec-head" style="margin-bottom:12px"><div class="sec-title">Last Upload — Field Coverage</div><span class="pill pill-pos">marketing_expense_may2026.xlsx</span></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#3F6E4A"><span style="font-weight:700">✓</span> Channel / Source — 44 of 44 rows mapped</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#3F6E4A"><span style="font-weight:700">✓</span> Spend Amount — 44 of 44 rows mapped</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#3F6E4A"><span style="font-weight:700">✓</span> Date — 44 of 44 rows mapped</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#B57B1F"><span style="font-weight:700">⚠</span> Campaign Name — 38 of 44 rows mapped (6 blank)</div>
+
+    <!-- When is an import needed? -->
+    <div class="card fu" style="margin-bottom:16px"><div style="padding:18px 20px">
+      <div class="sec-head" style="margin-bottom:12px"><div class="sec-title">How lead data reaches The Hub</div></div>
+      <div class="li-lanes">
+        <div class="li-lane auto">
+          <div class="li-lane-k" style="color:var(--pos)"><span class="li-live"></span>Auto-synced · live via webhooks</div>
+          <div class="li-lane-t">Connected tools — no import needed</div>
+          <div class="li-lane-d">New and updated leads arrive automatically and are counted using your business rules. If these are your only lead sources, you never need to import.</div>
+          <div class="li-chips"><span class="li-chip">Leap</span><span class="li-chip">AccuLynx</span><span class="li-chip">JobNimbus</span><span class="li-chip">WhatConverts</span><span class="li-chip">CallRail</span></div>
+        </div>
+        <div class="li-lane manual">
+          <div class="li-lane-k" style="color:var(--horizon)">Manual import · file upload</div>
+          <div class="li-lane-t">Everything else — import a file</div>
+          <div class="li-lane-d">Use this when leads live in a CRM or marketing tool The Hub doesn't sync with yet. Imported leads are cleaned and de-duplicated against your synced data before they count.</div>
+          <div class="li-chips"><span class="li-chip">Other CRMs</span><span class="li-chip">Angi / HomeAdvisor</span><span class="li-chip">Facebook Lead Ads</span><span class="li-chip">Spreadsheets</span></div>
+        </div>
       </div>
     </div></div>
-    <div class="card fu1" style="margin-top:16px"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Import History</div></div></div>
-      <table class="tbl"><thead><tr><th>File</th><th>Date</th><th>Category</th><th>Rows</th><th>Status</th><th></th></tr></thead>
-      <tbody>
-        <tr><td style="font-weight:600">marketing_expense_may2026.xlsx</td><td>Today 9:41 AM</td><td><span class="pill pill-blue">Marketing</span></td><td>44</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('↩ Rolling back import...')">Rollback</button></td></tr>
-        <tr><td style="font-weight:600">smith_roofing_may.xlsx</td><td>Yesterday</td><td><span class="pill pill-cyan">Pipeline</span></td><td>142</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs">Rollback</button></td></tr>
-        <tr><td style="font-weight:600">rep_salaries_apr2026.csv</td><td>Apr 30</td><td><span class="pill pill-neutral">Rep comp</span></td><td>23</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs">Rollback</button></td></tr>
-      </tbody></table>
+
+    <!-- Step 1: choose source + upload -->
+    <div class="card fu1" id="li-upload-card"><div style="padding:18px 20px">
+      <div class="sec-head" style="margin-bottom:12px"><div><div class="sec-title">Import leads</div><div style="font-size:12.5px;color:var(--muted)">Tell us where the file came from, then upload it.</div></div></div>
+      <div class="li-form">
+        <div><label for="li-source">Where are these leads from?</label>
+          <select class="inp" id="li-source">
+            <optgroup label="Other CRM"><option>HubSpot</option><option>Salesforce</option><option>ServiceTitan</option><option>Pipedrive</option><option>Other CRM</option></optgroup>
+            <optgroup label="Marketing tool"><option>Angi / HomeAdvisor</option><option>Facebook Lead Ads</option><option>Google Local Services</option><option>Other marketing tool</option></optgroup>
+            <optgroup label="Other"><option>Spreadsheet / manual list</option></optgroup>
+          </select>
+        </div>
+        <div><label for="li-branch">Assign to branch</label>
+          <select class="inp" id="li-branch"><option>Auto-detect from lead address</option><option>Newark, NJ</option><option>Brooklyn, NY</option><option>Philadelphia, PA</option></select>
+        </div>
+      </div>
+      <div class="upload-zone" onclick="liStartImport()">
+        <div class="upload-icon">📥</div>
+        <div class="upload-title">Drop a lead file here or click to browse</div>
+        <div class="upload-sub">.csv or .xlsx — columns are mapped automatically</div>
+      </div>
+      <div class="li-req"><span><b>Required:</b> Name · Phone or Email · Created date</span><span><b>Optional:</b> Address · Lead source · Rep · Status</span><a href="#" onclick="showToast('⬇ lead_import_template.csv downloaded');return false" style="color:var(--cyan);font-weight:600;margin-left:auto">Download template</a></div>
+    </div></div>
+
+    <!-- Step 2: processing + results -->
+    <div class="card fu1" id="li-run" style="display:none;margin-top:16px"><div style="padding:18px 20px">
+      <div class="sec-head" style="margin-bottom:14px">
+        <div><div class="sec-title" id="li-file">hubspot_leads_sep2026.csv</div><div style="font-size:12.5px;color:var(--muted)" id="li-meta">From HubSpot · branch auto-detected</div></div>
+        <span class="pill pill-cyan" id="li-status">Processing…</span>
+      </div>
+      <div class="li-steps">
+        <div class="li-step" data-k="imp"><div class="li-step-top"><div class="li-dot">1</div><div class="li-step-n">Step 1</div></div><div class="li-step-v" id="li-v-imp">–</div><div class="li-step-t">Imported</div><div class="li-step-d">Rows read from the file and columns mapped.</div></div>
+        <div class="li-step" data-k="rem"><div class="li-step-top"><div class="li-dot">2</div><div class="li-step-n">Step 2</div></div><div class="li-step-v" id="li-v-rem">–</div><div class="li-step-t">Auto-removed</div><div class="li-step-d">Exact duplicates cleaned out automatically — before any matching.</div></div>
+        <div class="li-step" data-k="uni"><div class="li-step-top"><div class="li-dot">3</div><div class="li-step-n">Step 3</div></div><div class="li-step-v" id="li-v-uni">–</div><div class="li-step-t">Unique records</div><div class="li-step-d">Brand-new leads — added to The Hub.</div></div>
+        <div class="li-step" data-k="dup"><div class="li-step-top"><div class="li-dot">4</div><div class="li-step-n">Step 4</div></div><div class="li-step-v" id="li-v-dup">–</div><div class="li-step-t">Duplicates identified</div><div class="li-step-d">Likely match an existing lead — held for your review.</div></div>
+      </div>
+
+      <div id="li-result" style="display:none">
+        <div class="li-bar"><span id="li-b-uni" style="background:var(--pos)"></span><span id="li-b-dup" style="background:var(--caut)"></span><span id="li-b-rem" style="background:var(--rule)"></span></div>
+        <div class="li-legend"><span><i style="background:var(--pos)"></i>Unique — added</span><span><i style="background:var(--caut)"></i>Duplicates — needs review</span><span><i style="background:var(--rule)"></i>Auto-removed</span></div>
+        <div class="li-detail">
+          <div class="li-box">
+            <div class="li-box-h"><span>Why rows were auto-removed</span><span id="li-d-rem">14</span></div>
+            <div class="li-row"><span>Repeated rows inside this file</span><b>9</b></div>
+            <div class="li-row"><span>Already in The Hub from a synced tool (same phone + email + name)</span><b>5</b></div>
+            <div style="margin-top:8px;font-size:11.5px;color:var(--muted)">Phones and emails are normalised first, so “(973) 555-0142” and “973.555.0142” count as the same.</div>
+          </div>
+          <div class="li-box">
+            <div class="li-box-h"><span>How duplicates were identified</span><span id="li-d-dup">4</span></div>
+            <div class="li-row"><span>Phone match</span><b>2</b></div>
+            <div class="li-row"><span>Email match</span><b>1</b></div>
+            <div class="li-row"><span>Name + address match</span><b>1</b></div>
+            <div style="margin-top:8px;font-size:11.5px;color:var(--muted)">Nothing is merged without you. On merge, the synced CRM record stays the master.</div>
+          </div>
+        </div>
+        <div class="li-foot">
+          <div style="font-size:13px;color:var(--slate)"><b style="color:var(--pos)" id="li-f-uni">168 leads</b> now count in dashboards and reports.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" onclick="liUndo()">Undo import</button>
+            <button class="btn btn-outline btn-sm" onclick="liReset()">Import another file</button>
+            <button class="btn btn-primary btn-sm" id="li-review-btn" onclick="liGoDedup()">Review 4 duplicates →</button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- History -->
+    <div class="card fu1" style="margin-top:16px"><div style="padding:18px 20px"><div class="sec-head" style="margin-bottom:0"><div class="sec-title">Import History</div></div></div>
+      <div class="li-tbl-wrap"><table class="tbl"><thead><tr><th>File</th><th>Source</th><th>Date</th><th style="text-align:right">Rows</th><th style="text-align:right">Unique</th><th style="text-align:right">Duplicates</th><th style="text-align:right">Auto-removed</th><th>Status</th><th></th></tr></thead>
+      <tbody id="li-hist">
+        <tr><td style="font-weight:600">angi_leads_aug2026.xlsx</td><td>Angi / HomeAdvisor</td><td>Yesterday</td><td class="tbl-num" style="text-align:right">142</td><td class="tbl-num" style="text-align:right;color:var(--pos)">121</td><td class="tbl-num" style="text-align:right;color:var(--caut)">3</td><td class="tbl-num" style="text-align:right;color:var(--muted)">18</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('↩ Rolling back import...')">Undo</button></td></tr>
+        <tr><td style="font-weight:600">fb_lead_ads_aug.csv</td><td>Facebook Lead Ads</td><td>Aug 30</td><td class="tbl-num" style="text-align:right">87</td><td class="tbl-num" style="text-align:right;color:var(--pos)">80</td><td class="tbl-num" style="text-align:right;color:var(--muted)">0</td><td class="tbl-num" style="text-align:right;color:var(--muted)">7</td><td><span class="pill pill-pos">Complete</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('↩ Rolling back import...')">Undo</button></td></tr>
+      </tbody></table></div>
     </div>
     </div>
     <div class="subtab-panel" id="subtab-dpi-dedup">
-    <div class="card fu"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Duplicate Groups — Requires Review</div><span class="pill pill-caut">3 groups</span></div></div>
-      <table class="tbl"><thead><tr><th>Lead Name</th><th>Match Type</th><th>Sources</th><th>Master Source</th><th></th></tr></thead>
-      <tbody>
+    <div class="li-note"><span>ℹ️</span><span>Records land here only after auto-removal has run. Each one looks like a lead The Hub already has — merge it, or keep both if they're genuinely different people.</span></div>
+    <div class="card fu"><div style="padding:18px 20px"><div class="sec-head"><div class="sec-title">Duplicate Groups — Requires Review</div><span class="pill pill-caut" id="li-dup-count">3 groups</span></div></div>
+      <div class="li-tbl-wrap"><table class="tbl"><thead><tr><th>Lead Name</th><th>Match Type</th><th>Sources</th><th>Master Source</th><th></th></tr></thead>
+      <tbody id="li-dup-body">
         <tr><td style="font-weight:600">Robert Hanson</td><td><span class="pill pill-caut">Phone match</span></td><td>GHL + WhatConverts</td><td><span class="pill pill-pos">GHL wins</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('✓ Merged: GHL record kept')">Merge</button></td></tr>
         <tr><td style="font-weight:600">Amy Kowalski</td><td><span class="pill pill-caut">Email match</span></td><td>Leap + GHL</td><td><span class="pill pill-pos">GHL wins</span></td><td><button class="btn btn-outline btn-xs" onclick="showToast('✓ Merged: GHL record kept')">Merge</button></td></tr>
         <tr><td style="font-weight:600">James T. Roark</td><td><span class="pill pill-crit">CRM ID conflict</span></td><td>Manual + GHL</td><td><span class="pill pill-crit">Review needed</span></td><td><button class="btn btn-danger btn-xs" onclick="openModal('dedup-modal')">Review</button></td></tr>
-      </tbody></table>
+      </tbody></table></div>
     </div>
     </div>
     <div class="subtab-panel" id="subtab-dpi-log">
@@ -5981,6 +6100,62 @@ function switchTab(tab,panelId){
   if(panel)panel.classList.add('on');
 }
 
+// ── LEAD IMPORT (Data Integrations → Manual Import) ──
+var LI={imp:186,rem:14,uni:168,dup:4,running:false,done:false};
+function liSlug(src){return src.toLowerCase().replace(/\/.*$/,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');}
+function liCount(el,to,ms){var t0=null;function f(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/ms);el.textContent=Math.round(to*p).toLocaleString();if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+function liStartImport(){
+  if(LI.running)return;
+  var src=document.getElementById('li-source').value,br=document.getElementById('li-branch').value;
+  LI.src=src;LI.file=liSlug(src)+'_leads_sep2026.csv';LI.running=true;LI.done=false;
+  document.getElementById('li-file').textContent=LI.file;
+  document.getElementById('li-meta').textContent='From '+src+' · '+(br.indexOf('Auto')===0?'branch auto-detected from address':br);
+  var st=document.getElementById('li-status');st.className='pill pill-cyan';st.textContent='Processing…';
+  document.getElementById('li-result').style.display='none';
+  ['uni','dup','rem'].forEach(function(k){document.getElementById('li-b-'+k).style.width='0';});
+  var steps=document.querySelectorAll('#li-run .li-step');
+  steps.forEach(function(e,i){e.className='li-step';e.querySelector('.li-dot').textContent=i+1;document.getElementById('li-v-'+e.dataset.k).textContent='–';});
+  var run=document.getElementById('li-run');run.style.display='';run.scrollIntoView({behavior:'smooth',block:'start'});
+  var i=0;
+  (function next(){
+    if(i>0){var p=steps[i-1];p.className='li-step done';p.querySelector('.li-dot').textContent='✓';}
+    if(i>=steps.length){liFinish();return;}
+    var e=steps[i];e.className='li-step run';liCount(document.getElementById('li-v-'+e.dataset.k),LI[e.dataset.k],800);
+    i++;setTimeout(next,1000);
+  })();
+}
+function liFinish(){
+  LI.running=false;LI.done=true;
+  var st=document.getElementById('li-status');st.className='pill pill-pos';st.textContent='✓ Complete';
+  document.getElementById('li-result').style.display='';
+  setTimeout(function(){['uni','dup','rem'].forEach(function(k){document.getElementById('li-b-'+k).style.width=(LI[k]/LI.imp*100)+'%';});},50);
+  var s=LI.src+' import';
+  var rows=[['Karen Mills','Phone match',s+' + JobNimbus','JobNimbus wins'],['Tom Alvarez','Email match',s+' + Leap','Leap wins'],['Luis Ortega','Phone match',s+' + CallRail','CallRail call linked'],['Denise Park','Name + address',s+' + AccuLynx',null]];
+  var body=document.getElementById('li-dup-body');
+  body.querySelectorAll('.li-new').forEach(function(r){r.remove();});
+  rows.slice().reverse().forEach(function(r){
+    var tr=document.createElement('tr');tr.className='li-new';
+    tr.innerHTML='<td style="font-weight:600">'+r[0]+' <span class="pill pill-blue" style="font-size:10px;padding:2px 7px;margin-left:4px">New</span></td><td><span class="pill pill-caut">'+r[1]+'</span></td><td>'+r[2]+'</td><td>'+(r[3]?'<span class="pill pill-pos">'+r[3]+'</span>':'<span class="pill pill-crit">Review needed</span>')+'</td><td style="white-space:nowrap">'+(r[3]?'':'<button class="btn btn-outline btn-xs" style="margin-right:6px" onclick="liResolve(this,\'✓ Kept both — added as a new lead\')">Keep both</button>')+'<button class="btn btn-outline btn-xs" onclick="liResolve(this,\'✓ Merged into existing lead\')">Merge</button></td>';
+    body.insertBefore(tr,body.firstChild);
+  });
+  liUpdDupCount();
+  var h=document.getElementById('li-hist'),tr=document.createElement('tr');tr.id='li-hist-new';
+  var old=document.getElementById('li-hist-new');if(old)old.remove();
+  tr.innerHTML='<td style="font-weight:600">'+LI.file+'</td><td>'+LI.src+'</td><td>Just now</td><td class="tbl-num" style="text-align:right">'+LI.imp+'</td><td class="tbl-num" style="text-align:right;color:var(--pos)">'+LI.uni+'</td><td class="tbl-num" style="text-align:right;color:var(--caut)">'+LI.dup+'</td><td class="tbl-num" style="text-align:right;color:var(--muted)">'+LI.rem+'</td><td><span class="pill pill-caut">'+LI.dup+' to review</span></td><td><button class="btn btn-outline btn-xs" onclick="liUndo()">Undo</button></td>';
+  h.insertBefore(tr,h.firstChild);
+  showToast('✓ '+LI.uni+' unique leads added · '+LI.dup+' duplicates need review');
+}
+function liUpdDupCount(){var n=document.querySelectorAll('#li-dup-body tr').length;document.getElementById('li-dup-count').textContent=n+(n===1?' group':' groups');var b=document.getElementById('li-review-btn');var m=document.querySelectorAll('#li-dup-body .li-new').length;if(b){b.textContent=m?'Review '+m+' duplicate'+(m===1?'':'s')+' →':'All duplicates reviewed ✓';b.disabled=!m;}}
+function liResolve(btn,msg){btn.closest('tr').remove();liUpdDupCount();showToast(msg);}
+function liGoDedup(){var t=document.getElementById('dpi-tab-dedup');if(t)switchSubTab(t,'dpi-dedup');}
+function liReset(){document.getElementById('li-run').style.display='none';document.getElementById('li-upload-card').scrollIntoView({behavior:'smooth',block:'start'});}
+function liUndo(){
+  if(!LI.done)return;
+  document.querySelectorAll('#li-dup-body .li-new').forEach(function(r){r.remove();});
+  var h=document.getElementById('li-hist-new');if(h)h.remove();
+  liUpdDupCount();LI.done=false;liReset();
+  showToast('↩ Import undone — '+LI.uni+' leads removed from The Hub');
+}
 function switchSubTab(tab,panelId){
   var parent=tab.closest('.tabs');
   var tabs=parent.querySelectorAll('.tab');
