@@ -437,6 +437,50 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .wh-toggle.on { background:var(--horizon); }
 .wh-toggle::after { content:''; position:absolute; top:2px; left:2px; width:16px; height:16px; background:white; border-radius:50%; transition:.2s; }
 .wh-toggle.on::after { left:18px; }
+/* ── ACCOUNTABILITY RULES — sentence-style rule cards ── */
+.rl-preset{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;padding:16px 18px;}
+.rl-preset-title{font-size:14px;font-weight:700;color:var(--ink);}
+.rl-preset-sub{font-size:12.5px;color:var(--muted);margin-top:2px;}
+.rl-seg{display:flex;background:var(--panel);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap;}
+.rl-seg-btn{border:none;background:none;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:var(--muted);padding:7px 12px;border-radius:8px;cursor:pointer;}
+.rl-seg-btn.on{background:white;color:var(--ink);box-shadow:0 1px 3px rgba(14,27,36,.12);}
+.rl-intro{font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:720px;}
+.rl-card{margin-bottom:14px;}
+.rl-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.rl-title-row{display:flex;align-items:center;gap:8px;}
+.rl-badge{display:inline-block;background:var(--ink);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0;}
+.rl-badge.mgr{background:var(--caut);}
+.rl-title{font-size:14.5px;font-weight:700;color:var(--ink);}
+.rl-stage{font-size:12.5px;color:var(--muted);margin-top:4px;}
+.rl-tog-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.rl-tog-lbl{font-size:12px;font-weight:700;color:var(--horizon);min-width:22px;text-align:right;}
+.rl-card.off .rl-tog-lbl{color:var(--muted);}
+.rl-card.off .rule-body{opacity:.4;pointer-events:none;}
+.rl-off-note{display:none;font-size:12px;color:var(--muted);font-style:italic;margin-top:-4px;margin-bottom:6px;}
+.rl-card.off .rl-off-note{display:block;}
+.rl-line{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 0;border-top:1px solid rgba(200,194,182,.45);font-size:13.5px;color:var(--ink);}
+.rl-who{display:inline-block;width:64px;flex-shrink:0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 0;border-radius:6px;text-align:center;}
+.rl-who.rep{background:rgba(63,110,74,.12);color:var(--pos);}
+.rl-who.mgr{background:rgba(181,123,31,.14);color:var(--caut);}
+.rl-who.clk{background:var(--panel);color:var(--muted);}
+.rl-num{display:inline-flex;align-items:center;gap:6px;}
+.rl-num input{width:72px;padding:7px 10px;border:1.5px solid var(--rule);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--ink);background:white;outline:none;}
+.rl-num input:focus,.rl-sel:focus{border-color:var(--horizon);}
+.rl-num input.err{border-color:var(--crit);background:rgba(155,58,42,.05);}
+.rl-num em{font-style:normal;color:var(--muted);font-size:13px;}
+.rl-sel{padding:7px 30px 7px 10px;border:1.5px solid var(--rule);border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink);background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7680'/%3E%3C/svg%3E") no-repeat right 10px center;appearance:none;cursor:pointer;outline:none;}
+.rl-err{flex-basis:100%;margin-left:72px;font-size:12px;font-weight:600;color:var(--crit);}
+.rl-msg{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(15,88,102,.06);border:1px solid rgba(15,88,102,.15);font-size:12.5px;color:var(--cyan);}
+.rl-msg-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+.rl-msg-txt{font-weight:600;color:var(--ink);}
+.rl-msg-exit{margin-left:auto;color:var(--muted);}
+.rl-note{font-size:12px;color:var(--muted);margin-top:6px;}
+.rl-actions{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:10px;margin-top:8px;padding:12px 0;background:var(--paper);border-top:1px solid var(--rule);}
+.rl-dirty{font-size:12.5px;font-weight:600;color:var(--muted);}
+.rl-dirty.on{color:var(--caut);}
+.rl-dirty.on::before{content:'● ';}
+@media (max-width:700px){.rl-who{width:auto;padding:3px 8px;}.rl-err{margin-left:0;}.rl-msg-exit{margin-left:0;}}
+@media (max-width:768px){.rl-actions{bottom:64px;flex-wrap:wrap;}}
 .wh-closed { font-size:12px; color:var(--muted); font-style:italic; }
 .branch-pill-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
 .branch-pill-sel { display:flex; align-items:center; gap:6px; padding:6px 14px; border-radius:8px; background:white; border:1.5px solid var(--rule); cursor:pointer; transition:.2s; font-size:12.5px; font-weight:600; color:var(--slate); }
@@ -1745,6 +1789,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <div class="tab on" onclick="switchTab(this,'comms-alerts')">Live Alerts <span class="pill pill-crit" style="margin-left:6px;font-size:10px;padding:2px 6px" id="alerts-count-pill">6</span></div>
     <div class="tab" onclick="switchTab(this,'comms-pending')">Pending Approval <span class="pill pill-caut" style="margin-left:6px;font-size:10px;padding:2px 6px">3</span></div>
     <div class="tab" onclick="switchTab(this,'comms-sent')">Sent Log</div>
+    <div class="tab" id="ctab-matrix" onclick="switchTab(this,'comms-matrix');cmRender()">Rep Compliance</div>
   </div>
   <div class="tab-panel on" id="tab-comms-alerts">
 
@@ -1830,7 +1875,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div class="alert-item-body">Dave was flagged at day 7. Manager escalation threshold (day 10) passed 1 day ago. Oldest lead: Henderson Roofing — 11 days in Estimate, last activity Jun 21. Green Valley Homes — 10 days, no presentation set.</div>
         <div class="alert-item-actions">
           <button class="btn btn-primary btn-sm" onclick="openDraftModal('dave-escalation')">Draft message to Dave</button>
-          <button class="btn btn-outline btn-sm" onclick="goApp('rules');setTimeout(function(){switchTab(document.getElementById('rtab-matrix'),\'rules-matrix\')},100)">View in Compliance Matrix</button>
+          <button class="btn btn-outline btn-sm" onclick="cmOpenMatrix()">View in Rep Compliance</button>
           <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
           <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
             <div class="snooze-pop">
@@ -1940,6 +1985,89 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <tr><td style="font-weight:600">Weekly audit reminder</td><td>Sam Torres</td><td><span class="pill" style="font-size:10px;background:var(--panel)">Audit</span></td><td>Jun 1, 4:00 PM</td><td><span class="pill pill-caut">No</span></td><td style="font-size:12px;color:var(--muted)">No action taken</td></tr>
     </tbody></table></div>
   </div>
+  <!-- ── REP COMPLIANCE (moved from Accountability Rules so managers can see it) ── -->
+  <div class="tab-panel" id="tab-comms-matrix">
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:720px">
+      Live view of each rep's flagged leads, by pipeline stage. Each cell is the number of that rep's leads breaking that stage's rule right now. Click a cell to see the leads. <span id="cm-scope" style="font-weight:700;color:var(--ink)"></span>
+    </div>
+
+    <!-- Team roll-up banner -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+      <div class="card card-p fu1" style="text-align:center;padding:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Total Flagged</div>
+        <div style="font-size:26px;font-weight:800;color:var(--crit)" id="cm-t-flagged">–</div>
+        <div style="font-size:11.5px;color:var(--muted)">leads across all reps</div>
+      </div>
+      <div class="card card-p fu2" style="text-align:center;padding:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Past Escalation</div>
+        <div style="font-size:26px;font-weight:800;color:var(--crit)" id="cm-t-esc">–</div>
+        <div style="font-size:11.5px;color:var(--muted)">manager action needed</div>
+      </div>
+      <div class="card card-p fu3" style="text-align:center;padding:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Team Compliance</div>
+        <div style="font-size:26px;font-weight:800;color:var(--caut)" id="cm-t-avg">–</div>
+        <div style="font-size:11.5px;color:var(--muted)">avg across active reps</div>
+      </div>
+      <div class="card card-p fu1" style="text-align:center;padding:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Lowest This Period</div>
+        <div style="font-size:18px;font-weight:800;color:var(--crit);margin-top:4px" id="cm-t-low">–</div>
+        <div style="font-size:11.5px;color:var(--muted)" id="cm-t-low-sub"></div>
+      </div>
+    </div>
+
+    <!-- Severity legend — thresholds come from the saved Accountability Rules -->
+    <div id="cm-legend" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-size:12px;color:var(--muted)"></div>
+
+    <!-- Search + page size (FR: find a specific rep when the roster is long) -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="position:relative;flex:1;min-width:220px;max-width:340px">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none">&#128269;</span>
+        <input class="inp" id="cm-search" oninput="cmOnSearch()" placeholder="Search rep by name or email" style="padding:9px 32px 9px 34px;font-size:13px"/>
+        <span id="cm-search-clear" onclick="cmClearSearch()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--muted)">&#215;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)">
+        <span>Rows</span>
+        <select class="inp" id="cm-page-size" onchange="cmOnPageSize()" style="padding:8px 26px 8px 10px;font-size:12.5px;width:auto;min-width:62px">
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
+      </div>
+      <div style="flex:1"></div>
+      <div id="cm-count" style="font-size:12px;color:var(--muted)"></div>
+    </div>
+
+    <!-- Compliance matrix grid -->
+    <div class="card fu2" style="overflow-x:auto">
+      <table class="tbl" style="min-width:700px">
+        <thead>
+          <tr>
+            <th style="min-width:180px">Rep</th>
+            <th style="text-align:center">Lead<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 1</span></th>
+            <th style="text-align:center">Appt Scheduled<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 2</span></th>
+            <th style="text-align:center">Estimate<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 3</span></th>
+            <th style="text-align:center">Presentation<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 4</span></th>
+            <th style="text-align:center">Follow-up<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 5</span></th>
+            <th style="text-align:center">Compliance %</th>
+          </tr>
+        </thead>
+        <tbody id="cm-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div id="cm-pager" style="display:none;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap">
+      <div id="cm-range" style="font-size:12px;color:var(--muted)"></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="btn btn-outline btn-sm" id="cm-prev" onclick="cmGoPage(cmState.page-1)" type="button">&#8592; Prev</button>
+        <div id="cm-pages" style="display:flex;align-items:center;gap:4px"></div>
+        <button class="btn btn-outline btn-sm" id="cm-next" onclick="cmGoPage(cmState.page+1)" type="button">Next &#8594;</button>
+      </div>
+    </div>
+
+    <div style="font-size:11.5px;color:var(--muted);margin-top:10px">⬆ = past the Sales Manager deadline &nbsp;·&nbsp; 📊 = stuck-leads alert active &nbsp;·&nbsp; ⚠ = below the minimum compliance score &nbsp;·&nbsp; Click any cell to see lead details</div>
+  </div>
+
 </div>
 
 <!-- ═══════════════════════════ WEEKLY AUDIT ═══ -->
@@ -2061,317 +2189,186 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="pg-header fu">
     <div>
       <div class="pg-title">Accountability Rules</div>
-      <div class="pg-sub">Define your standards for follow-up speed, pipeline movement, and data entry — The Hub flags reps who fall behind and notifies the right people automatically</div>
+      <div class="pg-sub">Set the standards your reps are held to. The Hub reminds the rep first, tells the Sales Manager if nothing changes, and only brings repeated problems to you.</div>
     </div>
+  </div>
+
+  <!-- ── PRESET BAR — start from a recommended setup, then fine-tune ── -->
+  <div class="card card-p fu1 rl-preset" id="rl-preset">
+    <div style="flex:1;min-width:220px">
+      <div class="rl-preset-title">Start from a recommended setup</div>
+      <div class="rl-preset-sub" id="rl-preset-sub">Pick the type of work you mostly do. Every number below fills in, and you can still change any of them.</div>
+    </div>
+    <div class="rl-seg" role="group" aria-label="Recommended setup">
+      <button type="button" class="rl-seg-btn" data-preset="retail" onclick="rulesApplyPreset('retail')">Retail roofing</button>
+      <button type="button" class="rl-seg-btn" data-preset="storm" onclick="rulesApplyPreset('storm')">Storm / Insurance</button>
+      <button type="button" class="rl-seg-btn" data-preset="mixed" onclick="rulesApplyPreset('mixed')">Mixed</button>
+    </div>
+    <button type="button" class="btn btn-outline btn-sm" onclick="rulesResetDefaults()">Reset to recommended</button>
   </div>
 
   <div class="tabs fu1" id="rules-tabs">
     <div class="tab on" id="rtab-pipeline" onclick="rulesSwitchTab(this,'rules-pipeline')">CRM Stage Rules</div>
     <div class="tab" id="rtab-activity" onclick="rulesSwitchTab(this,'rules-activity')">Rep Activity Rules</div>
     <div class="tab" id="rtab-routing" onclick="rulesSwitchTab(this,'rules-routing')">Notification Routing</div>
-    <div class="tab" id="rtab-matrix" onclick="rulesSwitchTab(this,'rules-matrix')">Compliance Matrix</div>
   </div>
 
-  <!-- ── TAB 1: CRM STAGE RULES (5 rules from doc) ── -->
+  <!-- ── TAB 1: CRM STAGE RULES ── -->
   <div class="tab-panel on" id="tab-rules-pipeline">
-    <div style="font-size:12.5px;color:var(--muted);margin-bottom:20px;max-width:720px">
-      Each rule defines when a rep gets flagged for a lead that has stalled or skipped a required action in that stage, plus the grace window before the manager is escalated. These rules keep your pipeline data accurate and your funnel metrics trustworthy.
+    <div class="rl-intro">
+      One rule for each stage of your pipeline. The rep is reminded first; if the lead still isn't moving, the Sales Manager is told.
     </div>
 
-    <!-- Rule 1: Unscheduled Lead -->
-    <div class="card card-p fu1" style="margin-bottom:14px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Rule 1: New lead not booked -->
+    <div class="card card-p fu1 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="pill" style="background:var(--ink);color:white;font-size:10px;padding:2px 8px;flex-shrink:0">Rule 1</span>
-            <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Unscheduled Lead</div>
-          </div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Stage: <strong>Lead</strong> — Lead has arrived and been assigned, but no appointment booked</div>
+          <div class="rl-title-row"><span class="rl-badge">Rule 1</span><div class="rl-title">New lead not booked</div></div>
+          <div class="rl-stage">Stage: <strong>Lead</strong> — assigned to a rep, but no appointment booked yet</div>
         </div>
-        <div class="wh-toggle on" id="rule-unscheduled" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-unscheduled" data-k="r1_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Flag rep after</label>
-          <select class="inp">
-            <option>1 hour</option>
-            <option selected>4 hours</option>
-            <option>24 hours</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Hours counted during</label>
-          <select class="inp">
-            <option selected>Business hours only</option>
-            <option>24 / 7</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Escalate to manager after</label>
-          <select class="inp">
-            <option selected>Rep threshold + 24 hrs</option>
-            <option>Rep threshold + 48 hrs</option>
-          </select>
-        </div>
-      </div>
-      <div class="settings-info-box" style="margin-top:12px">
-        ⓘ Rep notification: "Qualified lead not scheduled — book an appointment." Valid exit: lead moves to Appointment Scheduled.
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Remind the rep if a new lead has no appointment after</span><span class="rl-num"><input type="number" data-k="r1_flag" min="1" max="24" oninput="rulesOnChange()"/><em>hours</em></span></div>
+        <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Tell the Sales Manager if it's still not booked</span><span class="rl-num"><input type="number" data-k="r1_esc" min="4" max="72" oninput="rulesOnChange()"/><em>hours later</em></span></div>
+        <div class="rl-line"><span class="rl-who clk">Clock</span><span>Count time during</span><select class="rl-sel" data-k="r1_clock" onchange="rulesOnChange()"><option value="business">Business hours only</option><option value="24-7">24 / 7</option></select></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="r1"></span><span class="rl-msg-exit">Done when the lead moves to <b>Appointment Scheduled</b></span></div>
       </div>
     </div>
 
-    <!-- Rule 2: Completed Appointment No Disposition -->
-    <div class="card card-p fu2" style="margin-bottom:14px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Rule 2: Appointment with no outcome -->
+    <div class="card card-p fu2 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="pill" style="background:var(--ink);color:white;font-size:10px;padding:2px 8px;flex-shrink:0">Rule 2</span>
-            <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Completed Appointment — No Disposition</div>
-          </div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Stage: <strong>Appointment Scheduled</strong> — Appointment ran but lead wasn't moved to Estimate or Lost</div>
+          <div class="rl-title-row"><span class="rl-badge">Rule 2</span><div class="rl-title">Appointment with no outcome</div></div>
+          <div class="rl-stage">Stage: <strong>Appointment Scheduled</strong> — the appointment happened, but the lead wasn't moved to Estimate or Lost</div>
         </div>
-        <div class="wh-toggle on" id="rule-appt-disposition" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-appt-disposition" data-k="r2_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Flag rep after appt completion</label>
-          <select class="inp">
-            <option selected>24 hours</option>
-            <option>12 hours</option>
-            <option>48 hours</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Appointment "completed" signal</label>
-          <select class="inp">
-            <option selected>Scheduled time has passed</option>
-            <option>Rep sets status to Held</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Escalate to manager at</label>
-          <select class="inp">
-            <option selected>48 hrs after appt completed</option>
-            <option>72 hrs after appt completed</option>
-          </select>
-        </div>
-      </div>
-      <div class="settings-info-box" style="margin-top:12px">
-        ⓘ Rep notification: "Completed appointment with no disposition — move to Estimate or mark Lost." Valid exits: Estimate or Lost.
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Remind the rep if there's no outcome</span><span class="rl-num"><input type="number" data-k="r2_flag" min="4" max="72" oninput="rulesOnChange()"/><em>hours after the appointment</em></span></div>
+        <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Tell the Sales Manager if there's still no outcome</span><span class="rl-num"><input type="number" data-k="r2_esc" min="12" max="72" oninput="rulesOnChange()"/><em>hours later</em></span></div>
+        <div class="rl-line"><span class="rl-who clk">Clock</span><span>The appointment counts as done when</span><select class="rl-sel" data-k="r2_signal" onchange="rulesOnChange()"><option value="time">its scheduled time has passed</option><option value="held">the rep marks it Held</option></select></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="r2"></span><span class="rl-msg-exit">Done when the lead moves to <b>Estimate</b> or <b>Lost</b></span></div>
       </div>
     </div>
 
-    <!-- Rule 3: Estimate Aging -->
-    <div class="card card-p fu3" style="margin-bottom:14px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Rule 3: Estimate waiting -->
+    <div class="card card-p fu3 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="pill" style="background:var(--ink);color:white;font-size:10px;padding:2px 8px;flex-shrink:0">Rule 3</span>
-            <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Estimate Aging</div>
-          </div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Stage: <strong>Estimate</strong> — Estimate exists but no presentation scheduled within SLA</div>
+          <div class="rl-title-row"><span class="rl-badge">Rule 3</span><div class="rl-title">Estimate with no presentation</div></div>
+          <div class="rl-stage">Stage: <strong>Estimate</strong> — an estimate exists, but no presentation is booked</div>
         </div>
-        <div class="wh-toggle on" id="rule-estimate-aging" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-estimate-aging" data-k="r3_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Flag rep after</label>
-          <input class="inp" type="number" value="7" min="1" max="30"/>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Day type</label>
-          <select class="inp">
-            <option selected>Business days</option>
-            <option>Calendar days</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Escalate to manager at day</label>
-          <input class="inp" type="number" value="10" min="1" max="30"/>
-        </div>
-      </div>
-      <div class="settings-info-box" style="margin-top:12px">
-        ⓘ Rep notification: "Estimate over 7 days — schedule the presentation." Valid exit: lead moves to Presentation.
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Remind the rep if the estimate is</span><span class="rl-num"><input type="number" data-k="r3_flag" min="2" max="30" oninput="rulesOnChange()"/><em data-unit="r3_days">days old</em></span></div>
+        <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Tell the Sales Manager if there's still no presentation</span><span class="rl-num"><input type="number" data-k="r3_esc" min="1" max="14" oninput="rulesOnChange()"/><em data-unit="r3_days_later">days later</em></span></div>
+        <div class="rl-line"><span class="rl-who clk">Clock</span><span>Count</span><select class="rl-sel" data-k="r3_days" onchange="rulesOnChange()"><option value="business">business days (Mon–Fri)</option><option value="calendar">calendar days</option></select></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="r3"></span><span class="rl-msg-exit">Done when the lead moves to <b>Presentation</b></span></div>
       </div>
     </div>
 
-    <!-- Rule 4: Presentation Aging -->
-    <div class="card card-p fu1" style="margin-bottom:14px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Rule 4: Presentation with no result -->
+    <div class="card card-p fu1 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="pill" style="background:var(--ink);color:white;font-size:10px;padding:2px 8px;flex-shrink:0">Rule 4</span>
-            <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Presentation Aging</div>
-          </div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Stage: <strong>Presentation</strong> — Estimate presented but no outcome recorded within SLA</div>
+          <div class="rl-title-row"><span class="rl-badge">Rule 4</span><div class="rl-title">Presentation with no result</div></div>
+          <div class="rl-stage">Stage: <strong>Presentation</strong> — the estimate was presented, but no result was recorded</div>
         </div>
-        <div class="wh-toggle on" id="rule-presentation-aging" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-presentation-aging" data-k="r4_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Flag rep after</label>
-          <input class="inp" type="number" value="7" min="1" max="30"/>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Day type</label>
-          <select class="inp">
-            <option selected>Calendar days</option>
-            <option>Business days</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Escalate to manager at day</label>
-          <input class="inp" type="number" value="10" min="1" max="30"/>
-        </div>
-      </div>
-      <div class="settings-info-box" style="margin-top:12px">
-        ⓘ Rep notification: "Presentation over 7 days — record the outcome or move to Follow-up." Valid exits: Won, Lost, or Follow-up.
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Remind the rep if the presentation was</span><span class="rl-num"><input type="number" data-k="r4_flag" min="2" max="30" oninput="rulesOnChange()"/><em data-unit="r4_days">days ago</em></span></div>
+        <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Tell the Sales Manager if there's still no result</span><span class="rl-num"><input type="number" data-k="r4_esc" min="1" max="14" oninput="rulesOnChange()"/><em data-unit="r4_days_later">days later</em></span></div>
+        <div class="rl-line"><span class="rl-who clk">Clock</span><span>Count</span><select class="rl-sel" data-k="r4_days" onchange="rulesOnChange()"><option value="calendar">calendar days</option><option value="business">business days (Mon–Fri)</option></select></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="r4"></span><span class="rl-msg-exit">Done when the lead moves to <b>Won</b>, <b>Lost</b> or <b>Follow-up</b></span></div>
       </div>
     </div>
 
-    <!-- Rule 5: Follow-up Aging & Handoff -->
-    <div class="card card-p fu2" style="margin-bottom:14px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Rule 5: Follow-up limit & handoff -->
+    <div class="card card-p fu2 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="pill" style="background:var(--ink);color:white;font-size:10px;padding:2px 8px;flex-shrink:0">Rule 5</span>
-            <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Follow-up Aging &amp; Handoff</div>
-          </div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Stage: <strong>Follow-up</strong> — Lead has been nurturing too long without outcome, hands off to inside sales</div>
+          <div class="rl-title-row"><span class="rl-badge">Rule 5</span><div class="rl-title">Follow-up limit &amp; handoff</div></div>
+          <div class="rl-stage">Stage: <strong>Follow-up</strong> — the lead has been followed up too long without a result</div>
         </div>
-        <div class="wh-toggle on" id="rule-followup-aging" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-followup-aging" data-k="r5_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Max days in Follow-up</label>
-          <input class="inp" type="number" value="14" min="7" max="60"/>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Handoff target</label>
-          <select class="inp">
-            <option selected>Inside Sales queue</option>
-            <option>Branch Sales Manager</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Escalate if handoff not done within</label>
-          <select class="inp">
-            <option selected>24 hrs of the 14-day mark</option>
-            <option>48 hrs of the 14-day mark</option>
-          </select>
-        </div>
-      </div>
-      <div class="settings-info-box" style="margin-top:12px">
-        ⓘ Rep notification: "Follow-up exceeded 14 days — handing off to inside sales." Valid exits: Won, Lost, or transferred to Inside Sales.
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Hand the lead off after</span><span class="rl-num"><input type="number" data-k="r5_max" min="7" max="60" oninput="rulesOnChange()"/><em>days in Follow-up</em></span><span>to</span><select class="rl-sel" data-k="r5_target" onchange="rulesOnChange()"><option value="Inside Sales">the Inside Sales queue</option><option value="the Branch Sales Manager">the Branch Sales Manager</option></select></div>
+        <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Tell the Sales Manager if the handoff hasn't happened</span><span class="rl-num"><input type="number" data-k="r5_esc" min="12" max="72" oninput="rulesOnChange()"/><em>hours later</em></span></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="r5"></span><span class="rl-msg-exit">Done when the lead is <b>Won</b>, <b>Lost</b> or handed off</span></div>
       </div>
     </div>
 
-    <!-- Pattern-alert thresholds (manager-level) -->
-    <div class="card card-p fu3" style="margin-bottom:14px">
-      <div style="font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:4px">Manager Pattern Alert Thresholds</div>
-      <div style="font-size:12.5px;color:var(--muted);margin-bottom:14px">These fire to the manager independently of individual rep flags — they catch systemic non-compliance before it shows up in close rates.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Stage pile-up alert — flag manager when a rep has more than</label>
-          <div style="display:flex;align-items:center;gap:8px">
-            <input class="inp" type="number" value="3" min="1" max="20" style="width:80px"/>
-            <span style="font-size:12.5px;color:var(--muted);white-space:nowrap">flagged leads in a single stage</span>
-          </div>
+    <!-- Pattern alerts (manager-level) -->
+    <div class="card card-p fu3 rl-card">
+      <div class="rl-head">
+        <div>
+          <div class="rl-title-row"><span class="rl-badge mgr">Manager</span><div class="rl-title">Pattern alerts</div></div>
+          <div class="rl-stage">Sent to the Sales Manager on their own — they catch a rep who is falling behind across many leads.</div>
         </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Compliance floor — alert manager when rep drops below</label>
-          <div style="display:flex;align-items:center;gap:8px">
-            <input class="inp" type="number" value="80" min="50" max="100" style="width:80px"/>
-            <span style="font-size:12.5px;color:var(--muted);white-space:nowrap">% overall compliance</span>
-          </div>
-        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="cmOpenMatrix()">See rep compliance →</button>
       </div>
+      <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Alert the Sales Manager when a rep has more than</span><span class="rl-num"><input type="number" data-k="pile" min="1" max="20" oninput="rulesOnChange()"/><em>stuck leads in one stage</em></span></div>
+      <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Alert the Sales Manager when a rep's compliance score drops below</span><span class="rl-num"><input type="number" data-k="floor" min="50" max="100" oninput="rulesOnChange()"/><em>%</em></span></div>
+      <div class="rl-note">Compliance score = the share of a rep's active leads that aren't breaking any rule above.</div>
     </div>
 
   </div>
 
   <!-- ── TAB 2: REP ACTIVITY RULES ── -->
   <div class="tab-panel" id="tab-rules-activity">
-    <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:680px">
-      These apply company-wide to every rep, regardless of which CRM stage a lead is in.
+    <div class="rl-intro">
+      These apply to every rep at every location, whatever stage a lead is in.
     </div>
 
-    <!-- Rule: Speed-to-Lead SLA -->
-    <div class="card card-p fu1" style="margin-bottom:16px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Speed to lead -->
+    <div class="card card-p fu1 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Speed-to-Lead SLA</div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">New lead must be contacted within a set window — the most impactful rule in the system</div>
+          <div class="rl-title-row"><span class="rl-badge">Activity</span><div class="rl-title">Speed to lead</div></div>
+          <div class="rl-stage">The first call on a new lead — the rule that wins or loses the most jobs</div>
         </div>
-        <div class="wh-toggle on" id="rule-speed-to-lead" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-speed-to-lead" data-k="sp_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Must contact within</label>
-          <input class="inp" type="number" value="60" min="5" max="480"/>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Minutes — counted during</label>
-          <select class="inp">
-            <option selected>Business hours only</option>
-            <option>24/7, no exception</option>
-          </select>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">After-hours leads</label>
-          <select class="inp">
-            <option selected>Clock starts next business day</option>
-            <option>Clock runs continuously</option>
-          </select>
-        </div>
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Remind the rep if a new lead isn't contacted within</span><span class="rl-num"><input type="number" data-k="sp_min" min="15" max="120" oninput="rulesOnChange()"/><em>minutes</em></span></div>
+        <div class="rl-line"><span class="rl-who clk">Clock</span><span>Count time during</span><select class="rl-sel" data-k="sp_clock" onchange="rulesOnChange()"><option value="business">business hours only</option><option value="24-7">24 / 7, no exceptions</option></select></div>
+        <div class="rl-line"><span class="rl-who clk">Clock</span><span>For leads that arrive after hours,</span><select class="rl-sel" data-k="sp_after" onchange="rulesOnChange()"><option value="next">start the clock next business day</option><option value="run">start the clock right away</option></select></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="sp"></span><span class="rl-msg-exit">Always sent as it happens</span></div>
       </div>
     </div>
 
-    <!-- Rule: Estimate Delivery Rate -->
-    <div class="card card-p fu2" style="margin-bottom:16px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Estimate delivery -->
+    <div class="card card-p fu2 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">Estimate Delivery Rate</div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Appointment held but no estimate sent — the #1 drop-off point in the roofing funnel</div>
+          <div class="rl-title-row"><span class="rl-badge">Activity</span><div class="rl-title">Estimate delivery</div></div>
+          <div class="rl-stage">Appointment held but no estimate sent — the most common place roofing jobs are lost</div>
         </div>
-        <div class="wh-toggle on" id="rule-estimate-delivery" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-estimate-delivery" data-k="ed_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Estimate must be sent within</label>
-          <input class="inp" type="number" value="3" min="1" max="14"/>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Business days, counting from</label>
-          <select class="inp">
-            <option selected>Appointment Held</option>
-            <option>Appointment Set</option>
-          </select>
-        </div>
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who rep">Rep</span><span>Remind the rep if no estimate is sent within</span><span class="rl-num"><input type="number" data-k="ed_days" min="1" max="10" oninput="rulesOnChange()"/><em>business days</em></span><span>of the</span><select class="rl-sel" data-k="ed_from" onchange="rulesOnChange()"><option value="held">appointment being held</option><option value="set">appointment being booked</option></select></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Rep is told</span><span class="rl-msg-txt" data-msg="ed"></span></div>
       </div>
     </div>
 
-    <!-- Rule: Ghost Rep Rule -->
-    <div class="card card-p fu3" style="margin-bottom:16px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+    <!-- Inactive rep -->
+    <div class="card card-p fu3 rl-card">
+      <div class="rl-head">
         <div>
-          <div style="font-size:14.5px;font-weight:700;color:var(--ink)">CRM Activity Minimum <span style="font-weight:600;color:var(--muted);font-size:12px">(Ghost Rep Rule)</span></div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Catches reps who are disengaged before it shows up in close rates — flagged to managers, not the rep</div>
+          <div class="rl-title-row"><span class="rl-badge mgr">Manager</span><div class="rl-title">Inactive rep</div></div>
+          <div class="rl-stage">Spots a rep who has stopped working their leads, before it shows up in close rates. Goes to managers only, never the rep.</div>
         </div>
-        <div class="wh-toggle on" id="rule-ghost-rep" onclick="toggleRule(this)"></div>
+        <div class="rl-tog-wrap"><span class="rl-tog-lbl">On</span><div class="wh-toggle on" id="rule-ghost-rep" data-k="gh_on" onclick="toggleRule(this)"></div></div>
       </div>
-      <div class="rule-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Rep has at least this many open leads</label>
-          <input class="inp" type="number" value="5" min="1" max="50"/>
-        </div>
-        <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">With zero CRM activity for</label>
-          <select class="inp">
-            <option selected>3 days</option>
-            <option>5 days</option>
-            <option>7 days</option>
-          </select>
-        </div>
+      <div class="rule-body">
+        <div class="rl-line"><span class="rl-who mgr">Manager</span><span>Alert the Sales Manager when a rep with at least</span><span class="rl-num"><input type="number" data-k="gh_leads" min="1" max="50" oninput="rulesOnChange()"/><em>open leads</em></span><span>has no CRM activity for</span><span class="rl-num"><input type="number" data-k="gh_days" min="2" max="14" oninput="rulesOnChange()"/><em>days</em></span></div>
+        <div class="rl-msg"><span class="rl-msg-lbl">Manager is told</span><span class="rl-msg-txt" data-msg="gh"></span><span class="rl-msg-exit">Always sent as it happens</span></div>
       </div>
     </div>
   </div>
@@ -2379,7 +2376,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <!-- ── TAB 3: NOTIFICATION ROUTING ── -->
   <div class="tab-panel" id="tab-rules-routing">
     <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:680px">
-      Not every breach should reach the CEO. Configure an escalation ladder so reps get a reminder first, managers step in if it's not fixed, and only repeat or serious patterns go to the top.
+      Not every missed deadline should reach you. Reps get a reminder first, Sales Managers step in if it isn't fixed, and only repeated problems come to the Owner.
     </div>
 
     <!-- Escalation Ladder -->
@@ -2403,22 +2400,22 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;background:rgba(155,58,42,.06);border:1px solid rgba(155,58,42,.18)">
           <span class="pill pill-crit" style="flex-shrink:0">Level 3</span>
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:var(--ink)">Escalation — Sales Manager + CEO</div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Escalation — Sales Manager + Owner</div>
             <div style="font-size:12px;color:var(--muted)">Second consecutive breach, or broken 3+ times in 30 days. Tone: pattern identified, needs intervention.</div>
           </div>
         </div>
       </div>
       <div class="settings-grid-2" style="margin-top:16px;max-width:520px">
         <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Escalate to CEO after</label>
+          <label class="lbl">Bring to the Owner after</label>
           <select class="inp">
             <option selected>2 consecutive breaches</option>
             <option>3 breaches in 30 days</option>
-            <option>Never — Sales Manager only</option>
+            <option>Never — Sales Manager handles it</option>
           </select>
         </div>
         <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Rep can see CEO was notified</label>
+          <label class="lbl">Rep can see the Owner was told</label>
           <select class="inp">
             <option selected>Yes</option>
             <option>No</option>
@@ -2453,102 +2450,16 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         </div>
       </div>
       <div class="settings-info-box" style="margin-top:14px">
-        ⓘ Critical rules (Speed-to-Lead, Ghost Rep) always send real-time regardless of this setting — only chronic issues (Stage Advancement, Field Completeness) respect the digest choice.
+        ⓘ Speed to lead and Inactive rep alerts always go out as they happen. All other rules follow each location's choice above.
       </div>
     </div>
   </div>
 
-  <!-- ── TAB 4: COMPLIANCE MATRIX ── -->
-  <div class="tab-panel" id="tab-rules-matrix">
-    <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:720px">
-      Live view of every rep's flagged leads by stage. Each cell shows how many leads that rep has currently violating the stage rule. Click any cell to see the specific leads.
-    </div>
-
-    <!-- Team roll-up banner -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:20px">
-      <div class="card card-p fu1" style="text-align:center;padding:14px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Total Flagged</div>
-        <div style="font-size:26px;font-weight:800;color:var(--crit)">18</div>
-        <div style="font-size:11.5px;color:var(--muted)">across all reps</div>
-      </div>
-      <div class="card card-p fu2" style="text-align:center;padding:14px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Past Escalation</div>
-        <div style="font-size:26px;font-weight:800;color:var(--crit)">4</div>
-        <div style="font-size:11.5px;color:var(--muted)">manager action required</div>
-      </div>
-      <div class="card card-p fu3" style="text-align:center;padding:14px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Team Compliance</div>
-        <div style="font-size:26px;font-weight:800;color:var(--caut)">79%</div>
-        <div style="font-size:11.5px;color:var(--muted)">avg across active reps</div>
-      </div>
-      <div class="card card-p fu1" style="text-align:center;padding:14px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Lowest This Period</div>
-        <div style="font-size:18px;font-weight:800;color:var(--crit);margin-top:4px">Mike Ortiz</div>
-        <div style="font-size:11.5px;color:var(--muted)">64% — below floor</div>
-      </div>
-    </div>
-
-    <!-- Severity legend -->
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;font-size:12px;color:var(--muted)">
-      <span style="font-weight:700">Severity:</span>
-      <span>✅ None flagged</span>
-      <span>⚠️ 1–2 flagged</span>
-      <span>🔴 3+ flagged (configurable above)</span>
-    </div>
-
-    <!-- Search + page size (FR: find a specific rep when the roster is long) -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-      <div style="position:relative;flex:1;min-width:220px;max-width:340px">
-        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none">&#128269;</span>
-        <input class="inp" id="cm-search" oninput="cmOnSearch()" placeholder="Search rep by name or email" style="padding:9px 32px 9px 34px;font-size:13px"/>
-        <span id="cm-search-clear" onclick="cmClearSearch()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--muted)">&#215;</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)">
-        <span>Rows</span>
-        <select class="inp" id="cm-page-size" onchange="cmOnPageSize()" style="padding:8px 26px 8px 10px;font-size:12.5px;width:auto;min-width:62px">
-          <option value="5" selected>5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-        </select>
-      </div>
-      <div style="flex:1"></div>
-      <div id="cm-count" style="font-size:12px;color:var(--muted)"></div>
-    </div>
-
-    <!-- Compliance matrix grid -->
-    <div class="card fu2" style="overflow-x:auto">
-      <table class="tbl" style="min-width:700px">
-        <thead>
-          <tr>
-            <th style="min-width:180px">Rep</th>
-            <th style="text-align:center">Lead<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 1</span></th>
-            <th style="text-align:center">Appt Scheduled<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 2</span></th>
-            <th style="text-align:center">Estimate<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 3</span></th>
-            <th style="text-align:center">Presentation<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 4</span></th>
-            <th style="text-align:center">Follow-up<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 5</span></th>
-            <th style="text-align:center">Compliance %</th>
-          </tr>
-        </thead>
-        <tbody id="cm-tbody"></tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div id="cm-pager" style="display:none;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap">
-      <div id="cm-range" style="font-size:12px;color:var(--muted)"></div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <button class="btn btn-outline btn-sm" id="cm-prev" onclick="cmGoPage(cmState.page-1)" type="button">&#8592; Prev</button>
-        <div id="cm-pages" style="display:flex;align-items:center;gap:4px"></div>
-        <button class="btn btn-outline btn-sm" id="cm-next" onclick="cmGoPage(cmState.page+1)" type="button">Next &#8594;</button>
-      </div>
-    </div>
-
-    <div style="font-size:11.5px;color:var(--muted);margin-top:10px">⬆ = past manager escalation threshold &nbsp;·&nbsp; 📊 = stage pile-up alert active &nbsp;·&nbsp; ⚠ = compliance floor breached &nbsp;·&nbsp; Click any cell to see lead details</div>
-  </div>
-
-  <div id="rules-actions" style="margin-top:8px;display:flex;gap:10px">
-    <button class="btn btn-primary" onclick="saveRules()">Save Accountability Rules</button>
-    <button class="btn btn-outline" onclick="showToast('Changes discarded')">Cancel</button>
+  <div id="rules-actions" class="rl-actions">
+    <div class="rl-dirty" id="rl-dirty">All changes saved</div>
+    <div style="flex:1"></div>
+    <button class="btn btn-outline" id="rl-discard" onclick="rulesDiscard()">Discard changes</button>
+    <button class="btn btn-primary" onclick="saveRules()">Save rules</button>
   </div>
 </div>
 
@@ -6626,79 +6537,330 @@ function signOut(){
 }
 
 // ── ACCOUNTABILITY RULES ─────────────────────────
+// Every rule field is a [data-k] control on the Accountability Rules screen.
+// Presets are complete value sets; the saved snapshot drives Discard and the
+// Rep Compliance matrix thresholds.
+var RULE_PRESETS={
+  retail:{label:'Retail roofing',desc:'Homeowner pays directly and jobs move in days.',
+    r1_on:true,r1_flag:4,r1_esc:24,r1_clock:'business',
+    r2_on:true,r2_flag:24,r2_esc:24,r2_signal:'time',
+    r3_on:true,r3_flag:7,r3_esc:3,r3_days:'business',
+    r4_on:true,r4_flag:7,r4_esc:3,r4_days:'calendar',
+    r5_on:true,r5_max:14,r5_target:'Inside Sales',r5_esc:24,
+    pile:3,floor:80,
+    sp_on:true,sp_min:60,sp_clock:'business',sp_after:'next',
+    ed_on:true,ed_days:3,ed_from:'held',
+    gh_on:true,gh_leads:5,gh_days:3},
+  storm:{label:'Storm / Insurance',desc:'Faster first call after a storm, more time while insurance adjusters and claims are pending.',
+    r1_on:true,r1_flag:2,r1_esc:24,r1_clock:'business',
+    r2_on:true,r2_flag:24,r2_esc:24,r2_signal:'time',
+    r3_on:true,r3_flag:14,r3_esc:5,r3_days:'business',
+    r4_on:true,r4_flag:10,r4_esc:5,r4_days:'calendar',
+    r5_on:true,r5_max:30,r5_target:'Inside Sales',r5_esc:48,
+    pile:3,floor:80,
+    sp_on:true,sp_min:30,sp_clock:'business',sp_after:'next',
+    ed_on:true,ed_days:5,ed_from:'held',
+    gh_on:true,gh_leads:5,gh_days:3},
+  mixed:{label:'Mixed',desc:'A balance of retail and insurance work.',
+    r1_on:true,r1_flag:4,r1_esc:24,r1_clock:'business',
+    r2_on:true,r2_flag:24,r2_esc:24,r2_signal:'time',
+    r3_on:true,r3_flag:10,r3_esc:4,r3_days:'business',
+    r4_on:true,r4_flag:7,r4_esc:3,r4_days:'calendar',
+    r5_on:true,r5_max:21,r5_target:'Inside Sales',r5_esc:24,
+    pile:3,floor:80,
+    sp_on:true,sp_min:60,sp_clock:'business',sp_after:'next',
+    ed_on:true,ed_days:4,ed_from:'held',
+    gh_on:true,gh_leads:5,gh_days:3}
+};
+var rulesPreset='retail';
+var rulesSaved=null;
+
+function _rlCtrls(){return document.querySelectorAll('#app-rules [data-k]');}
+function rulesRead(){
+  var o={};
+  _rlCtrls().forEach(function(el){
+    var k=el.getAttribute('data-k');
+    if(el.classList.contains('wh-toggle'))o[k]=el.classList.contains('on');
+    else if(el.type==='number')o[k]=el.value===''?NaN:Number(el.value);
+    else o[k]=el.value;
+  });
+  return o;
+}
+function rulesWrite(o){
+  _rlCtrls().forEach(function(el){
+    var k=el.getAttribute('data-k');
+    if(!(k in o))return;
+    if(el.classList.contains('wh-toggle'))_rlSetToggle(el,o[k]);
+    else el.value=o[k];
+  });
+  rulesOnChange();
+}
+function _rlSetToggle(el,on){
+  el.classList.toggle('on',!!on);
+  var card=el.closest('.rl-card');
+  if(card)card.classList.toggle('off',!on);
+  var lbl=card?card.querySelector('.rl-tog-lbl'):null;
+  if(lbl)lbl.textContent=on?'On':'Off';
+}
+function _rlSame(a,b){
+  for(var k in a){if(a[k]!==b[k]&&!(a[k]!==a[k]&&b[k]!==b[k]))return false;}
+  return true;
+}
+function _rlPlural(n,one,many){return n+' '+(n===1?one:many);}
+function _rlDayWord(type,n){return _rlPlural(n,type==='business'?'business day':'day',type==='business'?'business days':'days');}
+
+// Validate every number against its own min/max; returns the number of errors.
+function rulesValidate(){
+  var errs=0;
+  document.querySelectorAll('#app-rules .rl-num input').forEach(function(inp){
+    var v=inp.value===''?NaN:Number(inp.value);
+    var mn=Number(inp.min),mx=Number(inp.max);
+    var bad=isNaN(v)||v%1!==0||v<mn||v>mx;
+    var line=inp.closest('.rl-line');
+    var key=inp.getAttribute('data-k');
+    var msg=line.querySelector('.rl-err[data-for="'+key+'"]');
+    inp.classList.toggle('err',bad);
+    if(bad){
+      errs++;
+      if(!msg){msg=document.createElement('div');msg.className='rl-err';msg.setAttribute('data-for',key);line.appendChild(msg);}
+      msg.textContent='Enter a whole number from '+mn+' to '+mx+'.';
+    } else if(msg){msg.remove();}
+  });
+  return errs;
+}
+
+// Live preview of the exact message the rep / manager receives.
+function rulesRenderMessages(o){
+  var m={
+    r1:'“New lead not booked after '+_rlPlural(o.r1_flag,'hour','hours')+' — book an appointment.”',
+    r2:'“Your appointment finished '+_rlPlural(o.r2_flag,'hour','hours')+' ago with no outcome — move it to Estimate or mark it Lost.”',
+    r3:'“Estimate is '+_rlDayWord(o.r3_days,o.r3_flag)+' old — book the presentation.”',
+    r4:'“Presentation was '+_rlDayWord(o.r4_days,o.r4_flag)+' ago — record the result or move it to Follow-up.”',
+    r5:'“This lead has been in Follow-up for '+_rlPlural(o.r5_max,'day','days')+' — it’s being handed to '+o.r5_target+'.”',
+    sp:'“New lead waiting '+_rlPlural(o.sp_min,'minute','minutes')+' — call now.”',
+    ed:'“No estimate sent '+_rlPlural(o.ed_days,'business day','business days')+' after the appointment — send it today.”',
+    gh:'“[Rep] has '+o.gh_leads+'+ open leads and no CRM activity in '+_rlPlural(o.gh_days,'day','days')+'.”'
+  };
+  for(var k in m){
+    var el=document.querySelector('#app-rules [data-msg="'+k+'"]');
+    if(el)el.textContent=/NaN/.test(m[k])?'—':m[k];
+  }
+  // Day-unit labels follow the business / calendar choice
+  [['r3','old'],['r4','ago']].forEach(function(p){
+    var t=o[p[0]+'_days']==='business'?'business days':'days';
+    var a=document.querySelector('#app-rules [data-unit="'+p[0]+'_days"]');
+    var b=document.querySelector('#app-rules [data-unit="'+p[0]+'_days_later"]');
+    if(a)a.textContent=t+' '+p[1];
+    if(b)b.textContent=t+' later';
+  });
+}
+function rulesOnChange(){
+  var o=rulesRead();
+  rulesRenderMessages(o);
+  rulesValidate();
+  // Highlight the matching preset, or none if the owner has customised
+  var match=null;
+  for(var p in RULE_PRESETS){
+    var pr=RULE_PRESETS[p],same=true;
+    for(var k in o){if(k in pr&&pr[k]!==o[k]){same=false;break;}}
+    if(same){match=p;break;}
+  }
+  document.querySelectorAll('#app-rules .rl-seg-btn').forEach(function(b){
+    b.classList.toggle('on',b.getAttribute('data-preset')===match);
+  });
+  var sub=document.getElementById('rl-preset-sub');
+  if(sub)sub.textContent=match
+    ? RULE_PRESETS[match].label+' — '+RULE_PRESETS[match].desc
+    : 'Custom — you’ve changed some numbers. Pick a setup to start over from its recommended values.';
+  if(match)rulesPreset=match;
+  var dirty=rulesSaved&&!_rlSame(o,rulesSaved);
+  var d=document.getElementById('rl-dirty');
+  if(d){d.classList.toggle('on',!!dirty);d.textContent=dirty?'Unsaved changes':'All changes saved';}
+  var disc=document.getElementById('rl-discard');
+  if(disc){disc.disabled=!dirty;disc.style.opacity=dirty?'1':'.45';}
+}
+function rulesApplyPreset(key){
+  var p=RULE_PRESETS[key];
+  if(!p)return;
+  rulesPreset=key;
+  rulesWrite(p);
+  showToast('Filled in the recommended '+p.label+' setup — review, then Save');
+}
+function rulesResetDefaults(){
+  rulesWrite(RULE_PRESETS[rulesPreset]||RULE_PRESETS.retail);
+  showToast('Reset to the recommended '+(RULE_PRESETS[rulesPreset]||RULE_PRESETS.retail).label+' values');
+}
+function rulesDiscard(){
+  if(!rulesSaved)return;
+  rulesWrite(rulesSaved);
+  showToast('Changes discarded');
+}
 function toggleRule(el){
-  el.classList.toggle('on');
-  var card = el.closest('.card');
-  var body = card ? card.querySelector('.rule-body') : null;
-  var isOn = el.classList.contains('on');
-  if(body) body.style.opacity = isOn ? '1' : '.4';
-  if(body) body.style.pointerEvents = isOn ? '' : 'none';
+  _rlSetToggle(el,!el.classList.contains('on'));
+  rulesOnChange();
 }
 function saveRules(){
-  showToast('Accountability rules saved successfully');
+  var errs=rulesValidate();
+  if(errs){
+    var first=document.querySelector('#app-rules .rl-num input.err');
+    if(first){
+      var panel=first.closest('.tab-panel');
+      if(panel&&!panel.classList.contains('on')){
+        var tab=document.getElementById(panel.id==='tab-rules-activity'?'rtab-activity':'rtab-pipeline');
+        if(tab)rulesSwitchTab(tab,panel.id.replace('tab-',''));
+      }
+      first.focus();
+    }
+    showToast('Fix '+_rlPlural(errs,'highlighted number','highlighted numbers')+' before saving');
+    return;
+  }
+  rulesSaved=rulesRead();
+  rulesOnChange();
+  cmRender();
+  showToast('Rules saved — rep messages updated');
 }
+function rulesSavedVal(k,fallback){
+  return rulesSaved&&typeof rulesSaved[k]==='number'&&!isNaN(rulesSaved[k])?rulesSaved[k]:fallback;
+}
+function rulesInit(){
+  document.querySelectorAll('#app-rules .rl-card .rl-head').forEach(function(h){
+    if(!h.querySelector('.wh-toggle'))return;
+    var n=document.createElement('div');
+    n.className='rl-off-note';
+    n.textContent='Off — no one is reminded or flagged for this rule.';
+    h.parentNode.insertBefore(n,h.nextSibling);
+  });
+  rulesWrite(RULE_PRESETS.retail);
+  rulesSaved=rulesRead();
+  rulesOnChange();
+}
+rulesInit();
 
 // ═══ COMPLIANCE MATRIX — data, search, pagination ═══
 // Read-only view of live rule violations per rep. Cell = count of that rep's
 // leads currently breaching that stage rule.
 var CM_REPS=[
-  {name:'Jim Smith',email:'jim@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'82%',pctCls:'pill-caut',rowBg:'',
+  {name:'Jim Smith',email:'jim@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'82%',
    cells:[
-     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Jim Smith \u2014 Lead: 2 flagged leads. Hendersons (3h no appt), Jacobs (5h no appt)'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Jim Smith \u2014 Appt Scheduled: 1 flagged. Green Valley (28 hrs, no disposition)'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Jim Smith \u2014 Estimate: no flagged leads'},
-     {icon:'\uD83D\uDD34',n:'3',cls:'crit',toast:'Jim Smith \u2014 Presentation: 3 leads past SLA. Rivera (9d), Patel (8d), Moore (8d)'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Jim Smith \u2014 Follow-up: 1 flagged. Turner (15d \u2014 handoff overdue)'}
+     {n:'2',toast:'Jim Smith \u2014 Lead: 2 flagged leads. Hendersons (3h no appt), Jacobs (5h no appt)'},
+     {n:'1',toast:'Jim Smith \u2014 Appt Scheduled: 1 flagged. Green Valley (28 hrs, no disposition)'},
+     {n:'0',toast:'Jim Smith \u2014 Estimate: no flagged leads'},
+     {n:'3',toast:'Jim Smith \u2014 Presentation: 3 leads past SLA. Rivera (9d), Patel (8d), Moore (8d)'},
+     {n:'1',toast:'Jim Smith \u2014 Follow-up: 1 flagged. Turner (15d \u2014 handoff overdue)'}
    ]},
-  {name:'Maria Lopez',email:'maria@smithroofing.com',branch:'NY \u2014 Queens',pct:'96%',pctCls:'pill-pos',rowBg:'',
+  {name:'Maria Lopez',email:'maria@smithroofing.com',branch:'NY \u2014 Queens',pct:'96%',
    cells:[
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Lead: no flagged leads'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Appt Scheduled: no flagged leads'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Maria Lopez \u2014 Estimate: 1 flagged. Nguyen (8 biz days, presentation not set)'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Presentation: no flagged leads'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Maria Lopez \u2014 Follow-up: no flagged leads'}
+     {n:'0',toast:'Maria Lopez \u2014 Lead: no flagged leads'},
+     {n:'0',toast:'Maria Lopez \u2014 Appt Scheduled: no flagged leads'},
+     {n:'1',toast:'Maria Lopez \u2014 Estimate: 1 flagged. Nguyen (8 biz days, presentation not set)'},
+     {n:'0',toast:'Maria Lopez \u2014 Presentation: no flagged leads'},
+     {n:'0',toast:'Maria Lopez \u2014 Follow-up: no flagged leads'}
    ]},
-  {name:'Dave Chen',email:'dave@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'67%',pctCls:'pill-crit',rowBg:'rgba(155,58,42,.03)',
+  {name:'Dave Chen',email:'dave@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'67%',
    cells:[
-     {icon:'\uD83D\uDD34',n:'4',cls:'crit',toast:'Dave Chen \u2014 Lead: 4 flagged. Multiple unscheduled leads past 4-hour threshold.'},
-     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Dave Chen \u2014 Appt Scheduled: 2 flagged. Chen (32 hrs), Walsh (26 hrs) \u2014 no disposition'},
-     {icon:'\uD83D\uDD34',n:'2 \u2B06',cls:'crit',toast:'Dave Chen \u2014 Estimate: 2 flagged. Henderson (11 days \u2B06 ESCALATED), Green Valley (10 days \u2B06 ESCALATED)'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Dave Chen \u2014 Presentation: 1 flagged. Kim (8 days, no outcome)'},
-     {icon:'\uD83D\uDD34',n:'2',cls:'crit',toast:'Dave Chen \u2014 Follow-up: 2 flagged. Both past 14-day handoff threshold.'}
+     {n:'4',toast:'Dave Chen \u2014 Lead: 4 flagged. Multiple unscheduled leads past 4-hour threshold.'},
+     {n:'2',toast:'Dave Chen \u2014 Appt Scheduled: 2 flagged. Chen (32 hrs), Walsh (26 hrs) \u2014 no disposition'},
+     {n:'2 \u2B06',toast:'Dave Chen \u2014 Estimate: 2 flagged. Henderson (11 days \u2B06 ESCALATED), Green Valley (10 days \u2B06 ESCALATED)'},
+     {n:'1',toast:'Dave Chen \u2014 Presentation: 1 flagged. Kim (8 days, no outcome)'},
+     {n:'2 \u2B06',toast:'Dave Chen \u2014 Follow-up: 2 flagged. Both past the handoff deadline \u2B06 ESCALATED.'}
    ]},
-  {name:'Tom Bradley',email:'tom@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'78%',pctCls:'pill-caut',rowBg:'rgba(181,123,31,.03)',
+  {name:'Tom Bradley',email:'tom@smithroofing.com',branch:'NJ \u2014 Montclair',pct:'78%',
    cells:[
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Tom Bradley \u2014 Lead: no flagged leads'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Tom Bradley \u2014 Appt Scheduled: 1 flagged. Santos (25 hrs)'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Tom Bradley \u2014 Estimate: no flagged leads'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Tom Bradley \u2014 Presentation: no flagged leads'},
-     {icon:'\uD83D\uDD34',n:'4 \uD83D\uDCCA',cls:'crit',toast:'Tom Bradley \u2014 Follow-up: 4 flagged (PILE-UP ALERT). Williams (14d), Garcia (12d), Park (11d), Chen (10d)'}
+     {n:'0',toast:'Tom Bradley \u2014 Lead: no flagged leads'},
+     {n:'1',toast:'Tom Bradley \u2014 Appt Scheduled: 1 flagged. Santos (25 hrs)'},
+     {n:'0',toast:'Tom Bradley \u2014 Estimate: no flagged leads'},
+     {n:'0',toast:'Tom Bradley \u2014 Presentation: no flagged leads'},
+     {n:'4 \uD83D\uDCCA',toast:'Tom Bradley \u2014 Follow-up: 4 flagged. Williams (14d), Garcia (12d), Park (11d), Chen (10d)'}
    ]},
-  {name:'Nina Vega',email:'nina@smithroofing.com',branch:'NY \u2014 Queens',pct:'93%',pctCls:'pill-pos',rowBg:'',
+  {name:'Nina Vega',email:'nina@smithroofing.com',branch:'NY \u2014 Queens',pct:'93%',
    cells:[
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Lead: no flagged leads'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Appt Scheduled: no flagged leads'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Nina Vega \u2014 Estimate: 1 flagged. Okafor (9 biz days)'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Presentation: no flagged leads'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Nina Vega \u2014 Follow-up: no flagged leads'}
+     {n:'0',toast:'Nina Vega \u2014 Lead: no flagged leads'},
+     {n:'0',toast:'Nina Vega \u2014 Appt Scheduled: no flagged leads'},
+     {n:'1',toast:'Nina Vega \u2014 Estimate: 1 flagged. Okafor (9 biz days)'},
+     {n:'0',toast:'Nina Vega \u2014 Presentation: no flagged leads'},
+     {n:'0',toast:'Nina Vega \u2014 Follow-up: no flagged leads'}
    ]},
-  {name:'Mike Ortiz',email:'mike@smithroofing.com',branch:'FL \u2014 Tampa',pct:'64% \u26A0',pctCls:'pill-crit',rowBg:'rgba(155,58,42,.03)',
+  {name:'Mike Ortiz',email:'mike@smithroofing.com',branch:'FL \u2014 Tampa',pct:'64%',
    cells:[
-     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Mike Ortiz \u2014 Lead: 2 flagged. 2 unscheduled leads past 4-hour threshold.'},
-     {icon:'\u26A0\uFE0F',n:'1',cls:'caut',toast:'Mike Ortiz \u2014 Appt Scheduled: 1 flagged. Davis (30 hrs no disposition)'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Mike Ortiz \u2014 Estimate: no flagged leads'},
-     {icon:'\u26A0\uFE0F',n:'2',cls:'caut',toast:'Mike Ortiz \u2014 Presentation: 2 flagged. Martinez (9d), Brown (8d)'},
-     {icon:'\u2705',n:'0',cls:'pos',toast:'Mike Ortiz \u2014 Follow-up: no flagged leads'}
+     {n:'2',toast:'Mike Ortiz \u2014 Lead: 2 flagged. 2 unscheduled leads past 4-hour threshold.'},
+     {n:'1',toast:'Mike Ortiz \u2014 Appt Scheduled: 1 flagged. Davis (30 hrs no disposition)'},
+     {n:'0',toast:'Mike Ortiz \u2014 Estimate: no flagged leads'},
+     {n:'2',toast:'Mike Ortiz \u2014 Presentation: 2 flagged. Martinez (9d), Brown (8d)'},
+     {n:'0',toast:'Mike Ortiz \u2014 Follow-up: no flagged leads'}
    ]}
 ];
 var cmState={q:'',page:1,pageSize:5};
 
+// Owners see every location; a Branch Manager sees NJ only, a Regional
+// Manager NJ + NY (mirrors the demo role switcher).
+function cmScope(){
+  if(currentUser.isAdmin)return null;
+  if(typeof demoState!=='undefined'&&demoState.currentRole==='regional')return ['NJ','NY'];
+  return ['NJ'];
+}
+function cmScoped(){
+  var sc=cmScope();
+  if(!sc)return CM_REPS;
+  return CM_REPS.filter(function(r){
+    return sc.some(function(b){return r.branch.indexOf(b)===0;});
+  });
+}
+// Severity follows the saved rules: more than the stuck-leads number, or past
+// the manager deadline (\u2B06), is red; compliance below the minimum is red.
+function cmCellView(cell,col){
+  // A stage rule the owner switched off flags nobody, so its column reads "Off"
+  if(rulesSaved&&rulesSaved['r'+(col+1)+'_on']===false){
+    return {cls:'muted',icon:'\u2014',label:'Off',toast:'This rule is switched off in Accountability Rules',count:0,esc:false};
+  }
+  var th=rulesSavedVal('pile',3);
+  var count=parseInt(cell.n,10)||0;
+  var esc=cell.n.indexOf('\u2B06')!==-1;
+  var pile=count>th;
+  var cls=count===0?'pos':(esc||pile)?'crit':'caut';
+  var icon=count===0?'\u2705':(esc||pile)?'\uD83D\uDD34':'\u26A0\uFE0F';
+  var label=String(count)+(esc?' \u2B06':'')+(pile?' \uD83D\uDCCA':'');
+  var toast=cell.toast+(pile?' \u00B7 Stuck-leads alert (more than '+th+')':'');
+  return {cls:cls,icon:icon,label:label,toast:toast,count:count,esc:esc};
+}
+function cmPctView(r){
+  var floor=rulesSavedVal('floor',80);
+  var pct=parseInt(r.pct,10);
+  if(pct<floor)return {pct:pct,txt:pct+'% \u26A0',cls:'pill-crit',bg:'rgba(155,58,42,.03)'};
+  if(pct<floor+10)return {pct:pct,txt:pct+'%',cls:'pill-caut',bg:''};
+  return {pct:pct,txt:pct+'%',cls:'pill-pos',bg:''};
+}
+function cmOpenMatrix(){
+  goApp('comms');
+  var tab=document.getElementById('ctab-matrix');
+  if(tab){switchTab(tab,'comms-matrix');cmRender();}
+}
+function cmRenderSummary(){
+  var reps=cmScoped();
+  var th=rulesSavedVal('pile',3),floor=rulesSavedVal('floor',80);
+  var flagged=0,esc=0,sum=0,low=null;
+  reps.forEach(function(r){
+    r.cells.forEach(function(c,ci){var v=cmCellView(c,ci);flagged+=v.count;if(v.esc)esc+=v.count;});
+    var p=parseInt(r.pct,10);sum+=p;
+    if(!low||p<parseInt(low.pct,10))low=r;
+  });
+  function set(id,t){var el=document.getElementById(id);if(el)el.textContent=t;}
+  set('cm-t-flagged',flagged);
+  set('cm-t-esc',esc);
+  set('cm-t-avg',reps.length?Math.round(sum/reps.length)+'%':'\u2014');
+  set('cm-t-low',low?low.name:'\u2014');
+  if(low){var lp=parseInt(low.pct,10);set('cm-t-low-sub',lp+'% \u2014 '+(lp<floor?'below the '+floor+'% minimum':'above the minimum'));}
+  var sc=cmScope();
+  set('cm-scope',sc?'Showing reps in '+(sc.length>1?'NJ and NY':'NJ \u2014 Montclair')+'.':'');
+  var leg=document.getElementById('cm-legend');
+  if(leg)leg.innerHTML='<span style="font-weight:700">Severity:</span><span>\u2705 None flagged</span><span>\u26A0\uFE0F 1\u2013'+th+' flagged</span><span>\uD83D\uDD34 More than '+th+' (stuck-leads alert) or past the manager deadline</span><span style="color:var(--muted)">Set in Accountability Rules</span>';
+}
 function cmFiltered(){
   var q=cmState.q.trim().toLowerCase();
-  if(!q)return CM_REPS;
+  var base=cmScoped();
+  if(!q)return base;
   var out=[];
-  for(var i=0;i<CM_REPS.length;i++){
-    var r=CM_REPS[i];
+  for(var i=0;i<base.length;i++){
+    var r=base[i];
     if((r.name+' '+r.email+' '+r.branch).toLowerCase().indexOf(q)!==-1)out.push(r);
   }
   return out;
@@ -6748,23 +6910,26 @@ function cmRender(){
   }
   for(var i=0;i<slice.length;i++){
     var r=slice[i];
-    html+='<tr'+(r.rowBg?' style="background:'+r.rowBg+'"':'')+'>';
+    var pv=cmPctView(r);
+    html+='<tr'+(pv.bg?' style="background:'+pv.bg+'"':'')+'>';
     html+='<td><div style="font-weight:700">'+r.name+'</div><div style="font-size:11px;color:var(--muted)">'+r.email+' \u00B7 '+r.branch+'</div></td>';
     for(var c=0;c<r.cells.length;c++){
-      var cell=r.cells[c];
-      html+='<td style="text-align:center;cursor:pointer" onclick="cmCellToast('+i+','+c+')"><span style="font-size:16px">'+cell.icon+'</span><div style="font-size:11px;font-weight:700;color:var(--'+cell.cls+')">'+cell.n+'</div></td>';
+      var cv=cmCellView(r.cells[c],c);
+      html+='<td style="text-align:center;cursor:pointer" onclick="cmCellToast('+i+','+c+')"><span style="font-size:16px">'+cv.icon+'</span><div style="font-size:11px;font-weight:700;color:var(--'+cv.cls+')">'+cv.label+'</div></td>';
     }
-    html+='<td style="text-align:center"><span class="pill '+r.pctCls+'" style="font-size:12px;font-weight:800">'+r.pct+'</span></td>';
+    html+='<td style="text-align:center"><span class="pill '+pv.cls+'" style="font-size:12px;font-weight:800">'+pv.txt+'</span></td>';
     html+='</tr>';
   }
   body.innerHTML=html;
   cmState._slice=slice;
+  cmRenderSummary();
 
   var countEl=document.getElementById('cm-count');
   if(countEl){
-    countEl.textContent=rows.length===CM_REPS.length
-      ? CM_REPS.length+' reps'
-      : rows.length+' of '+CM_REPS.length+' reps';
+    var all=cmScoped().length;
+    countEl.textContent=rows.length===all
+      ? all+' reps'
+      : rows.length+' of '+all+' reps';
   }
   var pager=document.getElementById('cm-pager');
   if(pager)pager.style.display=(rows.length>cmState.pageSize)?'flex':'none';
@@ -6790,20 +6955,18 @@ function cmCellToast(rowIdx,cellIdx){
   var slice=cmState._slice||[];
   var r=slice[rowIdx];
   if(!r)return;
-  showToast(r.cells[cellIdx].toast);
+  showToast(cmCellView(r.cells[cellIdx],cellIdx).toast);
 }
 function cmEscape(t){
   return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 cmRender();
 
-// Save/Cancel belong to the rule-authoring tabs only \u2014 the Compliance Matrix
-// is a read-only data view, so the action bar is hidden there.
+// The preset bar only fills in the rule tabs, so it is hidden on Notification Routing.
 function rulesSwitchTab(el,panelId){
   switchTab(el,panelId);
-  var bar=document.getElementById('rules-actions');
-  if(bar)bar.style.display=(panelId==='rules-matrix')?'none':'flex';
-  if(panelId==='rules-matrix')cmRender();
+  var pre=document.getElementById('rl-preset');
+  if(pre)pre.style.display=(panelId==='rules-routing')?'none':'flex';
 }
 
 </script>
