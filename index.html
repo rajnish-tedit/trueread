@@ -405,13 +405,28 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .ni-more{padding:10px 16px;font-size:13px;font-weight:700;color:var(--horizon);cursor:pointer;border-top:1px solid var(--rule);}
 .ai-toast{display:flex;align-items:center;gap:12px;}
 .ai-toast button{background:white;color:var(--ink);border:none;border-radius:6px;padding:5px 10px;font-weight:800;font-size:12.5px;cursor:pointer;flex-shrink:0;}
+/* Action Items row lights up while there are to-dos: bright yellow on the dark
+   sidebar (11:1), with the overdue count spelled out under the label */
+#sbi-comms.has-todo{background:#FFC53D;color:#0E1B24;font-weight:800;}
+#sbi-comms.has-todo:hover{background:#FFD466;color:#0E1B24;}
+#sbi-comms.has-todo .sbi-icon{opacity:1;}
+#sbi-comms.has-todo.on{box-shadow:inset 0 0 0 2px #0E1B24;}
+#sbi-comms.has-todo.on::before{background:#0E1B24;width:4px;}
+#sbi-comms .sbi-txt{display:flex;flex-direction:column;line-height:1.25;}
+#sbi-comms .sbi-sub{font-size:11.5px;font-weight:700;color:#7A1A10;}
+#sbi-comms .sbi-sub:empty{display:none;}
+#sbi-comms.has-todo .ai-count{background:#B42318;color:white;min-width:26px;height:24px;font-size:13px;border-radius:12px;}
+.mn-badge{position:absolute;top:5px;left:calc(50% + 4px);min-width:20px;height:18px;padding:0 5px;border-radius:9px;background:#FFC53D;color:#0E1B24;font-size:11px;font-weight:800;line-height:18px;text-align:center;border:1.5px solid #0E1B24;}
+.mn-badge:empty{display:none;}
+#mn-comms.has-todo{color:#FFC53D;}
 /* dashboard strip */
-.ai-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:white;border:1.5px solid var(--horizon);border-left:6px solid var(--horizon);border-radius:12px;padding:14px 18px;margin-bottom:16px;}
-.ai-strip.is-urgent{border-color:var(--crit);border-left-color:var(--crit);}
-.ai-strip-n{width:42px;height:42px;border-radius:50%;background:var(--horizon);color:white;font-size:19px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ai-strip.is-urgent .ai-strip-n{background:var(--crit);}
+.ai-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#FFC53D;border:2px solid #E0A800;border-radius:12px;padding:14px 18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(224,168,0,.25);}
+.ai-strip-n{width:44px;height:44px;border-radius:50%;background:#0E1B24;color:white;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ai-strip.is-urgent .ai-strip-n{background:#B42318;}
+.ai-strip .ai-strip-sub{color:#3A2A00;}
+.ai-strip .btn-primary{background:#0E1B24;}
 .ai-strip-title{font-size:16px;font-weight:800;color:var(--ink);}
-.ai-strip-sub{font-size:13.5px;color:#4F5A63;margin-top:2px;}
+.ai-strip-sub{font-size:13.5px;margin-top:2px;}
 
 /* ── REP COMPLIANCE — word chips, key, tooltips ─── */
 .cm-chip{display:inline-block;border:none;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:800;padding:5px 10px;border-radius:20px;white-space:nowrap;cursor:default;}
@@ -1413,7 +1428,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="mn-row">
     <div class="mn-item on" id="mn-dash" onclick="goApp('dashboard');mnActive('dash')"><div class="mn-icon">&#128202;</div><div class="mn-lbl">Overview</div></div>
     <div class="mn-item" id="mn-r1" onclick="goApp('r1');mnActive('r1')"><div class="mn-icon">&#128200;</div><div class="mn-lbl">Reports</div></div>
-    <div class="mn-item" id="mn-comms" onclick="goApp('comms');mnActive('comms')" style="position:relative"><div class="mn-icon">&#128222;</div><div class="mn-lbl">Comms</div><div class="mn-dot"></div></div>
+    <div class="mn-item" id="mn-comms" onclick="goApp('comms');mnActive('comms')" style="position:relative"><div class="mn-icon">&#128222;</div><div class="mn-lbl">To do</div><div class="mn-badge" id="mn-comms-count"></div></div>
     <div class="mn-item" id="mn-pipeline" onclick="goApp('pipeline');mnActive('pipeline')"><div class="mn-icon">&#128260;</div><div class="mn-lbl">Data</div></div>
     <div class="mn-item" id="mn-more" onclick="openModal('mob-menu-modal')"><div class="mn-icon">&#9776;</div><div class="mn-lbl">More</div></div>
   </div>
@@ -1520,7 +1535,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="sbi" id="sbi-r4" onclick="goApp('r4')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>Revenue Intelligence</div>
   <div class="sbi" id="sbi-r5" onclick="goApp('r5')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Data Quality</div>
   <div class="sb-sec">Tools</div>
-  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="ai-count ai-count-sb" id="sbi-comms-count" aria-label="6 to do">6</span></div>
+  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="sbi-txt">Action Items<span class="sbi-sub" id="sbi-comms-sub"></span></div><span class="ai-count ai-count-sb" id="sbi-comms-count" aria-label="6 to do">6</span></div>
   <div class="sbi" id="sbi-audit" onclick="goApp('audit')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Weekly Audit</div>
   <div class="sbi" id="sbi-pipeline" onclick="goApp('pipeline')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>Data Integrations</div>
   <div class="sbi" id="sbi-rules" onclick="goApp('rules')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Accountability Rules</div>
@@ -6120,6 +6135,14 @@ function aiRenderSignals(todo){
     el.setAttribute('aria-label',n+' to do'+(overdue?', '+overdue+' overdue':''));
     el.classList.toggle('ai-count-glow',overdue>0);
   });
+  var sbi=document.getElementById('sbi-comms');
+  if(sbi)sbi.classList.toggle('has-todo',n>0);
+  var sub=document.getElementById('sbi-comms-sub');
+  if(sub)sub.textContent=overdue?overdue+' overdue':'';
+  var mn=document.getElementById('mn-comms');
+  if(mn)mn.classList.toggle('has-todo',n>0);
+  var mnb=document.getElementById('mn-comms-count');
+  if(mnb){mnb.textContent=n||'';mnb.setAttribute('aria-label',n+' to do');}
   var badge=document.getElementById('tb-badge');
   if(badge){badge.textContent=n||'';badge.classList.toggle('has-n',n>0);badge.style.display=n?'':'none';}
   var bell=document.getElementById('tb-bell');
