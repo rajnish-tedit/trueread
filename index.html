@@ -405,22 +405,22 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .ni-more{padding:10px 16px;font-size:13px;font-weight:700;color:var(--horizon);cursor:pointer;border-top:1px solid var(--rule);}
 .ai-toast{display:flex;align-items:center;gap:12px;}
 .ai-toast button{background:white;color:var(--ink);border:none;border-radius:6px;padding:5px 10px;font-weight:800;font-size:12.5px;cursor:pointer;flex-shrink:0;}
-/* Action Items row lights up while there are to-dos: bright yellow on the dark
-   sidebar (11:1), with the overdue count spelled out under the label */
-#sbi-comms.has-todo{background:#FFC53D;color:#0E1B24;font-weight:800;}
-#sbi-comms.has-todo:hover{background:#FFD466;color:#0E1B24;}
+/* Action Items row is tinted amber while there are to-dos: a warm wash and an
+   amber edge on the dark sidebar, label 8.5:1, with "N overdue" under it */
+#sbi-comms.has-todo{background:rgba(224,169,59,.18);color:#F5D08A;font-weight:700;}
+#sbi-comms.has-todo::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#E0A93B;}
+#sbi-comms.has-todo:hover{background:rgba(224,169,59,.26);color:#F5D08A;}
 #sbi-comms.has-todo .sbi-icon{opacity:1;}
-#sbi-comms.has-todo.on{box-shadow:inset 0 0 0 2px #0E1B24;}
-#sbi-comms.has-todo.on::before{background:#0E1B24;width:4px;}
+#sbi-comms.has-todo.on{background:rgba(224,169,59,.28);color:#FFE3A8;}
 #sbi-comms .sbi-txt{display:flex;flex-direction:column;line-height:1.25;}
-#sbi-comms .sbi-sub{font-size:11.5px;font-weight:700;color:#7A1A10;}
+#sbi-comms .sbi-sub{font-size:11.5px;font-weight:600;color:#F2C46B;}
 #sbi-comms .sbi-sub:empty{display:none;}
 #sbi-comms.has-todo .ai-count{background:#B42318;color:white;min-width:26px;height:24px;font-size:13px;border-radius:12px;}
-.mn-badge{position:absolute;top:5px;left:calc(50% + 4px);min-width:20px;height:18px;padding:0 5px;border-radius:9px;background:#FFC53D;color:#0E1B24;font-size:11px;font-weight:800;line-height:18px;text-align:center;border:1.5px solid #0E1B24;}
+.mn-badge{position:absolute;top:5px;left:calc(50% + 4px);min-width:20px;height:18px;padding:0 5px;border-radius:9px;background:#E0A93B;color:#0E1B24;font-size:11px;font-weight:800;line-height:18px;text-align:center;border:1.5px solid #0E1B24;}
 .mn-badge:empty{display:none;}
-#mn-comms.has-todo{color:#FFC53D;}
+#mn-comms.has-todo{color:#F2C46B;}
 /* dashboard strip */
-.ai-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#FFC53D;border:2px solid #E0A800;border-radius:12px;padding:14px 18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(224,168,0,.25);}
+.ai-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#FFF4D6;border:1.5px solid #E8C46A;border-left:6px solid #E0A93B;border-radius:12px;padding:14px 18px;margin-bottom:16px;}
 .ai-strip-n{width:44px;height:44px;border-radius:50%;background:#0E1B24;color:white;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .ai-strip.is-urgent .ai-strip-n{background:#B42318;}
 .ai-strip .ai-strip-sub{color:#3A2A00;}
