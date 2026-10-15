@@ -341,24 +341,97 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .alert-item-body{font-size:13.5px;color:var(--muted);font-family:'Inter',sans-serif;line-height:1.5;margin-bottom:10px;}
 .alert-item-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 
-/* ── ALERT TIMESTAMPING / TRIAGE ─────────────────── */
-.alert-item{border-left:3px solid transparent;transition:border-color .2s,opacity .2s;}
-.alert-item.pending-48{border-left-color:var(--caut);}
-.alert-item.pending-72{border-left-color:var(--crit);}
-.alert-item.ack{opacity:.62;}
-.alert-item.snoozed{opacity:.55;}
-.alert-item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
-.alert-age-group{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.alert-age{font-size:11.5px;color:var(--muted);font-family:'Inter',sans-serif;white-space:nowrap;}
-.alert-pending-pill{font-size:10px;padding:2px 8px;white-space:nowrap;}
-.snooze-wrap{position:relative;display:inline-block;}
-.snooze-pop{display:none;position:absolute;top:calc(100% + 6px);left:0;background:white;border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(30,50,70,.16);padding:6px;min-width:172px;z-index:40;}
-.snooze-pop.on{display:block;animation:fadeUp .2s cubic-bezier(.22,1,.36,1) both;}
-.snooze-pop button{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:7px;border:none;background:none;font-size:12.5px;font-weight:600;color:var(--slate);cursor:pointer;font-family:'Inter',sans-serif;}
-.snooze-pop button:hover{background:var(--panel);}
-@keyframes pillPulse{0%,100%{box-shadow:0 0 0 0 rgba(155,58,42,.45);}50%{box-shadow:0 0 0 4px rgba(155,58,42,0);}}
-.pill-pulse{animation:pillPulse 1.6s ease-in-out infinite;}
+/* ── ACTION ITEMS — To do list ───────────────────── */
+.ai-progress{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:white;border:1px solid var(--rule);border-radius:12px;padding:14px 18px;margin-bottom:18px;}
+.ai-progress-title{font-size:18px;font-weight:800;color:var(--ink);}
+.ai-progress-sub{font-size:13.5px;color:#4F5A63;margin-top:2px;}
+.ai-bar{flex:0 1 260px;height:8px;background:#E6E1D6;border-radius:6px;overflow:hidden;}
+.ai-bar div{height:100%;background:#2F5A3A;border-radius:6px;transition:width .4s;}
+.ai-sec{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#3F4A52;margin:6px 0 10px;}
+.ai-sec span{background:#E6E1D6;color:var(--ink);border-radius:10px;padding:1px 8px;font-size:11.5px;letter-spacing:0;}
+.ai-sec em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:#4F5A63;}
+.ai-card{display:flex;gap:14px;background:white;border:1px solid var(--rule);border-left:5px solid #857E73;border-radius:12px;padding:16px 18px;margin-bottom:10px;transition:box-shadow .3s;}
+.ai-card.tone-crit{border-left-color:var(--crit);}
+.ai-card.tone-caut{border-left-color:#B57B1F;}
+.ai-card.tone-info{border-left-color:var(--horizon);}
+.ai-card.is-new{box-shadow:0 0 0 3px rgba(31,58,95,.25);}
+.ai-ico{width:36px;height:36px;border-radius:9px;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ai-main{flex:1;min-width:0;}
+.ai-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.ai-title{font-size:16px;font-weight:700;color:var(--ink);line-height:1.35;}
+.ai-due{font-size:12px;font-weight:800;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.ai-due.due-crit{background:var(--crit);color:white;}
+.ai-due.due-caut{background:#F3E9DA;color:#7A4F0C;border:1px solid #D9BE8F;}
+.ai-due.due-info{background:#E6E1D6;color:#3F4A52;}
+.ai-detail{font-size:14px;color:#4F5A63;line-height:1.55;margin:6px 0 12px;}
+.ai-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.ai-link{background:none;border:none;padding:4px 2px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:700;color:var(--horizon);text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+.ai-age{font-size:12.5px;color:#4F5A63;margin-left:auto;}
+.ai-more{position:relative;}
+.ai-more-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid #857E73;background:white;font-size:18px;line-height:1;color:var(--ink);cursor:pointer;}
+.ai-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:white;border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(30,50,70,.16);padding:6px;min-width:190px;z-index:40;}
+.ai-menu.on{display:block;}
+.ai-menu button{display:block;width:100%;text-align:left;padding:9px 10px;border-radius:7px;border:none;background:none;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;}
+.ai-menu button:hover,.ai-menu button:focus{background:var(--panel);}
+.ai-menu-sep{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#4F5A63;padding:8px 10px 4px;border-top:1px solid var(--rule);margin-top:4px;}
+.ai-fold{margin-top:16px;}
+.ai-fold summary{cursor:pointer;list-style:none;}
+.ai-fold summary::before{content:'\25B8';margin-right:2px;}
+.ai-fold[open] summary::before{content:'\25BE';}
+.ai-fold summary::-webkit-details-marker{display:none;}
+.ai-row{display:flex;align-items:center;gap:12px;background:white;border:1px solid var(--rule);border-radius:10px;padding:10px 14px;margin-bottom:6px;font-size:14px;color:var(--ink);}
+.ai-row>span:nth-child(2){flex:1;}
+.ai-row.is-done{color:#2F5A3A;}
+.ai-row.is-done span{flex:1;}
+.ai-row-meta{font-size:13px;color:#4F5A63;}
+.ai-empty{text-align:center;background:white;border:1px solid var(--rule);border-radius:12px;padding:34px 20px;}
+.ai-empty-ico{width:48px;height:48px;border-radius:50%;background:#E3ECE5;color:#2F5A3A;font-size:24px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.ai-empty-title{font-size:17px;font-weight:800;color:var(--ink);}
+.ai-empty-sub{font-size:14px;color:#4F5A63;margin-top:4px;}
+#app-comms{--muted:#4F5A63;--caut:#7A4F0C;--pos:#2F5A3A;}
+#app-comms .tab{color:#3F4A52;}
+#app-comms .tab.on{color:var(--ink);}
+#app-comms .pg-sub{font-size:14px;}
+#app-comms :is(button,summary,[role=button]):focus-visible{outline:3px solid var(--horizon);outline-offset:2px;}
+/* counts: white on red, high contrast */
+.ai-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;margin-left:6px;border-radius:10px;background:#C0392B;color:white;font-size:11.5px;font-weight:800;}
+.ai-count-sb{margin-left:auto;}
+.ai-count-glow{box-shadow:0 0 0 3px rgba(192,57,43,.35);}
+.tb-badge.has-n{width:auto;height:17px;min-width:17px;padding:0 4px;top:-5px;right:-5px;border-radius:9px;background:#E74C3C;color:white;font-size:10.5px;font-weight:800;line-height:15px;text-align:center;border:1.5px solid var(--horizon);}
+@keyframes aiPing{0%{transform:scale(1)}30%{transform:scale(1.25)}60%{transform:scale(.95)}100%{transform:scale(1)}}
+.ai-ping{animation:aiPing .7s ease-out 2;}
+@media (prefers-reduced-motion:reduce){.ai-ping{animation:none;}}
+.ni-empty{padding:18px 16px;font-size:13.5px;font-weight:600;color:#2F5A3A;}
+.ni-more{padding:10px 16px;font-size:13px;font-weight:700;color:var(--horizon);cursor:pointer;border-top:1px solid var(--rule);}
+.ai-toast{display:flex;align-items:center;gap:12px;}
+.ai-toast button{background:white;color:var(--ink);border:none;border-radius:6px;padding:5px 10px;font-weight:800;font-size:12.5px;cursor:pointer;flex-shrink:0;}
+/* dashboard strip */
+.ai-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:white;border:1.5px solid var(--horizon);border-left:6px solid var(--horizon);border-radius:12px;padding:14px 18px;margin-bottom:16px;}
+.ai-strip.is-urgent{border-color:var(--crit);border-left-color:var(--crit);}
+.ai-strip-n{width:42px;height:42px;border-radius:50%;background:var(--horizon);color:white;font-size:19px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ai-strip.is-urgent .ai-strip-n{background:var(--crit);}
+.ai-strip-title{font-size:16px;font-weight:800;color:var(--ink);}
+.ai-strip-sub{font-size:13.5px;color:#4F5A63;margin-top:2px;}
 
+/* ── REP COMPLIANCE — word chips, key, tooltips ─── */
+.cm-chip{display:inline-block;border:none;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:800;padding:5px 10px;border-radius:20px;white-space:nowrap;cursor:default;}
+button.cm-chip{cursor:pointer;}
+.cm-chip.c-caut{background:#F3E9DA;color:#7A4F0C;border:1px solid #D9BE8F;}
+.cm-chip.c-crit{background:var(--crit);color:white;}
+.cm-chip.c-none{background:none;color:#857E73;font-size:15px;padding:2px 8px;}
+.cm-chip.c-off{background:#E6E1D6;color:#3F4A52;font-weight:700;}
+.cm-th{cursor:help;border-bottom:1px dotted #857E73;}
+.cm-i{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--horizon);color:white;font-size:10px;font-weight:800;font-style:italic;font-family:Georgia,serif;vertical-align:1px;}
+.cm-pct{cursor:help;}
+.cm-tip{position:fixed;z-index:9999;max-width:280px;background:var(--ink);color:white;font-size:13px;line-height:1.45;font-weight:500;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px rgba(14,27,36,.25);pointer-events:none;display:none;}
+#cm-legend{gap:12px !important;}
+.cm-key-btn{display:inline-flex;align-items:center;gap:7px;background:white;border:1.5px solid var(--horizon);border-radius:8px;padding:7px 12px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:700;color:var(--horizon);cursor:pointer;}
+.cm-key-hint{font-size:13px;color:#4F5A63;}
+.cm-key{background:white;border:1px solid var(--rule);border-radius:12px;padding:12px 16px;margin:-4px 0 14px;max-width:760px;}
+.cm-key-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #EEE9DF;font-size:14px;color:var(--ink);}
+.cm-key-row>:first-child{flex:0 0 170px;text-align:center;}
+.cm-key-foot{font-size:13px;color:#4F5A63;padding-top:9px;}
+#tab-comms-matrix :is(button,[tabindex]):focus-visible{outline:3px solid var(--horizon);outline-offset:2px;}
 /* ── WEEKLY AUDIT ────────────────────────────────── */
 .audit-rep{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(200,194,182,.35);}
 .audit-rep:last-child{border-bottom:none;}
@@ -1243,6 +1316,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="demo-bar-label">Simulate</div>
   <button class="demo-btn" onclick="demoSimulate('expired')">Expired invite</button>
   <button class="demo-btn" onclick="demoSimulate('joins')">Manager joins</button>
+  <button class="demo-btn" onclick="aiSimulateNew()">New action item</button>
 </div>
 
 <!-- HELP BUTTON -->
@@ -1374,9 +1448,9 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
   <div class="tb-right">
     <div class="tb-date" id="tb-date"></div>
-    <div class="tb-bell" onclick="toggleNotif()" id="tb-bell">
+    <div class="tb-bell" onclick="toggleNotif()" id="tb-bell" role="button" tabindex="0" aria-label="Notifications">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <div class="tb-badge"></div>
+      <div class="tb-badge" id="tb-badge"></div>
     </div>
     <div id="tb-role-chip" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.18);border-radius:8px;font-size:11.5px;font-weight:700;padding:6px 12px;white-space:nowrap;">&#128081; Owner</div>
     <select id="role-switcher" onchange="switchRole(this.value)" title="Preview as role" style="display:none">
@@ -1422,11 +1496,8 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     </div>
     <!-- Notif tray -->
     <div id="notif-tray">
-      <div class="ni-head"><div class="ni-head-title">Notifications</div><div class="ni-mark" onclick="showToast('✓ All marked read')">Mark all read</div></div>
-      <div class="ni" onclick="goApp('comms');toggleNotif()"><div class="ni-dot"></div><div class="ni-icon" style="background:var(--crit-bg)">⚠️</div><div class="ni-body"><div class="ni-title">Revenue gap: $34K behind target</div><div class="ni-text">Day 20 of June. Top 2 closers drafted a message for your review.</div><div class="ni-time">2 min ago</div></div></div>
-      <div class="ni" onclick="goApp('r3');toggleNotif()"><div class="ni-dot"></div><div class="ni-icon" style="background:var(--caut-bg)">📊</div><div class="ni-body"><div class="ni-title">27 leads stuck >7 days</div><div class="ni-text">NJ branch — 14 leads need follow-up. Notify reps?</div><div class="ni-time">1 hr ago</div></div></div>
-      <div class="ni" onclick="goApp('r1');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📉</div><div class="ni-body"><div class="ni-title">Angi ROI dropped to 1.4×</div><div class="ni-text">Week-over-week drop from 2.4×. Review or pause spend.</div><div class="ni-time">Yesterday</div></div></div>
-      <div class="ni" onclick="goApp('comms');toggleNotif()"><div class="ni-icon" style="background:rgba(31,58,95,.08)">📋</div><div class="ni-body"><div class="ni-title">Weekly audit: 4 reps pending</div><div class="ni-text">Deadline Sunday midnight. Draft nudge messages?</div><div class="ni-time">Yesterday</div></div></div>
+      <div class="ni-head"><div class="ni-head-title" id="ni-head-title">To do</div><div class="ni-mark" onclick="goApp('comms');toggleNotif()">Open Action Items</div></div>
+      <div id="ni-list"></div>
     </div>
   </div>
 </div>
@@ -1449,7 +1520,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   <div class="sbi" id="sbi-r4" onclick="goApp('r4')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>Revenue Intelligence</div>
   <div class="sbi" id="sbi-r5" onclick="goApp('r5')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Data Quality</div>
   <div class="sb-sec">Tools</div>
-  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="pill pill-crit" id="sbi-comms-count" style="margin-left:auto;font-size:10px;padding:2px 6px">6</span></div>
+  <div class="sbi" id="sbi-comms" onclick="goApp('comms')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>Action Items <span class="ai-count ai-count-sb" id="sbi-comms-count" aria-label="6 to do">6</span></div>
   <div class="sbi" id="sbi-audit" onclick="goApp('audit')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Weekly Audit</div>
   <div class="sbi" id="sbi-pipeline" onclick="goApp('pipeline')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>Data Integrations</div>
   <div class="sbi" id="sbi-rules" onclick="goApp('rules')"><div class="sbi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Accountability Rules</div>
@@ -1493,6 +1564,15 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       <span style="width:6px;height:6px;border-radius:50%;background:var(--caut);flex-shrink:0"></span>
       <span id="jn-stale-badge-text">Data as of last sync — not live · 0/10 automations set up</span>
     </span>
+  </div>
+  <!-- To-do strip: what needs you, shown until the list is clear -->
+  <div class="ai-strip fu" id="ai-strip" style="display:none">
+    <div class="ai-strip-n" id="ai-strip-n">0</div>
+    <div style="flex:1;min-width:200px">
+      <div class="ai-strip-title" id="ai-strip-title"></div>
+      <div class="ai-strip-sub" id="ai-strip-sub"></div>
+    </div>
+    <button class="btn btn-primary" onclick="goApp('comms')">Start →</button>
   </div>
   <div class="alert-banner crit fu rbac-sales-only" id="dash-alert-banner">
     <div class="alert-icon" style="background:var(--crit-bg)">⚠️</div>
@@ -1824,157 +1904,16 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 
 <!-- ═══════════════════════════ COMMS HUB ═══ -->
 <div class="app-scr" id="app-comms">
-  <div class="pg-header fu"><div><div class="pg-title">Action Items</div><div class="pg-sub">The Hub detects issues and drafts messages for your review and approval</div></div></div>
+  <div class="pg-header fu"><div><div class="pg-title">Action Items</div><div class="pg-sub">Things that need you. The Hub spots the problem and drafts the message — you decide and send.</div></div></div>
   <div class="tabs fu1">
-    <div class="tab on" onclick="switchTab(this,'comms-alerts')">Live Alerts <span class="pill pill-crit" style="margin-left:6px;font-size:10px;padding:2px 6px" id="alerts-count-pill">6</span></div>
-    <div class="tab" onclick="switchTab(this,'comms-pending')">Pending Approval <span class="pill pill-caut" style="margin-left:6px;font-size:10px;padding:2px 6px">3</span></div>
+    <div class="tab on" onclick="switchTab(this,'comms-alerts')">To do <span class="ai-count" id="alerts-count-pill">6</span></div>
+    <div class="tab" onclick="switchTab(this,'comms-pending')">Pending Approval <span class="pill pill-caut" style="margin-left:6px;font-size:10px;padding:2px 6px" id="pending-count-pill">3</span></div>
     <div class="tab" onclick="switchTab(this,'comms-sent')">Sent Log</div>
     <div class="tab" id="ctab-matrix" onclick="switchTab(this,'comms-matrix');cmRender()">Rep Compliance</div>
   </div>
   <div class="tab-panel on" id="tab-comms-alerts">
-
-    <!-- ── REVENUE / PIPELINE ALERTS ── -->
-    <div style="font-size:11px;font-weight:800;letter-spacing:.07em;color:var(--muted);padding:4px 0 10px;text-transform:uppercase">Revenue &amp; Pipeline</div>
-    <div class="alert-item pending-72">
-      <div class="ai-chip" style="background:var(--crit-bg)">💰</div>
-      <div style="flex:1">
-        <div class="alert-item-head">
-          <div class="alert-item-title" style="margin-bottom:0">Revenue gap: $34K behind on day 20 of June</div>
-          <div class="alert-age-group"><span class="pill pill-crit alert-pending-pill">Needs action · 3 days</span><span class="alert-age">3 days ago</span></div>
-        </div>
-        <div class="alert-item-body">Expected pace: $320K. Actual: $286K. At current rate, month closes at ~$304K. Top 2 closers identified: Marcus Webb (NJ) and Lisa Chen (NY).</div>
-        <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openDraftModal('revenue-gap')">Review draft message</button>
-          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
-          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
-            <div class="snooze-pop">
-              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
-              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
-              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-item pending-48">
-      <div class="ai-chip" style="background:var(--crit-bg)">📌</div>
-      <div style="flex:1">
-        <div class="alert-item-head">
-          <div class="alert-item-title" style="margin-bottom:0">27 leads stuck >7 days — NJ branch</div>
-          <div class="alert-age-group"><span class="pill pill-caut alert-pending-pill">Pending · 2 days</span><span class="alert-age">2 days ago</span></div>
-        </div>
-        <div class="alert-item-body">Reps: Tom Bradley (8 stuck), Raj Kumar (6 stuck), others (13). These leads have not had a stage change in 7+ days.</div>
-        <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openDraftModal('stuck-leads')">Draft nudge messages</button>
-          <button class="btn btn-outline btn-sm">View leads</button>
-          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
-          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
-            <div class="snooze-pop">
-              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
-              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
-              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-item">
-      <div class="ai-chip" style="background:var(--caut-bg)">📋</div>
-      <div style="flex:1">
-        <div class="alert-item-head">
-          <div class="alert-item-title" style="margin-bottom:0">Weekly audit: 4 reps haven't submitted — Sunday deadline</div>
-          <div class="alert-age-group"><span class="alert-age">20 hours ago</span></div>
-        </div>
-        <div class="alert-item-body">Pending: Tom Bradley, Raj Kumar, Sam Torres, Mike Ortiz. Deadline: Sunday 11:59 PM. 3 personalized reminder messages ready.</div>
-        <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openModal('reminders-modal')">Review reminders</button>
-          <button class="btn btn-ok btn-sm" onclick="showToast('✓ All 4 approved and sending')">Approve all</button>
-          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
-          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
-            <div class="snooze-pop">
-              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
-              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
-              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── CRM COMPLIANCE ALERTS ── -->
-    <div style="font-size:11px;font-weight:800;letter-spacing:.07em;color:var(--muted);padding:20px 0 10px;text-transform:uppercase">CRM Compliance — Escalations &amp; Pattern Alerts</div>
-
-    <!-- Escalation alert -->
-    <div class="alert-item">
-      <div class="ai-chip" style="background:rgba(155,58,42,.1)">⬆️</div>
-      <div style="flex:1">
-        <div class="alert-item-head">
-          <div class="alert-item-title" style="margin-bottom:0">Dave Chen — 2 leads past manager escalation threshold in Estimate</div>
-          <div class="alert-age-group"><span class="pill pill-crit" style="font-size:10px;padding:2px 7px;flex-shrink:0">Escalation</span><span class="alert-age">1 day ago</span></div>
-        </div>
-        <div class="alert-item-body">Dave was flagged at day 7. Manager escalation threshold (day 10) passed 1 day ago. Oldest lead: Henderson Roofing — 11 days in Estimate, last activity Jun 21. Green Valley Homes — 10 days, no presentation set.</div>
-        <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openDraftModal('dave-escalation')">Draft message to Dave</button>
-          <button class="btn btn-outline btn-sm" onclick="cmOpenMatrix()">View in Rep Compliance</button>
-          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
-          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
-            <div class="snooze-pop">
-              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
-              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
-              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stage pile-up alert -->
-    <div class="alert-item pending-48">
-      <div class="ai-chip" style="background:rgba(181,123,31,.1)">📊</div>
-      <div style="flex:1">
-        <div class="alert-item-head">
-          <div class="alert-item-title" style="margin-bottom:0">Tom Bradley — 4 leads piled up in Follow-up simultaneously</div>
-          <div class="alert-age-group"><span class="pill pill-caut" style="font-size:10px;padding:2px 7px;flex-shrink:0">Stage Pile-up</span><span class="pill pill-caut alert-pending-pill">Pending · 2 days</span><span class="alert-age">2 days ago</span></div>
-        </div>
-        <div class="alert-item-body">Threshold: 3 leads in one stage at the same time. Tom has 4 leads in Follow-up — 3 of them over 10 days, 1 at 14 days (inside-sales handoff due). Pattern may indicate overload or disengagement.</div>
-        <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openDraftModal('tom-pileup')">Draft nudge to Tom</button>
-          <button class="btn btn-outline btn-sm">View leads</button>
-          <button class="btn btn-outline btn-sm" onclick="ackAlert(this)">Acknowledge</button>
-          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
-            <div class="snooze-pop">
-              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
-              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
-              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Compliance floor alert -->
-    <div class="alert-item">
-      <div class="ai-chip" style="background:rgba(181,123,31,.1)">📉</div>
-      <div style="flex:1">
-        <div class="alert-item-head">
-          <div class="alert-item-title" style="margin-bottom:0">Mike Ortiz compliance dropped to 64% — below 80% floor</div>
-          <div class="alert-age-group"><span class="pill pill-caut" style="font-size:10px;padding:2px 7px;flex-shrink:0">Compliance Floor</span><span class="alert-age">6 hours ago</span></div>
-        </div>
-        <div class="alert-item-body">Active leads in compliance: 9 of 14. Issues: 3 leads past stage SLA with no action, 2 leads missing required fields after appointment completion. Down from 79% last week.</div>
-        <div class="alert-item-actions">
-          <button class="btn btn-primary btn-sm" onclick="openDraftModal('mike-compliance')">Draft coaching message</button>
-          <button class="btn btn-outline btn-sm" onclick="ackAlert(this,'✓ Marked as reviewed')">Mark reviewed</button>
-          <div class="snooze-wrap"><button class="btn btn-outline btn-sm" onclick="toggleSnooze(event,this)">Snooze</button>
-            <div class="snooze-pop">
-              <button onclick="applySnooze(event,this,'in 2 hours')">Remind me in 2 hours</button>
-              <button onclick="applySnooze(event,this,'tomorrow morning')">Tomorrow morning</button>
-              <button onclick="applySnooze(event,this,'next Monday')">Next Monday</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <!-- Rendered by aiRender() from AI_ITEMS: progress, To do, Snoozed, Done today, For your info -->
+    <div id="ai-list"></div>
   </div>
   <div class="tab-panel" id="tab-comms-pending">
     <div class="alert-item draft fu">
@@ -1984,7 +1923,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div style="background:white;border:1px solid var(--rule);border-radius:10px;padding:14px;font-size:13px;line-height:1.6;color:var(--slate);margin-bottom:12px;font-family:'Inter',sans-serif">
           "Hey Marcus — June 20 and we're at $286K against a $320K target. You're our top closer with 4 wins this month. Can you work the pipeline this week and push 1–2 deals over the line? Anything I can do to help — calls, materials, whatever — just say the word. — John"
         </div>
-        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✅ Sent to Marcus Webb')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="aiApproveDraft(this,'rev','Marcus Webb')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
       </div>
     </div>
     <div class="alert-item draft fu">
@@ -1997,7 +1936,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div style="background:white;border:1px solid var(--rule);border-radius:10px;padding:14px;font-size:13px;line-height:1.6;color:var(--slate);margin-bottom:12px;font-family:'Inter',sans-serif">
           "Hey Dave — a couple of your estimates have been sitting a while. Henderson Roofing is at 11 days and Green Valley Homes is at 10. Can you get presentations scheduled this week? I want to make sure these don't slip through the cracks. Let me know if you need help prepping the decks. — John"
         </div>
-        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✅ Sent to Dave Chen')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="aiApproveDraft(this,'dave','Dave Chen')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
       </div>
     </div>
     <div class="alert-item draft fu">
@@ -2010,7 +1949,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <div style="background:white;border:1px solid var(--rule);border-radius:10px;padding:14px;font-size:13px;line-height:1.6;color:var(--slate);margin-bottom:12px;font-family:'Inter',sans-serif">
           "Hey Mike — your CRM compliance is at 64% this week, which is below our 80% floor. I noticed 3 leads that haven't had a stage update and 2 where the appointment disposition is still missing. Takes 5 minutes to clean up — can you get those sorted by EOD tomorrow? It keeps our numbers accurate for everyone. — John"
         </div>
-        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="showToast('✅ Sent to Mike Ortiz')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
+        <div class="alert-item-actions"><button class="btn btn-primary btn-sm" onclick="aiApproveDraft(this,'mike','Mike Ortiz')">Approve & send</button><button class="btn btn-outline btn-sm" onclick="showToast('Opened in editor')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Message skipped')">Skip</button></div>
       </div>
     </div>
   </div>
@@ -2067,7 +2006,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
       <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)">
         <span>Rows</span>
-        <select class="inp" id="cm-page-size" onchange="cmOnPageSize()" style="padding:8px 26px 8px 10px;font-size:12.5px;width:auto;min-width:62px">
+        <select class="inp" id="cm-page-size" aria-label="Rows per page" onchange="cmOnPageSize()" style="padding:8px 26px 8px 10px;font-size:12.5px;width:auto;min-width:62px">
           <option value="5" selected>5</option>
           <option value="10">10</option>
           <option value="25">25</option>
@@ -2083,12 +2022,12 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <thead>
           <tr>
             <th style="min-width:180px">Rep</th>
-            <th style="text-align:center">Lead<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 1</span></th>
-            <th style="text-align:center">Appt Scheduled<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 2</span></th>
-            <th style="text-align:center">Estimate<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 3</span></th>
-            <th style="text-align:center">Presentation<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 4</span></th>
-            <th style="text-align:center">Follow-up<br><span style="font-weight:400;font-size:10px;color:var(--muted)">Rule 5</span></th>
-            <th style="text-align:center">Compliance %</th>
+            <th style="text-align:center"><span class="cm-th" id="cm-th-0" tabindex="0">Lead <span class="cm-i" aria-hidden="true">i</span></span><br><span style="font-weight:500;font-size:11px;color:#4F5A63">Rule 1</span></th>
+            <th style="text-align:center"><span class="cm-th" id="cm-th-1" tabindex="0">Appt Scheduled <span class="cm-i" aria-hidden="true">i</span></span><br><span style="font-weight:500;font-size:11px;color:#4F5A63">Rule 2</span></th>
+            <th style="text-align:center"><span class="cm-th" id="cm-th-2" tabindex="0">Estimate <span class="cm-i" aria-hidden="true">i</span></span><br><span style="font-weight:500;font-size:11px;color:#4F5A63">Rule 3</span></th>
+            <th style="text-align:center"><span class="cm-th" id="cm-th-3" tabindex="0">Presentation <span class="cm-i" aria-hidden="true">i</span></span><br><span style="font-weight:500;font-size:11px;color:#4F5A63">Rule 4</span></th>
+            <th style="text-align:center"><span class="cm-th" id="cm-th-4" tabindex="0">Follow-up <span class="cm-i" aria-hidden="true">i</span></span><br><span style="font-weight:500;font-size:11px;color:#4F5A63">Rule 5</span></th>
+            <th style="text-align:center"><span class="cm-th" id="cm-th-5" tabindex="0">Compliance % <span class="cm-i" aria-hidden="true">i</span></span></th>
           </tr>
         </thead>
         <tbody id="cm-tbody"></tbody>
@@ -2105,7 +2044,6 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
     </div>
 
-    <div style="font-size:11.5px;color:var(--muted);margin-top:10px">⬆ = past the Sales Manager deadline &nbsp;·&nbsp; 📊 = stuck-leads alert active &nbsp;·&nbsp; ⚠ = below the minimum compliance score &nbsp;·&nbsp; Click any cell to see lead details</div>
   </div>
 
 </div>
@@ -3309,7 +3247,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
         <textarea class="inp" rows="3" style="font-size:13px;line-height:1.6;font-family:'Inter',sans-serif">Hey Mike — reminder to submit your weekly activity summary before Sunday 11:59 PM. Let me know if anything's blocking you. — John</textarea>
       </div>
     </div>
-    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('reminders-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('reminders-modal');showToast('✅ 4 reminders sent')">Approve all &amp; send</button></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('reminders-modal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('reminders-modal');aiComplete('audit','✅ 4 reminders sent')">Approve all &amp; send</button></div>
   </div>
 </div>
 
@@ -5810,6 +5748,7 @@ function goApp(id){
   if(id==='r1'&&!window._r1)setTimeout(initR1Charts,200);
   if(id==='r3'&&!window._r3)setTimeout(initR3Charts,200);
   if(id==='billing')_refreshBillingTrialMeta();
+  if(typeof aiRenderSignals==='function')aiRenderSignals(aiTodo());
   if(id==='dashboard'){
     refreshJnBanner();
     jnRenderStaleBadge();
@@ -6004,80 +5943,240 @@ function openDraftModal(key){
 function sendDraftModal(){
   var rec=document.getElementById('draft-modal-recipients').value||'recipients';
   closeModal('draft-modal');
-  showToast('✅ Message sent to '+rec);
+  // Sending the drafted message is what completes the To do item it came from
+  var item=window._draftItem;window._draftItem=null;
+  if(item&&typeof aiComplete==='function')aiComplete(item,'\u2705 Sent to '+rec+' \u2014 marked done');
+  else showToast('\u2705 Message sent to '+rec);
 }
 
-// ALERT TIMESTAMPING / TRIAGE
-function toggleSnooze(e,btn){
-  e.stopPropagation();
-  var pop=btn.nextElementSibling;
-  var open=pop.classList.contains('on');
-  var all=document.querySelectorAll('.snooze-pop');
-  for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
-  if(!open)pop.classList.add('on');
+// ACTION ITEMS — one list drives the To do tab, the sidebar and bell counts,
+// the bell tray, the dashboard strip and the browser tab title.
+// An item leaves "To do" only when it is done (sent / marked done) or snoozed.
+var AI_ITEMS=[
+  {id:'dave',type:'todo',tone:'crit',icon:'⬆️',
+   title:'Decide what to do about Dave Chen’s 2 late estimates',
+   detail:'Henderson Roofing (11 days) and Green Valley Homes (10 days) are past the day-10 manager deadline. A message to Dave is drafted.',
+   due:'Overdue by 1 day',dueTone:'crit',age:'Flagged 1 day ago',ageDays:1,
+   cta:'Review message to Dave',draft:'dave-escalation',
+   link:{label:'See Dave in Rep Compliance',run:'cmOpenMatrix()'}},
+  {id:'rev',type:'todo',tone:'crit',icon:'💰',
+   title:'Ask your top closers to make up the $34K revenue gap',
+   detail:'Day 20 of June: $286K against a $320K pace. Marcus Webb (NJ) and Lisa Chen (NY) are your best bets. A push message is drafted.',
+   due:'Overdue by 1 day',dueTone:'crit',age:'Flagged 3 days ago',ageDays:3,
+   cta:'Review push message',draft:'revenue-gap'},
+  {id:'mike',type:'todo',tone:'caut',icon:'📉',
+   title:'Coach Mike Ortiz — his compliance score fell to 64%',
+   detail:'Below your 80% minimum. 3 leads are past their deadline and 2 appointments have no outcome. A coaching message is drafted.',
+   due:'Due today',dueTone:'caut',age:'Flagged 6 hours ago',ageDays:0,
+   cta:'Review coaching message',draft:'mike-compliance'},
+  {id:'tom',type:'todo',tone:'caut',icon:'📊',
+   title:'Help Tom Bradley clear 4 stuck Follow-up leads',
+   detail:'More than 3 leads stuck in one stage. One is at 14 days and due to be handed to Inside Sales.',
+   due:'Due today',dueTone:'caut',age:'Flagged 2 days ago',ageDays:2,
+   cta:'Review message to Tom',draft:'tom-pileup'},
+  {id:'stuck',type:'todo',tone:'caut',icon:'📌',
+   title:'Nudge NJ reps about 27 leads stuck over 7 days',
+   detail:'Tom Bradley (8), Raj Kumar (6) and others (13) have leads with no stage change in a week. Nudge messages are drafted.',
+   due:'Due tomorrow',dueTone:'info',age:'Flagged 2 days ago',ageDays:2,
+   cta:'Review nudge messages',draft:'stuck-leads'},
+  {id:'audit',type:'todo',tone:'info',icon:'📋',
+   title:'Remind 4 reps to submit their weekly audit',
+   detail:'Tom Bradley, Raj Kumar, Sam Torres and Mike Ortiz haven’t submitted. Reminders are drafted.',
+   due:'Due Sun 11:59 PM',dueTone:'info',age:'Flagged 20 hours ago',ageDays:1,
+   cta:'Review reminders',modal:'reminders-modal'},
+  {id:'angi',type:'fyi',icon:'📉',
+   title:'Angi return dropped 55% this week (2.4× → 1.4×)',
+   detail:'Your marketing manager has been alerted. Nothing needed from you.',
+   link:{label:'View Marketing Attribution',run:"goApp('r1')"}},
+  {id:'tomhand',type:'fyi',icon:'✅',
+   title:'Tom Bradley handed 2 Follow-up leads to Inside Sales',
+   detail:'Done the day after his reminder.'},
+  {id:'nina',type:'fyi',icon:'📈',
+   title:'Nina Vega’s compliance is back up to 93%',
+   detail:'Up from 81% last week.'}
+];
+var AI_NEW={id:'raj',type:'todo',tone:'crit',icon:'💤',
+  title:'Check in with Raj Kumar — no CRM activity for 3 days',
+  detail:'Raj has 7 open leads and hasn’t logged a call, note or stage change since Monday.',
+  due:'Due today',dueTone:'caut',age:'Just now',ageDays:0,
+  cta:'Message Raj',draft:'stuck-leads',isNew:true};
+var aiOpenMenu=null;
+
+// Open items, most urgent first: just-arrived, then overdue, then due today, then oldest
+function aiTodo(){
+  var rank={crit:0,caut:1,info:2};
+  return AI_ITEMS.filter(function(i){return i.type==='todo'&&!i.done&&!i.snoozed;})
+    .sort(function(a,b){return ((b.isNew?1:0)-(a.isNew?1:0))||(rank[a.dueTone]-rank[b.dueTone])||(b.ageDays-a.ageDays);});
 }
-document.addEventListener('click',function(e){
-  if(!e.target.closest('.snooze-wrap')){
-    var all=document.querySelectorAll('.snooze-pop');
-    for(var i=0;i<all.length;i++){all[i].classList.remove('on');}
-  }
-});
-function applySnooze(e,btn,label){
+function aiFind(id){for(var i=0;i<AI_ITEMS.length;i++)if(AI_ITEMS[i].id===id)return AI_ITEMS[i];return null;}
+function _aiEsc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function aiRun(id){
+  var it=aiFind(id);if(!it)return;
+  if(it.draft){window._draftItem=id;openDraftModal(it.draft);}
+  else if(it.modal){openModal(it.modal);}
+}
+function aiComplete(id,msg){
+  var it=aiFind(id);
+  if(!it||it.done)return;
+  it.done=true;it.snoozed=null;
+  showToast(msg||'✓ Done — '+it.title);
+  aiRender();
+}
+function aiApproveDraft(btn,id,who){
+  var card=btn.closest('.alert-item');
+  if(card)card.remove();
+  var pill=document.getElementById('pending-count-pill');
+  var left=document.querySelectorAll('#tab-comms-pending .alert-item').length;
+  if(pill){pill.textContent=left;pill.style.display=left?'':'none';}
+  var it=aiFind(id);
+  if(it&&!it.done)aiComplete(id,'✅ Sent to '+who+' — marked done');
+  else showToast('✅ Sent to '+who);
+}
+function aiSnooze(id,label){
+  var it=aiFind(id);if(!it)return;
+  it.snoozed=label;aiCloseMenu();
+  showToast('💤 Snoozed — back '+label);
+  aiRender();
+}
+function aiUnsnooze(id){var it=aiFind(id);if(it){it.snoozed=null;aiRender();}}
+function aiUndo(id){var it=aiFind(id);if(it){it.done=false;aiRender();showToast('Moved back to To do');}}
+function aiToggleMenu(e,id){
   e.stopPropagation();
-  var item=btn.closest('.alert-item');
-  if(!item)return;
-  item.classList.remove('pending-48','pending-72');
-  item.classList.add('snoozed');
-  var pend=item.querySelector('.alert-pending-pill');
-  if(pend)pend.remove();
-  var age=item.querySelector('.alert-age');
-  if(age)age.textContent='Snoozed until '+label;
-  item.querySelectorAll('.alert-item-actions .btn').forEach(function(b){
-    if(b.textContent.indexOf('Acknowledge')!==-1||b.textContent.indexOf('Snooze')!==-1){
-      b.disabled=true;b.style.opacity='.5';b.style.cursor='default';
+  var m=document.getElementById('ai-menu-'+id);
+  var open=m&&m.classList.contains('on');
+  aiCloseMenu();
+  if(m&&!open){m.classList.add('on');aiOpenMenu=m;var b=m.previousElementSibling;if(b)b.setAttribute('aria-expanded','true');var f=m.querySelector('button');if(f)f.focus();}
+}
+function aiCloseMenu(){
+  if(aiOpenMenu){aiOpenMenu.classList.remove('on');var b=aiOpenMenu.previousElementSibling;if(b)b.setAttribute('aria-expanded','false');}
+  aiOpenMenu=null;
+}
+document.addEventListener('click',function(e){if(!e.target.closest('.ai-more'))aiCloseMenu();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')aiCloseMenu();});
+
+function aiCard(it){
+  var h='<div class="ai-card tone-'+it.tone+(it.isNew?' is-new':'')+'" id="ai-'+it.id+'">';
+  h+='<div class="ai-ico" aria-hidden="true">'+it.icon+'</div><div class="ai-main">';
+  h+='<div class="ai-top"><div class="ai-title">'+_aiEsc(it.title)+'</div>';
+  h+='<span class="ai-due due-'+it.dueTone+'">'+_aiEsc(it.due)+'</span></div>';
+  h+='<div class="ai-detail">'+_aiEsc(it.detail)+'</div>';
+  h+='<div class="ai-actions"><button class="btn btn-primary btn-sm" onclick="aiRun(\''+it.id+'\')">'+_aiEsc(it.cta)+'</button>';
+  if(it.link)h+='<button class="ai-link" onclick="'+it.link.run+'">'+_aiEsc(it.link.label)+'</button>';
+  h+='<span class="ai-age">'+_aiEsc(it.age)+'</span>';
+  h+='<div class="ai-more"><button class="ai-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="More options for: '+_aiEsc(it.title)+'" onclick="aiToggleMenu(event,\''+it.id+'\')">⋯</button>';
+  h+='<div class="ai-menu" id="ai-menu-'+it.id+'" role="menu">';
+  h+='<button role="menuitem" onclick="aiComplete(\''+it.id+'\')">✓ Mark as done</button>';
+  h+='<div class="ai-menu-sep">Snooze</div>';
+  ['for 2 hours','tomorrow 9am','next Monday'].forEach(function(l){
+    h+='<button role="menuitem" onclick="aiSnooze(\''+it.id+'\',\''+l+'\')">'+l.charAt(0).toUpperCase()+l.slice(1)+'</button>';
+  });
+  h+='</div></div></div></div></div>';
+  return h;
+}
+
+function aiRender(){
+  var todo=aiTodo();
+  var snoozed=AI_ITEMS.filter(function(i){return i.type==='todo'&&!i.done&&i.snoozed;});
+  var done=AI_ITEMS.filter(function(i){return i.type==='todo'&&i.done;});
+  var fyi=AI_ITEMS.filter(function(i){return i.type==='fyi';});
+  var total=todo.length+snoozed.length+done.length;
+  var list=document.getElementById('ai-list');
+  if(list){
+    var h='<div class="ai-progress"><div><div class="ai-progress-title">'+(todo.length?todo.length+' to do':'You’re all caught up ✓')+'</div>';
+    h+='<div class="ai-progress-sub">'+done.length+' of '+total+' done today'+(snoozed.length?' · '+snoozed.length+' snoozed':'')+'</div></div>';
+    h+='<div class="ai-bar" role="progressbar" aria-label="Done today" aria-valuemin="0" aria-valuemax="'+total+'" aria-valuenow="'+done.length+'"><div style="width:'+(total?Math.round(done.length/total*100):100)+'%"></div></div></div>';
+    if(todo.length){
+      h+='<div class="ai-sec">To do <span>'+todo.length+'</span></div>';
+      todo.forEach(function(it){h+=aiCard(it);});
+    } else {
+      h+='<div class="ai-empty"><div class="ai-empty-ico" aria-hidden="true">✓</div><div class="ai-empty-title">Nothing needs you right now</div><div class="ai-empty-sub">Next scheduled check: weekly audit, Sunday 11:59 PM. We’ll tell you when something new comes in.</div></div>';
     }
-  });
-  var pop=btn.closest('.snooze-pop');
-  if(pop)pop.classList.remove('on');
-  showToast('💤 Snoozed until '+label);
-  recalcAlertCounts();
-}
-function ackAlert(btn,msg){
-  var item=btn.closest('.alert-item');
-  if(!item||item.classList.contains('ack')||item.classList.contains('snoozed'))return;
-  item.classList.remove('pending-48','pending-72');
-  item.classList.add('ack');
-  var pend=item.querySelector('.alert-pending-pill');
-  if(pend)pend.remove();
-  var age=item.querySelector('.alert-age');
-  if(age)age.textContent='Seen just now · Still open';
-  btn.disabled=true;
-  btn.textContent=btn.textContent.indexOf('Mark reviewed')!==-1?'Reviewed ✓':'Acknowledged ✓';
-  btn.style.opacity='.6';
-  btn.style.cursor='default';
-  showToast(msg||'✓ Marked as seen — still open');
-  recalcAlertCounts();
-}
-function recalcAlertCounts(){
-  var panel=document.getElementById('tab-comms-alerts');
-  if(!panel)return;
-  var items=panel.querySelectorAll('.alert-item');
-  var active=0,overdue=0;
-  for(var i=0;i<items.length;i++){
-    var it=items[i];
-    if(it.classList.contains('ack')||it.classList.contains('snoozed'))continue;
-    active++;
-    if(it.classList.contains('pending-72'))overdue++;
+    if(snoozed.length){
+      h+='<details class="ai-fold"><summary class="ai-sec">Snoozed <span>'+snoozed.length+'</span></summary>';
+      snoozed.forEach(function(it){h+='<div class="ai-row"><span>'+_aiEsc(it.title)+'</span><span class="ai-row-meta">Back '+_aiEsc(it.snoozed)+'</span><button class="ai-link" onclick="aiUnsnooze(\''+it.id+'\')">Bring back now</button></div>';});
+      h+='</details>';
+    }
+    if(done.length){
+      h+='<details class="ai-fold"><summary class="ai-sec">Done today <span>'+done.length+'</span></summary>';
+      done.forEach(function(it){h+='<div class="ai-row is-done"><span>✓ '+_aiEsc(it.title)+'</span><button class="ai-link" onclick="aiUndo(\''+it.id+'\')">Undo</button></div>';});
+      h+='</details>';
+    }
+    h+='<details class="ai-fold"><summary class="ai-sec">For your info <span>'+fyi.length+'</span><em>No action needed</em></summary>';
+    fyi.forEach(function(it){h+='<div class="ai-row"><span aria-hidden="true">'+it.icon+'</span><span><b>'+_aiEsc(it.title)+'</b><br><span class="ai-row-meta">'+_aiEsc(it.detail)+'</span></span>'+(it.link?'<button class="ai-link" onclick="'+it.link.run+'">'+_aiEsc(it.link.label)+'</button>':'')+'</div>';});
+    h+='</details>';
+    list.innerHTML=h;
   }
-  var tabPill=document.getElementById('alerts-count-pill');
-  var sbPill=document.getElementById('sbi-comms-count');
-  [tabPill,sbPill].forEach(function(p){
-    if(!p)return;
-    p.textContent=active;
-    if(overdue>0)p.classList.add('pill-pulse');else p.classList.remove('pill-pulse');
-  });
+  aiRenderSignals(todo);
 }
-recalcAlertCounts();
+
+// Everything outside Action Items that tells the user there is work waiting
+function aiRenderSignals(todo){
+  var n=todo.length;
+  var overdue=todo.filter(function(i){return i.dueTone==='crit';}).length;
+  ['alerts-count-pill','sbi-comms-count'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
+    el.textContent=n;el.style.display=n?'':'none';
+    el.setAttribute('aria-label',n+' to do'+(overdue?', '+overdue+' overdue':''));
+    el.classList.toggle('ai-count-glow',overdue>0);
+  });
+  var badge=document.getElementById('tb-badge');
+  if(badge){badge.textContent=n||'';badge.classList.toggle('has-n',n>0);badge.style.display=n?'':'none';}
+  var bell=document.getElementById('tb-bell');
+  if(bell)bell.setAttribute('aria-label','Notifications: '+n+' to do');
+  document.title=(n?'('+n+') ':'')+'The Hub';
+  var nl=document.getElementById('ni-list');
+  if(nl){
+    var h='';
+    todo.slice(0,5).forEach(function(it){
+      h+='<div class="ni" role="button" tabindex="0" onclick="aiOpenItem(\''+it.id+'\')"><div class="ni-dot"></div><div class="ni-icon" style="background:'+(it.tone==='crit'?'var(--crit-bg)':'var(--caut-bg)')+'">'+it.icon+'</div><div class="ni-body"><div class="ni-title">'+_aiEsc(it.title)+'</div><div class="ni-text">'+_aiEsc(it.due)+' · '+_aiEsc(it.cta)+'</div></div></div>';
+    });
+    if(!n)h='<div class="ni-empty">✓ You’re all caught up</div>';
+    else if(n>5)h+='<div class="ni-more" onclick="goApp(\'comms\');toggleNotif()">+ '+(n-5)+' more in Action Items</div>';
+    nl.innerHTML=h;
+    var ht=document.getElementById('ni-head-title');if(ht)ht.textContent=n?n+' to do':'To do';
+  }
+  var strip=document.getElementById('ai-strip');
+  if(strip){
+    var perms=window._perms||{};
+    var show=n>0&&!!perms.canApproveAlerts;
+    strip.style.display=show?'flex':'none';
+    if(show){
+      var oldest=Math.max.apply(null,todo.map(function(i){return i.ageDays;}));
+      document.getElementById('ai-strip-n').textContent=n;
+      document.getElementById('ai-strip-title').textContent='You have '+n+' thing'+(n===1?'':'s')+' to do'+(overdue?' — '+overdue+' overdue':'');
+      document.getElementById('ai-strip-sub').textContent='Top: '+todo[0].title+(oldest>0?' · oldest '+oldest+' day'+(oldest===1?'':'s'):'');
+      strip.classList.toggle('is-urgent',overdue>0);
+    }
+  }
+}
+function aiOpenItem(id){
+  toggleNotif();
+  goApp('comms');
+  var tab=document.querySelector('#app-comms .tabs .tab');
+  if(tab)switchTab(tab,'comms-alerts');
+  var el=document.getElementById('ai-'+id);
+  if(el){el.scrollIntoView({block:'center'});el.classList.add('is-new');setTimeout(function(){el.classList.remove('is-new');},2400);}
+}
+// Demo: a new item arrives — one pulse on the bell and count, plus a toast with a link.
+function aiSimulateNew(){
+  if(aiFind(AI_NEW.id)){showToast('That demo item is already in your list');return;}
+  AI_ITEMS.unshift(AI_NEW);
+  aiRender();
+  ['tb-bell','sbi-comms-count'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
+    el.classList.remove('ai-ping');void el.offsetWidth;el.classList.add('ai-ping');
+  });
+  var w=document.getElementById('toast-wrap');
+  if(w){
+    var t=document.createElement('div');
+    t.className='toast ai-toast';
+    t.innerHTML='<span><b>New:</b> '+_aiEsc(AI_NEW.title)+'</span><button onclick="aiOpenItem(\''+AI_NEW.id+'\');this.closest(\'.toast\').remove()">View</button>';
+    w.appendChild(t);
+    setTimeout(function(){t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);},6000);
+  }
+}
+aiRender();
 
 // OTP
 function otpNext(inp,i){
@@ -6915,26 +7014,66 @@ function cmScoped(){
 // Severity follows the saved rules: more than the stuck-leads number, or past
 // the manager deadline (\u2B06), is red; compliance below the minimum is red.
 function cmCellView(cell,col){
-  // A stage rule the owner switched off flags nobody, so its column reads "Off"
+  // A stage rule the owner switched off flags nobody, so its column reads "Rule off"
   if(rulesSaved&&rulesSaved['r'+(col+1)+'_on']===false){
-    return {cls:'muted',icon:'\u2014',label:'Off',toast:'This rule is switched off in Accountability Rules',count:0,esc:false};
+    return {cls:'off',word:'Rule off',tip:'This rule is switched off in Accountability Rules, so no one is flagged.',toast:'This rule is switched off in Accountability Rules',count:0,esc:false};
   }
   var th=rulesSavedVal('pile',3);
   var count=parseInt(cell.n,10)||0;
   var esc=cell.n.indexOf('\u2B06')!==-1;
   var pile=count>th;
-  var cls=count===0?'pos':(esc||pile)?'crit':'caut';
-  var icon=count===0?'\u2705':(esc||pile)?'\uD83D\uDD34':'\u26A0\uFE0F';
-  var label=String(count)+(esc?' \u2B06':'')+(pile?' \uD83D\uDCCA':'');
-  var toast=cell.toast+(pile?' \u00B7 Stuck-leads alert (more than '+th+')':'');
-  return {cls:cls,icon:icon,label:label,toast:toast,count:count,esc:esc};
+  var leads=count===1?'lead':'leads';
+  var cls,word,tip;
+  if(count===0){cls='none';word='\u2013';tip='No leads breaking this rule.';}
+  else if(esc){cls='crit';word=count+' \u00B7 Manager told';tip=count+' '+leads+' not fixed in time, so the Sales Manager has been told.'+(pile?' Also more than '+th+' stuck in this stage.':'');}
+  else if(pile){cls='crit';word=count+' \u00B7 Too many stuck';tip='More than '+th+' leads stuck in this one stage \u2014 a pattern, so the Sales Manager is alerted.';}
+  else {cls='caut';word=count+' overdue';tip=count+' '+leads+' past the time limit. The rep has been reminded; the manager hasn\u2019t been told yet.';}
+  return {cls:cls,word:word,tip:tip,toast:cell.toast+(pile?' \u00B7 More than '+th+' stuck in this stage':''),count:count,esc:esc};
 }
 function cmPctView(r){
   var floor=rulesSavedVal('floor',80);
   var pct=parseInt(r.pct,10);
-  if(pct<floor)return {pct:pct,txt:pct+'% \u26A0',cls:'pill-crit',bg:'rgba(155,58,42,.03)'};
-  if(pct<floor+10)return {pct:pct,txt:pct+'%',cls:'pill-caut',bg:''};
-  return {pct:pct,txt:pct+'%',cls:'pill-pos',bg:''};
+  if(pct<floor)return {pct:pct,txt:pct+'% \u00B7 Below '+floor+'%',cls:'pill-crit',bg:'rgba(155,58,42,.03)',tip:'Below your '+floor+'% minimum \u2014 the Sales Manager is alerted.'};
+  if(pct<floor+10)return {pct:pct,txt:pct+'%',cls:'pill-caut',bg:'',tip:'Within 10 points of your '+floor+'% minimum \u2014 worth watching.'};
+  return {pct:pct,txt:pct+'%',cls:'pill-pos',bg:'',tip:'Comfortably above your '+floor+'% minimum.'};
+}
+// Column headers explain the rule they measure, using the saved numbers
+function cmHeaderTips(){
+  var o=rulesSaved||{};
+  function d(t){return t==='business'?'business days':'days';}
+  return [
+    'Flagged when a new lead has no appointment after '+o.r1_flag+' hours. Sales Manager told '+o.r1_esc+' hours later.',
+    'Flagged when an appointment has no outcome '+o.r2_flag+' hours after it. Sales Manager told '+o.r2_esc+' hours later.',
+    'Flagged when an estimate is '+o.r3_flag+' '+d(o.r3_days)+' old with no presentation booked. Sales Manager told '+o.r3_esc+' '+d(o.r3_days)+' later.',
+    'Flagged when a presentation has no result after '+o.r4_flag+' '+d(o.r4_days)+'. Sales Manager told '+o.r4_esc+' '+d(o.r4_days)+' later.',
+    'Flagged after '+o.r5_max+' days in Follow-up without a handoff. Sales Manager told '+o.r5_esc+' hours later.',
+    'Share of the rep\u2019s active leads that aren\u2019t breaking any rule. Minimum: '+rulesSavedVal('floor',80)+'%.'
+  ];
+}
+// One floating tooltip, shown on hover or keyboard focus of anything with data-tip
+var cmTipEl=null;
+function cmTipShow(el){
+  var t=el.getAttribute('data-tip');if(!t)return;
+  if(!cmTipEl){cmTipEl=document.createElement('div');cmTipEl.className='cm-tip';cmTipEl.setAttribute('role','tooltip');cmTipEl.id='cm-tip';document.body.appendChild(cmTipEl);}
+  cmTipEl.textContent=t;cmTipEl.style.display='block';
+  var r=el.getBoundingClientRect(),w=cmTipEl.offsetWidth,h=cmTipEl.offsetHeight;
+  var left=Math.min(Math.max(8,r.left+r.width/2-w/2),window.innerWidth-w-8);
+  var top=r.top-h-8;if(top<8)top=r.bottom+8;
+  cmTipEl.style.left=left+'px';cmTipEl.style.top=top+'px';
+}
+function cmTipHide(){if(cmTipEl)cmTipEl.style.display='none';}
+['mouseover','focusin'].forEach(function(ev){
+  document.addEventListener(ev,function(e){var el=e.target.closest&&e.target.closest('#tab-comms-matrix [data-tip]');if(el)cmTipShow(el);});
+});
+['mouseout','focusout'].forEach(function(ev){
+  document.addEventListener(ev,function(e){var el=e.target.closest&&e.target.closest('#tab-comms-matrix [data-tip]');if(el)cmTipHide();});
+});
+window.addEventListener('scroll',cmTipHide,true);
+function cmToggleKey(btn){
+  var k=document.getElementById('cm-key');
+  var open=k.style.display!=='none';
+  k.style.display=open?'none':'block';
+  btn.setAttribute('aria-expanded',open?'false':'true');
 }
 function cmOpenMatrix(){
   goApp('comms');
@@ -6959,7 +7098,21 @@ function cmRenderSummary(){
   var sc=cmScope();
   set('cm-scope',sc?'Showing reps in '+(sc.length>1?'NJ and NY':'NJ \u2014 Montclair')+'.':'');
   var leg=document.getElementById('cm-legend');
-  if(leg)leg.innerHTML='<span style="font-weight:700">Severity:</span><span>\u2705 None flagged</span><span>\u26A0\uFE0F 1\u2013'+th+' flagged</span><span>\uD83D\uDD34 More than '+th+' (stuck-leads alert) or past the manager deadline</span><span style="color:var(--muted)">Set in Accountability Rules</span>';
+  if(leg&&!leg.getAttribute('data-built')){
+    leg.setAttribute('data-built','1');
+    leg.innerHTML='<button type="button" class="cm-key-btn" aria-expanded="false" aria-controls="cm-key" onclick="cmToggleKey(this)"><span class="cm-i" aria-hidden="true">i</span> What do these mean?</button><span class="cm-key-hint">Hover or tap any cell for details</span>';
+    var k=document.createElement('div');k.id='cm-key';k.className='cm-key';k.style.display='none';
+    leg.parentNode.insertBefore(k,leg.nextSibling);
+  }
+  var key=document.getElementById('cm-key');
+  if(key)key.innerHTML='<div class="cm-key-row"><span class="cm-chip c-caut">2 overdue</span><span>Leads past the rule\u2019s time limit. The rep has been reminded \u2014 not the manager\u2019s problem yet.</span></div>'
+    +'<div class="cm-key-row"><span class="cm-chip c-crit">2 \u00B7 Manager told</span><span>Not fixed in time, so the Sales Manager has been alerted.</span></div>'
+    +'<div class="cm-key-row"><span class="cm-chip c-crit">4 \u00B7 Too many stuck</span><span>More than '+th+' leads stuck in one stage \u2014 a pattern, not a one-off.</span></div>'
+    +'<div class="cm-key-row"><span class="pill pill-crit" style="font-size:12px;font-weight:800">67% \u00B7 Below '+floor+'%</span><span>The rep\u2019s compliance score is under your minimum.</span></div>'
+    +'<div class="cm-key-row"><span class="cm-chip c-none">\u2013</span><span>Nothing to fix.</span></div>'
+    +'<div class="cm-key-foot">Amber = the rep has been reminded. Red = the manager is involved. Change these limits in <button type="button" class="ai-link" onclick="goApp(\'rules\')">Accountability Rules</button>.</div>';
+  var tips=cmHeaderTips();
+  for(var hi=0;hi<tips.length;hi++){var thEl=document.getElementById('cm-th-'+hi);if(thEl){thEl.setAttribute('data-tip',tips[hi]);thEl.setAttribute('aria-label',thEl.textContent.replace(/\s*i$/,'')+'. '+tips[hi]);}}
 }
 function cmFiltered(){
   var q=cmState.q.trim().toLowerCase();
@@ -7022,9 +7175,14 @@ function cmRender(){
     html+='<td><div style="font-weight:700">'+r.name+'</div><div style="font-size:11px;color:var(--muted)">'+r.email+' \u00B7 '+r.branch+'</div></td>';
     for(var c=0;c<r.cells.length;c++){
       var cv=cmCellView(r.cells[c],c);
-      html+='<td style="text-align:center;cursor:pointer" onclick="cmCellToast('+i+','+c+')"><span style="font-size:16px">'+cv.icon+'</span><div style="font-size:11px;font-weight:700;color:var(--'+cv.cls+')">'+cv.label+'</div></td>';
+      var stage=['Lead','Appt Scheduled','Estimate','Presentation','Follow-up'][c];
+      if(cv.cls==='none'||cv.cls==='off'){
+        html+='<td style="text-align:center"><span class="cm-chip c-'+cv.cls+'" tabindex="0" data-tip="'+cmEscape(cv.tip)+'" aria-label="'+cmEscape(r.name+', '+stage+': '+cv.tip)+'">'+cv.word+'</span></td>';
+      } else {
+        html+='<td style="text-align:center"><button type="button" class="cm-chip c-'+cv.cls+'" data-tip="'+cmEscape(cv.tip+' Click to see the leads.')+'" aria-label="'+cmEscape(r.name+', '+stage+': '+cv.word+'. '+cv.tip)+'" onclick="cmCellToast('+i+','+c+')">'+cv.word+'</button></td>';
+      }
     }
-    html+='<td style="text-align:center"><span class="pill '+pv.cls+'" style="font-size:12px;font-weight:800">'+pv.txt+'</span></td>';
+    html+='<td style="text-align:center"><span class="pill '+pv.cls+' cm-pct" tabindex="0" data-tip="'+cmEscape(pv.tip)+'" aria-label="'+cmEscape(r.name+' compliance '+pv.pct+'%. '+pv.tip)+'">'+pv.txt+'</span></td>';
     html+='</tr>';
   }
   body.innerHTML=html;
