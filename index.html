@@ -481,6 +481,46 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 .rl-dirty.on::before{content:'● ';}
 @media (max-width:700px){.rl-who{width:auto;padding:3px 8px;}.rl-err{margin-left:0;}.rl-msg-exit{margin-left:0;}}
 @media (max-width:768px){.rl-actions{bottom:64px;flex-wrap:wrap;}}
+/* ── ACCOUNTABILITY RULES — accessibility (WCAG 2.1 AA) ──
+   Scoped to this screen: darker secondary text and status colours so every
+   label clears 4.5:1, control borders clear 3:1, and focus is always visible. */
+#app-rules{--muted:#4F5A63;--caut:#7A4F0C;--pos:#2F5A3A;}
+#app-rules .pg-sub{font-size:14px;line-height:1.5;}
+#app-rules .tab{color:#3F4A52;}
+#app-rules .tab.on{color:var(--ink);}
+#app-rules .rl-intro{font-size:14px;color:var(--muted);}
+#app-rules .rl-preset-title{font-size:15px;}
+#app-rules .rl-preset-sub{font-size:13.5px;}
+#app-rules .rl-seg-btn{font-size:13.5px;color:#3F4A52;min-height:36px;}
+#app-rules .rl-seg-btn.on{color:var(--ink);outline:1.5px solid var(--horizon);}
+#app-rules .rl-title{font-size:16px;}
+#app-rules .rl-badge{font-size:11px;padding:3px 9px;}
+#app-rules .rl-stage{font-size:13.5px;line-height:1.5;}
+#app-rules .rl-tog-lbl{font-size:13px;}
+#app-rules .rl-line{font-size:15px;gap:10px;padding:10px 0;border-top-color:#DDD7CB;}
+#app-rules .rl-who{font-size:11px;width:72px;padding:4px 0;}
+#app-rules .rl-who.rep{background:#E3ECE5;color:#2F5A3A;}
+#app-rules .rl-who.mgr{background:#F3E9DA;color:#7A4F0C;}
+#app-rules .rl-who.clk{background:#E6E1D6;color:#3F4A52;}
+#app-rules .rl-num input{width:78px;font-size:15px;border-color:#857E73;}
+#app-rules .rl-num em{font-size:14px;color:var(--muted);}
+#app-rules .rl-sel{font-size:14px;border-color:#857E73;}
+#app-rules .rl-err{font-size:13px;margin-left:82px;}
+#app-rules .rl-msg{font-size:14px;background:#EEF3F4;border-color:#B9CDD1;}
+#app-rules .rl-msg-lbl{font-size:11px;color:var(--muted);}
+#app-rules .rl-msg-exit{color:var(--muted);}
+#app-rules .rl-note{font-size:13px;}
+#app-rules .rl-dirty{font-size:13.5px;}
+#app-rules .wh-toggle{background:#857E73;}
+#app-rules .wh-toggle.on{background:var(--horizon);}
+#app-rules .wh-day{font-size:14px;color:var(--ink);}
+#app-rules .inp{border-color:#857E73;}
+#app-rules .lbl{color:#3F4A52;}
+#app-rules .settings-info-box{color:#0F5866;font-size:13.5px;}
+#app-rules .rl-off-note{font-size:13px;color:var(--muted);}
+#app-rules :is(input,select,button,.wh-toggle,.tab):focus-visible{outline:3px solid var(--horizon);outline-offset:2px;}
+#app-rules .rl-num input:focus,#app-rules .rl-sel:focus,#app-rules .inp:focus{border-color:var(--horizon);box-shadow:0 0 0 3px rgba(31,58,95,.18);}
+@media (max-width:700px){#app-rules .rl-err{margin-left:0;}}
 .wh-closed { font-size:12px; color:var(--muted); font-style:italic; }
 .branch-pill-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
 .branch-pill-sel { display:flex; align-items:center; gap:6px; padding:6px 14px; border-radius:8px; background:white; border:1.5px solid var(--rule); cursor:pointer; transition:.2s; font-size:12.5px; font-weight:600; color:var(--slate); }
@@ -2207,7 +2247,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
     <button type="button" class="btn btn-outline btn-sm" onclick="rulesResetDefaults()">Reset to recommended</button>
   </div>
 
-  <div class="tabs fu1" id="rules-tabs">
+  <div class="tabs fu1" id="rules-tabs" role="tablist" aria-label="Accountability rule sections">
     <div class="tab on" id="rtab-pipeline" onclick="rulesSwitchTab(this,'rules-pipeline')">CRM Stage Rules</div>
     <div class="tab" id="rtab-activity" onclick="rulesSwitchTab(this,'rules-activity')">Rep Activity Rules</div>
     <div class="tab" id="rtab-routing" onclick="rulesSwitchTab(this,'rules-routing')">Notification Routing</div>
@@ -2407,16 +2447,16 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
       </div>
       <div class="settings-grid-2" style="margin-top:16px;max-width:520px">
         <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Bring to the Owner after</label>
-          <select class="inp">
+          <label class="lbl" for="rl-owner-after">Bring to the Owner after</label>
+          <select class="inp" id="rl-owner-after">
             <option selected>2 consecutive breaches</option>
             <option>3 breaches in 30 days</option>
             <option>Never — Sales Manager handles it</option>
           </select>
         </div>
         <div class="inp-row" style="margin-bottom:0">
-          <label class="lbl">Rep can see the Owner was told</label>
-          <select class="inp">
+          <label class="lbl" for="rl-rep-sees">Rep can see the Owner was told</label>
+          <select class="inp" id="rl-rep-sees">
             <option selected>Yes</option>
             <option>No</option>
           </select>
@@ -2456,7 +2496,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
   </div>
 
   <div id="rules-actions" class="rl-actions">
-    <div class="rl-dirty" id="rl-dirty">All changes saved</div>
+    <div class="rl-dirty" id="rl-dirty" role="status" aria-live="polite">All changes saved</div>
     <div style="flex:1"></div>
     <button class="btn btn-outline" id="rl-discard" onclick="rulesDiscard()">Discard changes</button>
     <button class="btn btn-primary" onclick="saveRules()">Save rules</button>
@@ -3548,7 +3588,7 @@ textarea.hw-inp{resize:vertical;min-height:70px;}
 </div>
 
 <!-- ════════════════════════════════════════════════ TOAST ═══ -->
-<div id="toast-wrap"></div>
+<div id="toast-wrap" role="status" aria-live="polite"></div>
 
 <script>
 
@@ -6597,6 +6637,7 @@ function rulesWrite(o){
 }
 function _rlSetToggle(el,on){
   el.classList.toggle('on',!!on);
+  el.setAttribute('aria-checked',on?'true':'false');
   var card=el.closest('.rl-card');
   if(card)card.classList.toggle('off',!on);
   var lbl=card?card.querySelector('.rl-tog-lbl'):null;
@@ -6620,11 +6661,13 @@ function rulesValidate(){
     var key=inp.getAttribute('data-k');
     var msg=line.querySelector('.rl-err[data-for="'+key+'"]');
     inp.classList.toggle('err',bad);
+    inp.setAttribute('aria-invalid',bad?'true':'false');
     if(bad){
       errs++;
-      if(!msg){msg=document.createElement('div');msg.className='rl-err';msg.setAttribute('data-for',key);line.appendChild(msg);}
+      if(!msg){msg=document.createElement('div');msg.className='rl-err';msg.setAttribute('data-for',key);msg.id='rl-err-'+key;msg.setAttribute('role','alert');line.appendChild(msg);}
+      inp.setAttribute('aria-describedby',msg.id);
       msg.textContent='Enter a whole number from '+mn+' to '+mx+'.';
-    } else if(msg){msg.remove();}
+    } else if(msg){msg.remove();inp.removeAttribute('aria-describedby');}
   });
   return errs;
 }
@@ -6666,7 +6709,9 @@ function rulesOnChange(){
     if(same){match=p;break;}
   }
   document.querySelectorAll('#app-rules .rl-seg-btn').forEach(function(b){
-    b.classList.toggle('on',b.getAttribute('data-preset')===match);
+    var on=b.getAttribute('data-preset')===match;
+    b.classList.toggle('on',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
   });
   var sub=document.getElementById('rl-preset-sub');
   if(sub)sub.textContent=match
@@ -6730,9 +6775,71 @@ function rulesInit(){
     n.textContent='Off — no one is reminded or flagged for this rule.';
     h.parentNode.insertBefore(n,h.nextSibling);
   });
+  rulesA11y();
   rulesWrite(RULE_PRESETS.retail);
   rulesSaved=rulesRead();
   rulesOnChange();
+}
+// Rule fields sit inside sentences, so each one gets its accessible name from
+// the words around it. Switches and tabs are divs, so they get roles + keys.
+function rulesA11y(){
+  function clean(t){return t.replace(/\s+/g,' ').trim();}
+  document.querySelectorAll('#app-rules .rl-line').forEach(function(line){
+    var before=[];
+    Array.prototype.forEach.call(line.children,function(ch){
+      if(ch.classList.contains('rl-num')){
+        var inp=ch.querySelector('input'),unit=ch.querySelector('em');
+        inp.setAttribute('aria-label',clean(before.join(' ')+' (number of '+(unit?unit.textContent:'')+')'));
+        before.push('[number] '+(unit?unit.textContent:''));
+      } else if(ch.tagName==='SELECT'){
+        ch.setAttribute('aria-label',clean(before.join(' ')));
+        before.push('[choice]');
+      } else if(!ch.classList.contains('rl-who')&&!ch.classList.contains('rl-err')){
+        before.push(ch.textContent);
+      }
+    });
+  });
+  document.querySelectorAll('#app-rules .wh-toggle').forEach(function(t){
+    var card=t.closest('.rl-card');
+    var title=card?card.querySelector('.rl-title'):null;
+    t.setAttribute('role','switch');
+    t.setAttribute('tabindex','0');
+    t.setAttribute('aria-label',(title?title.textContent:'Rule')+' rule');
+    t.setAttribute('aria-checked',t.classList.contains('on')?'true':'false');
+    t.addEventListener('keydown',function(e){
+      if(e.key===' '||e.key==='Enter'){e.preventDefault();toggleRule(t);}
+    });
+  });
+  var tabs=document.querySelectorAll('#rules-tabs .tab');
+  tabs.forEach(function(tab,i){
+    var panel=(tab.getAttribute('onclick').match(/'(rules-[a-z]+)'/)||[])[1];
+    tab.setAttribute('role','tab');
+    tab.setAttribute('aria-controls','tab-'+panel);
+    tab.addEventListener('keydown',function(e){
+      var next=null;
+      if(e.key==='ArrowRight')next=tabs[(i+1)%tabs.length];
+      else if(e.key==='ArrowLeft')next=tabs[(i-1+tabs.length)%tabs.length];
+      else if(e.key===' '||e.key==='Enter'){e.preventDefault();tab.click();return;}
+      if(next){e.preventDefault();next.click();next.focus();}
+    });
+    var p=document.getElementById('tab-'+panel);
+    if(p){p.setAttribute('role','tabpanel');p.setAttribute('aria-labelledby',tab.id);}
+  });
+  rulesSyncTabs();
+  document.querySelectorAll('#app-rules .wh-row').forEach(function(row){
+    var name=row.querySelector('.wh-day');
+    var sels=row.querySelectorAll('select');
+    if(!name||sels.length<2)return;
+    sels[0].setAttribute('aria-label',name.textContent+': who gets alerts');
+    sels[1].setAttribute('aria-label',name.textContent+': how often');
+  });
+}
+function rulesSyncTabs(){
+  document.querySelectorAll('#rules-tabs .tab').forEach(function(t){
+    var on=t.classList.contains('on');
+    t.setAttribute('aria-selected',on?'true':'false');
+    t.setAttribute('tabindex',on?'0':'-1');
+  });
 }
 rulesInit();
 
@@ -6965,6 +7072,7 @@ cmRender();
 // The preset bar only fills in the rule tabs, so it is hidden on Notification Routing.
 function rulesSwitchTab(el,panelId){
   switchTab(el,panelId);
+  rulesSyncTabs();
   var pre=document.getElementById('rl-preset');
   if(pre)pre.style.display=(panelId==='rules-routing')?'none':'flex';
 }
