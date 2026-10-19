@@ -21,8 +21,9 @@ CRM-connected, role-based, single-page prototype — all code lives in `index.ht
 signup → OTP → company-setup → plan (pricing) → crm-pick → syncing → marketing-pick → enterApp()
 ```
 After `enterApp()`:
-1. Welcome email modal fires (new signups only, not manager joins)
-2. After closing welcome modal → CRM sync progress overlay appears
+1. Welcome email modal fires (new signups only, not manager joins) — step 1 of 2, button "Next: Confirm your pipeline"
+2. Stage mapping modal (`modal-stage-map-modal`) — step 2 of 2, CRM stages → Hub stages with dropdowns
+3. After confirming/skipping mapping → CRM sync progress overlay appears
 
 ## Screens Built
 ### Auth
@@ -48,6 +49,7 @@ After `enterApp()`:
 - `modal-edit-user-modal` — Edit user name/role/branch + Remove user
 - `modal-plan-limit-modal` — Location limit reached
 - `modal-upgrade-modal` — Upgrade prompt
+- `modal-stage-map-modal` — Pipeline stage mapping. Data in `_stageMap`, Hub stages in `HUB_STAGES` (Lead/Contacted/Appointment/Proposal/Won/Lost + Ignore). Confidence: ok (auto-matched), check (please check), need (needs input — blocks Confirm), user (set by you). Flagged rows shown first; auto-matched rows collapsed behind "Show all". "Skip for now" shows `#sm-banner` on the dashboard. Same table is editable in Settings → Data Mapping (`tab-settings-data-mapping`) via `renderStageMap(containerId)`.
 
 ## CRM Sync Overlay (`#sync-overlay`)
 - Bottom-sheet overlay, fires after welcome modal is closed (new signups only)
